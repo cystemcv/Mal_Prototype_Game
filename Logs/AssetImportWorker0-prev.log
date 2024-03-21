@@ -15,7 +15,7 @@ X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-60191
+61347
 Successfully changed project path to: X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
 X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 93.10 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 91.08 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.1.20f1 (01d83b40d570)
 [Subsystems] Discovering subsystems at path D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Resources/UnitySubsystems
@@ -63,95 +63,95 @@ Initialize mono
 Mono path[0] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Managed'
 Mono path[1] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56504
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56604
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.004302 seconds.
+Registered in 0.004014 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 90.46 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 84.58 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.715 seconds
+- Completed reload, in  0.635 seconds
 Domain Reload Profiling:
-	ReloadAssembly (715ms)
-		BeginReloadAssembly (101ms)
+	ReloadAssembly (636ms)
+		BeginReloadAssembly (65ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (506ms)
-			LoadAssemblies (100ms)
+			CreateAndSetChildDomain (0ms)
+		EndReloadAssembly (467ms)
+			LoadAssemblies (65ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (119ms)
-				TypeCache.Initialize (118ms)
-					TypeCache.ScanAssembly (116ms)
+			SetupTypeCache (113ms)
+				TypeCache.Initialize (113ms)
+					TypeCache.ScanAssembly (111ms)
 				ResolveRequiredComponents (1ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (33ms)
-			SetupLoadedEditorAssemblies (298ms)
+			RebuildScriptCaches (29ms)
+			SetupLoadedEditorAssemblies (274ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (7ms)
 				SetLoadedEditorAssemblies (7ms)
-				RefreshPlugins (91ms)
+				RefreshPlugins (85ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (142ms)
-				ProcessInitializeOnLoadMethodAttributes (49ms)
+				ProcessInitializeOnLoadAttributes (132ms)
+				ProcessInitializeOnLoadMethodAttributes (42ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.004648 seconds.
+Registered in 0.004416 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image X:\Unity\Mal Wiiu Game\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image X:\Unity\Mal Wiiu Game\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.81 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 0.93 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.154 seconds
+- Completed reload, in  1.037 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1155ms)
-		BeginReloadAssembly (135ms)
+	ReloadAssembly (1038ms)
+		BeginReloadAssembly (100ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (6ms)
+			DisableScriptedObjects (7ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (18ms)
-		EndReloadAssembly (903ms)
-			LoadAssemblies (92ms)
+			CreateAndSetChildDomain (15ms)
+		EndReloadAssembly (828ms)
+			LoadAssemblies (72ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (294ms)
-				TypeCache.Initialize (288ms)
-					TypeCache.ScanAssembly (283ms)
+			SetupTypeCache (277ms)
+				TypeCache.Initialize (270ms)
+					TypeCache.ScanAssembly (265ms)
 				ResolveRequiredComponents (7ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (65ms)
-			SetupLoadedEditorAssemblies (411ms)
+			RebuildScriptCaches (59ms)
+			SetupLoadedEditorAssemblies (371ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (8ms)
+				SetLoadedEditorAssemblies (7ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (82ms)
-				ProcessInitializeOnLoadAttributes (280ms)
-				ProcessInitializeOnLoadMethodAttributes (32ms)
-				AfterProcessingInitializeOnLoad (4ms)
+				BeforeProcessingInitializeOnLoad (77ms)
+				ProcessInitializeOnLoadAttributes (249ms)
+				ProcessInitializeOnLoadMethodAttributes (29ms)
+				AfterProcessingInitializeOnLoad (3ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (7ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
-Refreshing native plugins compatible for Editor in 0.75 ms, found 3 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 0.46 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 4007 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 30 unused Assets / (58.9 KB). Loaded Objects now: 4471.
 Memory consumption went from 0.60 GB to 0.60 GB.
-Total: 3.875000 ms (FindLiveObjects: 0.242800 ms CreateObjectMapping: 0.103800 ms MarkObjects: 3.408000 ms  DeleteObjects: 0.118700 ms)
+Total: 2.284100 ms (FindLiveObjects: 0.280300 ms CreateObjectMapping: 0.135400 ms MarkObjects: 1.802800 ms  DeleteObjects: 0.065000 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -165,31 +165,31 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 91656.990353 seconds.
-  path: Assets/Archimatix/Materials/SciFiHex.mat
-  artifactKey: Guid(98af72aa859064e6eb0d4ac0b00948a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Materials/SciFiHex.mat using Guid(98af72aa859064e6eb0d4ac0b00948a5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '93ba7c9e956d046fe70a52b5c85ce18d') in 0.230565 seconds 
+  Time since last request: 93248.753933 seconds.
+  path: Assets
+  artifactKey: Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets using Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6e8165099f8bfd50797b2ebe9f8b211b') in 0.007289 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Archimatix/Scripts/Core2D/test.mat
-  artifactKey: Guid(e8cd22da038404c0ea8d051291723f1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Scripts/Core2D/test.mat using Guid(e8cd22da038404c0ea8d051291723f1a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7736bc19b627a73432a2beb90de53771') in 0.088071 seconds 
+  Time since last request: 41.107371 seconds.
+  path: Assets/3D Assets
+  artifactKey: Guid(daa3ae7313f968c478535376d072cf7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/3D Assets using Guid(daa3ae7313f968c478535376d072cf7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '09550764c9383023b02fe2f625b98ee5') in 0.006651 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/TheraBytes/BetterUI/Runtime/Resources/Materials/Standard_Overlay.mat
-  artifactKey: Guid(41ef289fc0eb0644ebe59def3dbb8ce2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Runtime/Resources/Materials/Standard_Overlay.mat using Guid(41ef289fc0eb0644ebe59def3dbb8ce2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '25438912aec0b7a7246c558a3e92e8d6') in 0.029135 seconds 
+  Time since last request: 6603.066169 seconds.
+  path: Assets/3D Assets/card game card.fbx
+  artifactKey: Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/3D Assets/card game card.fbx using Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4bf0d4c0b0f698a5947fb513af17a00d') in 0.267573 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/TheraBytes/BetterUI/Runtime/Resources/Materials/Standard_Normal.mat
-  artifactKey: Guid(6e9f27fd6fa2dab419c89444f24414ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Runtime/Resources/Materials/Standard_Normal.mat using Guid(6e9f27fd6fa2dab419c89444f24414ca) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07287da1197b91a737f23e74684b4440') in 0.011905 seconds 
+  Time since last request: 243.947599 seconds.
+  path: Assets/3D Assets/card game card.fbx
+  artifactKey: Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/3D Assets/card game card.fbx using Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5cd8458e9f93a3e3c9075c970684bd9f') in 0.040190 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 8.007309 seconds.
-  path: Assets/Modern UI Pack/Fonts/OpenSans-Regular SDF.asset
-  artifactKey: Guid(4bd810f1cbcb0f446a8f5a31453e243f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Modern UI Pack/Fonts/OpenSans-Regular SDF.asset using Guid(4bd810f1cbcb0f446a8f5a31453e243f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e7665c707fdb87f45bebc4218f947a9a') in 0.077097 seconds 
+  Time since last request: 29.952906 seconds.
+  path: Assets/3D Assets/card game card.fbx
+  artifactKey: Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/3D Assets/card game card.fbx using Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82f6312bd562d992f5393ad2177acdfb') in 0.054823 seconds 
