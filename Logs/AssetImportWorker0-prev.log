@@ -1,23 +1,23 @@
 Using pre-set license
 Built from '2022.1/staging' branch; Version is '2022.1.20f1 (01d83b40d570) revision 120891'; Using compiler version '192829333'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 130907 MB
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 32679 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
 
 COMMAND LINE ARGUMENTS:
-D:\Program Files\Unity\Hub\Editor\2022.1.20f1\Editor\Unity.exe
+C:\2022.1.20f1\Editor\Unity.exe
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker0
 -projectPath
-X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
+D:/GITHUB/Mal_Prototype_Game
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-57658
-Successfully changed project path to: X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
-X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
+50361
+Successfully changed project path to: D:/GITHUB/Mal_Prototype_Game
+D:/GITHUB/Mal_Prototype_Game
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -47,98 +47,98 @@ X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 98.86 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 99.33 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.1.20f1 (01d83b40d570)
-[Subsystems] Discovering subsystems at path D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path X:/Unity/Mal Wiiu Game/Mal_Prototype_Game/Assets
+[Subsystems] Discovering subsystems at path C:/2022.1.20f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/GITHUB/Mal_Prototype_Game/Assets
 GfxDevice: creating device client; threaded=0; jobified=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce RTX 3090 (ID=0x2204)
+    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c82)
     Vendor:   NVIDIA
-    VRAM:     24326 MB
-    Driver:   31.0.15.5176
+    VRAM:     4017 MB
+    Driver:   31.0.15.3623
 Initialize mono
-Mono path[0] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Managed'
-Mono path[1] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
-Mono config path = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56444
+Mono path[0] = 'C:/2022.1.20f1/Editor/Data/Managed'
+Mono path[1] = 'C:/2022.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/2022.1.20f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56144
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.004354 seconds.
+Register platform support module: C:/2022.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.005809 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 89.16 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 93.85 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.682 seconds
+- Completed reload, in  0.631 seconds
 Domain Reload Profiling:
-	ReloadAssembly (682ms)
-		BeginReloadAssembly (93ms)
+	ReloadAssembly (632ms)
+		BeginReloadAssembly (80ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (487ms)
-			LoadAssemblies (92ms)
+		EndReloadAssembly (449ms)
+			LoadAssemblies (76ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (107ms)
-				TypeCache.Initialize (107ms)
-					TypeCache.ScanAssembly (106ms)
-				ResolveRequiredComponents (1ms)
+			SetupTypeCache (104ms)
+				TypeCache.Initialize (104ms)
+					TypeCache.ScanAssembly (102ms)
+				ResolveRequiredComponents (0ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (30ms)
-			SetupLoadedEditorAssemblies (298ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (267ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (7ms)
-				SetLoadedEditorAssemblies (7ms)
-				RefreshPlugins (89ms)
+				SetLoadedEditorAssemblies (6ms)
+				RefreshPlugins (94ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (148ms)
-				ProcessInitializeOnLoadMethodAttributes (45ms)
+				ProcessInitializeOnLoadAttributes (116ms)
+				ProcessInitializeOnLoadMethodAttributes (43ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.005231 seconds.
+Registered in 0.005674 seconds.
 Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image X:\Unity\Mal Wiiu Game\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image X:\Unity\Mal Wiiu Game\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 1.10 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 1.02 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.088 seconds
+- Completed reload, in  1.036 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1089ms)
-		BeginReloadAssembly (137ms)
+	ReloadAssembly (1037ms)
+		BeginReloadAssembly (123ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (19ms)
-		EndReloadAssembly (835ms)
-			LoadAssemblies (104ms)
+			CreateAndSetChildDomain (20ms)
+		EndReloadAssembly (793ms)
+			LoadAssemblies (92ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (258ms)
-				TypeCache.Initialize (251ms)
-					TypeCache.ScanAssembly (246ms)
-				ResolveRequiredComponents (7ms)
+			SetupTypeCache (224ms)
+				TypeCache.Initialize (218ms)
+					TypeCache.ScanAssembly (213ms)
+				ResolveRequiredComponents (6ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (64ms)
+			RebuildScriptCaches (59ms)
 			SetupLoadedEditorAssemblies (388ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (7ms)
+				SetLoadedEditorAssemblies (6ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (72ms)
-				ProcessInitializeOnLoadAttributes (269ms)
-				ProcessInitializeOnLoadMethodAttributes (31ms)
-				AfterProcessingInitializeOnLoad (4ms)
+				BeforeProcessingInitializeOnLoad (88ms)
+				ProcessInitializeOnLoadAttributes (249ms)
+				ProcessInitializeOnLoadMethodAttributes (28ms)
+				AfterProcessingInitializeOnLoad (11ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (7ms)
@@ -147,15 +147,15 @@ Platform modules already initialized, skipping
 Worker process is ready to serve import requests
 Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
 Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
-Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
 Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
-Refreshing native plugins compatible for Editor in 0.75 ms, found 3 plugins.
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Refreshing native plugins compatible for Editor in 1.02 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3946 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 32 unused Assets / (5.1 MB). Loaded Objects now: 4408.
+Unloading 3947 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 32 unused Assets / (5.1 MB). Loaded Objects now: 4409.
 Memory consumption went from 0.60 GB to 0.60 GB.
-Total: 4.647900 ms (FindLiveObjects: 0.458700 ms CreateObjectMapping: 0.367200 ms MarkObjects: 2.442700 ms  DeleteObjects: 1.377500 ms)
+Total: 4.192800 ms (FindLiveObjects: 0.386900 ms CreateObjectMapping: 0.099100 ms MarkObjects: 2.567600 ms  DeleteObjects: 1.137800 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -169,19 +169,118 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 357624.587199 seconds.
-  path: Assets
-  artifactKey: Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets using Guid(00000000000000001000000000000000) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '643dbe22ecb75e7bba7c4df53f6b1cbf') in 0.008338 seconds 
+  Time since last request: 4643962.674927 seconds.
+  path: Assets/WIIU/SCENES
+  artifactKey: Guid(ee60cdaf3733f2845aa3e6b84ab6aa86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/WIIU/SCENES using Guid(ee60cdaf3733f2845aa3e6b84ab6aa86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '71b3c1ce5b4f83d989dd28bee36a9c0f') in 0.008178 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 32.755637 seconds.
+  Time since last request: 17.805036 seconds.
+  path: Assets/_Scriptable Objects/ScriptableCardMaster.cs
+  artifactKey: Guid(6911f5d660af18f4fb4d5a4c581f0eff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects/ScriptableCardMaster.cs using Guid(6911f5d660af18f4fb4d5a4c581f0eff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '86fbff4720c62a93f5ea03023d32628b') in 0.028567 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.581146 seconds.
+  path: Assets/_Scriptable Objects/ScriptablePlayer.cs
+  artifactKey: Guid(64fa4160c1d53444b862e6486c847f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects/ScriptablePlayer.cs using Guid(64fa4160c1d53444b862e6486c847f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '97b9a056e603d35e8f80bce32621dcf5') in 0.007559 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.427453 seconds.
+  path: Assets/_Scriptable Objects/ScriptableRogue.cs
+  artifactKey: Guid(9a8676db2c8fe0342b209f07adee07cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects/ScriptableRogue.cs using Guid(9a8676db2c8fe0342b209f07adee07cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8923bf56cbb10bd6847c1959b60eabf') in 0.006622 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 3.156299 seconds.
+  path: Assets/_Scriptable Objects
+  artifactKey: Guid(4bad3bd46f3ade14f929943597aa71fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects using Guid(4bad3bd46f3ade14f929943597aa71fa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc3bf53a73a91bd8b5a2ca709aa07f95') in 0.006886 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 17.943602 seconds.
+  path: Assets/_Scriptable Objects/New Card.asset
+  artifactKey: Guid(880bd82c7e243bb47a4ca43d1b910204) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects/New Card.asset using Guid(880bd82c7e243bb47a4ca43d1b910204) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'caddfc274142ffb04647e96f1c03d05b') in 0.011210 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 35.280746 seconds.
+  path: Assets/_Scriptable Objects/New Rogue.asset
+  artifactKey: Guid(71710f3784dcc6a4db1736213461b375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/_Scriptable Objects/New Rogue.asset using Guid(71710f3784dcc6a4db1736213461b375) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5680710c9c1b8612288f7181915129c3') in 0.014353 seconds 
+========================================================================
+Received Prepare
+Registering precompiled user dll's ...
+Registered in 0.005482 seconds.
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.99 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.926 seconds
+Domain Reload Profiling:
+	ReloadAssembly (927ms)
+		BeginReloadAssembly (132ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (4ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (32ms)
+		EndReloadAssembly (704ms)
+			LoadAssemblies (97ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (233ms)
+				TypeCache.Initialize (224ms)
+					TypeCache.ScanAssembly (219ms)
+				ResolveRequiredComponents (9ms)
+			ReleaseScriptCaches (1ms)
+			RebuildScriptCaches (40ms)
+			SetupLoadedEditorAssemblies (303ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (11ms)
+				SetLoadedEditorAssemblies (6ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (56ms)
+				ProcessInitializeOnLoadAttributes (195ms)
+				ProcessInitializeOnLoadMethodAttributes (25ms)
+				AfterProcessingInitializeOnLoad (9ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Refreshing native plugins compatible for Editor in 2.12 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 3912 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 25 unused Assets / (5.1 MB). Loaded Objects now: 4413.
+Memory consumption went from 0.60 GB to 0.59 GB.
+Total: 4.615100 ms (FindLiveObjects: 0.353400 ms CreateObjectMapping: 0.101300 ms MarkObjects: 2.820400 ms  DeleteObjects: 1.338400 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 611.088401 seconds.
   path: Assets/MAL-Wiiu Stay Out
   artifactKey: Guid(774b44d87334ab1418bd1f90e3a7c01b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/MAL-Wiiu Stay Out using Guid(774b44d87334ab1418bd1f90e3a7c01b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '241894767b21b9e56d557148cc2d80b2') in 0.008406 seconds 
+Start importing Assets/MAL-Wiiu Stay Out using Guid(774b44d87334ab1418bd1f90e3a7c01b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6b24251ad92502f606a51c3151cf1b0') in 0.007394 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 23.068375 seconds.
-  path: Assets/Scenes/SampleScene.unity
-  artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scenes/SampleScene.unity using Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '067ae3d4071961aa001f372246144e2b') in 0.011164 seconds 
+  Time since last request: 51.056177 seconds.
+  path: Assets/MAL-Wiiu Stay Out/6a6d1124cf69e5588588bc7e397598f6.png
+  artifactKey: Guid(32d1ef99cb87e4c429b1b0557ddd9496) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/MAL-Wiiu Stay Out/6a6d1124cf69e5588588bc7e397598f6.png using Guid(32d1ef99cb87e4c429b1b0557ddd9496) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ffc6f9535e1b8b5fd946362181b9ef5c') in 0.054223 seconds 
