@@ -1,23 +1,23 @@
 Using pre-set license
 Built from '2022.1/staging' branch; Version is '2022.1.20f1 (01d83b40d570) revision 120891'; Using compiler version '192829333'; Build Type 'Release'
-OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 32679 MB
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 130907 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
 
 COMMAND LINE ARGUMENTS:
-C:\2022.1.20f1\Editor\Unity.exe
+D:\Program Files\Unity\Hub\Editor\2022.1.20f1\Editor\Unity.exe
 -adb2
 -batchMode
 -noUpm
 -name
 AssetImportWorker0
 -projectPath
-D:/GITHUB/Mal_Prototype_Game
+X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-63051
-Successfully changed project path to: D:/GITHUB/Mal_Prototype_Game
-D:/GITHUB/Mal_Prototype_Game
+57097
+Successfully changed project path to: X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
+X:/Unity/Mal Wiiu Game/Mal_Prototype_Game
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
     "memorysetup-bucket-allocator-granularity=16"
     "memorysetup-bucket-allocator-bucket-count=8"
@@ -47,111 +47,113 @@ D:/GITHUB/Mal_Prototype_Game
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 91.21 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 100.50 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.1.20f1 (01d83b40d570)
-[Subsystems] Discovering subsystems at path C:/2022.1.20f1/Editor/Data/Resources/UnitySubsystems
-[Subsystems] Discovering subsystems at path D:/GITHUB/Mal_Prototype_Game/Assets
+[Subsystems] Discovering subsystems at path D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path X:/Unity/Mal Wiiu Game/Mal_Prototype_Game/Assets
 GfxDevice: creating device client; threaded=0; jobified=0
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c82)
+    Renderer: NVIDIA GeForce RTX 3090 (ID=0x2204)
     Vendor:   NVIDIA
-    VRAM:     4017 MB
-    Driver:   31.0.15.3623
+    VRAM:     24326 MB
+    Driver:   31.0.15.5176
 Initialize mono
-Mono path[0] = 'C:/2022.1.20f1/Editor/Data/Managed'
-Mono path[1] = 'C:/2022.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
-Mono config path = 'C:/2022.1.20f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56156
+Mono path[0] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/Managed'
+Mono path[1] = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56872
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
-Register platform support module: C:/2022.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.004927 seconds.
+Register platform support module: D:/Program Files/Unity/Hub/Editor/2022.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.003560 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 86.90 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 82.60 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.651 seconds
+- Completed reload, in  0.660 seconds
 Domain Reload Profiling:
-	ReloadAssembly (652ms)
-		BeginReloadAssembly (95ms)
+	ReloadAssembly (660ms)
+		BeginReloadAssembly (75ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (448ms)
-			LoadAssemblies (92ms)
+		EndReloadAssembly (478ms)
+			LoadAssemblies (75ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (111ms)
-				TypeCache.Initialize (110ms)
-					TypeCache.ScanAssembly (109ms)
-				ResolveRequiredComponents (0ms)
+			SetupTypeCache (112ms)
+				TypeCache.Initialize (111ms)
+					TypeCache.ScanAssembly (110ms)
+				ResolveRequiredComponents (1ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (24ms)
-			SetupLoadedEditorAssemblies (263ms)
+			RebuildScriptCaches (28ms)
+			SetupLoadedEditorAssemblies (285ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (7ms)
 				SetLoadedEditorAssemblies (7ms)
-				RefreshPlugins (87ms)
+				RefreshPlugins (83ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (122ms)
-				ProcessInitializeOnLoadMethodAttributes (39ms)
+				ProcessInitializeOnLoadAttributes (139ms)
+				ProcessInitializeOnLoadMethodAttributes (48ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.006405 seconds.
+Registered in 0.004966 seconds.
 Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 1.02 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 0.96 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.056 seconds
+- Completed reload, in  1.097 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1056ms)
-		BeginReloadAssembly (117ms)
+	ReloadAssembly (1098ms)
+		BeginReloadAssembly (121ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (5ms)
+			DisableScriptedObjects (10ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (21ms)
-		EndReloadAssembly (815ms)
-			LoadAssemblies (86ms)
+			CreateAndSetChildDomain (19ms)
+		EndReloadAssembly (858ms)
+			LoadAssemblies (85ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (245ms)
-				TypeCache.Initialize (230ms)
-					TypeCache.ScanAssembly (226ms)
-				ResolveRequiredComponents (16ms)
+			SetupTypeCache (254ms)
+				TypeCache.Initialize (246ms)
+					TypeCache.ScanAssembly (242ms)
+				ResolveRequiredComponents (8ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (69ms)
-			SetupLoadedEditorAssemblies (367ms)
+			RebuildScriptCaches (68ms)
+			SetupLoadedEditorAssemblies (395ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (6ms)
+				SetLoadedEditorAssemblies (7ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (79ms)
-				ProcessInitializeOnLoadAttributes (240ms)
-				ProcessInitializeOnLoadMethodAttributes (26ms)
-				AfterProcessingInitializeOnLoad (9ms)
+				BeforeProcessingInitializeOnLoad (75ms)
+				ProcessInitializeOnLoadAttributes (272ms)
+				ProcessInitializeOnLoadMethodAttributes (31ms)
+				AfterProcessingInitializeOnLoad (4ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
+			AwakeInstancesAfterBackupRestoration (8ms)
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
-Refreshing native plugins compatible for Editor in 1.13 ms, found 3 plugins.
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+Refreshing native plugins compatible for Editor in 0.88 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3878 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 29 unused Assets / (58.5 KB). Loaded Objects now: 4343.
-Memory consumption went from 0.58 GB to 0.58 GB.
-Total: 3.161900 ms (FindLiveObjects: 0.433200 ms CreateObjectMapping: 0.098700 ms MarkObjects: 2.528600 ms  DeleteObjects: 0.100200 ms)
+Unloading 3946 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 32 unused Assets / (5.1 MB). Loaded Objects now: 4408.
+Memory consumption went from 0.60 GB to 0.60 GB.
+Total: 3.164100 ms (FindLiveObjects: 0.200800 ms CreateObjectMapping: 0.099300 ms MarkObjects: 1.827600 ms  DeleteObjects: 1.035500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -165,94 +167,66 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 4546407.935584 seconds.
-  path: Assets/_3D Assets/card game card.fbx
-  artifactKey: Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_3D Assets/card game card.fbx using Guid(02596d206696b5242892d4a0f2727f66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '719cb40b978e1efa01794f6398bc4d03') in 0.156644 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1.168033 seconds.
-  path: Assets/_Scriptable Objects/ScriptablePlayer.cs
-  artifactKey: Guid(64fa4160c1d53444b862e6486c847f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Scriptable Objects/ScriptablePlayer.cs using Guid(64fa4160c1d53444b862e6486c847f98) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1698f5a4ca3c74340e227f4bb731e09a') in 0.013675 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.883332 seconds.
-  path: Assets/_Scriptable Objects/ScriptableRogue.cs
-  artifactKey: Guid(9a8676db2c8fe0342b209f07adee07cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/_Scriptable Objects/ScriptableRogue.cs using Guid(9a8676db2c8fe0342b209f07adee07cd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8923bf56cbb10bd6847c1959b60eabf') in 0.008692 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 72.558195 seconds.
-  path: Assets/WIIU
-  artifactKey: Guid(c8a0077273b14d940a4c69ed79d081a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/WIIU using Guid(c8a0077273b14d940a4c69ed79d081a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ab8085ecceb2e659203e43e599077ab0') in 0.007185 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 11.963656 seconds.
+  Time since last request: 356850.219863 seconds.
   path: Assets/WIIU/SCENES
   artifactKey: Guid(ee60cdaf3733f2845aa3e6b84ab6aa86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/WIIU/SCENES using Guid(ee60cdaf3733f2845aa3e6b84ab6aa86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '71b3c1ce5b4f83d989dd28bee36a9c0f') in 0.006482 seconds 
+Start importing Assets/WIIU/SCENES using Guid(ee60cdaf3733f2845aa3e6b84ab6aa86) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '14292033c0ac903f375bff60c6a5aadc') in 0.010123 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 11.172921 seconds.
-  path: Assets/WIIU/UI
-  artifactKey: Guid(df393af19cf518f4c930e0b9b7aad2d7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/WIIU/UI using Guid(df393af19cf518f4c930e0b9b7aad2d7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c3c6b149e18fd0b6614bdbea98cc59d') in 0.006856 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 16.228246 seconds.
+  Time since last request: 2.084071 seconds.
   path: Assets/WIIU/SCENES/UI_Menu_TEST.unity
   artifactKey: Guid(365319e6765731245a96543a181c5ef6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/WIIU/SCENES/UI_Menu_TEST.unity using Guid(365319e6765731245a96543a181c5ef6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0752dcabec4d3dca842e5765e80ba1a') in 0.006794 seconds 
+Start importing Assets/WIIU/SCENES/UI_Menu_TEST.unity using Guid(365319e6765731245a96543a181c5ef6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0cffa97c59cdf9077ee5838981cf7aca') in 0.007212 seconds 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.005516 seconds.
+Registered in 0.004775 seconds.
 Begin MonoManager ReloadAssembly
-Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
-Symbol file LoadedFromMemory doesn't match image D:\GITHUB\Mal_Prototype_Game\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.94 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 0.72 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.904 seconds
+- Completed reload, in  0.977 seconds
 Domain Reload Profiling:
-	ReloadAssembly (905ms)
-		BeginReloadAssembly (125ms)
+	ReloadAssembly (977ms)
+		BeginReloadAssembly (134ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (4ms)
+			DisableScriptedObjects (6ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (33ms)
-		EndReloadAssembly (687ms)
-			LoadAssemblies (86ms)
+			CreateAndSetChildDomain (29ms)
+		EndReloadAssembly (748ms)
+			LoadAssemblies (98ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (227ms)
-				TypeCache.Initialize (220ms)
-					TypeCache.ScanAssembly (214ms)
-				ResolveRequiredComponents (8ms)
+			SetupTypeCache (247ms)
+				TypeCache.Initialize (240ms)
+					TypeCache.ScanAssembly (234ms)
+				ResolveRequiredComponents (7ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (37ms)
-			SetupLoadedEditorAssemblies (298ms)
+			RebuildScriptCaches (45ms)
+			SetupLoadedEditorAssemblies (326ms)
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (11ms)
 				SetLoadedEditorAssemblies (6ms)
 				RefreshPlugins (1ms)
-				BeforeProcessingInitializeOnLoad (57ms)
-				ProcessInitializeOnLoadAttributes (189ms)
-				ProcessInitializeOnLoadMethodAttributes (24ms)
-				AfterProcessingInitializeOnLoad (9ms)
+				BeforeProcessingInitializeOnLoad (53ms)
+				ProcessInitializeOnLoadAttributes (223ms)
+				ProcessInitializeOnLoadMethodAttributes (28ms)
+				AfterProcessingInitializeOnLoad (3ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
-			AwakeInstancesAfterBackupRestoration (6ms)
+			AwakeInstancesAfterBackupRestoration (7ms)
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 2.13 ms, found 3 plugins.
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Shader 'Sprite Shaders Ultimate/3D Lit Cutout URP SSU': fallback shader 'Hidden/Shader Graph/FallbackError' not found
+Refreshing native plugins compatible for Editor in 1.81 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 3855 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 22 unused Assets / (25.6 KB). Loaded Objects now: 4390.
-Memory consumption went from 0.58 GB to 0.58 GB.
-Total: 2.904500 ms (FindLiveObjects: 0.372700 ms CreateObjectMapping: 0.087500 ms MarkObjects: 2.411000 ms  DeleteObjects: 0.032400 ms)
+Unloading 3911 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 25 unused Assets / (5.1 MB). Loaded Objects now: 4411.
+Memory consumption went from 0.60 GB to 0.59 GB.
+Total: 4.129600 ms (FindLiveObjects: 0.415300 ms CreateObjectMapping: 0.114200 ms MarkObjects: 2.200100 ms  DeleteObjects: 1.399100 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -264,259 +238,3 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
-========================================================================
-Received Import Request.
-  Time since last request: 422.384195 seconds.
-  path: Assets/Modern UI Pack/Read Me.txt
-  artifactKey: Guid(96b7ae355c0c67a40abb31b7312bba82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Modern UI Pack/Read Me.txt using Guid(96b7ae355c0c67a40abb31b7312bba82) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '630dd9924745b85a7eff64c1f2985412') in 0.019335 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 128.255393 seconds.
-  path: Assets/Modern UI Pack/Resources/Icon Library.asset
-  artifactKey: Guid(a3c211de13863c74a9fc5a7d8b700714) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Modern UI Pack/Resources/Icon Library.asset using Guid(a3c211de13863c74a9fc5a7d8b700714) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4679f7aa79ccb4f1b643f5e061068e8c') in 0.049614 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 492.677664 seconds.
-  path: Assets/TheraBytes/Resources/ResolutionMonitor.asset
-  artifactKey: Guid(2258d841097dc824ea26226d478a457f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/Resources/ResolutionMonitor.asset using Guid(2258d841097dc824ea26226d478a457f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e710a22b992feb81007fffe1faf55895') in 0.011426 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 7.597025 seconds.
-  path: Assets/TheraBytes/BetterUI/Packages
-  artifactKey: Guid(aa09c5c8d0c45b346a8e4d94ea5ec0e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Packages using Guid(aa09c5c8d0c45b346a8e4d94ea5ec0e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ac46c704909808dd6600ca25fd49a5dd') in 0.006919 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 105.984686 seconds.
-  path: Assets/TheraBytes/BetterUI/Plugins
-  artifactKey: Guid(881bf5589fc4148449dd656b0f97f493) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Plugins using Guid(881bf5589fc4148449dd656b0f97f493) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f9a474917521387b50a3527ceb50fbac') in 0.008363 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 5.231597 seconds.
-  path: Assets/TheraBytes/BetterUI/README.txt
-  artifactKey: Guid(e754d5e1d99288f4d928991d2db7c3ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/README.txt using Guid(e754d5e1d99288f4d928991d2db7c3ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ec4ec817db9e48f5d71c4ee1566d1f13') in 0.008123 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 66.098751 seconds.
-  path: Assets/Archimatix/ui
-  artifactKey: Guid(6a531729300534b3eb6d88960a395040) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/ui using Guid(6a531729300534b3eb6d88960a395040) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6b78f5ac3b11fa69ef86ed21a0a1467') in 0.007779 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 114.030923 seconds.
-  path: Assets/TheraBytes/BetterUI
-  artifactKey: Guid(627a8e37cf8b85b468fb9477d79930ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI using Guid(627a8e37cf8b85b468fb9477d79930ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e5ad8545f418e68d20445a8a4dbccee3') in 0.007936 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 2.453180 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor
-  artifactKey: Guid(f79cef0505fe2e247905fa46aacf2352) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor using Guid(f79cef0505fe2e247905fa46aacf2352) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5c7e80a6bb139f9928ea0427fbceb5d0') in 0.007746 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.686510 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons
-  artifactKey: Guid(9ec5f183c62fcf3469564ff4ee400446) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons using Guid(9ec5f183c62fcf3469564ff4ee400446) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e5e2195959b27700ff85a96ee4f882c8') in 0.006412 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.100971 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/anchor_override_icon.png
-  artifactKey: Guid(1bd09dd33eaef464095fd8b93f5fc2aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/anchor_override_icon.png using Guid(1bd09dd33eaef464095fd8b93f5fc2aa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91c5650e3b2a4e4eb4244465e33d4263') in 0.043271 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Image Icon.png
-  artifactKey: Guid(a179d0cc5e962a043bf7055d33a36831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Image Icon.png using Guid(a179d0cc5e962a043bf7055d33a36831) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7c1e30bcf754ad159f5c00afd7266307') in 0.012343 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/override_screen_properites_icon.png
-  artifactKey: Guid(0d2ce9f323475ba41a8de776c4020303) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/override_screen_properites_icon.png using Guid(0d2ce9f323475ba41a8de776c4020303) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b5226abf35df5c6eb389be28b5106f9a') in 0.013681 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/content_size_fitter_icon.png
-  artifactKey: Guid(2a7b4fa8de202654dbd0144e296a505d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/content_size_fitter_icon.png using Guid(2a7b4fa8de202654dbd0144e296a505d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a018fd0ea411d4e93fc7f32e1df5b40') in 0.013697 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Button Icon.png
-  artifactKey: Guid(23acf9b70804542468bd846b1c62d7b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Button Icon.png using Guid(23acf9b70804542468bd846b1c62d7b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff02065eb9790c1a78ef6f6566eaf7d9') in 0.011839 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000028 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Dropdown Icon.png
-  artifactKey: Guid(dc362baa7b23a294e8121b4f348be31e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Dropdown Icon.png using Guid(dc362baa7b23a294e8121b4f348be31e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8d632ed4916db151aa964e3d033388b0') in 0.013055 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/InputField Icon.png
-  artifactKey: Guid(426524914a5ce0a4fa8c6474fab09d6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/InputField Icon.png using Guid(426524914a5ce0a4fa8c6474fab09d6f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6b569094a1bf3a398aa058cb60d34cb5') in 0.012332 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/size_change_tracker_icon.png
-  artifactKey: Guid(f0425eaddc4818a43b9e983a993327f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/size_change_tracker_icon.png using Guid(f0425eaddc4818a43b9e983a993327f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '984b90be57f53c53fe8222fd972b65c1') in 0.013527 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/prefab_normal_icon_black.png
-  artifactKey: Guid(33eda89970071c049981741e0760f22d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/prefab_normal_icon_black.png using Guid(33eda89970071c049981741e0760f22d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd00868bff0fc4a31ca8c6fa8bdb2421c') in 0.013155 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Scrollbar Icon.png
-  artifactKey: Guid(7e978a981d999ed46ba43e1dc3b8d4e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Scrollbar Icon.png using Guid(7e978a981d999ed46ba43e1dc3b8d4e6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6b9b876a8d7fcc8e0c16072e8058d690') in 0.012813 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000026 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/RawImage Icon.png
-  artifactKey: Guid(d4e1cec49f2f9204cad37a802921be68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/RawImage Icon.png using Guid(d4e1cec49f2f9204cad37a802921be68) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '957a85f22dad71749a4ab6718edbde7e') in 0.012673 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000025 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/interaction_area_icon.png
-  artifactKey: Guid(1417391e3445b7646ae0bf82f83ba1cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/interaction_area_icon.png using Guid(1417391e3445b7646ae0bf82f83ba1cc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '165001921e1b0f45bfa4a318cfec09d9') in 0.013270 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/location_animations_icon.png
-  artifactKey: Guid(e5eeee01c13a0904c8c9bd13eb907d5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/location_animations_icon.png using Guid(e5eeee01c13a0904c8c9bd13eb907d5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bfe3d0aa7ce6f6441fdbc059109d5b44') in 0.014021 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 1.045864 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources
-  artifactKey: Guid(279740ffccf7f1e46b6373ff9036b5fc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources using Guid(279740ffccf7f1e46b6373ff9036b5fc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ea14960470d740daa1d5ef3fd313a0f3') in 0.007341 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.042596 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_bottom.png
-  artifactKey: Guid(7891085dff8f28542a18ac39adc39dce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_bottom.png using Guid(7891085dff8f28542a18ac39adc39dce) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b87ffc845c51954a5c489974b2f9cc7') in 0.013334 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_middle.png
-  artifactKey: Guid(11784201599e4a94e90f5ab8368f4ec6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_middle.png using Guid(11784201599e4a94e90f5ab8368f4ec6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9649c491134f6f8ea34a3adb5992688c') in 0.011270 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/distribute_horizontally.png
-  artifactKey: Guid(fcaedb1a65f96d24c8063fc544bdeb93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/distribute_horizontally.png using Guid(fcaedb1a65f96d24c8063fc544bdeb93) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19d258aea3922d20ce24e91183cd8653') in 0.011682 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_horizontal_point.png
-  artifactKey: Guid(a72ad53793caf8841944efe0382afde0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_horizontal_point.png using Guid(a72ad53793caf8841944efe0382afde0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fcdb934752bd818a0bc2c2627bae86ca') in 0.012835 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_to_childs_all.png
-  artifactKey: Guid(02c9fdd2a087b7b41a21fcfeced7ac51) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_to_childs_all.png using Guid(02c9fdd2a087b7b41a21fcfeced7ac51) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '90af932539839df37cd1d82636de75f7') in 0.013546 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_top.png
-  artifactKey: Guid(61812105362df424b8ed297cb1d46008) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/allign_top.png using Guid(61812105362df424b8ed297cb1d46008) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9406acc5b0873c10d4c52acca909420b') in 0.015153 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000019 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_horizontal_edges.png
-  artifactKey: Guid(0ae8478f833cf4745ba6661a752ac683) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_horizontal_edges.png using Guid(0ae8478f833cf4745ba6661a752ac683) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fb13d3acdc1ed5fe03ca3223d2fead90') in 0.014038 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000020 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/distribute_vertically.png
-  artifactKey: Guid(43d06936d0bef9a4ebcf22266070ae79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/distribute_vertically.png using Guid(43d06936d0bef9a4ebcf22266070ae79) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '28705570039fe827caf719d9a853a48a') in 0.015756 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000030 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_to_childs_h.png
-  artifactKey: Guid(c1cef49bc7d864f4e9c45c7f5f629ad2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_to_childs_h.png using Guid(c1cef49bc7d864f4e9c45c7f5f629ad2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '614349b4892bd7bcdee69a940fa5057f') in 0.012339 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_vertical_edges.png
-  artifactKey: Guid(4c5fb0d4d54d1914da15bd0ab78811bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/TheraBytes/BetterUI/Editor/Icons/Resources/snap_vertical_edges.png using Guid(4c5fb0d4d54d1914da15bd0ab78811bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fa9b9fa8090b3df87e17b02dcc11be3') in 0.014212 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 9.702786 seconds.
-  path: Assets/Archimatix/Textures/AX_MainStreetPavingBump.psd
-  artifactKey: Guid(8ead42656a0d8408eb49290f7f39dfcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MainStreetPavingBump.psd using Guid(8ead42656a0d8408eb49290f7f39dfcf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c4bb922dbc81938c9b269ffc3930ad01') in 0.026125 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000017 seconds.
-  path: Assets/Archimatix/Textures/AX_Travertine.png
-  artifactKey: Guid(72caeb3a6069e46fabb19fa92e466a28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_Travertine.png using Guid(72caeb3a6069e46fabb19fa92e466a28) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4d4f785895c62413ec8be4ceb7457ae8') in 0.016871 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000024 seconds.
-  path: Assets/Archimatix/Textures/AX_MedievalWallStoneNormal.png
-  artifactKey: Guid(4c33fae9c410b4b84b3ed54137d7d095) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MedievalWallStoneNormal.png using Guid(4c33fae9c410b4b84b3ed54137d7d095) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9566e4136e339a3d42bd6995aec77bde') in 0.017802 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000027 seconds.
-  path: Assets/Archimatix/Textures/AX_TravertinesNormal.png
-  artifactKey: Guid(816d5876ad6b044a28accb3d8aa2d190) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_TravertinesNormal.png using Guid(816d5876ad6b044a28accb3d8aa2d190) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c751e120f08888b3dd54edca07c3d289') in 0.052029 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000029 seconds.
-  path: Assets/Archimatix/Textures/AX_MedievalWallStone.png
-  artifactKey: Guid(07dd4864c25d84dc2b005d7f9c0e1eff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MedievalWallStone.png using Guid(07dd4864c25d84dc2b005d7f9c0e1eff) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '888c42ee5494aaf12381b13fd68599a1') in 0.014795 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/Archimatix/Textures/AX_MedievalWallStoneOcclusion.png
-  artifactKey: Guid(250e3d08cdbfc484182b8eadf43c3492) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MedievalWallStoneOcclusion.png using Guid(250e3d08cdbfc484182b8eadf43c3492) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b17d560398fcbe6453f06b758594509') in 0.018505 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000032 seconds.
-  path: Assets/Archimatix/Textures/AX_MedievalWallStuccoNormal.png
-  artifactKey: Guid(c1af85af71f7945f8bc1aee4b908c1f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MedievalWallStuccoNormal.png using Guid(c1af85af71f7945f8bc1aee4b908c1f6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '82fc3de206f5d4904e82887692d3315a') in 0.017970 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000022 seconds.
-  path: Assets/Archimatix/Textures/AX_MedievalWallStucco.png
-  artifactKey: Guid(c34834b0f9b714d8eafaf59c9532477a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Archimatix/Textures/AX_MedievalWallStucco.png using Guid(c34834b0f9b714d8eafaf59c9532477a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2b31720ed8c6fc8fc85640738cd93a53') in 0.015990 seconds 
-Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
-AssetImportWorker is now disconnected from the server
-Process exiting
-Exiting without the bug reporter. Application will terminate with return code 0
