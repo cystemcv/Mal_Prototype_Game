@@ -6,7 +6,7 @@ public abstract class ScriptablePlayer : ScriptableObject
     public string playerName;
     //Character Name
 
-    public enum mainClass { Fighter, Rogue, Cleric, Mage, Ranger }; //Actual classes to be determined
+    public enum mainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger }; //Actual classes to be determined
     //Player's primary class
 
     public int Subclass = 0;
