@@ -104,16 +104,29 @@ public class UIManager : MonoBehaviour
 
         //DISPLAY TAB
         DisplayTabController.Instance.selectScreenMode.ChangeDropdownInfo(0); ///fullscreen
-        DisplayTabController.Instance.SelectScreenMode();
+        DisplayTabController.Instance.SelectScreenMode(false);
         DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(1); //1920x1080
-        DisplayTabController.Instance.SelectScreenResolution(); 
+        DisplayTabController.Instance.SelectScreenResolution(false); 
     }
 
     public void SaveSettings()
     {
 
+        
+
         //save all the user settings
         PlayerPrefs.SetInt("user_save_settings", 1);
+
+        //GRAPHICS TAB
+        if (GraphicsTabController.Instance.changeQualitySettings == true)
+        {
+            Debug.Log("changed");
+            GraphicsTabController.Instance.checkQualitySettingIndexNow = int.Parse(GraphicsTabController.Instance.selectQualityOption.selectedText.text.Split(":")[0].Trim());
+
+            //then change the graphics
+            QualitySettings.SetQualityLevel(GraphicsTabController.Instance.checkQualitySettingIndexNow, true);
+            PlayerPrefs.SetInt("graphics_quality_option", GraphicsTabController.Instance.checkQualitySettingIndexNow);
+        }
 
         //AUDIO TAB
         PlayerPrefs.SetFloat("audio_music_volume", AudioTabController.Instance.musicSlider.mainSlider.value);
@@ -136,7 +149,9 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-
+        //GRAPHICS TAB
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("graphics_quality_option"), true);
+        GraphicsTabController.Instance.selectQualityOption.ChangeDropdownInfo(GraphicsTabController.Instance.selectQualityOption.items.FindIndex(item => item.itemName.Split(":")[0].Trim() == PlayerPrefs.GetInt("graphics_quality_option").ToString()));
 
         //AUDIO TAB
         AudioTabController.Instance.musicSlider.mainSlider.value = PlayerPrefs.GetFloat("audio_music_volume");
@@ -146,9 +161,9 @@ public class UIManager : MonoBehaviour
 
         //DISPLAY TAB
         DisplayTabController.Instance.selectScreenMode.ChangeDropdownInfo(PlayerPrefs.GetInt("display_sreen_mode")); ///fullscreen
-        DisplayTabController.Instance.SelectScreenMode();
+        DisplayTabController.Instance.SelectScreenMode(false);
         DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(PlayerPrefs.GetInt("display_sreen_resolution")); //1920x1080
-        DisplayTabController.Instance.SelectScreenResolution();
+        DisplayTabController.Instance.SelectScreenResolution(false);
 
     }
 

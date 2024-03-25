@@ -27,9 +27,12 @@ public class DisplayTabController : MonoBehaviour
     }
 
 
-    public void SelectScreenResolution()
+    public void SelectScreenResolution(bool playSound = true)
     {
-        AudioManager.Instance.PlaySfx("UI_Confirm");
+        if (playSound)
+        {
+            AudioManager.Instance.PlaySfx("UI_Confirm");
+        }
 
         string[] split = selectScreenResolution.selectedText.text.Split("-");
         string resolution = split[1].Trim();
@@ -42,10 +45,13 @@ public class DisplayTabController : MonoBehaviour
         Debug.Log("screen resolution");
     }
 
-    public void SelectScreenMode()
+    public void SelectScreenMode(bool playSound = true)
     {
-
-        AudioManager.Instance.PlaySfx("UI_Confirm");
+        if (playSound)
+        {
+            AudioManager.Instance.PlaySfx("UI_Confirm");
+        }
+    
 
         if (selectScreenMode.selectedText.text == "Full Screen Window")
         {
