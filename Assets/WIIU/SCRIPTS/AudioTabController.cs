@@ -13,6 +13,7 @@ public class AudioTabController : MonoBehaviour
 
     private void Awake()
     {
+       
         if (Instance == null)
         {
             Instance = this;

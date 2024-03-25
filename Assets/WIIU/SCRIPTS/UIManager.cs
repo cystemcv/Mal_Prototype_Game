@@ -31,7 +31,6 @@ public class UIManager : MonoBehaviour
     void Start()
     {
 
-        Debug.Log("test : " + PlayerPrefs.GetInt("user_save_settings"));
 
         //check if there is a saved user setting
         if (PlayerPrefs.GetInt("user_save_settings") == 1)
@@ -97,14 +96,17 @@ public class UIManager : MonoBehaviour
         //all the initial default settings here
         PlayerPrefs.SetInt("user_save_settings", 0);
 
-
-        Debug.Log("DEFAULT : " + AudioTabController.Instance.musicSlider.mainSlider.value);
-
         //AUDIO TAB
         AudioTabController.Instance.musicSlider.mainSlider.value = 0.5f;
         AudioManager.Instance.MusicVolume(0.5f);
         AudioTabController.Instance.sfxSlider.mainSlider.value = 0.5f;
         AudioManager.Instance.SFXVolume(0.5f);
+
+        //DISPLAY TAB
+        DisplayTabController.Instance.selectScreenMode.ChangeDropdownInfo(0); ///fullscreen
+        DisplayTabController.Instance.SelectScreenMode();
+        DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(1); //1920x1080
+        DisplayTabController.Instance.SelectScreenResolution(); 
     }
 
     public void SaveSettings()
@@ -113,26 +115,41 @@ public class UIManager : MonoBehaviour
         //save all the user settings
         PlayerPrefs.SetInt("user_save_settings", 1);
 
-        Debug.Log("SAVE : " + AudioTabController.Instance.musicSlider.mainSlider.value);
-
         //AUDIO TAB
-        AudioTabController.Instance.musicSlider.mainSlider.value = AudioTabController.Instance.musicSlider.mainSlider.value;
         PlayerPrefs.SetFloat("audio_music_volume", AudioTabController.Instance.musicSlider.mainSlider.value);
-        AudioTabController.Instance.sfxSlider.mainSlider.value = AudioTabController.Instance.sfxSlider.mainSlider.value;
         PlayerPrefs.SetFloat("audio_sfx_volume", AudioTabController.Instance.sfxSlider.mainSlider.value);
 
-   
+        //DISPLAY TAB
+        PlayerPrefs.SetInt("display_sreen_mode", DisplayTabController.Instance.selectScreenMode.index);
+        PlayerPrefs.SetInt("display_sreen_resolution", DisplayTabController.Instance.selectScreenResolution.index);
+
+
     }
 
     public void LoadSettings()
     {
         //load all the user settings
+        if (PlayerPrefs.GetInt("user_save_settings") == 0)
+        {
+            DefaultSettings();
+            Debug.Log("No user save settings found but tried to load");
+            return;
+        }
+
+
 
         //AUDIO TAB
         AudioTabController.Instance.musicSlider.mainSlider.value = PlayerPrefs.GetFloat("audio_music_volume");
         AudioManager.Instance.MusicVolume(PlayerPrefs.GetFloat("audio_music_volume"));
         AudioTabController.Instance.sfxSlider.mainSlider.value = PlayerPrefs.GetFloat("audio_sfx_volume");
         AudioManager.Instance.SFXVolume(PlayerPrefs.GetFloat("audio_sfx_volume"));
+
+        //DISPLAY TAB
+        DisplayTabController.Instance.selectScreenMode.ChangeDropdownInfo(PlayerPrefs.GetInt("display_sreen_mode")); ///fullscreen
+        DisplayTabController.Instance.SelectScreenMode();
+        DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(PlayerPrefs.GetInt("display_sreen_resolution")); //1920x1080
+        DisplayTabController.Instance.SelectScreenResolution();
+
     }
 
 
@@ -194,6 +211,11 @@ public class UIManager : MonoBehaviour
         modalWindowManager.Close(); // Close window
         SaveSettings();
         MainMenuBack("MAIN MENU");
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
 }
