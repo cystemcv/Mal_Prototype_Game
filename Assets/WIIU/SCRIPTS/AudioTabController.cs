@@ -6,8 +6,23 @@ using UnityEngine.UI;
 
 public class AudioTabController : MonoBehaviour
 {
+    public static AudioTabController Instance;
+
     public SliderManager musicSlider;
     public SliderManager sfxSlider;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void MusicVolume()
     {

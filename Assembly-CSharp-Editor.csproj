@@ -502,20 +502,26 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>Assets\ModularMotion\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.SharpZipLib">
+      <HintPath>Library\PackageCache\com.unity.sharp-zip-lib@1.3.4-preview\Runtime\Unity.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.YamlDotNet">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.TextureAssets">
-      <HintPath>Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
-    </Reference>
     <Reference Include="ModularMotion">
       <HintPath>Assets\ModularMotion\ModularMotion.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.IonicZip">
       <HintPath>Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.TextureAssets">
+      <HintPath>Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\EditorAssetResources\Unity.VisualScripting.TextureAssets.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>Assets\AssetInventory\Editor\ThirdParty\SQLite\Plugins\managed\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="log4netPlastic">
       <HintPath>Library\PackageCache\com.unity.collab-proxy@1.17.2\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
@@ -531,12 +537,6 @@
     </Reference>
     <Reference Include="ModularEditor">
       <HintPath>Assets\ModularMotion\ModularEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.SharpZipLib">
-      <HintPath>Library\PackageCache\com.unity.sharp-zip-lib@1.3.4-preview\Runtime\Unity.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SQLite">
-      <HintPath>Assets\AssetInventory\Editor\ThirdParty\SQLite\Plugins\managed\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
@@ -946,6 +946,9 @@
     <Reference Include="Unity.VisualScripting.State.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.SharpZipLib.Utils">
+      <HintPath>Library\ScriptAssemblies\Unity.SharpZipLib.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>
     </Reference>
@@ -970,6 +973,9 @@
     <Reference Include="Unity.VisualScripting.Core">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.EditorCoroutines.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Services.Core.Analytics">
       <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
     </Reference>
@@ -982,23 +988,21 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.VisualScripting.State">
-      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.SharpZipLib.Utils">
-      <HintPath>Library\ScriptAssemblies\Unity.SharpZipLib.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.EditorCoroutines.Editor">
-      <HintPath>Library\ScriptAssemblies\Unity.EditorCoroutines.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.SharpZipLib.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.SharpZipLib.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VisualScripting.State">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{FF937142-7027-7205-9177-D9FCB4E3205D}</Project>
       <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="AssetInventory.Editor.csproj">
+      <Project>{1E1C81B2-641E-6D34-DC31-729EF39FFED1}</Project>
+      <Name>AssetInventory.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="AllIn1SpriteShaderAssembly.csproj">
       <Project>{C547F914-966A-7D69-43F5-B6055F4CB0DF}</Project>
@@ -1007,10 +1011,6 @@
     <ProjectReference Include="JD.EditorAudioUtils.Editor.csproj">
       <Project>{7382EA69-05C7-69C0-2988-018D5729D7B9}</Project>
       <Name>JD.EditorAudioUtils.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="AssetInventory.Editor.csproj">
-      <Project>{1E1C81B2-641E-6D34-DC31-729EF39FFED1}</Project>
-      <Name>AssetInventory.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="CodeStage.Package2Folder.csproj">
       <Project>{6F03E681-C912-F45D-32FF-5F7633508167}</Project>

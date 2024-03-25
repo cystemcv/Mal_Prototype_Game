@@ -179,6 +179,7 @@ namespace Michsky.MUIP
                 currentWindowIndex = newWindowIndex;
                 nextWindow = windows[currentWindowIndex].windowObject;
                 nextWindow.SetActive(true);
+                AudioManager.Instance.PlaySfx("UI_goNext");
 
                 currentWindowAnimator = currentWindow.GetComponent<Animator>();
                 nextWindowAnimator = nextWindow.GetComponent<Animator>();
