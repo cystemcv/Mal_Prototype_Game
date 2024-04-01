@@ -25,11 +25,13 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        PlayMusic("UI_MainMenu");
     }
 
     public void Start()
     {
-        PlayMusic("UI_MainMenu");
+
     }
 
     public void PlayMusic(string name)

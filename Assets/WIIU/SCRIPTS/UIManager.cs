@@ -2,6 +2,8 @@ using Michsky.MUIP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,12 +12,54 @@ public class UIManager : MonoBehaviour
     //main gameobjects of the UI
     public List<GameObject> list_goMenuItem;
 
+    //main menu buttons
+    public GameObject btnNewGame;
+    public GameObject btnContinue;
+    public GameObject btnLoad;
+    public GameObject btnOptions;
+    public GameObject btnClose;
+    public GameObject btnMainMenu;
+    public GameObject btnExit;
+
+    //maintext
+    public GameObject txtMainMenu;
+
+    //background
+    public Image uiAnimatedBg;
+
+
     //modal stuff
     [SerializeField] private ModalWindowManager modalWindowManager;
     [SerializeField] private Sprite modalIcon;
 
+    public enum UIModes
+    {
+        DISABLED,
+        MAINMENU,
+        GAMEPLAY
+    }
+
+    public UIModes uiCurrentMode = UIModes.MAINMENU;
+
+    public delegate void OnCurrentModeChange();
+    public event OnCurrentModeChange onCurrentModeChange;
+
+    //this variable has event so we use getter and setter
+    public UIModes UICurrentMode
+    {
+        get { return uiCurrentMode; }
+        set
+        {
+            if (uiCurrentMode == value) return;
+            uiCurrentMode = value;
+            if (onCurrentModeChange != null)
+                onCurrentModeChange();
+        }
+    }
+
     private void Awake()
     {
+        
         if (Instance == null)
         {
             Instance = this;
@@ -25,6 +69,19 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        InitializeMainMenu();
+    }
+
+    //subscribe events
+    private void OnEnable()
+    {
+        onCurrentModeChange += UIModeChangeDetectEvent;
+    }
+
+    private void OnDisable()
+    {
+        onCurrentModeChange -= UIModeChangeDetectEvent;
     }
 
     // Start is called before the first frame update
@@ -52,6 +109,48 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void UIModeChangeDetectEvent()
+    {
+
+        if (UICurrentMode == UIModes.MAINMENU)
+        {
+            InitializeMainMenu();
+        }
+        else if (UICurrentMode == UIModes.GAMEPLAY)
+        {
+            btnNewGame.SetActive(false);
+            btnContinue.SetActive(false);
+            btnLoad.SetActive(true);
+            btnOptions.SetActive(true);
+            btnClose.SetActive(true);
+            btnMainMenu.SetActive(true);
+            btnExit.SetActive(true);
+
+            uiAnimatedBg.color = new Color32(90,10,0,255);
+            txtMainMenu.SetActive(false);
+        }
+        else
+        {
+            InitializeMainMenu();
+        }
+
+    }
+
+    public void InitializeMainMenu()
+    {
+        btnNewGame.SetActive(true);
+        btnContinue.SetActive(true);
+        btnLoad.SetActive(true);
+        btnOptions.SetActive(true);
+        btnClose.SetActive(false);
+        btnMainMenu.SetActive(false);
+        btnExit.SetActive(true);
+
+        uiAnimatedBg.color = new Color32(0, 95, 166, 255);
+        txtMainMenu.SetActive(true);
+    }
+
+
     public void MakeAllMenuInactive()
     {
         foreach (GameObject goMenuItem in list_goMenuItem)
@@ -66,6 +165,8 @@ public class UIManager : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
+        SaveLoad.Instance.CurrentMode = SaveLoad.saveLoadMode.SAVE;
+
         //open the correct menu
         NavigateMenu(menuName);
     }
@@ -79,7 +180,7 @@ public class UIManager : MonoBehaviour
         NavigateMenu(menuName);
     }
 
-    private void NavigateMenu(string menuName)
+    public void NavigateMenu(string menuName)
     {
 
         //make everything inactive
@@ -226,6 +327,51 @@ public class UIManager : MonoBehaviour
         modalWindowManager.Close(); // Close window
         SaveSettings();
         MainMenuBack("MAIN MENU");
+    }
+
+    public void GoToScene(string sceneName)
+    {
+        AudioManager.Instance.PlaySfx("UI_Confirm");
+        AudioManager.Instance.PlayMusic("Gameplay_1");
+
+        //change UI to gameplay
+        UIManager.Instance.UICurrentMode = UIManager.UIModes.GAMEPLAY;
+
+        //make UI inactive
+        SystemManager.Instance.EnableDisable_UIManager(false);
+
+        //load scene
+        SceneManager.LoadScene(sceneName);
+
+
+    }
+
+    public void GoToMainMenu()
+    {
+        OpenModal("BACK TO MAIN MENU", "Are you sure you want to go back to Main Menu? (Any unsaved changes will be lost!)", GoToMainMenuConfirm);
+    }
+
+    public void GoToMainMenuConfirm()
+    {
+        AudioManager.Instance.PlaySfx("UI_Confirm");
+        AudioManager.Instance.PlayMusic("UI_MainMenu");
+        modalWindowManager.Close(); // Close window
+
+        //change UI to gameplay
+        UIManager.Instance.UICurrentMode = UIManager.UIModes.MAINMENU;
+
+        //make UI inactive
+        SystemManager.Instance.EnableDisable_UIManager(true);
+
+        //load scene
+        SceneManager.LoadScene("scene_MainMenu");
+    }
+
+    public void CloseUIWindow()
+    {
+        AudioManager.Instance.PlaySfx("UI_goBack");
+
+        SystemManager.Instance.EnableDisable_UIManager(false);
     }
 
     public void ExitGame()
