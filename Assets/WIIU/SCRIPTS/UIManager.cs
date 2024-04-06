@@ -126,7 +126,7 @@ public class UIManager : MonoBehaviour
             btnMainMenu.SetActive(true);
             btnExit.SetActive(true);
 
-            uiAnimatedBg.color = new Color32(90,10,0,255);
+            //uiAnimatedBg.color = new Color32(90,10,0,255);
             txtMainMenu.SetActive(false);
         }
         else
@@ -146,7 +146,7 @@ public class UIManager : MonoBehaviour
         btnMainMenu.SetActive(false);
         btnExit.SetActive(true);
 
-        uiAnimatedBg.color = new Color32(0, 95, 166, 255);
+        //uiAnimatedBg.color = new Color32(0, 95, 166, 255);
         txtMainMenu.SetActive(true);
     }
 
