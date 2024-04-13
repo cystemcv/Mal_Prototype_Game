@@ -85,6 +85,7 @@
     <Compile Include="Assets\WIIU\SCRIPTS\Managers\SoundSO.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuManagerEditor.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Managers\FileDataHandler.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowManagerButton.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Modal Window\ModalWindowManager.cs" />
     <Compile Include="Assets\WIIU\SCRIPTS\UIScripts\GraphicsTabController.cs" />
@@ -94,7 +95,7 @@
     <Compile Include="Assets\WIIU\SCRIPTS\Managers\ReferenceManagers.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListViewItem.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Managers\SaveLoad.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Managers\UISaveLoad.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuContent.cs" />
     <Compile Include="Assets\_Scriptable Objects\ScriptableRogue.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\SliderManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Layout Group\RadialLayoutGroupEditor.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Managers\DataPersistenceManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Charts\PieChartEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RangeMaxSlider.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Tooltip\TooltipManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\IconManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Rendering\UIGradient.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\TEST\TestScript.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerModalWindow.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\AnimatedIconHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
@@ -178,6 +181,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Horizontal Selector\HorizontalSelectorEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSwitch.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerScrollbar.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Managers\GameData.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Switch\SwitchManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Toggle\CustomToggle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
@@ -188,14 +192,11 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerProgressBar.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Switch\SwitchManagerEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RadialSlider.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Managers\IDataPersistence.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowDragger.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Managers\GameData.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Managers\DataPersistenceManager.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Managers\IDataPersistence.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\TEST\TestScript.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Managers\FileDataHandler.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\GameObjectID.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

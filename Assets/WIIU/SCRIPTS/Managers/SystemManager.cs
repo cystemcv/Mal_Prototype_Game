@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SystemManager : MonoBehaviour
+public class SystemManager : MonoBehaviour, IDataPersistence
 {
     public static SystemManager Instance;
 
     public GameObject uiManager;
     public GameObject audioManager;
+    public GameObject dataPersistenceManager;
+
+    //system variables
+    public float totalTimePlayed = 0f;
 
     public enum SystemModes {
     
@@ -28,6 +33,33 @@ public class SystemManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    // called first
+    void OnEnable()
+    {
+        Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        Debug.Log(mode);
+
+        if (DataPersistenceManager.Instance.isLoadScene)
+        {
+            DataPersistenceManager.Instance.LoadGame(DataPersistenceManager.Instance.savefileID);
+        }
+
+    }
+
+    // called when the game is terminated
+    void OnDisable()
+    {
+        Debug.Log("OnDisable");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void EnableDisable_UIManager(bool enable)
@@ -55,5 +87,44 @@ public class SystemManager : MonoBehaviour
         {
             audioManager.SetActive(false);
         }
+    }
+
+    public float GetTotalPlayTime()
+    {
+        return totalTimePlayed;
+    }
+
+    public void Update()
+    {
+        this.totalTimePlayed += Time.deltaTime;
+
+    }
+
+    public void LoadData(GameData data)
+    {
+        this.totalTimePlayed = data.totalTimePlayed; 
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        Debug.Log("time : " + data.totalTimePlayed.ToString());
+        data.totalTimePlayed = this.totalTimePlayed;
+    }
+
+    public string ConvertTimeToReadable(float totalTime)
+    {
+        // Convert totalTime to hours, minutes, and seconds
+        int hours = (int)(totalTime / 3600);
+        int minutes = (int)((totalTime % 3600) / 60);
+        int seconds = (int)(totalTime % 60);
+
+        string readableTime = hours.ToString("00") + ":" + minutes.ToString("00") + ":" + seconds.ToString("00");
+
+        return readableTime;
+    }
+
+    public void RuntimeInitializeOnLoadMethod()
+    {
+        Debug.Log("CHANGING SCENES");
     }
 }

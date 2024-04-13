@@ -42,12 +42,12 @@ public class TestScript : MonoBehaviour, IDataPersistence
 
     public void SaveGameTest()
     {
-        DataPersistenceManager.Instance.SaveGame();
+        //DataPersistenceManager.Instance.SaveGame();
     }
 
     public void LoadGameTest()
     {
-        DataPersistenceManager.Instance.LoadGame();
+        //DataPersistenceManager.Instance.LoadGame();
     }
 
 }

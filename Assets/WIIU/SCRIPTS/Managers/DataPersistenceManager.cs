@@ -7,13 +7,17 @@ public class DataPersistenceManager : MonoBehaviour
 {
 
     [Header("File Paths")]
-    [SerializeField] private string fileName;
-
+    [SerializeField] public string fileName;
+    [SerializeField] public string fileType;
 
     public static DataPersistenceManager Instance;
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
+
+
+    public string savefileID = "";
+    public bool isLoadScene = false;
 
     private void Awake()
     {
@@ -36,10 +40,10 @@ public class DataPersistenceManager : MonoBehaviour
         this.gameData = new GameData();
     }
 
-    public void LoadGame()
+    public void LoadGame(string objectID)
     {
         //read from file
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName);
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName + "_" + objectID + "." + this.fileType);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
         //get from file
@@ -58,9 +62,10 @@ public class DataPersistenceManager : MonoBehaviour
         }
     }
 
-    public void SaveGame()
+    public void SaveGame(string objectID)
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName);
+        
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName + "_" + objectID + "." + this.fileType);
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
 
         foreach (IDataPersistence dataPersistenceObject in this.dataPersistenceObjects)

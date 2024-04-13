@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     //main menu buttons
     public GameObject btnNewGame;
     public GameObject btnContinue;
+    public GameObject btnSave;
     public GameObject btnLoad;
     public GameObject btnOptions;
     public GameObject btnClose;
@@ -120,6 +121,7 @@ public class UIManager : MonoBehaviour
         {
             btnNewGame.SetActive(false);
             btnContinue.SetActive(false);
+            btnSave.SetActive(true);
             btnLoad.SetActive(true);
             btnOptions.SetActive(true);
             btnClose.SetActive(true);
@@ -140,6 +142,7 @@ public class UIManager : MonoBehaviour
     {
         btnNewGame.SetActive(true);
         btnContinue.SetActive(true);
+        btnSave.SetActive(false);
         btnLoad.SetActive(true);
         btnOptions.SetActive(true);
         btnClose.SetActive(false);
@@ -165,7 +168,7 @@ public class UIManager : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
-        SaveLoad.Instance.CurrentMode = SaveLoad.saveLoadMode.SAVE;
+        //UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.SAVE;
 
         //open the correct menu
         NavigateMenu(menuName);
@@ -377,6 +380,30 @@ public class UIManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void UIOpenSaveMenu()
+    {
+
+        //play audio
+        AudioManager.Instance.PlaySfx("UI_goNext");
+
+        UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.SAVE;
+
+        //open the correct menu
+        NavigateMenu("SAVELOAD MENU");
+    }
+
+    public void UIOpenLoadMenu()
+    {
+
+        //play audio
+        AudioManager.Instance.PlaySfx("UI_goNext");
+
+        UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.LOAD;
+
+        //open the correct menu
+        NavigateMenu("SAVELOAD MENU");
     }
 
 }
