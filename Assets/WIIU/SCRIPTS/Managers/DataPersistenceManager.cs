@@ -77,6 +77,13 @@ public class DataPersistenceManager : MonoBehaviour
         this.dataHandler.Save(gameData);
     }
 
+    public void DeleteSaveFile(string objectID)
+    {
+        this.dataHandler = new FileDataHandler(Application.persistentDataPath, this.fileName + "_" + objectID + "." + this.fileType);
+
+        this.dataHandler.DeleteFile();
+    }
+
     public List<IDataPersistence> FindAllDataPersistenceObjects()
     {
         //find all the objects that implement the interface

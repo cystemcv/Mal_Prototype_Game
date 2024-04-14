@@ -33,4 +33,12 @@ public class GameObjectID: MonoBehaviour
       
         }
     }
+
+    public void DeleteSaveFileClick()
+    {
+ 
+            GameObjectID gameObjectID = this.gameObject.GetComponent<GameObjectID>();
+            DataPersistenceManager.Instance.DeleteSaveFile(gameObjectID.objectID);
+            UISaveLoad.Instance.InitializeSaveLoadButtons();
+    }
 }

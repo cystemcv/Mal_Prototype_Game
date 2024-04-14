@@ -59,6 +59,13 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 	}
 
+	public void DisableButton()
+    {
+
+
+
+    }
+
 
 
 

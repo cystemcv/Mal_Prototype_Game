@@ -16,11 +16,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum SystemModes {
     
+        MAINMENU,
         PAUSED,
-        PLAYING
+        GAMEPLAY
     }
 
-    public SystemModes currentSystemMode = SystemModes.PLAYING;
+    public SystemModes currentSystemMode = SystemModes.MAINMENU;
 
     private void Awake()
     {
@@ -48,9 +49,20 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         Debug.Log("OnSceneLoaded: " + scene.name);
         Debug.Log(mode);
 
+        //check if the scene was from a load button
         if (DataPersistenceManager.Instance.isLoadScene)
         {
             DataPersistenceManager.Instance.LoadGame(DataPersistenceManager.Instance.savefileID);
+        }
+
+        //check if the scene is main menu
+        if (scene.name == "scene_MainMenu")
+        {
+            currentSystemMode = SystemModes.MAINMENU;
+        }
+        else
+        {
+            currentSystemMode = SystemModes.GAMEPLAY;
         }
 
     }
@@ -96,8 +108,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void Update()
     {
-        this.totalTimePlayed += Time.deltaTime;
-
+        if (this.currentSystemMode == SystemModes.GAMEPLAY) {
+            this.totalTimePlayed += Time.deltaTime;
+        }
     }
 
     public void LoadData(GameData data)

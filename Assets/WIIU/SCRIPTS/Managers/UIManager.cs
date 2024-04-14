@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -28,31 +29,27 @@ public class UIManager : MonoBehaviour
     //background
     public Image uiAnimatedBg;
 
+    //player time text
+    public TMP_Text playerTimeText;
+
 
     //modal stuff
     [SerializeField] private ModalWindowManager modalWindowManager;
     [SerializeField] private Sprite modalIcon;
 
-    public enum UIModes
-    {
-        DISABLED,
-        MAINMENU,
-        GAMEPLAY
-    }
 
-    public UIModes uiCurrentMode = UIModes.MAINMENU;
 
     public delegate void OnCurrentModeChange();
     public event OnCurrentModeChange onCurrentModeChange;
 
     //this variable has event so we use getter and setter
-    public UIModes UICurrentMode
+    public SystemManager.SystemModes UICurrentMode
     {
-        get { return uiCurrentMode; }
+        get { return SystemManager.Instance.currentSystemMode; }
         set
         {
-            if (uiCurrentMode == value) return;
-            uiCurrentMode = value;
+            if (SystemManager.Instance.currentSystemMode == value) return;
+            SystemManager.Instance.currentSystemMode = value;
             if (onCurrentModeChange != null)
                 onCurrentModeChange();
         }
@@ -107,17 +104,24 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY)
+        {
+            playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
+        }
+        else
+        {
+            playerTimeText.text = "";
+        }
     }
 
     public void UIModeChangeDetectEvent()
     {
 
-        if (UICurrentMode == UIModes.MAINMENU)
+        if (UICurrentMode == SystemManager.SystemModes.MAINMENU)
         {
             InitializeMainMenu();
         }
-        else if (UICurrentMode == UIModes.GAMEPLAY)
+        else if (UICurrentMode == SystemManager.SystemModes.GAMEPLAY)
         {
             btnNewGame.SetActive(false);
             btnContinue.SetActive(false);
@@ -338,7 +342,7 @@ public class UIManager : MonoBehaviour
         AudioManager.Instance.PlayMusic("Gameplay_1");
 
         //change UI to gameplay
-        UIManager.Instance.UICurrentMode = UIManager.UIModes.GAMEPLAY;
+        UIManager.Instance.UICurrentMode = SystemManager.SystemModes.GAMEPLAY;
 
         //make UI inactive
         SystemManager.Instance.EnableDisable_UIManager(false);
@@ -361,7 +365,7 @@ public class UIManager : MonoBehaviour
         modalWindowManager.Close(); // Close window
 
         //change UI to gameplay
-        UIManager.Instance.UICurrentMode = UIManager.UIModes.MAINMENU;
+        UIManager.Instance.UICurrentMode = SystemManager.SystemModes.MAINMENU;
 
         //make UI inactive
         SystemManager.Instance.EnableDisable_UIManager(true);

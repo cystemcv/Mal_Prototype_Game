@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 
 public class UISaveLoad : MonoBehaviour
@@ -60,8 +60,7 @@ public class UISaveLoad : MonoBehaviour
 
     public void Start()
     {
-        //check each button if there is a savefile
-        InitializeSaveLoadButtons();
+        SaveLoadModeChangeDetectEvent();
     }
 
     //subscribe events
@@ -80,6 +79,8 @@ public class UISaveLoad : MonoBehaviour
 
     public void SaveLoadModeChangeDetectEvent()
     {
+        //check each button if there is a savefile
+        InitializeSaveLoadButtons();
 
         if (currentMode == UISaveLoad.saveLoadMode.SAVE)
         {
@@ -100,6 +101,78 @@ public class UISaveLoad : MonoBehaviour
 
         foreach (GameObject saveLoadButton in saveLoadButtons)
         {
+
+            //main group of items
+            GameObject IconParent = saveLoadButton.transform.GetChild(0).gameObject;
+            GameObject TextGroup = saveLoadButton.transform.GetChild(1).gameObject;
+            GameObject empty = saveLoadButton.transform.GetChild(2).gameObject;
+            GameObject border = saveLoadButton.transform.GetChild(3).gameObject;
+
+            //check if auto save button
+            //if yes and we are on save then disable i
+
+            if (currentMode == UISaveLoad.saveLoadMode.SAVE && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
+            {
+                //disable button
+                //Debug.Log("DISABLED");
+                saveLoadButton.GetComponent<Button>().interactable = false;
+
+                //change the text in main group
+                foreach (TMP_Text text in TextGroup.GetComponentsInChildren<TMP_Text>())
+                {
+                    text.color = new Color32(255, 255, 255, 70);
+                }
+
+                //change the text in empty
+                foreach (TMP_Text text in empty.GetComponentsInChildren<TMP_Text>())
+                {
+                    text.color = new Color32(255, 255, 255, 70);
+                }
+
+                //change icon
+                foreach (Image image in IconParent.GetComponentsInChildren<Image>())
+                {
+                    image.color = new Color32(255, 255, 255, 70);
+                }
+
+                //change the border
+                foreach (Image image in border.GetComponentsInChildren<Image>())
+                {
+                    image.color = new Color32(255, 255, 255, 70);
+                }
+
+            }
+            else if(currentMode == UISaveLoad.saveLoadMode.LOAD && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
+            {
+                //saveLoadButton.SetActive(true);
+                //Debug.Log("NOT DISABLED");
+                saveLoadButton.GetComponent<Button>().interactable = true;
+
+                //change the text in main group
+                foreach (TMP_Text text in TextGroup.GetComponentsInChildren<TMP_Text>())
+                {
+                    text.color = new Color32(255, 255, 255, 255);
+                }
+
+                //change the text in empty
+                foreach (TMP_Text text in empty.GetComponentsInChildren<TMP_Text>())
+                {
+                    text.color = new Color32(255, 255, 255, 255);
+                }
+
+                //change icon
+                foreach (Image image in IconParent.GetComponentsInChildren<Image>())
+                {
+                    image.color = new Color32(255, 255, 255, 255);
+                }
+
+                //change the border
+                foreach (Image image in border.GetComponentsInChildren<Image>())
+                {
+                    image.color = new Color32(255, 255, 255, 255);
+                }
+            }
+
             //read from file
             FileDataHandler dataHandler = new FileDataHandler(Application.persistentDataPath, DataPersistenceManager.Instance.fileName + "_" + saveLoadButton.GetComponent<GameObjectID>().objectID + "." + DataPersistenceManager.Instance.fileType);
 
@@ -109,23 +182,15 @@ public class UISaveLoad : MonoBehaviour
             //check if gameData exist
             if (gameData == null)
             {
-                //main group of items
-                GameObject TextGroup = saveLoadButton.transform.GetChild(1).gameObject;
+    
                 TextGroup.SetActive(false);
-                //empty item
-                GameObject empty = saveLoadButton.transform.GetChild(2).gameObject;
                 empty.SetActive(true);
             }
             else
             {
-                //main group of items
-                GameObject TextGroup = saveLoadButton.transform.GetChild(1).gameObject;
+             
                 TextGroup.SetActive(true);
-                //empty item
-                GameObject empty = saveLoadButton.transform.GetChild(2).gameObject;
                 empty.SetActive(false);
-
-                Debug.Log("TEST : " + gameData.totalTimePlayed);
 
                 //implement text to show
                 string gameplayTime = SystemManager.Instance.ConvertTimeToReadable(gameData.totalTimePlayed);

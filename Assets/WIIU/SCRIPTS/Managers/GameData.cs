@@ -7,6 +7,8 @@ public class GameData
 {
     //system
     public float totalTimePlayed;
+    public int runsCompleted;
+
 
     public int deathCount;
 

@@ -13,7 +13,7 @@ public class TestScript : MonoBehaviour, IDataPersistence
 
     public void Start()
     {
-        this.deathCount = 0;
+        //this.deathCount = 0;
     }
 
     public void LoadData(GameData data)

@@ -45,6 +45,23 @@ public class FileDataHandler
         return loadedData;
     }
 
+    public void DeleteFile()
+    {
+        string fullPath = Path.Combine(this.dataDirectoryPath, this.dataFileName);
+
+        if (File.Exists(fullPath))
+        {
+            try
+            {
+                File.Delete(fullPath);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("Error trying to delete file : " + fullPath + "\n" + ex.Message);
+            }
+        }
+    }
+
     public void Save(GameData data)
     {
         string fullPath = Path.Combine(this.dataDirectoryPath, this.dataFileName);
