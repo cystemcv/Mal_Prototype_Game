@@ -18,7 +18,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     
         MAINMENU,
         PAUSED,
-        GAMEPLAY
+        GAMEPLAY,
+        COMBAT
     }
 
     public SystemModes currentSystemMode = SystemModes.MAINMENU;

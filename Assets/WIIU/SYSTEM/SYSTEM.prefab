@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: SAVE
   fileType: mdwii
+  savefileID: 
+  isLoadScene: 0
 --- !u!1 &22899630769634872
 GameObject:
   m_ObjectHideFlags: 0
@@ -20424,7 +20426,7 @@ Transform:
   - {fileID: 7268987337049339079}
   - {fileID: 1243648589}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7268987335472002401
 MonoBehaviour:
@@ -22702,9 +22704,9 @@ MonoBehaviour:
   btnExit: {fileID: 296195819174161567}
   txtMainMenu: {fileID: 7268987336196140609}
   uiAnimatedBg: {fileID: 7268987335693159482}
+  playerTimeText: {fileID: 0}
   modalWindowManager: {fileID: 7268987335744272911}
   modalIcon: {fileID: 21300000, guid: a81b811d419055c43a7ddc04ce938fab, type: 3}
-  uiCurrentMode: 1
 --- !u!114 &7268987336409411211
 MonoBehaviour:
   m_ObjectHideFlags: 0

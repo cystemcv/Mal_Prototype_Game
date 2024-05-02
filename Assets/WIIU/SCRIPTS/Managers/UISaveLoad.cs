@@ -117,29 +117,7 @@ public class UISaveLoad : MonoBehaviour
                 //Debug.Log("DISABLED");
                 saveLoadButton.GetComponent<Button>().interactable = false;
 
-                //change the text in main group
-                foreach (TMP_Text text in TextGroup.GetComponentsInChildren<TMP_Text>())
-                {
-                    text.color = new Color32(255, 255, 255, 70);
-                }
-
-                //change the text in empty
-                foreach (TMP_Text text in empty.GetComponentsInChildren<TMP_Text>())
-                {
-                    text.color = new Color32(255, 255, 255, 70);
-                }
-
-                //change icon
-                foreach (Image image in IconParent.GetComponentsInChildren<Image>())
-                {
-                    image.color = new Color32(255, 255, 255, 70);
-                }
-
-                //change the border
-                foreach (Image image in border.GetComponentsInChildren<Image>())
-                {
-                    image.color = new Color32(255, 255, 255, 70);
-                }
+                ChangeButtonTransparency(TextGroup, empty, IconParent, border, 70);
 
             }
             else if(currentMode == UISaveLoad.saveLoadMode.LOAD && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
@@ -148,29 +126,7 @@ public class UISaveLoad : MonoBehaviour
                 //Debug.Log("NOT DISABLED");
                 saveLoadButton.GetComponent<Button>().interactable = true;
 
-                //change the text in main group
-                foreach (TMP_Text text in TextGroup.GetComponentsInChildren<TMP_Text>())
-                {
-                    text.color = new Color32(255, 255, 255, 255);
-                }
-
-                //change the text in empty
-                foreach (TMP_Text text in empty.GetComponentsInChildren<TMP_Text>())
-                {
-                    text.color = new Color32(255, 255, 255, 255);
-                }
-
-                //change icon
-                foreach (Image image in IconParent.GetComponentsInChildren<Image>())
-                {
-                    image.color = new Color32(255, 255, 255, 255);
-                }
-
-                //change the border
-                foreach (Image image in border.GetComponentsInChildren<Image>())
-                {
-                    image.color = new Color32(255, 255, 255, 255);
-                }
+                ChangeButtonTransparency(TextGroup, empty, IconParent, border, 255);
             }
 
             //read from file
@@ -185,6 +141,17 @@ public class UISaveLoad : MonoBehaviour
     
                 TextGroup.SetActive(false);
                 empty.SetActive(true);
+
+                if(UISaveLoad.Instance.currentMode == saveLoadMode.LOAD)
+                {
+                    saveLoadButton.GetComponent<Button>().interactable = false;
+                    ChangeButtonTransparency(TextGroup, empty, IconParent, border, 70);
+                }
+                else
+                {
+                    saveLoadButton.GetComponent<Button>().interactable = true;
+                    ChangeButtonTransparency(TextGroup, empty, IconParent, border, 255);
+                }
             }
             else
             {
@@ -206,6 +173,33 @@ public class UISaveLoad : MonoBehaviour
     }
 
 
+    public void ChangeButtonTransparency(GameObject TextGroup, GameObject empty, GameObject IconParent, GameObject border, byte alpha)
+    {
+
+        //change the text in main group
+        foreach (TMP_Text text in TextGroup.GetComponentsInChildren<TMP_Text>())
+        {
+            text.color = new Color32(255, 255, 255, alpha);
+        }
+
+        //change the text in empty
+        foreach (TMP_Text text in empty.GetComponentsInChildren<TMP_Text>())
+        {
+            text.color = new Color32(255, 255, 255, alpha);
+        }
+
+        //change icon
+        foreach (Image image in IconParent.GetComponentsInChildren<Image>())
+        {
+            image.color = new Color32(255, 255, 255, alpha);
+        }
+
+        //change the border
+        foreach (Image image in border.GetComponentsInChildren<Image>())
+        {
+            image.color = new Color32(255, 255, 255, alpha);
+        }
+    }
 
 
 

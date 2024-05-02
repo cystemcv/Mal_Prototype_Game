@@ -10,8 +10,18 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    //main ui components
+    public GameObject UIMENU;
+    public GameObject UICOMBAT;
+
+
     //main gameobjects of the UI
     public List<GameObject> list_goMenuItem;
+
+
+
+    //UI background
+    public Image solidColorBackground;
 
     //main menu buttons
     public GameObject btnNewGame;
@@ -104,7 +114,8 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY)
+        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY 
+            || SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
         }
@@ -123,17 +134,12 @@ public class UIManager : MonoBehaviour
         }
         else if (UICurrentMode == SystemManager.SystemModes.GAMEPLAY)
         {
-            btnNewGame.SetActive(false);
-            btnContinue.SetActive(false);
-            btnSave.SetActive(true);
-            btnLoad.SetActive(true);
-            btnOptions.SetActive(true);
-            btnClose.SetActive(true);
-            btnMainMenu.SetActive(true);
-            btnExit.SetActive(true);
+            InitializeMainMenuGameplay();
+        }
+        else if (UICurrentMode == SystemManager.SystemModes.COMBAT)
+        {
+            InitializeMainMenuGameplay();
 
-            //uiAnimatedBg.color = new Color32(90,10,0,255);
-            txtMainMenu.SetActive(false);
         }
         else
         {
@@ -155,6 +161,25 @@ public class UIManager : MonoBehaviour
 
         //uiAnimatedBg.color = new Color32(0, 95, 166, 255);
         txtMainMenu.SetActive(true);
+
+        //solidColorBackground.color = new Color32(68,53,135,255);
+    }
+
+    public void InitializeMainMenuGameplay()
+    {
+        btnNewGame.SetActive(false);
+        btnContinue.SetActive(false);
+        btnSave.SetActive(true);
+        btnLoad.SetActive(true);
+        btnOptions.SetActive(true);
+        btnClose.SetActive(true);
+        btnMainMenu.SetActive(true);
+        btnExit.SetActive(true);
+
+        //uiAnimatedBg.color = new Color32(90,10,0,255);
+        txtMainMenu.SetActive(false);
+
+        //solidColorBackground.color = new Color32(68, 53, 135, 0);
     }
 
 
