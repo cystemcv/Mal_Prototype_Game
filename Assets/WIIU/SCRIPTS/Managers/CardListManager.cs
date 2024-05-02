@@ -6,6 +6,8 @@ public class CardListManager : MonoBehaviour
 {
     public static CardListManager Instance;
 
+    public GameObject cardPrefab;
+
     //classes card pool
     public List<ScriptableCard> Colorless_CardPool;
     public List<ScriptableCard> Knight_CardPool;

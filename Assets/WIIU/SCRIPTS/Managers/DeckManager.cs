@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class DeckManager : MonoBehaviour
 {
@@ -57,10 +59,16 @@ public class DeckManager : MonoBehaviour
     {
 
         //instantiate the prefab 
+        // Instantiate at position (0, 0, 0) and zero rotation.
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         //set it as a child of the parent
+        cardPrefab.transform.parent = parent.transform;
 
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
+        //for text USE TEXT MESH PRO
+        //for example
+        cardPrefab.transform.Find("ImageChild").GetComponent<Image>().sprite = card.cardArt;
 
     }
 
