@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public GameObject UIMENU;
     public GameObject UICOMBAT;
 
-
+    [Header("UIMENU")]
     //main gameobjects of the UI
     public List<GameObject> list_goMenuItem;
 
@@ -43,6 +43,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text playerTimeText;
 
 
+    [Header("UICOMBAT")]
+    public GameObject handObjectParent;
+
+    [Header("SETTINGS")]
     //modal stuff
     [SerializeField] private ModalWindowManager modalWindowManager;
     [SerializeField] private Sprite modalIcon;

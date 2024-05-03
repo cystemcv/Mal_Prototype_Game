@@ -78,7 +78,8 @@ public class DeckManager : MonoBehaviour
             ScriptableCard scriptableCard = deck[0];
 
             //if it passes the max hand limit the discard it, otherwise add it to the hand
-            if (handCards.Count > maxHandCardsLimit) {
+            if (handCards.Count > maxHandCardsLimit)
+            {
 
                 //discard it
                 discardedPile.Add(scriptableCard);
@@ -87,10 +88,19 @@ public class DeckManager : MonoBehaviour
             {
                 //add it to the hand
                 handCards.Add(scriptableCard);
+
+                //instantiate the card
+                InitializeCardPrefab(scriptableCard, UIManager.Instance.handObjectParent);
+
+
+
+
             }
 
             //remove the top 1 card from deck
             deck.RemoveAt(0);
+
+
         }
 
     }
@@ -104,6 +114,9 @@ public class DeckManager : MonoBehaviour
         int index = handCards.IndexOf(scriptableCard);
         handCards.RemoveAt(index);
 
+        //destroy the prefab
+        DestroyCardPrefab(scriptableCard);
+
     }
 
     public void DiscardCardFromHandRandom()
@@ -114,7 +127,65 @@ public class DeckManager : MonoBehaviour
         }
 
         //get the random card
-        int randomIndex = Random.Range(0,handCards.Count-1);
+        int randomIndex = Random.Range(0, handCards.Count - 1);
+
+        //call the discard function
+        DiscardCardFromHand(handCards[randomIndex]);
+
+
+    }
+
+    public void PlayCard(ScriptableCard scriptableCard)
+    {
+        //check if the card has any abilities to be played
+        if (scriptableCard.scriptableCardAbilities.Count == 0)
+        {
+            return;
+        }
+
+        //activate all card abilities
+        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        {
+            scriptableCardAbility.OnPlayCard(scriptableCard);
+        }
+
+    }
+
+    public string GenerateCardAbilityDescription(ScriptableCard scriptableCard)
+    {
+        string abilityDescription = "";
+
+        //check if the card has any abilities to be played
+        if (scriptableCard.scriptableCardAbilities.Count == 0)
+        {
+            return abilityDescription;
+        }
+
+        //activate all card abilities
+        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        {
+            abilityDescription += scriptableCardAbility.AbilityDescription(scriptableCard);
+        }
+
+        return abilityDescription;
+
+    }
+
+    public void PlayCardFromHandRandom()
+    {
+        if (handCards.Count == 0)
+        {
+            return;
+        }
+
+        //get the random card
+        int randomIndex = Random.Range(0, handCards.Count - 1);
+
+        //test the desc
+        Debug.Log(GenerateCardAbilityDescription(handCards[randomIndex]));
+
+        //play the card
+        PlayCard(handCards[randomIndex]);
 
         //call the discard function
         DiscardCardFromHand(handCards[randomIndex]);
@@ -125,7 +196,7 @@ public class DeckManager : MonoBehaviour
     public void StartTurnDrawCards()
     {
         //draw cards based on the limit (some relics might increase that limit)
-        for (int i=0; i < turnHandCardsLimit; i++)
+        for (int i = 0; i < turnHandCardsLimit; i++)
         {
             DrawCardFromDeck();
         }
@@ -134,9 +205,16 @@ public class DeckManager : MonoBehaviour
     public void DiscardWholeHand()
     {
 
+        //add cards from hand to discard pile
         foreach (ScriptableCard scriptableCard in handCards)
         {
             discardedPile.Add(scriptableCard);
+        }
+
+        //destroy the gameobject prefab cards
+        foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
+        {
+            Destroy(cardPrefab.gameObject);
         }
 
         //clear hand list
@@ -196,7 +274,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void InitializeCardOnPrefab(ScriptableCard card, GameObject parent)
+    public void InitializeCardPrefab(ScriptableCard scriptableCard, GameObject parent)
     {
 
         //instantiate the prefab 
@@ -209,8 +287,30 @@ public class DeckManager : MonoBehaviour
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
         //for text USE TEXT MESH PRO
         //for example
-        cardPrefab.transform.Find("ImageChild").GetComponent<Image>().sprite = card.cardArt;
+        cardPrefab.transform.GetChild(0).Find("Title").GetComponent<TMP_Text>().text = scriptableCard.cardName;
 
+        //add the scriptable card object to the prefab class to reference
+        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+
+    }
+
+    public void DestroyCardPrefab(ScriptableCard scriptableCard)
+    {
+
+        //find the card object
+        foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
+        {
+            CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+
+            if (cardScript.scriptableCard == scriptableCard)
+            {
+                Destroy(cardPrefab.gameObject);
+
+                break;
+            }
+        }
+
+        // Destroy(cardPrefab);
     }
 
 }

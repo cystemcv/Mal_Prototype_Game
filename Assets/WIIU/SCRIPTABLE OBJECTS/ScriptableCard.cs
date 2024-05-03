@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,15 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public Sprite cardArt; // Art to be displayed and attached to the card
     public string cardDesc; // Description of what the card does
     public string cardFlavor; // Flavor text- maybe not needed
+
+    [Header("ABILITIES")]
+    public int ability1Var = 0;
+    public int ability2Var = 0;
+    public int ability3Var = 0;
+    public int ability4Var = 0;
+    public int ability5Var = 0;
+    public int ability6Var = 0;
+    public List<ScriptableCardAbility> scriptableCardAbilities;
 
     [Header("SETTINGS")]
     public bool playerMode1 = false; //available on 1 character mode
