@@ -33,6 +33,9 @@ public class CombatManager : MonoBehaviour
         //open the UI combat menu
         UIManager.Instance.UICOMBAT.SetActive(true);
 
+        //test deck
+        DeckManager.Instance.BuildStartingDeck();
+
         //initialize the characters
 
         //initialize the enemies

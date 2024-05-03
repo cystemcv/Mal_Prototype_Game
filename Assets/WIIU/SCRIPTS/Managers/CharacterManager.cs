@@ -6,9 +6,9 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
 
-    public ScriptablePlayer scriptablePlayer1;
-    public ScriptablePlayer scriptablePlayer2;
+    public List<ScriptablePlayer> scriptablePlayer;
 
+    //used by scriptable objects
     public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger }; //Actual classes to be determined
 
     private void Awake()
@@ -25,4 +25,7 @@ public class CharacterManager : MonoBehaviour
         }
 
     }
+
+   
+
 }

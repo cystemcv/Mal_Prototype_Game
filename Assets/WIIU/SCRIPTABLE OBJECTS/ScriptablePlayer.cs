@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Player", menuName = "Player/Class")]
 public class ScriptablePlayer : ScriptableObject
 {
-    public string playerName;
-    //Character Name
+    [Header("CARDS")]
+    public List<ScriptableCard> startingCards; //assign the cards you want the class to start building the deck
 
+
+    [Header("MAIN")]
+    public string playerName;
     public CharacterManager.MainClass mainClass; //Actual classes to be determined
     //Player's primary class
 
