@@ -25,7 +25,13 @@ public class Ability_Draw : ScriptableCardAbility
 
         Debug.Log("Draw " + GetAbilityVariable(scriptableCard) +  " cards");
 
+        int cardsToDraw = GetAbilityVariable(scriptableCard);
+
+        DeckManager.Instance.DrawMultipleCards(cardsToDraw);
+
     }
+
+
 
 
 }

@@ -40,16 +40,14 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     // called first
     void OnEnable()
     {
-        Debug.Log("OnEnable called");
+       
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("OnSceneLoaded: " + scene.name);
-        Debug.Log(mode);
-
+ 
         //check if the scene was from a load button
         if (DataPersistenceManager.Instance.isLoadScene)
         {
@@ -71,7 +69,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     // called when the game is terminated
     void OnDisable()
     {
-        Debug.Log("OnDisable");
+     
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -121,7 +119,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        Debug.Log("time : " + data.totalTimePlayed.ToString());
+    
         data.totalTimePlayed = this.totalTimePlayed;
     }
 
@@ -139,6 +137,6 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void RuntimeInitializeOnLoadMethod()
     {
-        Debug.Log("CHANGING SCENES");
+   
     }
 }

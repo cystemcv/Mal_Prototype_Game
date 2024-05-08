@@ -45,6 +45,13 @@ public class UIManager : MonoBehaviour
 
     [Header("UICOMBAT")]
     public GameObject handObjectParent;
+    public GameObject deckUIObject;
+    public GameObject deckText;
+    public GameObject discardUISpawn;
+    public GameObject discardText;
+    public GameObject banishedText;
+    public GameObject manaText;
+
 
     [Header("SETTINGS")]
     //modal stuff
@@ -118,10 +125,16 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY 
-            || SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
+        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY )
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
+        }
+        else if(SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
+        {
+            playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
+            deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.deck.Count.ToString();
+            discardText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
+            banishedText.transform.GetChild(0).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
         }
         else
         {
@@ -257,7 +270,7 @@ public class UIManager : MonoBehaviour
         //GRAPHICS TAB
         if (GraphicsTabController.Instance.changeQualitySettings == true)
         {
-            Debug.Log("changed");
+   
             GraphicsTabController.Instance.checkQualitySettingIndexNow = int.Parse(GraphicsTabController.Instance.selectQualityOption.selectedText.text.Split(":")[0].Trim());
 
             //then change the graphics
@@ -282,7 +295,7 @@ public class UIManager : MonoBehaviour
         if (PlayerPrefs.GetInt("user_save_settings") == 0)
         {
             DefaultSettings();
-            Debug.Log("No user save settings found but tried to load");
+
             return;
         }
 

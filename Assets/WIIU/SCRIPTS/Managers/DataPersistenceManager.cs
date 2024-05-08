@@ -52,7 +52,7 @@ public class DataPersistenceManager : MonoBehaviour
         //check if gameData exist
         if(this.gameData == null)
         {
-            Debug.Log("No data found, initializing!");
+        
             NewGame();
         }
 
@@ -70,7 +70,7 @@ public class DataPersistenceManager : MonoBehaviour
 
         foreach (IDataPersistence dataPersistenceObject in this.dataPersistenceObjects)
         {
-            Debug.Log("dataPersistenceObject : ");
+      
             dataPersistenceObject.SaveData(ref gameData);
         }
 

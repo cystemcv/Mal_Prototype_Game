@@ -5,6 +5,8 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "New Card", menuName = "Card/Master")]
 public class ScriptableCard : ScriptableObject // Not sure if cards will be made from here or specialized for each class. Possibly change to abstract class later
 {
+
+
     [Header("MAIN")]
     public string cardName;
     public CharacterManager.MainClass mainClass;

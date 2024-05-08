@@ -91,7 +91,7 @@ public class UISaveLoad : MonoBehaviour
             saveLoadTitleText.text = "LOAD";
         }
 
-        Debug.Log("Mode is " + currentMode.ToString()); ;
+   
     }
 
     public void InitializeSaveLoadButtons()

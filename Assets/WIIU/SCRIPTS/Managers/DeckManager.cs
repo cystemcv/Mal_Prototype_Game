@@ -13,17 +13,26 @@ public class DeckManager : MonoBehaviour
     public int maxHandCardsLimit = 10;
 
     //Deck
-    public List<ScriptableCard> deck;
+    public List<CardScript> deck;
 
     //Discarded Cards
-    public List<ScriptableCard> discardedPile;
+    public List<CardScript> discardedPile;
 
     //Banished Cards (Out of Play)
-    public List<ScriptableCard> banishedPile;
+    public List<CardScript> banishedPile;
 
     //Hand Cards 
-    public List<ScriptableCard> handCards;
+    public List<CardScript> handCards;
 
+    [Header("FAN SHAPE")]
+    //public List<GameObject> cards;
+    public Transform handCenter; // The center point of your hand
+    public float fanAngle = 0f; // The angle between each card in the fan
+                                // Define spacing between cards before and after the index
+    public float spacing = 150f;
+    public float extraSpacingAfterIndex = 155f;
+
+    public float drawCardWaitTime = 0.6f;
 
 
     private void Awake()
@@ -41,6 +50,12 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        //-1 is no card hovering
+        // ArrangeCardsHover(-1);
+    }
+
     public void BuildStartingDeck()
     {
 
@@ -55,7 +70,12 @@ public class DeckManager : MonoBehaviour
                 //add the card on the deck depending on the mode
                 if (CheckModeAvailabilityForCard(scriptableCard))
                 {
-                    deck.Add(scriptableCard);
+
+
+                    //add cards to the deck
+                    CardScript cardScript = new CardScript();
+                    cardScript.scriptableCard = scriptableCard;
+                    deck.Add(cardScript);
                 }
             }
 
@@ -75,24 +95,28 @@ public class DeckManager : MonoBehaviour
             FillUpDeckFromDiscardPile();
 
             //put the top 1 card from deck on hand
-            ScriptableCard scriptableCard = deck[0];
+            CardScript cardScript = deck[0];
 
             //if it passes the max hand limit the discard it, otherwise add it to the hand
-            if (handCards.Count > maxHandCardsLimit)
+            if (handCards.Count >= maxHandCardsLimit)
             {
 
                 //discard it
-                discardedPile.Add(scriptableCard);
+                discardedPile.Add(cardScript);
+
+                InitializeCardPrefabDiscard(cardScript);
             }
             else
             {
+
                 //add it to the hand
-                handCards.Add(scriptableCard);
+                handCards.Add(cardScript);
 
                 //instantiate the card
-                InitializeCardPrefab(scriptableCard, UIManager.Instance.handObjectParent);
+                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent);
 
-
+                //rearrange hand
+                HandManager.Instance.SetHandCards();
 
 
             }
@@ -105,17 +129,21 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void DiscardCardFromHand(ScriptableCard scriptableCard)
+
+
+    public void DiscardCardFromHand(CardScript cardScript)
     {
         //add it to the discard pile
-        discardedPile.Add(scriptableCard);
+        discardedPile.Add(cardScript);
 
         //remove the card based on the index
-        int index = handCards.IndexOf(scriptableCard);
+        int index = handCards.FindIndex(item => item.cardID == cardScript.cardID);
         handCards.RemoveAt(index);
 
         //destroy the prefab
-        DestroyCardPrefab(scriptableCard);
+        DestroyCardPrefab(cardScript);
+
+
 
     }
 
@@ -133,22 +161,29 @@ public class DeckManager : MonoBehaviour
         DiscardCardFromHand(handCards[randomIndex]);
 
 
+
+
     }
 
-    public void PlayCard(ScriptableCard scriptableCard)
+    public void PlayCard(CardScript cardScript)
     {
         //check if the card has any abilities to be played
-        if (scriptableCard.scriptableCardAbilities.Count == 0)
+        if (cardScript.scriptableCard.scriptableCardAbilities.Count == 0)
         {
             return;
         }
 
         //activate all card abilities
-        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {
-            scriptableCardAbility.OnPlayCard(scriptableCard);
+            scriptableCardAbility.OnPlayCard(cardScript.scriptableCard);
         }
 
+        ////the discard card
+        DiscardCardFromHand(cardScript);
+
+        //decrease available mana
+        CombatManager.Instance.ManaAvailable -= cardScript.scriptableCard.primaryManaCost;
     }
 
     public string GenerateCardAbilityDescription(ScriptableCard scriptableCard)
@@ -181,11 +216,11 @@ public class DeckManager : MonoBehaviour
         //get the random card
         int randomIndex = Random.Range(0, handCards.Count - 1);
 
-        //test the desc
-        Debug.Log(GenerateCardAbilityDescription(handCards[randomIndex]));
+        ////test the desc
+        //Debug.Log(GenerateCardAbilityDescription(handCards[randomIndex]));
 
-        //play the card
-        PlayCard(handCards[randomIndex]);
+        ////play the card
+        //PlayCard(handCards[randomIndex]);
 
         //call the discard function
         DiscardCardFromHand(handCards[randomIndex]);
@@ -193,32 +228,43 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void StartTurnDrawCards()
+    public void DrawMultipleCards(int numberOfCards)
     {
-        //draw cards based on the limit (some relics might increase that limit)
-        for (int i = 0; i < turnHandCardsLimit; i++)
+        //draw cards
+        StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));
+    }
+
+    IEnumerator DrawMultipleCardsCoroutine(int numberOfCards)
+    {
+        for (int i = 0; i < numberOfCards; i++)
         {
+
             DrawCardFromDeck();
+            // Wait for 2 seconds
+            yield return new WaitForSeconds(drawCardWaitTime);
+
+         
         }
+
     }
 
     public void DiscardWholeHand()
     {
 
-        //add cards from hand to discard pile
-        foreach (ScriptableCard scriptableCard in handCards)
-        {
-            discardedPile.Add(scriptableCard);
-        }
+        ////add cards from hand to discard pile
+        //foreach (ScriptableCard scriptableCard in handCards)
+        //{
+        //    discardedPile.Add(scriptableCard);
+        //}
 
-        //destroy the gameobject prefab cards
-        foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
-        {
-            Destroy(cardPrefab.gameObject);
-        }
+        ////destroy the gameobject prefab cards
+        //foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
+        //{
+        //    Destroy(cardPrefab.gameObject);
+        //}
 
-        //clear hand list
-        handCards.Clear();
+        ////clear hand list
+        //handCards.Clear();
 
     }
 
@@ -230,9 +276,10 @@ public class DeckManager : MonoBehaviour
             //randomize list
 
             //add to deck and remove from discard pile
-            foreach (ScriptableCard scriptableCard in discardedPile)
+            foreach (CardScript cardScript in discardedPile)
             {
-                deck.Add(scriptableCard);
+                Debug.Log("ID OF CARD DISCARDED : " + cardScript.cardID);
+                deck.Add(cardScript);
             }
 
             //clear the discarded pile
@@ -262,55 +309,134 @@ public class DeckManager : MonoBehaviour
         return accepted;
     }
 
-    public void AddCardOnDeck(ScriptableCard card, int character)
+    public void AddCardOnDeck(ScriptableCard scriptableCard, int character)
     {
-        deck.Add(card);
+
+        //add a card ti deck
+        GameObject cardPrefab = CardListManager.Instance.cardPrefab;
+        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+        deck.Add(null);
     }
 
     public void RemoveCardFromDeck(ScriptableCard card, int character)
     {
 
-        deck.Remove(card);
+        // deck.Remove(card);
 
     }
 
-    public void InitializeCardPrefab(ScriptableCard scriptableCard, GameObject parent)
+    public void InitializeCardPrefab(CardScript cardScript, GameObject parent)
     {
 
         //instantiate the prefab 
         // Instantiate at position (0, 0, 0) and zero rotation.
-        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UIManager.Instance.deckUIObject.transform.position, Quaternion.identity);
+        //get the scriptable object
+        ScriptableCard scriptableCard = cardScript.scriptableCard;
+
+        //add the scriptable card object to the prefab class to reference
+        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+        cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
 
         //set it as a child of the parent
         cardPrefab.transform.parent = parent.transform;
 
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
         //for text USE TEXT MESH PRO
+
+        UpdateCardUI(cardPrefab);
+
+        //add it to the hand list
+        HandManager.Instance.cardsInHandList.Add(cardPrefab);
+
+        //check mana
+        CombatManager.Instance.UpdateCardAfterManaChange(cardPrefab);
+
+    }
+
+    public void UpdateCardUI(GameObject cardPrefab)
+    {
+        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        Transform cardChild = cardPrefab.transform.GetChild(0);
+
         //for example
-        cardPrefab.transform.GetChild(0).Find("Title").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+        cardChild.transform.Find("Title").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+        cardChild.transform.Find("Image").GetComponent<Image>().sprite = scriptableCard.cardArt;
+
+        //mana cost
+        cardChild.transform.Find("ManaImage").transform.GetChild(0).GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+
+        //description is based on abilities
+        cardChild.transform.Find("Description").GetComponent<TMP_Text>().text = "";
+        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        {
+            cardChild.transform.Find("Description").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(scriptableCard) + "\n";
+        }
+        //activation should not be visible
+        cardChild.transform.Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
+    }
+
+    public void InitializeCardPrefabDiscard(CardScript cardScript)
+    {
+        //create gameobject on scene and spawn it on the discard spawner
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UIManager.Instance.discardUISpawn.transform.position, Quaternion.identity);
+        cardPrefab.transform.parent = UIManager.Instance.discardUISpawn.transform;
+        cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
+        ScriptableCard scriptableCard = cardScript.scriptableCard;
 
         //add the scriptable card object to the prefab class to reference
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+        cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
 
+        //update the information on the card prefab
+        UpdateCardUI(cardPrefab);
+
+        //move it
+        LeanTween.move(cardPrefab, UIManager.Instance.discardText.transform.position, 1.5f);
+        LeanTween.scale(cardPrefab, new Vector3(0,0,0), 1.5f);
+        Destroy(cardPrefab,1.5f);
     }
 
-    public void DestroyCardPrefab(ScriptableCard scriptableCard)
+    public void DestroyCardPrefab(CardScript cardScript)
     {
 
-        //find the card object
-        foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
-        {
-            CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        int index = -1;
+        GameObject cardToDelete = null;
 
-            if (cardScript.scriptableCard == scriptableCard)
+        //find the card object
+        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
+        {
+            //get the cardscript so we can compare the scriptable objects
+            CardScript cardScriptFromGameObject = cardPrefab.GetComponent<CardScript>();
+
+            //if they are equal then we destroy it
+            if (cardScriptFromGameObject.cardID == cardScript.cardID)
             {
-                Destroy(cardPrefab.gameObject);
+                //find the index of the card we are discarding
+                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardScript.cardID);
+
+                cardToDelete = cardPrefab;
 
                 break;
+
             }
         }
 
-        // Destroy(cardPrefab);
+        if (index != -1)
+        {
+
+            //remove it from the gameobject list
+            HandManager.Instance.cardsInHandList.RemoveAt(index);
+
+            //destroy it as we do not need it anymore
+            Destroy(cardToDelete);
+
+            //rearrange hand
+            HandManager.Instance.SetHandCards();
+        }
+
+
     }
+
 
 }
