@@ -52,7 +52,7 @@ public class CombatManager : MonoBehaviour
     public void UpdateCardAfterManaChange(GameObject cardPrefab)
     {
         ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaImage").transform.GetChild(0).GetComponent<TMP_Text>();
+        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
 
 
         //check the mana cost of each

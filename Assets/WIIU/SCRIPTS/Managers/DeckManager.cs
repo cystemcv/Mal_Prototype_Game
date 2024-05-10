@@ -360,17 +360,19 @@ public class DeckManager : MonoBehaviour
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //for example
-        cardChild.transform.Find("Title").GetComponent<TMP_Text>().text = scriptableCard.cardName;
-        cardChild.transform.Find("Image").GetComponent<Image>().sprite = scriptableCard.cardArt;
+        cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+        cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
+        cardChild.transform.Find("FlavorBg").Find("FlavorText").GetComponent<TMP_Text>().text = scriptableCard.cardFlavor;
 
         //mana cost
-        cardChild.transform.Find("ManaImage").transform.GetChild(0).GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+        cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+        cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
         //description is based on abilities
-        cardChild.transform.Find("Description").GetComponent<TMP_Text>().text = "";
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
         foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
         {
-            cardChild.transform.Find("Description").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(scriptableCard) + "\n";
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(scriptableCard) + "\n";
         }
         //activation should not be visible
         cardChild.transform.Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
