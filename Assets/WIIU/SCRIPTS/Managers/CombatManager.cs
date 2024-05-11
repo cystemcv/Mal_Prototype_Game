@@ -8,6 +8,14 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
+    //targeting system
+    public bool targetMode = false;
+    public RectTransform targetUIElement;
+    private LineRenderer lineRenderer;
+    public GameObject targetClicked;
+
+    //---------------
+
     public int manaMaxAvailable = 3;
     public int manaAvailable = 0;     
     
@@ -47,6 +55,96 @@ public class CombatManager : MonoBehaviour
             UpdateCardAfterManaChange(cardPrefab);
         } 
 
+    }
+
+    public void Start()
+    {
+        lineRenderer = this.transform.Find("LINERENDERER").GetComponent<LineRenderer>();
+
+        // Set the initial positions of the line (start and end)
+        lineRenderer.positionCount = 2;
+
+        // Get the material of the Line Renderer
+        Material material = lineRenderer.material;
+
+        // Set the sorting order to a high value to ensure it renders on top
+        material.renderQueue = 999999; // Adjust the value as needed
+    }
+
+    public void Update()
+    {
+
+        if (targetMode)
+        {
+
+            // Check if the target UI element is available
+            if (targetUIElement != null)
+            {
+                // Get the position of the target UI element in screen space
+                Vector3 targetScreenPosition = targetUIElement.position;
+
+                // Convert the screen space position to world space
+                Vector3 targetPosition = Camera.main.ScreenToWorldPoint(targetScreenPosition);
+                targetPosition.z = 0f; // Ensure that the z-coordinate is set to 0
+
+                // Get the position of the mouse in world space
+                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mousePosition.z = 0f; // Ensure that the z-coordinate is set to 0
+
+                //remove line renderer
+                lineRenderer.gameObject.SetActive(true);
+
+                // Update the positions of the line renderer
+                lineRenderer.SetPosition(0, mousePosition);
+                lineRenderer.SetPosition(1, targetPosition);
+            }
+
+            CheckClickTarget();
+        }
+
+    }
+
+    public void CheckClickTarget()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Cast a ray from mouse position
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+            // Check if the ray intersects with any colliders
+            if (hit.collider != null)
+            {
+                // Handle the click
+                Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
+                // Add your click handling code here
+                targetClicked = hit.collider.gameObject;
+
+                //do the effects 
+                DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
+                //return everything where it was
+                HandManager.Instance.SetHandCards();
+
+                //remove line renderer
+                lineRenderer.gameObject.SetActive(false);
+
+                //leave from target
+                targetMode = false;
+
+
+            }
+        }
+        else if(Input.GetMouseButtonDown(1))
+        {
+            //remove line renderer
+            lineRenderer.gameObject.SetActive(false);
+
+            //return everything where it was
+            HandManager.Instance.SetHandCards();
+
+            //leave from target
+            targetMode = false;
+        }
     }
 
     public void UpdateCardAfterManaChange(GameObject cardPrefab)

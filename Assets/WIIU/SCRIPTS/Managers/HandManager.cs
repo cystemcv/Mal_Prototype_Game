@@ -50,10 +50,15 @@ public class HandManager : MonoBehaviour
 
     public void SetHandCards()
     {
-        foreach (GameObject card in cardsInHandList)
+        foreach (GameObject cardRef in cardsInHandList)
         {
-            SetCardPosition(card);
+            SetCardPosition(cardRef);
         }
+    }
+
+    public void SetHandCard(GameObject cardRef)
+    {
+        SetCardPosition(cardRef);
     }
 
     public void PushNeightbourCards(GameObject cardRef)

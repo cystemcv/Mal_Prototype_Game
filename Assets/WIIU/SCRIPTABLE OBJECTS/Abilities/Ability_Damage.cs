@@ -23,7 +23,7 @@ public class Ability_Damage : ScriptableCardAbility
     {
         //base.OnPlayCard();
 
-        Debug.Log("Deal " + GetAbilityVariable(scriptableCard) +  " damage");
+        Debug.Log("Deal " + GetAbilityVariable(scriptableCard) +  " damage to target " + CombatManager.Instance.targetClicked.name);
 
     }
 

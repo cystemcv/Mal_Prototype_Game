@@ -59,6 +59,9 @@ public class DeckManager : MonoBehaviour
     public void BuildStartingDeck()
     {
 
+        // Clear the deck before building a new one
+        deck.Clear();
+
         //loop throught each character on the character list and then add those cards to our deck
         foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayer)
         {
@@ -81,6 +84,20 @@ public class DeckManager : MonoBehaviour
 
         }
 
+        // Shuffle the deck
+        ShuffleDeck();
+
+    }
+
+    private void ShuffleDeck()
+    {
+        for (int i = 0; i < deck.Count; i++)
+        {
+            CardScript temp = deck[i];
+            int randomIndex = Random.Range(i, deck.Count);
+            deck[i] = deck[randomIndex];
+            deck[randomIndex] = temp;
+        }
     }
 
     public void DrawCardFromDeck()
@@ -285,6 +302,8 @@ public class DeckManager : MonoBehaviour
             //clear the discarded pile
             discardedPile.Clear();
         }
+
+        ShuffleDeck();
     }
 
     public bool CheckModeAvailabilityForCard(ScriptableCard scriptableCard)
@@ -339,7 +358,7 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
 
         //set it as a child of the parent
-        cardPrefab.transform.parent = parent.transform;
+        cardPrefab.transform.SetParent(parent.transform);
 
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
         //for text USE TEXT MESH PRO

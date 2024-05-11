@@ -17,7 +17,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private Vector3 saveRotation;
 
 
-    private int index = -1; // Initialize the index to -1
+    //private int index = -1; // Initialize the index to -1
 
     private GameObject childObjectVisual;
 
@@ -29,7 +29,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public float originalPosX;
     public float originalPosY;
 
-    public enum stateOfEvent { hover,exithover,clicked }
+    public enum stateOfEvent { hover, exithover, clicked }
 
     public stateOfEvent currentEvent;
 
@@ -54,7 +54,12 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-   
+
+        if (CombatManager.Instance.targetMode)
+        {
+            return;
+        }
+
         currentEvent = stateOfEvent.hover;
 
         // Scale up the hovered card
@@ -81,12 +86,18 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
-  
+
+        if (CombatManager.Instance.targetMode)
+        {
+            return;
+        }
+
         currentEvent = stateOfEvent.exithover;
-        index = -1; // Reset the index when the pointer exits the card
+        //index = -1; // Reset the index when the pointer exits the card
 
         //reset the position of all other cards
         HandManager.Instance.PushNeightbourCards(null);
+
 
         // Scale down the card
         scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
@@ -102,14 +113,26 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
 
+
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (CombatManager.Instance.targetMode)
+        {
+            return;
+        }
+
         isDragging = true;
         //canvasGroup.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+
+        if (CombatManager.Instance.targetMode)
+        {
+            return;
+        }
+
         if (isDragging)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -123,7 +146,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 //activation should not be visible
                 //green color
-                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(35, 207 , 40, 100);
+                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(35, 207, 40, 100);
             }
             else
             {
@@ -136,19 +159,58 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+
+        if (CombatManager.Instance.targetMode)
+        {
+            return;
+        }
+
         isDragging = false;
         //canvasGroup.blocksRaycasts = true;
 
         //no color 
         gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
 
-        if (canActivate && gameObject.GetComponent<CardScript>().scriptableCard.primaryManaCost <= CombatManager.Instance.manaAvailable)
+        ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
+
+        if (canActivate && scriptableCard.primaryManaCost <= CombatManager.Instance.manaAvailable)
         {
-            //do the effects 
-            DeckManager.Instance.PlayCard(gameObject.GetComponent<CardScript>());
+
+            // Scale down the card
+            scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+
+            if (scriptableCard.canTarget)
+            {
+                //if the card is targetable
+
+                //enter click mode which will disable all events from the cards
+                CombatManager.Instance.targetMode = true;
+
+                CombatManager.Instance.targetUIElement = this.gameObject.GetComponent<RectTransform>();
+
+                CombatManager.Instance.targetClicked = null;
+
+                //when mouse click on sprite do the shit
+                HandManager.Instance.SetHandCard(this.gameObject);
+            }
+            else
+            {
+
+                //if the card is not targetable
+
+                //do the effects 
+                DeckManager.Instance.PlayCard(gameObject.GetComponent<CardScript>());
+                //return everything where it was
+                HandManager.Instance.SetHandCards();
+            }
+        }
+        else
+        {
+            //return everything where it was
+            HandManager.Instance.SetHandCards();
         }
 
-        HandManager.Instance.SetHandCards();
+
     }
 
 
