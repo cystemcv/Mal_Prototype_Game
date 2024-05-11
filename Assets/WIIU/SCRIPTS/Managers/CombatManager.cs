@@ -16,6 +16,11 @@ public class CombatManager : MonoBehaviour
 
     //---------------
 
+    //damage system
+    public GameObject numberOnScreen;
+
+    //---------------
+
     public int manaMaxAvailable = 3;
     public int manaAvailable = 0;     
     
@@ -145,6 +150,47 @@ public class CombatManager : MonoBehaviour
             //leave from target
             targetMode = false;
         }
+    }
+
+    public void AdjustHealth(GameObject target, int adjustNumber)
+    {
+
+
+        //update ui
+
+        //update based on type
+
+        if (target.tag == "Enemy")
+        {
+            AdjustHealthEnemy(target, adjustNumber);
+        }
+        else if(target.tag == "Player")
+        {
+
+        }
+        else
+        {
+            //we do nothing
+        }
+
+    }
+
+    public void AdjustHealthEnemy(GameObject target, int adjustNumber)
+    {
+
+        Debug.Log("Deal dmg : " + adjustNumber);
+
+        target.GetComponent<EnemyClass>().health += adjustNumber;
+
+        //spawn numberOn screen
+        // Instantiate at position (0, 0, 0) and zero rotation.
+        GameObject numberOnScreenPrefab = Instantiate(numberOnScreen, target.transform.position, Quaternion.identity);
+        numberOnScreenPrefab.transform.SetParent(target.transform);
+
+        //assign the number change
+        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
+
+        Destroy(numberOnScreenPrefab, 1f);
     }
 
     public void UpdateCardAfterManaChange(GameObject cardPrefab)

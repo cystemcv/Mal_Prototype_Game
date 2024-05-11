@@ -121,7 +121,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Charts\PieChart.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_Damage.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget.cs" />
     <Compile Include="Assets\LeanTween\Testing\PerformanceTests.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Button\ButtonManagerEditor.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\TestingZLegacyExt.cs" />
@@ -252,6 +252,9 @@
     <Compile Include="Assets\WIIU\SCRIPTS\GameObjectID.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Enemy\EnemyClass.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageRandomTarget.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageAllTargets.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -9,7 +9,7 @@ public class ScriptableCardAbility : ScriptableObject
    
     public virtual string AbilityDescription(ScriptableCard scriptableCard)
     {
-        return abilityName;
+        return "<color=blue>" + abilityName + "</color>";
     }
 
     public virtual void OnPlayCard(ScriptableCard scriptableCard)

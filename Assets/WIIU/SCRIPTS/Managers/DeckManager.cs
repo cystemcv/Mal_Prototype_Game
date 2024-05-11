@@ -33,7 +33,7 @@ public class DeckManager : MonoBehaviour
     public float extraSpacingAfterIndex = 155f;
 
     public float drawCardWaitTime = 0.6f;
-
+    public float playCardWaitTime = 0.6f;
 
     private void Awake()
     {
@@ -172,7 +172,7 @@ public class DeckManager : MonoBehaviour
         }
 
         //get the random card
-        int randomIndex = Random.Range(0, handCards.Count - 1);
+        int randomIndex = Random.Range(0, handCards.Count);
 
         //call the discard function
         DiscardCardFromHand(handCards[randomIndex]);
@@ -190,17 +190,38 @@ public class DeckManager : MonoBehaviour
             return;
         }
 
-        //activate all card abilities
-        foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
-        {
-            scriptableCardAbility.OnPlayCard(cardScript.scriptableCard);
-        }
+        //save the cardScript temp
+        CardScript tempCardScript = new CardScript();
+        tempCardScript = cardScript;
 
         ////the discard card
         DiscardCardFromHand(cardScript);
 
         //decrease available mana
         CombatManager.Instance.ManaAvailable -= cardScript.scriptableCard.primaryManaCost;
+
+        //activate all card abilities
+        ;
+
+        StartCoroutine(PlayCardCoroutine(tempCardScript));
+
+
+    }
+
+    IEnumerator PlayCardCoroutine(CardScript cardScript)
+    {
+  
+
+            foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
+            {
+                // Wait for 2 seconds
+                scriptableCardAbility.OnPlayCard(cardScript.scriptableCard);
+                yield return new WaitForSeconds(playCardWaitTime);
+
+            }
+
+
+
     }
 
     public string GenerateCardAbilityDescription(ScriptableCard scriptableCard)
@@ -231,7 +252,7 @@ public class DeckManager : MonoBehaviour
         }
 
         //get the random card
-        int randomIndex = Random.Range(0, handCards.Count - 1);
+        int randomIndex = Random.Range(0, handCards.Count);
 
         ////test the desc
         //Debug.Log(GenerateCardAbilityDescription(handCards[randomIndex]));
@@ -256,11 +277,12 @@ public class DeckManager : MonoBehaviour
         for (int i = 0; i < numberOfCards; i++)
         {
 
-            DrawCardFromDeck();
+
             // Wait for 2 seconds
             yield return new WaitForSeconds(drawCardWaitTime);
+            DrawCardFromDeck();
 
-         
+
         }
 
     }

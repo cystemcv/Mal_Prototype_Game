@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Ability_Damage", menuName = "CardAbility/Ability_Damage")]
-public class Ability_Damage : ScriptableCardAbility
+[CreateAssetMenu(fileName = "Ability_DamageSingleTarget", menuName = "CardAbility/Ability_DamageSingleTarget")]
+public class Ability_DamageSingleTarget : ScriptableCardAbility
 {
 
    // public int damage;
@@ -22,6 +22,8 @@ public class Ability_Damage : ScriptableCardAbility
     public override void OnPlayCard(ScriptableCard scriptableCard)
     {
         //base.OnPlayCard();
+
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard));
 
         Debug.Log("Deal " + GetAbilityVariable(scriptableCard) +  " damage to target " + CombatManager.Instance.targetClicked.name);
 
