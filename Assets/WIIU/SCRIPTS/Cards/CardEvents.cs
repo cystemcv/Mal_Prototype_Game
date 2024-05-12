@@ -41,6 +41,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private bool canActivate = false;
     private bool isDragging = false;
 
+
+
     void Start()
     {
         originalScale = transform.localScale;
@@ -121,7 +123,17 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             return;
         }
 
-        isDragging = true;
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+
+            isDragging = false;
+        }
+        else
+        {
+
+            isDragging = true;
+        }
+
         //canvasGroup.blocksRaycasts = false;
     }
 
@@ -132,6 +144,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             return;
         }
+
+
 
         if (isDragging)
         {
@@ -144,7 +158,13 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
             if (canActivate && gameObject.GetComponent<CardScript>().scriptableCard.primaryManaCost <= CombatManager.Instance.manaAvailable)
             {
+                ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
                 //activation should not be visible
+                if (scriptableCard.canTarget)
+                {
+                    OnPointerUp(null);
+                }
+
                 //green color
                 gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(35, 207, 40, 100);
             }
@@ -160,16 +180,39 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerUp(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.targetMode)
+        //no color 
+        gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
+
+        if (CombatManager.Instance.targetMode )
         {
+            return;
+        }
+
+        Debug.Log("isDragging : " + isDragging);
+
+        //if it cancel drag
+        if (isDragging == false)
+        {
+            //reset everything
+            //remove line renderer
+            CombatManager.Instance.lineRenderer.gameObject.SetActive(false);
+
+            //return everything where it was
+            HandManager.Instance.SetHandCards();
+
+            // Scale down the card
+            scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+
+            //leave from target
+            CombatManager.Instance.targetMode = false;
+
             return;
         }
 
         isDragging = false;
         //canvasGroup.blocksRaycasts = true;
 
-        //no color 
-        gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
+
 
         ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 

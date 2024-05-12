@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour
     //targeting system
     public bool targetMode = false;
     public RectTransform targetUIElement;
-    private LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
     public GameObject targetClicked;
 
     //---------------
@@ -86,7 +86,7 @@ public class CombatManager : MonoBehaviour
             if (targetUIElement != null)
             {
                 // Get the position of the target UI element in screen space
-                Vector3 targetScreenPosition = targetUIElement.position;
+                Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
 
                 // Convert the screen space position to world space
                 Vector3 targetPosition = Camera.main.ScreenToWorldPoint(targetScreenPosition);
@@ -100,8 +100,8 @@ public class CombatManager : MonoBehaviour
                 lineRenderer.gameObject.SetActive(true);
 
                 // Update the positions of the line renderer
-                lineRenderer.SetPosition(0, mousePosition);
-                lineRenderer.SetPosition(1, targetPosition);
+                lineRenderer.SetPosition(0, targetPosition);
+                lineRenderer.SetPosition(1, mousePosition );
             }
 
             CheckClickTarget();
@@ -250,7 +250,8 @@ public class CombatManager : MonoBehaviour
         //test deck
         DeckManager.Instance.BuildStartingDeck();
 
-   
+        //player turn
+        PlayerTurn();
 
         //initialize the characters
 
@@ -266,6 +267,9 @@ public class CombatManager : MonoBehaviour
     public void PlayerTurn()
     {
         //mana should go back to full
-        manaAvailable = manaMaxAvailable;
+        RefillMana();
+
+        //draw cards
+        DeckManager.Instance.DrawMultipleCards(DeckManager.Instance.turnHandCardsLimit);
     }
 }

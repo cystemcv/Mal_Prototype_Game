@@ -6,6 +6,7 @@ public class ScriptableCardAbility : ScriptableObject
 {
 
     public string abilityName;
+    public float waitForAbility = 0f;
    
     public virtual string AbilityDescription(ScriptableCard scriptableCard)
     {

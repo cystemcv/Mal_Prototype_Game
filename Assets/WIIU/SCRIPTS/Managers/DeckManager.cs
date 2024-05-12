@@ -32,8 +32,8 @@ public class DeckManager : MonoBehaviour
     public float spacing = 150f;
     public float extraSpacingAfterIndex = 155f;
 
-    public float drawCardWaitTime = 0.6f;
-    public float playCardWaitTime = 0.6f;
+    public float drawCardWaitTime;
+    public float playCardWaitTime;
 
     private void Awake()
     {
@@ -276,7 +276,12 @@ public class DeckManager : MonoBehaviour
     {
         for (int i = 0; i < numberOfCards; i++)
         {
-
+            //if its the first card then draw without delay
+            if (i == 0)
+            {
+                DrawCardFromDeck();
+                i++;
+            }
 
             // Wait for 2 seconds
             yield return new WaitForSeconds(drawCardWaitTime);

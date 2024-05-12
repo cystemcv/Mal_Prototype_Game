@@ -142,6 +142,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageAllTargets.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Notification\NotificationManager.cs" />
     <Compile Include="Assets\LeanTween\Framework\LTDescrOptional.cs" />
@@ -248,15 +249,16 @@
     <Compile Include="Assets\WIIU\SCRIPTS\Managers\IDataPersistence.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowDragger.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageRandomTarget.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\Enemy\EnemyClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralBasic.cs" />
     <Compile Include="Assets\WIIU\SCRIPTS\GameObjectID.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTS\Enemy\EnemyClass.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageRandomTarget.cs" />
-    <Compile Include="Assets\WIIU\SCRIPTABLE OBJECTS\Abilities\Ability_DamageAllTargets.cs" />
+    <Compile Include="Assets\WIIU\SCRIPTS\TEST\CustomUILineRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\WIIU\SHADERS\NewSurfaceShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\LeanTween\ReadMe.txt" />
@@ -266,6 +268,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\LeanTween\License.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
+    <None Include="Assets\WIIU\SHADERS\NewUnlitShader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Modern UI Pack\Read Me.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
@@ -282,6 +285,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\WIIU\SHADERS\LineRendererShaderUI.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
   </ItemGroup>
