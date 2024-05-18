@@ -14,6 +14,12 @@ public class CombatManager : MonoBehaviour
     public LineRenderer lineRenderer;
     public GameObject targetClicked;
 
+    
+    public enum combatTurn { playerStartTurn,playerTurn, playerEndTurn, enemyStartTurn,enemyTurn, enemyEndTurn }
+    public int turns = 0;
+
+    public combatTurn currentTurn;
+
     //---------------
 
     //damage system
@@ -23,6 +29,8 @@ public class CombatManager : MonoBehaviour
 
     public int manaMaxAvailable = 3;
     public int manaAvailable = 0;     
+
+
     
     public int ManaAvailable
     {
@@ -250,8 +258,9 @@ public class CombatManager : MonoBehaviour
         //test deck
         DeckManager.Instance.BuildStartingDeck();
 
-        //player turn
-        PlayerTurn();
+        StartCoroutine(WaitPlayerTurns());
+
+
 
         //initialize the characters
 
@@ -264,12 +273,99 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void PlayerTurn()
+    public void PlayerTurnStart()
     {
+        //start player turn
+        currentTurn = combatTurn.playerStartTurn;
+
         //mana should go back to full
         RefillMana();
 
+        //discard cards
+        DeckManager.Instance.DiscardWholeHand();
+
         //draw cards
         DeckManager.Instance.DrawMultipleCards(DeckManager.Instance.turnHandCardsLimit);
+
+        UIManager.Instance.OnNotification("PLAYER STARTING TURN", 1);
+    }
+
+    public void PlayerTurn()
+    {
+        currentTurn = combatTurn.playerTurn;
+        UIManager.Instance.OnNotification("PLAYER TURN", 1);
+
+    }
+
+    IEnumerator WaitPlayerTurns()
+    {
+
+        //player turn start
+        PlayerTurnStart();
+        yield return new WaitForSeconds(2f);
+
+        //player turn
+        PlayerTurn();
+
+    }
+
+    public void PlayerEndTurnButton()
+    {
+        if (currentTurn == combatTurn.playerTurn) {
+            StartCoroutine(WaitEnemyTurns());
+        }
+    }
+
+    public void PlayerTurnEnd()
+    {
+        currentTurn = combatTurn.playerEndTurn;
+        UIManager.Instance.OnNotification("PLAYER ENDING TURN", 1);
+
+    }
+
+    public void EnemyTurnStart()
+    {
+        currentTurn = combatTurn.enemyStartTurn;
+        UIManager.Instance.OnNotification("ENEMY STARTING TURN", 1);
+
+    }
+
+    public void EnemyTurn()
+    {
+        currentTurn = combatTurn.enemyTurn;
+        UIManager.Instance.OnNotification("ENEMY TURN", 1);
+
+    }
+
+    public void EnemyTurnEnd()
+    {
+        currentTurn = combatTurn.enemyEndTurn;
+        UIManager.Instance.OnNotification("ENEMY ENDING TURN", 1);
+
+    }
+
+    IEnumerator WaitEnemyTurns()
+    {
+
+        //player turn start
+        PlayerTurnEnd();
+        yield return new WaitForSeconds(2f);
+
+        //player turn
+        EnemyTurnStart();
+        yield return new WaitForSeconds(2f);
+
+        EnemyTurn();
+        yield return new WaitForSeconds(2f);
+
+        EnemyTurnEnd();
+        yield return new WaitForSeconds(2f);
+
+        PlayerTurnStart();
+        yield return new WaitForSeconds(2f);
+
+        PlayerTurn();
+        yield return new WaitForSeconds(2f);
+
     }
 }

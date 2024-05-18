@@ -164,6 +164,19 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public void DiscardWholeHand()
+    {
+        //foreach(CardScript handCard in handCards)
+        //{
+        //    DiscardCardFromHand(handCard);
+        //}
+
+        for (int i=handCards.Count-1; i >= 0; i--)
+        {
+            DiscardCardFromHand(handCards[i]);
+        }
+    }
+
     public void DiscardCardFromHandRandom()
     {
         if (handCards.Count == 0)
@@ -292,25 +305,6 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void DiscardWholeHand()
-    {
-
-        ////add cards from hand to discard pile
-        //foreach (ScriptableCard scriptableCard in handCards)
-        //{
-        //    discardedPile.Add(scriptableCard);
-        //}
-
-        ////destroy the gameobject prefab cards
-        //foreach (Transform cardPrefab in UIManager.Instance.handObjectParent.transform)
-        //{
-        //    Destroy(cardPrefab.gameObject);
-        //}
-
-        ////clear hand list
-        //handCards.Clear();
-
-    }
 
     public void FillUpDeckFromDiscardPile()
     {

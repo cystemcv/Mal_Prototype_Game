@@ -53,12 +53,15 @@ public class UIManager : MonoBehaviour
     public GameObject manaText;
 
 
+
     [Header("SETTINGS")]
     //modal stuff
     [SerializeField] private ModalWindowManager modalWindowManager;
     [SerializeField] private Sprite modalIcon;
 
-
+    [Header("NOTIFICATIONS")]
+    public GameObject notificationParent;
+    public GameObject notificationPb;
 
     public delegate void OnCurrentModeChange();
     public event OnCurrentModeChange onCurrentModeChange;
@@ -78,7 +81,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        
+
         if (Instance == null)
         {
             Instance = this;
@@ -125,11 +128,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY )
+        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
         }
-        else if(SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
+        else if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
             deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.deck.Count.ToString();
@@ -210,7 +213,7 @@ public class UIManager : MonoBehaviour
 
     public void MainMenuNext(string menuName)
     {
-      
+
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
@@ -256,13 +259,13 @@ public class UIManager : MonoBehaviour
         DisplayTabController.Instance.selectScreenMode.ChangeDropdownInfo(0); ///fullscreen
         DisplayTabController.Instance.SelectScreenMode(false);
         DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(1); //1920x1080
-        DisplayTabController.Instance.SelectScreenResolution(false); 
+        DisplayTabController.Instance.SelectScreenResolution(false);
     }
 
     public void SaveSettings()
     {
 
-        
+
 
         //save all the user settings
         PlayerPrefs.SetInt("user_save_settings", 1);
@@ -270,7 +273,7 @@ public class UIManager : MonoBehaviour
         //GRAPHICS TAB
         if (GraphicsTabController.Instance.changeQualitySettings == true)
         {
-   
+
             GraphicsTabController.Instance.checkQualitySettingIndexNow = int.Parse(GraphicsTabController.Instance.selectQualityOption.selectedText.text.Split(":")[0].Trim());
 
             //then change the graphics
@@ -450,6 +453,47 @@ public class UIManager : MonoBehaviour
 
         //open the correct menu
         NavigateMenu("SAVELOAD MENU");
+    }
+
+    //notifications
+    public void OnNotification(string message, float waitTime)
+    {
+        // Instantiate at position (0, 0, 0) and zero rotation.
+        GameObject notificationPrefab = Instantiate(notificationPb, notificationParent.transform.position, Quaternion.identity);
+
+        //set it as a child of the parent
+        notificationPrefab.transform.SetParent(notificationParent.transform);
+
+        //open the notification throught animations
+        Animator notificationAnimator = notificationPrefab.GetComponent<Animator>();
+        notificationAnimator.SetTrigger("On");
+
+        //set the text to our message
+        notificationPrefab.transform.Find("TEXT").GetComponent<TMP_Text>().text = message;
+
+        //start waiting time
+        StartCoroutine(WaitNotification(notificationPrefab, waitTime));
+    }
+
+    public void OffNotification(GameObject notificationPrefab, float timeToDestroy)
+    {
+        //open the notification throught animations
+        Animator notificationAnimator = notificationPrefab.GetComponent<Animator>();
+        notificationAnimator.SetTrigger("Off");
+
+        Destroy(notificationPrefab, timeToDestroy);
+    }
+
+    IEnumerator WaitNotification(GameObject notificationPrefab, float waitTime)
+    {
+
+
+
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(waitTime);
+        OffNotification(notificationPrefab, 2f);
+
+
     }
 
 }

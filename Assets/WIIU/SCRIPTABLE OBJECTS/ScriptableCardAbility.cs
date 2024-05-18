@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BuffSystemManager;
 
 public class ScriptableCardAbility : ScriptableObject
 {
 
     public string abilityName;
     public float waitForAbility = 0f;
-   
+
+    public buffDebuffName abilityBuffDebuffName;
+
     public virtual string AbilityDescription(ScriptableCard scriptableCard)
     {
         return "<color=blue>" + abilityName + "</color>";
@@ -24,6 +27,26 @@ public class ScriptableCardAbility : ScriptableObject
     }
 
     public virtual void OnBanishedCard(ScriptableCard scriptableCard)
+    {
+
+    }
+
+    public virtual void OnCharacterTurnStart(ScriptableCard scriptableCard)
+    {
+
+    }
+
+    public virtual void OnCharacterTurnEnd(ScriptableCard scriptableCard)
+    {
+
+    }
+
+    public virtual void OnEnemyTurnStart(ScriptableCard scriptableCard)
+    {
+
+    }
+
+    public virtual void OnEnemyTurnEnd(ScriptableCard scriptableCard)
     {
 
     }
