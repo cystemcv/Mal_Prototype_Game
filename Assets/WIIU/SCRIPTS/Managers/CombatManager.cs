@@ -328,6 +328,8 @@ public class CombatManager : MonoBehaviour
         currentTurn = combatTurn.enemyStartTurn;
         UIManager.Instance.OnNotification("ENEMY STARTING TURN", 1);
 
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.EnemyTurnStartBD();
     }
 
     public void EnemyTurn()

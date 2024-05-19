@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyClass : MonoBehaviour
 {
 
+    public List<GameObject> listBuffDebuffClass;
+
     public int health;
 
 }

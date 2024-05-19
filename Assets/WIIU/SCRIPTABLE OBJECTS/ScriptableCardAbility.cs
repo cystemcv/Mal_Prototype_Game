@@ -9,7 +9,9 @@ public class ScriptableCardAbility : ScriptableObject
     public string abilityName;
     public float waitForAbility = 0f;
 
-    public buffDebuffName abilityBuffDebuffName;
+    public ScriptableBuffDebuff scriptableBuffDebuff;
+
+
 
     public virtual string AbilityDescription(ScriptableCard scriptableCard)
     {
@@ -19,6 +21,8 @@ public class ScriptableCardAbility : ScriptableObject
     public virtual void OnPlayCard(ScriptableCard scriptableCard)
     {
 
+
+  
     }
 
     public virtual void OnDiscardCard(ScriptableCard scriptableCard)
@@ -31,24 +35,24 @@ public class ScriptableCardAbility : ScriptableObject
 
     }
 
-    public virtual void OnCharacterTurnStart(ScriptableCard scriptableCard)
+    public virtual bool OnCharacterTurnStart(GameObject target)
     {
-
+        return false;
     }
 
-    public virtual void OnCharacterTurnEnd(ScriptableCard scriptableCard)
+    public virtual bool OnCharacterTurnEnd(GameObject target)
     {
-
+        return false;
     }
 
-    public virtual void OnEnemyTurnStart(ScriptableCard scriptableCard)
+    public virtual bool OnEnemyTurnStart( GameObject target)
     {
-
+        return false;
     }
 
-    public virtual void OnEnemyTurnEnd(ScriptableCard scriptableCard)
+    public virtual bool OnEnemyTurnEnd(GameObject target)
     {
-
+        return false;
     }
 
     public int GetAbilityVariable(ScriptableCard scriptableCard)
@@ -83,5 +87,17 @@ public class ScriptableCardAbility : ScriptableObject
         }
 
         return abilityValue;
+    }
+
+    public ScriptableBuffDebuff GetBuffDebuff()
+    {
+
+        return scriptableBuffDebuff;
+    }
+
+    public ScriptableCardAbility GetThisAbility()
+    {
+
+        return this;
     }
 }

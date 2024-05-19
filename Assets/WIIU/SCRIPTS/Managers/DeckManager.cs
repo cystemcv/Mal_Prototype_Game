@@ -214,8 +214,7 @@ public class DeckManager : MonoBehaviour
         CombatManager.Instance.ManaAvailable -= cardScript.scriptableCard.primaryManaCost;
 
         //activate all card abilities
-        ;
-
+        
         StartCoroutine(PlayCardCoroutine(tempCardScript));
 
 
