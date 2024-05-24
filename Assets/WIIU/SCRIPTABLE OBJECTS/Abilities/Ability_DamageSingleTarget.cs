@@ -23,7 +23,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
     {
         //base.OnPlayCard();
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard));
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard), false);
 
         Debug.Log("Deal " + GetAbilityVariable(scriptableCard) +  " damage to target " + CombatManager.Instance.targetClicked.name);
 

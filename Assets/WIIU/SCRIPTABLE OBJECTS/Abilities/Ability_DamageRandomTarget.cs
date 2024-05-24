@@ -28,7 +28,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
         int randomNmbr = Random.Range(0, enemies.Length);
 
-        CombatManager.Instance.AdjustHealth(enemies[randomNmbr], GetAbilityVariable(scriptableCard));
+        CombatManager.Instance.AdjustHealth(enemies[randomNmbr], GetAbilityVariable(scriptableCard), false);
 
 
 

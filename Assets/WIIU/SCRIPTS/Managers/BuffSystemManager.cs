@@ -31,7 +31,7 @@ public class BuffSystemManager : MonoBehaviour
 
     public void AddDebuffToEnemyTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnForDebuff)
     {
-        GameObject gridSystem = target.transform.Find("BuffDebuffList").GetChild(0).gameObject;
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
         List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
 

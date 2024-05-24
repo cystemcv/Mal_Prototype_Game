@@ -28,10 +28,15 @@ public class CombatManager : MonoBehaviour
     //---------------
 
     public int manaMaxAvailable = 3;
-    public int manaAvailable = 0;     
+    public int manaAvailable = 0;
 
+    //ui healthbar colors
+    public Color32 fillbarWithoutShield =  new Color32(255,0,0,255);
+    public Color32 fillbarWithShield = new Color32(0, 121, 255, 255);
 
-    
+    private float fillbarVelocity = 0;
+    private float fillbarSmoothValue = 0.3f;
+
     public int ManaAvailable
     {
         get { return manaAvailable; }
@@ -160,7 +165,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void AdjustHealth(GameObject target, int adjustNumber)
+    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield)
     {
 
 
@@ -170,7 +175,7 @@ public class CombatManager : MonoBehaviour
 
         if (target.tag == "Enemy")
         {
-            AdjustHealthEnemy(target, adjustNumber);
+            AdjustHealthEnemy(target, adjustNumber, bypassShield);
         }
         else if(target.tag == "Player")
         {
@@ -183,12 +188,72 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void AdjustHealthEnemy(GameObject target, int adjustNumber)
+    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield)
     {
+      
+        EnemyClass enemyClass = target.GetComponent<EnemyClass>();
 
-        Debug.Log("Deal dmg : " + adjustNumber);
+        int remainingShield = 0;
+        //check if there is a shield
+        if (enemyClass.shield > 0 && bypassShield == false)
+        {
 
-        target.GetComponent<EnemyClass>().health += adjustNumber;
+            //then do dmg to shield
+            remainingShield = enemyClass.shield - adjustNumber;
+
+            //update the ui
+            if (remainingShield > 0)
+            {
+                //update enemy script
+                enemyClass.shield = remainingShield;
+
+                //update text on shield
+                enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+
+                //make the bar blue
+                enemyClass.fillBar.GetComponent<Image>().color = fillbarWithShield;
+
+            }
+            else
+            {
+                //then the enemy has no shield left
+                enemyClass.shield = 0;
+
+                //make the bar red
+                enemyClass.fillBar.GetComponent<Image>().color = fillbarWithoutShield;
+
+                //hide the icon
+                enemyClass.shieldIcon.SetActive(false);
+            }
+
+        }
+        else
+        {
+            //if there is no shield go straight to the health hp
+            remainingShield = adjustNumber * -1;
+        }
+
+        if (remainingShield < 0)
+        {
+
+            //then we subtract from the health the remaining amount
+            enemyClass.health += remainingShield;
+
+            if(enemyClass.health < 0)
+            {
+                enemyClass.health = 0;
+            }
+
+            //update text on hp
+            enemyClass.healthText.GetComponent<TMP_Text>().text = enemyClass.health + " / " + enemyClass.maxHealth;
+
+            //adjust the hp bar
+            UpdateEnemyHealthBarSmoothly(enemyClass);
+
+        }
+
+      
+
 
         //spawn numberOn screen
         // Instantiate at position (0, 0, 0) and zero rotation.
@@ -199,6 +264,31 @@ public class CombatManager : MonoBehaviour
         numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
 
         Destroy(numberOnScreenPrefab, 1f);
+
+        //if an enemy reach 0 hp then it should be destroyed
+
+        if (enemyClass.health <= 0)
+        {
+            Destroy(target,1f);
+        }
+
+
+    }
+
+    public void UpdateEnemyHealthBarSmoothly(EnemyClass enemyClass)
+    {
+        StartCoroutine(SmoothUpdateEnemyHealthBar(enemyClass));
+    }
+
+    private IEnumerator SmoothUpdateEnemyHealthBar(EnemyClass enemyClass)
+    {
+        float targetValue = (float)enemyClass.health / (float)enemyClass.maxHealth;
+        while (Mathf.Abs(enemyClass.slider.value - targetValue) > 0.01f)
+        {
+            enemyClass.slider.value = Mathf.SmoothDamp(enemyClass.slider.value, targetValue, ref fillbarVelocity, fillbarSmoothValue);
+            yield return null; // Wait for the next frame
+        }
+        enemyClass.slider.value = targetValue; // Ensure it's set to the target value at the end
     }
 
     public void UpdateCardAfterManaChange(GameObject cardPrefab)
