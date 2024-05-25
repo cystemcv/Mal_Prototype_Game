@@ -29,6 +29,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     [Header("SETTINGS")]
     public bool canTarget = false; //if it requires a target
+    public bool targetEnemy = true; //by default is on,otherwise target character
     public bool playerMode1 = false; //available on 1 character mode
     public bool playerMode2 = false;//available on 2 character mode
     public bool playerMode3 = false;//available on 3 character mode

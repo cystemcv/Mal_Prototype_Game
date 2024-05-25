@@ -29,7 +29,7 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         //then loop
         foreach (GameObject enemy in enemies)
         {
-            CombatManager.Instance.AdjustHealth(enemy, GetAbilityVariable(scriptableCard), false);
+            CombatManager.Instance.AdjustHealth(enemy, GetAbilityVariable(scriptableCard), false, CombatManager.AdjustNumberMode.ATTACK);
         }
       
 

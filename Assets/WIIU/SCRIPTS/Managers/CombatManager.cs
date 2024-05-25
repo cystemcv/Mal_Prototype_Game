@@ -31,11 +31,15 @@ public class CombatManager : MonoBehaviour
     public int manaAvailable = 0;
 
     //ui healthbar colors
-    public Color32 fillbarWithoutShield =  new Color32(255,0,0,255);
-    public Color32 fillbarWithShield = new Color32(0, 121, 255, 255);
+    public Color32 redColor =  new Color32(255,0,0,255);
+    public Color32 blueColor = new Color32(0, 121, 255, 255);
+    public Color32 whiteColor = new Color32(255, 255, 255, 255);
 
     private float fillbarVelocity = 0;
     private float fillbarSmoothValue = 0.3f;
+
+    //adjust number enum
+    public enum AdjustNumberMode { ATTACK, HEAL, SHIELD }
 
     public int ManaAvailable
     {
@@ -133,6 +137,27 @@ public class CombatManager : MonoBehaviour
             // Check if the ray intersects with any colliders
             if (hit.collider != null)
             {
+                //check if the target is the required one
+                if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player" )
+                {
+                    return;
+                }
+
+                string cardTag = "";
+                if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
+                {
+                    cardTag = "Enemy";
+                }
+                else 
+                {
+                    cardTag = "Player";
+                }
+
+                if (hit.collider.gameObject.tag != cardTag)
+                {
+                    return;
+                }
+
                 // Handle the click
                 Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
                 // Add your click handling code here
@@ -165,7 +190,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield)
+    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
     {
 
 
@@ -175,11 +200,11 @@ public class CombatManager : MonoBehaviour
 
         if (target.tag == "Enemy")
         {
-            AdjustHealthEnemy(target, adjustNumber, bypassShield);
+            AdjustHealthEnemy(target, adjustNumber, bypassShield, adjustNumberMode);
         }
         else if(target.tag == "Player")
         {
-
+            AdjustHealthCharacter(target, adjustNumber, bypassShield, adjustNumberMode);
         }
         else
         {
@@ -188,77 +213,126 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield)
+    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode )
     {
       
         EnemyClass enemyClass = target.GetComponent<EnemyClass>();
 
-        int remainingShield = 0;
-        //check if there is a shield
-        if (enemyClass.shield > 0 && bypassShield == false)
+        if (adjustNumberMode == AdjustNumberMode.ATTACK)
         {
 
-            //then do dmg to shield
-            remainingShield = enemyClass.shield - adjustNumber;
-
-            //update the ui
-            if (remainingShield > 0)
+            int remainingShield = 0;
+            //check if there is a shield
+            if (enemyClass.shield > 0 && bypassShield == false)
             {
-                //update enemy script
-                enemyClass.shield = remainingShield;
 
-                //update text on shield
-                enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+                //then do dmg to shield
+                remainingShield = enemyClass.shield - adjustNumber;
 
-                //make the bar blue
-                enemyClass.fillBar.GetComponent<Image>().color = fillbarWithShield;
+                //update the ui
+                if (remainingShield > 0)
+                {
+                    //update enemy script
+                    enemyClass.shield = remainingShield;
+
+                    //update text on shield
+                    enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+
+                    //make the bar blue
+                    enemyClass.fillBar.GetComponent<Image>().color = blueColor;
+
+                }
+                else
+                {
+                    //then the enemy has no shield left
+                    enemyClass.shield = 0;
+
+                    //make the bar red
+                    enemyClass.fillBar.GetComponent<Image>().color = redColor;
+
+                    //hide the icon
+                    enemyClass.shieldIcon.SetActive(false);
+                }
 
             }
             else
             {
-                //then the enemy has no shield left
-                enemyClass.shield = 0;
+                //if there is no shield go straight to the health hp
+                remainingShield = adjustNumber * -1;
+            }
 
-                //make the bar red
-                enemyClass.fillBar.GetComponent<Image>().color = fillbarWithoutShield;
+            if (remainingShield < 0)
+            {
 
-                //hide the icon
-                enemyClass.shieldIcon.SetActive(false);
+                //then we subtract from the health the remaining amount
+                enemyClass.health += remainingShield;
+
+                if (enemyClass.health < 0)
+                {
+                    enemyClass.health = 0;
+                }
+
+                //update text on hp
+                enemyClass.healthText.GetComponent<TMP_Text>().text = enemyClass.health + " / " + enemyClass.maxHealth;
+
+                //adjust the hp bar
+                UpdateHealthBarSmoothly(enemyClass.health, enemyClass.maxHealth, enemyClass.slider);
+
             }
 
         }
-        else
+        else if (adjustNumberMode == AdjustNumberMode.HEAL)
         {
-            //if there is no shield go straight to the health hp
-            remainingShield = adjustNumber * -1;
-        }
+            //increase the hp
 
-        if (remainingShield < 0)
-        {
+            enemyClass.health = enemyClass.health + adjustNumber;
 
-            //then we subtract from the health the remaining amount
-            enemyClass.health += remainingShield;
-
-            if(enemyClass.health < 0)
+            //check if max from hp
+            if (enemyClass.health > enemyClass.maxHealth)
             {
-                enemyClass.health = 0;
+                enemyClass.health = enemyClass.maxHealth;
             }
 
             //update text on hp
             enemyClass.healthText.GetComponent<TMP_Text>().text = enemyClass.health + " / " + enemyClass.maxHealth;
 
             //adjust the hp bar
-            UpdateEnemyHealthBarSmoothly(enemyClass);
+            UpdateHealthBarSmoothly(enemyClass.health, enemyClass.maxHealth, enemyClass.slider);
 
         }
+        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        {
+            //increase the shield
 
-      
+            enemyClass.shield = enemyClass.shield + adjustNumber;
 
+            //check if max from hp
+            if (enemyClass.shield > enemyClass.maxShield)
+            {
+                enemyClass.shield = enemyClass.maxShield;
+            }
+
+            if (enemyClass.shield > 0)
+            {
+                //show the icon
+                enemyClass.shieldIcon.SetActive(true);
+
+                //update text on shield
+                enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+
+                //make the bar blue
+                enemyClass.fillBar.GetComponent<Image>().color = blueColor;
+            }
+
+        }
 
         //spawn numberOn screen
         // Instantiate at position (0, 0, 0) and zero rotation.
         GameObject numberOnScreenPrefab = Instantiate(numberOnScreen, target.transform.position, Quaternion.identity);
         numberOnScreenPrefab.transform.SetParent(target.transform);
+
+        //assign the number change
+        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().color = AdjustNumberModeColor(adjustNumberMode);
 
         //assign the number change
         numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
@@ -275,20 +349,175 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void UpdateEnemyHealthBarSmoothly(EnemyClass enemyClass)
+    public void AdjustHealthCharacter(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
     {
-        StartCoroutine(SmoothUpdateEnemyHealthBar(enemyClass));
+
+        CharacterClass characterClass = target.GetComponent<CharacterClass>();
+
+        if (adjustNumberMode == AdjustNumberMode.ATTACK)
+        {
+
+            int remainingShield = 0;
+            //check if there is a shield
+            if (characterClass.shield > 0 && bypassShield == false)
+            {
+
+                //then do dmg to shield
+                remainingShield = characterClass.shield - adjustNumber;
+
+                //update the ui
+                if (remainingShield > 0)
+                {
+                    //update enemy script
+                    characterClass.shield = remainingShield;
+
+                    //update text on shield
+                    characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
+
+                    //make the bar blue
+                    characterClass.fillBar.GetComponent<Image>().color = blueColor;
+
+                }
+                else
+                {
+                    //then the enemy has no shield left
+                    characterClass.shield = 0;
+
+                    //make the bar red
+                    characterClass.fillBar.GetComponent<Image>().color = redColor;
+
+                    //hide the icon
+                    characterClass.shieldIcon.SetActive(false);
+                }
+
+            }
+            else
+            {
+                //if there is no shield go straight to the health hp
+                remainingShield = adjustNumber * -1;
+            }
+
+            if (remainingShield < 0)
+            {
+
+                //then we subtract from the health the remaining amount
+                characterClass.health += remainingShield;
+
+                if (characterClass.health < 0)
+                {
+                    characterClass.health = 0;
+                }
+
+                //update text on hp
+                characterClass.healthText.GetComponent<TMP_Text>().text = characterClass.health + " / " + characterClass.maxHealth;
+
+                //adjust the hp bar
+                UpdateHealthBarSmoothly(characterClass.health, characterClass.maxHealth, characterClass.slider);
+
+            }
+
+        }
+        else if (adjustNumberMode == AdjustNumberMode.HEAL)
+        {
+            //increase the hp
+
+            characterClass.health = characterClass.health + adjustNumber;
+
+            //check if max from hp
+            if (characterClass.health > characterClass.maxHealth)
+            {
+                characterClass.health = characterClass.maxHealth;
+            }
+
+            //update text on hp
+            characterClass.healthText.GetComponent<TMP_Text>().text = characterClass.health + " / " + characterClass.maxHealth;
+
+            //adjust the hp bar
+            UpdateHealthBarSmoothly(characterClass.health, characterClass.maxHealth, characterClass.slider);
+
+        }
+        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        {
+            //increase the shield
+
+            characterClass.shield = characterClass.shield + adjustNumber;
+
+            //check if max from hp
+            if (characterClass.shield > characterClass.maxShield)
+            {
+                characterClass.shield = characterClass.maxShield;
+            }
+
+            if (characterClass.shield > 0)
+            {
+                //show the icon
+                characterClass.shieldIcon.SetActive(true);
+
+                //update text on shield
+                characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
+
+                //make the bar blue
+                characterClass.fillBar.GetComponent<Image>().color = blueColor;
+            }
+
+        }
+
+        //spawn numberOn screen
+        // Instantiate at position (0, 0, 0) and zero rotation.
+        GameObject numberOnScreenPrefab = Instantiate(numberOnScreen, target.transform.position, Quaternion.identity);
+        numberOnScreenPrefab.transform.SetParent(target.transform);
+
+        //assign the number change
+        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().color = AdjustNumberModeColor( adjustNumberMode);
+
+        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
+
+        Destroy(numberOnScreenPrefab, 1f);
+
+        //if an enemy reach 0 hp then it should be destroyed
+
+        //if (enemyClass.health <= 0)
+        //{
+        //    Destroy(target, 1f);
+        //}
+
+
     }
 
-    private IEnumerator SmoothUpdateEnemyHealthBar(EnemyClass enemyClass)
+    public Color32 AdjustNumberModeColor(AdjustNumberMode adjustNumberMode)
     {
-        float targetValue = (float)enemyClass.health / (float)enemyClass.maxHealth;
-        while (Mathf.Abs(enemyClass.slider.value - targetValue) > 0.01f)
+        Color32 colorToChange = whiteColor;
+
+        if (adjustNumberMode == AdjustNumberMode.ATTACK)
         {
-            enemyClass.slider.value = Mathf.SmoothDamp(enemyClass.slider.value, targetValue, ref fillbarVelocity, fillbarSmoothValue);
+            colorToChange = whiteColor;
+        }
+        else if(adjustNumberMode == AdjustNumberMode.HEAL)
+        {
+            colorToChange = redColor;
+        }
+        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        {
+            colorToChange = blueColor;
+        }
+
+        return colorToChange;
+    }
+
+    public void UpdateHealthBarSmoothly(float health, float maxHealth, Slider slider)
+    {
+        StartCoroutine(SmoothUpdateHealthBar( health,  maxHealth, slider));
+    }
+
+    private IEnumerator SmoothUpdateHealthBar(float health, float maxHealth, Slider slider)
+    {
+        float targetValue = health / maxHealth;
+        while (Mathf.Abs(slider.value - targetValue) > 0.01f)
+        {
+            slider.value = Mathf.SmoothDamp(slider.value, targetValue, ref fillbarVelocity, fillbarSmoothValue);
             yield return null; // Wait for the next frame
         }
-        enemyClass.slider.value = targetValue; // Ensure it's set to the target value at the end
+        slider.value = targetValue; // Ensure it's set to the target value at the end
     }
 
     public void UpdateCardAfterManaChange(GameObject cardPrefab)
