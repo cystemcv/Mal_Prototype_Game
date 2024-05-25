@@ -47,4 +47,7 @@ public class ScriptablePlayer : ScriptableObject
     public int currLevel = 1;
 
 
+    //other stats
+    public int poisonDmg = 1;
+
 }

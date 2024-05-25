@@ -118,7 +118,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (CombatManager.Instance.targetMode)
+        if (CombatManager.Instance.targetMode || CombatManager.Instance.currentTurn != CombatManager.combatTurn.playerTurn)
         {
             return;
         }

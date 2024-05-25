@@ -13,11 +13,14 @@ public class HandManager : MonoBehaviour
 
     //
     public float angleDelta = 0;
+    public float[] angleDeltaArray;
     public float radius = 0;
     public GameObject centerObject;
 
     public float pushingSpeed = 0.2f;
     public float pushingDistance = 200f;
+    public float[] pushingDistanceArray;
+    public float[] pushingDistanceFavorRight;
     public float resetSpeed = 0.2f;
     public float drawSpeed = 1f;
 
@@ -94,7 +97,7 @@ public class HandManager : MonoBehaviour
                     //card.GetComponent<CardEvents>().originalPos = card.transform;
 
                     //push left based on the distance wanted
-                    float posX = card.GetComponent<CardEvents>().originalPosX + (-1 * pushingDistance); //+ (20 * Mathf.Abs(cardPos - index));
+                    float posX = card.GetComponent<CardEvents>().originalPosX + (-1 * (pushingDistanceArray[cardsInHandList.Count-1] - pushingDistanceFavorRight[cardsInHandList.Count - 1])); //+ (20 * Mathf.Abs(cardPos - index));
                     card.GetComponent<CardEvents>().moveTween = LeanTween.moveX(card, posX, pushingSpeed);
                 }
                 else if (cardPos > index)
@@ -103,7 +106,7 @@ public class HandManager : MonoBehaviour
                     //card.GetComponent<CardEvents>().originalPos = card.transform;
 
                     ////push right
-                    float posX = card.GetComponent<CardEvents>().originalPosX + (pushingDistance);// - (20 * ( cardPos - index));
+                    float posX = card.GetComponent<CardEvents>().originalPosX + ((pushingDistanceArray[cardsInHandList.Count - 1] + pushingDistanceFavorRight[cardsInHandList.Count - 1]));// - (20 * ( cardPos - index));
                     card.GetComponent<CardEvents>().moveTween = LeanTween.moveX(card, posX, pushingSpeed);
                 }
                 else
@@ -134,7 +137,7 @@ public class HandManager : MonoBehaviour
         //Note that the midpoint will either be a whole number or x.5
         float midpoint = (cardsInHandList.Count - 1) / 2f;
 
-        float angleCalc = (angleDelta / cardsInHandList.Count * 2) + 1.2f;
+        float angleCalc =angleDeltaArray[cardsInHandList.Count-1]  ;//(angleDelta / cardsInHandList.Count * 2) + 1.2f;
 
         float angle = angleCalc * (midpoint - index);
 

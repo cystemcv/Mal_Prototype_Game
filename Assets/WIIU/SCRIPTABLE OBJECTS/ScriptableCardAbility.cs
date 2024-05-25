@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BuffSystemManager;
 
 public class ScriptableCardAbility : ScriptableObject
 {
 
     public string abilityName;
     public float waitForAbility = 0f;
-   
+
+    public ScriptableBuffDebuff scriptableBuffDebuff;
+
+
+
     public virtual string AbilityDescription(ScriptableCard scriptableCard)
     {
         return "<color=blue>" + abilityName + "</color>";
@@ -16,6 +21,8 @@ public class ScriptableCardAbility : ScriptableObject
     public virtual void OnPlayCard(ScriptableCard scriptableCard)
     {
 
+
+  
     }
 
     public virtual void OnDiscardCard(ScriptableCard scriptableCard)
@@ -26,6 +33,26 @@ public class ScriptableCardAbility : ScriptableObject
     public virtual void OnBanishedCard(ScriptableCard scriptableCard)
     {
 
+    }
+
+    public virtual bool OnCharacterTurnStart(GameObject target)
+    {
+        return false;
+    }
+
+    public virtual bool OnCharacterTurnEnd(GameObject target)
+    {
+        return false;
+    }
+
+    public virtual bool OnEnemyTurnStart( GameObject target)
+    {
+        return false;
+    }
+
+    public virtual bool OnEnemyTurnEnd(GameObject target)
+    {
+        return false;
     }
 
     public int GetAbilityVariable(ScriptableCard scriptableCard)
@@ -60,5 +87,17 @@ public class ScriptableCardAbility : ScriptableObject
         }
 
         return abilityValue;
+    }
+
+    public ScriptableBuffDebuff GetBuffDebuff()
+    {
+
+        return scriptableBuffDebuff;
+    }
+
+    public ScriptableCardAbility GetThisAbility()
+    {
+
+        return this;
     }
 }
