@@ -8,7 +8,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     private float hoverScale = 1.2f;
     private float transitionTime = 0.1f;
-    private float hoverHeight = 100f;
+    private float hoverHeight = 70f;
 
     public int sortOrder = 0;
 
@@ -65,10 +65,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         currentEvent = stateOfEvent.hover;
 
         // Scale up the hovered card
-        scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
+       scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
 
         //// Move the card slightly up in world space
-        float targetY = transform.position.y + hoverHeight;
+        //float targetY = transform.position.y + hoverHeight;
+        float targetY = HandManager.Instance.centerObject.transform.position.y + hoverHeight;
         localMoveTween = LeanTween.moveY(gameObject, targetY, transitionTime);
 
         //save and then make the angle 0

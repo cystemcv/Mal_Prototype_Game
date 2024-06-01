@@ -9,8 +9,7 @@ public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance;
 
-    public int turnHandCardsLimit = 5;
-    public int maxHandCardsLimit = 10;
+
 
     //Deck
     public List<CardScript> deck;
@@ -115,7 +114,7 @@ public class DeckManager : MonoBehaviour
             CardScript cardScript = deck[0];
 
             //if it passes the max hand limit the discard it, otherwise add it to the hand
-            if (handCards.Count >= maxHandCardsLimit)
+            if (handCards.Count >= HandManager.Instance.maxHandCardsLimit)
             {
 
                 //discard it
@@ -380,6 +379,9 @@ public class DeckManager : MonoBehaviour
         //set it as a child of the parent
         cardPrefab.transform.SetParent(parent.transform);
 
+        //make the local scale 1,1,1
+        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
         //for text USE TEXT MESH PRO
 
@@ -417,6 +419,16 @@ public class DeckManager : MonoBehaviour
         cardChild.transform.Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }
 
+    //public Color32 AssignCardColor()
+    //{
+    //    Color32 colorToChange;
+
+    //    if ()
+    //    {
+
+    //    }
+    //}
+
     public void InitializeCardPrefabDiscard(CardScript cardScript)
     {
         //create gameobject on scene and spawn it on the discard spawner
@@ -429,12 +441,15 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
         cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
 
+        //make the local scale 1,1,1
+        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
         //update the information on the card prefab
         UpdateCardUI(cardPrefab);
 
         //move it
         LeanTween.move(cardPrefab, UIManager.Instance.discardText.transform.position, 1.5f);
-        LeanTween.scale(cardPrefab, new Vector3(0,0,0), 1.5f);
+        //LeanTween.scale(cardPrefab, new Vector3(0,0,0), 1.5f);
         Destroy(cardPrefab,1.5f);
     }
 

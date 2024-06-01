@@ -9,20 +9,27 @@ public class HandManager : MonoBehaviour
     public List<GameObject> cardsInHandList; // Array to hold card GameObjects
     public List<GameObject> points;
 
-
+    public int turnHandCardsLimit = 5;
+    public int maxHandCardsLimit = 10;
 
     //
     public float angleDelta = 0;
     public float[] angleDeltaArray;
-    public float radius = 0;
+   // public float radius = 0;
+    public float radiusMultiplier = 0.1f; // Multiplier to control the radius
     public GameObject centerObject;
 
     public float pushingSpeed = 0.2f;
     public float pushingDistance = 200f;
-    public float[] pushingDistanceArray;
-    public float[] pushingDistanceFavorRight;
+
+    public float pushingMultiplierLeft = 0.1f;
+    public float pushingMultiplierRight = 0.1f;
+    //public float[] pushingDistanceArray;
+    //public float[] pushingDistanceFavorRight;
     public float resetSpeed = 0.2f;
     public float drawSpeed = 1f;
+
+    public float adjustObjectYAxis = 0f;
 
     //ACTIVATION AREA
     [SerializeField] private RectTransform activateArea;
@@ -48,7 +55,14 @@ public class HandManager : MonoBehaviour
     public void Start()
     {
         //SetHandCards();
+
+
+
     }
+
+
+
+
 
 
     public void SetHandCards()
@@ -89,6 +103,14 @@ public class HandManager : MonoBehaviour
                 //get how far is the card from index 5 3
                 int howManyCardsFromIndex = Mathf.Abs(cardPos - index);
 
+                float screenHeight = Screen.height;
+                float limitPushBasedOnHand = ((maxHandCardsLimit + 1) - cardsInHandList.Count);
+
+                float pushLeft = (screenHeight / limitPushBasedOnHand) * pushingMultiplierLeft;
+                float pushRight = (screenHeight / limitPushBasedOnHand) * pushingMultiplierRight;
+
+   
+                //push more the more cards you have in the hand
 
                 if (cardPos < index)
                 {
@@ -97,7 +119,7 @@ public class HandManager : MonoBehaviour
                     //card.GetComponent<CardEvents>().originalPos = card.transform;
 
                     //push left based on the distance wanted
-                    float posX = card.GetComponent<CardEvents>().originalPosX + (-1 * (pushingDistanceArray[cardsInHandList.Count-1] - pushingDistanceFavorRight[cardsInHandList.Count - 1])); //+ (20 * Mathf.Abs(cardPos - index));
+                    float posX = card.GetComponent<CardEvents>().originalPosX + (-1 * pushLeft); //+ (20 * Mathf.Abs(cardPos - index));
                     card.GetComponent<CardEvents>().moveTween = LeanTween.moveX(card, posX, pushingSpeed);
                 }
                 else if (cardPos > index)
@@ -106,7 +128,7 @@ public class HandManager : MonoBehaviour
                     //card.GetComponent<CardEvents>().originalPos = card.transform;
 
                     ////push right
-                    float posX = card.GetComponent<CardEvents>().originalPosX + ((pushingDistanceArray[cardsInHandList.Count - 1] + pushingDistanceFavorRight[cardsInHandList.Count - 1]));// - (20 * ( cardPos - index));
+                    float posX = card.GetComponent<CardEvents>().originalPosX + pushRight;// - (20 * ( cardPos - index));
                     card.GetComponent<CardEvents>().moveTween = LeanTween.moveX(card, posX, pushingSpeed);
                 }
                 else
@@ -127,9 +149,25 @@ public class HandManager : MonoBehaviour
 
     }
 
+    public void AdjustCenterObject()
+    {
+        // Get the RectTransform of the centerObject
+        RectTransform rectTransform = centerObject.GetComponent<RectTransform>();
+
+        // Set its anchored position to the bottom center
+        rectTransform.anchorMin = new Vector2(0.5f, 0);
+        rectTransform.anchorMax = new Vector2(0.5f, 0);
+        rectTransform.pivot = new Vector2(0.5f, 0);
+
+        // Adjust the Y position based on screen height
+        rectTransform.anchoredPosition = new Vector2(0, adjustObjectYAxis);
+    }
 
     public void SetCardPosition(GameObject cardRef)
     {
+
+        AdjustCenterObject();
+
 
         int index = cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardRef.GetComponent<CardScript>().cardID); //FindCardIndex(cardRef.GetComponent<CardScript>());
   
@@ -150,15 +188,23 @@ public class HandManager : MonoBehaviour
         //This means we need to flip either the angle or the x value when calculating the
         //position.
         angle *= -Mathf.Deg2Rad;
+
+        // Adjust the radius based on the screen height
+        float screenHeight = Screen.height;
+        float radius = screenHeight * radiusMultiplier;
+
         float x = Mathf.Sin(angle) * radius;
         float y = Mathf.Cos(angle) * radius;
         //cards[index].transform.position = new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0);
 
-        LeanTween.move(cardsInHandList[index], new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0), drawSpeed);
+        // Set the position relative to the bottom center of the screen
+        Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radius, 0);
+        LeanTween.move(cardsInHandList[index], targetPosition, drawSpeed);
+        //LeanTween.move(cardsInHandList[index], new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0), drawSpeed);
 
         //save the original position
         cardsInHandList[index].GetComponent<CardEvents>().originalPosX = centerObject.transform.position.x + x;
-        cardsInHandList[index].GetComponent<CardEvents>().originalPosY = centerObject.transform.position.y + y;
+        cardsInHandList[index].GetComponent<CardEvents>().originalPosY = (centerObject.transform.position.y + y) - radius;
 
         //save the sort order
         cardsInHandList[index].GetComponent<CardEvents>().sortOrder = index;

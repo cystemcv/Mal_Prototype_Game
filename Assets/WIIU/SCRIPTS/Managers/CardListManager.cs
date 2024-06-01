@@ -16,6 +16,11 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> Chaos_Mage_CardPool;
     public List<ScriptableCard> Ranger_CardPool;
 
+    //colors
+    public Color32 redColor = new Color32(255, 0, 0, 255);
+    public Color32 blueColor = new Color32(0, 121, 255, 255);
+    public Color32 whiteColor = new Color32(255, 255, 255, 255);
+
     private void Awake()
     {
 
@@ -30,4 +35,6 @@ public class CardListManager : MonoBehaviour
         }
 
     }
+
+
 }

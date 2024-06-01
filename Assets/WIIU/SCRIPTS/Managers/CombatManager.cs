@@ -604,7 +604,7 @@ public class CombatManager : MonoBehaviour
         DeckManager.Instance.DiscardWholeHand();
 
         //draw cards
-        DeckManager.Instance.DrawMultipleCards(DeckManager.Instance.turnHandCardsLimit);
+        DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
 
         UIManager.Instance.OnNotification("PLAYER STARTING TURN", 1);
     }
