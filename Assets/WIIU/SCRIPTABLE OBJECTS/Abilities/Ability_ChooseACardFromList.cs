@@ -8,13 +8,11 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 {
     public CharacterManager.MainClass mainClass;
     public CardListManager.CardType cardType;
+    public CardListManager.AddCardTo addCardTo;
     public bool setManaCost = false;
     public bool modifyManaCost = false;
     public int cardsToChoose = 3;
 
-    public bool addToHand = false;
-    public bool addToDeck = false;
-    public bool addToDiscardPile = false;
 
     public override string AbilityDescription(CardScript cardScript)
     {
@@ -65,6 +63,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         //change the mode
         CombatManager.Instance.abilityMode = CombatManager.AbilityModes.CHOICE;
 
+        //where to add card
+        CardListManager.Instance.addCardTo = CardListManager.AddCardTo.Hand;
+
         //get the cards to display
         for (int i = 0; i < cardsToChoose; i++)
         {
@@ -81,10 +82,31 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
             CardScript cardScriptTemp = new CardScript();
             cardScriptTemp.scriptableCard = filteredCardList[randomIndex];
 
-    
+     
+
+            if (setManaCost)
+            {
+                cardScriptTemp.primaryManaCost = GetAbilityVariable(cardScript);
+
+                cardScriptTemp.resetManaCost = true;
+                cardScriptTemp.changedMana = true;
+            }
+            else if (modifyManaCost)
+            {
+                cardScriptTemp.primaryManaCost += GetAbilityVariable(cardScript);
+                //reset to 0 if its below
+                if (cardScriptTemp.primaryManaCost <= 0)
+                {
+                    cardScriptTemp.primaryManaCost = 0;
+                }
+
+                cardScriptTemp.resetManaCost = true;
+                cardScriptTemp.changedMana = true;
+            }
+
 
             //generate the card and parent it
-            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false, false);
+            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false);
 
 
 

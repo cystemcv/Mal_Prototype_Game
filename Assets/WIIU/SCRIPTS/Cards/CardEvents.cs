@@ -321,15 +321,17 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerDown_ChoiceMode(PointerEventData eventData)
     {
+
         if (eventData.button == PointerEventData.InputButton.Right)
         {
+
 
 
         }
         else
         {
+            DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>());
 
-          
         }
     }
 

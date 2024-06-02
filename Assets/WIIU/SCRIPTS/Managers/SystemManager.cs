@@ -163,4 +163,15 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
         return colorFromHex;
     }
+
+    public void DestroyAllChildren(GameObject parent)
+    {
+
+        foreach (Transform child in parent.transform)
+        {
+            // Destroy each child GameObject
+            Destroy(child.gameObject);
+        }
+
+    }
 }

@@ -132,7 +132,7 @@ public class DeckManager : MonoBehaviour
                 handCards.Add(cardScript);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, false, true);
+                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, true);
 
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
@@ -148,18 +148,20 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void GetCardFromCombatDeckToHand(int index, bool modifiedManaCost)
+    public void GetCardFromCombatDeckToHand(int index)
     {
 
         if (combatDeck.Count != 0)
         {
             CardScript cardScript = combatDeck[index];
 
+            Debug.Log("inside : " + cardScript.changedMana);
+
             //add it to the hand
             handCards.Add(cardScript);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, modifiedManaCost, true);
+            InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, true);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -255,6 +257,8 @@ public class DeckManager : MonoBehaviour
             if (cardScript.resetManaCost)
             {
                 cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
+                cardScript.resetManaCost = false;
+                cardScript.changedMana = false;
             }
 
             yield return new WaitForSeconds(playCardWaitTime);
@@ -386,13 +390,9 @@ public class DeckManager : MonoBehaviour
         mainDeck.Add(null);
     }
 
-    public void AddCardOnCombatDeck(ScriptableCard scriptableCard, int character)
+    public void AddCardOnCombatDeck(CardScript cardScript)
     {
 
-        //add a card ti deck
-        GameObject cardPrefab = CardListManager.Instance.cardPrefab;
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-        combatDeck.Add(null);
     }
 
     public void RemoveCardFromDeck(ScriptableCard card, int character)
@@ -402,7 +402,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool modifiedManaCost, bool addToHand)
+    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand)
     {
 
         //instantiate the prefab 
@@ -414,8 +414,13 @@ public class DeckManager : MonoBehaviour
         //add the scriptable card object to the prefab class to reference
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
         cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
+        cardPrefab.GetComponent<CardScript>().changedMana = cardScript.changedMana;
+        cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
 
-        if (modifiedManaCost == false) {
+        Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
+
+        if (cardScript.changedMana == false)
+        {
             cardPrefab.GetComponent<CardScript>().primaryManaCost = scriptableCard.primaryManaCost;
         }
 
@@ -436,7 +441,8 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
 
         //add it to the hand list
-        if (addToHand) {
+        if (addToHand)
+        {
             HandManager.Instance.cardsInHandList.Add(cardPrefab);
         }
 
@@ -546,6 +552,45 @@ public class DeckManager : MonoBehaviour
 
 
     }
+
+    public void AddCardToList(CardScript cardScript)
+    {
+
+        if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.Hand)
+        {
+            //add to deck then draw it
+            combatDeck.Add(cardScript);
+
+            //get the index then draw it
+            int combatDeckIndex = combatDeck.FindIndex(card => card.cardID == cardScript.cardID);
+
+            DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex);
+
+        }
+        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.discardPile)
+        {
+            discardedPile.Add(cardScript);
+        }
+        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.combatDeck)
+        {
+            combatDeck.Add(cardScript);
+        }
+        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.mainDeck)
+        {
+            mainDeck.Add(cardScript);
+        }
+
+        //close the thing 
+        UIManager.Instance.chooseACardScreen.SetActive(false);
+
+        //resume
+        CombatManager.Instance.abilityMode = CombatManager.AbilityModes.NONE;
+
+        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+
+    }
+
+
 
 
 }

@@ -14,6 +14,7 @@ public class CardScript : MonoBehaviour
     //cards temp values
     public int primaryManaCost = 0;
     public bool resetManaCost = false;
+    public bool changedMana = false;
 
     public CardScript()
     {

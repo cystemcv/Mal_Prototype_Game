@@ -18,6 +18,9 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> Chaos_Mage_CardPool;
     public List<ScriptableCard> Ranger_CardPool;
 
+    public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
+    public AddCardTo addCardTo;
+
     public enum CardType { Attack, Magic, Skill , Focus , Status, Curse,  }
 
 

@@ -64,14 +64,23 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         //get the actual card from combat deck
         CardScript foundCardScript = DeckManager.Instance.combatDeck[combatDeckIndex];
 
-        bool modifiedManaCost = false;
+        if (DeckManager.Instance.handCards.Count >= HandManager.Instance.maxHandCardsLimit)
+        {
+
+            //discard it
+            DeckManager.Instance.discardedPile.Add(cardScript);
+
+            DeckManager.Instance.InitializeCardPrefabDiscard(cardScript);
+
+            return;
+        }
 
         if (setManaCost)
         {
             foundCardScript.primaryManaCost = GetAbilityVariable(cardScript);
 
             foundCardScript.resetManaCost = true;
-            modifiedManaCost = true;
+            foundCardScript.changedMana = true;
         }
         else if (modifyManaCost)
         {
@@ -83,14 +92,14 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
             }
 
             foundCardScript.resetManaCost = true;
-            modifiedManaCost = true;
+            foundCardScript.changedMana = true;
         }
 
 
-        Debug.Log("card cost " + foundCardScript.primaryManaCost);
+        Debug.Log("card 21s " + foundCardScript.changedMana);
  
     
-        DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex, modifiedManaCost);
+        DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex);
 
 
     }
