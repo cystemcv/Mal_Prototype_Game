@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private float hoverScale = 1.2f;
+    private float hoverChoiceScale = 1.5f;
     private float transitionTime = 0.1f;
     private float hoverHeight = 70f;
 
@@ -54,18 +55,98 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    #region EVENTS
+
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.targetMode)
+        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        {
+            OnPointerEnter_TargetMode();
+        }
+        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE) {
+            OnPointerEnter_ChoiceMode();
+        }
+
+
+
+
+    }
+
+
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+
+        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        {
+            OnPointerExit_TargetMode();
+        }
+        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE)
+        {
+            OnPointerExit_ChoiceMode();
+        }
+
+
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if ( CombatManager.Instance.currentTurn != CombatManager.combatTurn.playerTurn)
         {
             return;
         }
 
+
+        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        {
+            OnPointerDown_TargetMode(eventData);
+        }
+        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE)
+        {
+            OnPointerDown_ChoiceMode(eventData);
+        }
+
+    }
+
+
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
+        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        {
+            OnDrag_TargetMode(eventData);
+        }
+
+
+
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+
+
+        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        {
+            OnPointerUp_TargetMode(eventData);
+        }
+
+
+    }
+
+    #endregion
+
+
+
+    //TARGET MODE
+    #region TARGETMODE
+    public void OnPointerEnter_TargetMode()
+    {
         currentEvent = stateOfEvent.hover;
 
         // Scale up the hovered card
-       scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
+        scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
 
         //// Move the card slightly up in world space
         //float targetY = transform.position.y + hoverHeight;
@@ -79,21 +160,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         gameObject.GetComponent<Canvas>().sortingOrder = 999;
 
         HandManager.Instance.PushNeightbourCards(this.gameObject);
-        // StartCoroutine(WaitForOtherAnimationsToBeDone(HandManager.Instance.resetSpeed));
-
-
-
-
     }
 
-
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit_TargetMode()
     {
-
-        if (CombatManager.Instance.targetMode)
-        {
-            return;
-        }
 
         currentEvent = stateOfEvent.exithover;
         //index = -1; // Reset the index when the pointer exits the card
@@ -112,18 +182,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         gameObject.transform.eulerAngles = saveRotation;
 
         gameObject.GetComponent<Canvas>().sortingOrder = sortOrder;
-
     }
 
-
-
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown_TargetMode(PointerEventData eventData)
     {
-        if (CombatManager.Instance.targetMode || CombatManager.Instance.currentTurn != CombatManager.combatTurn.playerTurn)
-        {
-            return;
-        }
-
         if (eventData.button == PointerEventData.InputButton.Right)
         {
 
@@ -134,19 +196,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
             isDragging = true;
         }
-
-        //canvasGroup.blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void OnDrag_TargetMode(PointerEventData eventData)
     {
-
-        if (CombatManager.Instance.targetMode)
-        {
-            return;
-        }
-
-
 
         if (isDragging)
         {
@@ -178,18 +231,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp_TargetMode(PointerEventData eventData)
     {
-
         //no color 
         gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
 
-        if (CombatManager.Instance.targetMode )
-        {
-            return;
-        }
-
-        Debug.Log("isDragging : " + isDragging);
 
         //if it cancel drag
         if (isDragging == false)
@@ -205,7 +251,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
             //leave from target
-            CombatManager.Instance.targetMode = false;
+            CombatManager.Instance.abilityMode = CombatManager.AbilityModes.NONE;
 
             return;
         }
@@ -228,7 +274,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 //if the card is targetable
 
                 //enter click mode which will disable all events from the cards
-                CombatManager.Instance.targetMode = true;
+                CombatManager.Instance.abilityMode = CombatManager.AbilityModes.TARGET;
 
                 CombatManager.Instance.targetUIElement = this.gameObject.GetComponent<RectTransform>();
 
@@ -254,9 +300,41 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             HandManager.Instance.SetHandCards();
         }
 
+    }
 
+    #endregion
+
+    //CHOICE MODE
+    #region CHOICEMODE
+    public void OnPointerEnter_ChoiceMode()
+    {
+        // Scale up the hovered card
+        scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverChoiceScale, transitionTime);
+        gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+    }
+
+    public void OnPointerExit_ChoiceMode()
+    {
+        // Scale down the card
+        scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+    }
+
+    public void OnPointerDown_ChoiceMode(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+
+
+        }
+        else
+        {
+
+          
+        }
     }
 
 
+
+    #endregion
 
 }

@@ -132,7 +132,7 @@ public class DeckManager : MonoBehaviour
                 handCards.Add(cardScript);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, false);
+                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, false, true);
 
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
@@ -159,7 +159,7 @@ public class DeckManager : MonoBehaviour
             handCards.Add(cardScript);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, modifiedManaCost);
+            InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, modifiedManaCost, true);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -402,7 +402,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool modifiedManaCost)
+    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool modifiedManaCost, bool addToHand)
     {
 
         //instantiate the prefab 
@@ -431,8 +431,14 @@ public class DeckManager : MonoBehaviour
 
         UpdateCardUI(cardPrefab);
 
+        //add sorting 
+        cardPrefab.GetComponent<CardEvents>().sortOrder = 1200;
+        cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
+
         //add it to the hand list
-        HandManager.Instance.cardsInHandList.Add(cardPrefab);
+        if (addToHand) {
+            HandManager.Instance.cardsInHandList.Add(cardPrefab);
+        }
 
         //check mana
         CombatManager.Instance.UpdateCardAfterManaChange(cardPrefab);

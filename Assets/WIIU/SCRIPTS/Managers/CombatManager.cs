@@ -9,12 +9,16 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance;
 
     //targeting system
-    public bool targetMode = false;
+    public enum AbilityModes { NONE, TARGET, CHOICE }
+
+    public AbilityModes abilityMode = AbilityModes.NONE;
+
     public RectTransform targetUIElement;
     public LineRenderer lineRenderer;
     public GameObject targetClicked;
 
-    
+
+
     public enum combatTurn { playerStartTurn,playerTurn, playerEndTurn, enemyStartTurn,enemyTurn, enemyEndTurn }
     public int turns = 0;
 
@@ -92,7 +96,7 @@ public class CombatManager : MonoBehaviour
     public void Update()
     {
 
-        if (targetMode)
+        if (abilityMode == AbilityModes.TARGET)
         {
 
             // Check if the target UI element is available
@@ -168,7 +172,7 @@ public class CombatManager : MonoBehaviour
                 lineRenderer.gameObject.SetActive(false);
 
                 //leave from target
-                targetMode = false;
+                abilityMode = AbilityModes.NONE;
 
 
             }
@@ -182,7 +186,7 @@ public class CombatManager : MonoBehaviour
             HandManager.Instance.SetHandCards();
 
             //leave from target
-            targetMode = false;
+            abilityMode = AbilityModes.NONE;
         }
     }
 

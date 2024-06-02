@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
     public GameObject discardText;
     public GameObject banishedText;
     public GameObject manaText;
-
+    public GameObject chooseACardScreen;
 
 
     [Header("SETTINGS")]
