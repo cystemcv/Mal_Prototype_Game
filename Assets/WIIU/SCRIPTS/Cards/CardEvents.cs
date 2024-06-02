@@ -157,7 +157,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             //check activation
             canActivate = HandManager.Instance.CheckActivation(rectTransform);
 
-            if (canActivate && gameObject.GetComponent<CardScript>().scriptableCard.primaryManaCost <= CombatManager.Instance.manaAvailable)
+            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable)
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
                 //activation should not be visible
@@ -167,12 +167,12 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
 
                 //green color
-                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(35, 207, 40, 100);
+                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationSuccess);
             }
             else
             {
                 //red color
-                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(255, 0, 0, 100);
+                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationFail);
             }
 
         }
@@ -182,7 +182,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
 
         //no color 
-        gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = new Color32(0, 0, 0, 0);
+        gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
 
         if (CombatManager.Instance.targetMode )
         {
@@ -217,7 +217,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 
-        if (canActivate && scriptableCard.primaryManaCost <= CombatManager.Instance.manaAvailable)
+        if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable)
         {
 
             // Scale down the card

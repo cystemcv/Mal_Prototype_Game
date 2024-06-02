@@ -10,22 +10,22 @@ public class Ability_Draw : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Draw " + GetAbilityVariable(scriptableCard) + " cards";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Draw " + GetAbilityVariable(cardScript) + " cards";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
 
-        Debug.Log("Draw " + GetAbilityVariable(scriptableCard) +  " cards");
+        Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 
-        int cardsToDraw = GetAbilityVariable(scriptableCard);
+        int cardsToDraw = GetAbilityVariable(cardScript);
 
         DeckManager.Instance.DrawMultipleCards(cardsToDraw);
 

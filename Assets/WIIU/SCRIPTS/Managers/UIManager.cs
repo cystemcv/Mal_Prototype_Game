@@ -135,7 +135,7 @@ public class UIManager : MonoBehaviour
         else if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
-            deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.deck.Count.ToString();
+            deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
             discardText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
             banishedText.transform.GetChild(0).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
         }

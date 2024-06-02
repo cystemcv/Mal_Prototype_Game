@@ -16,10 +16,8 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> Chaos_Mage_CardPool;
     public List<ScriptableCard> Ranger_CardPool;
 
-    //colors
-    public Color32 redColor = new Color32(255, 0, 0, 255);
-    public Color32 blueColor = new Color32(0, 121, 255, 255);
-    public Color32 whiteColor = new Color32(255, 255, 255, 255);
+    public enum CardType { Attack, Magic, Skill , Focus , Status, Curse,  }
+
 
     private void Awake()
     {
@@ -35,6 +33,43 @@ public class CardListManager : MonoBehaviour
         }
 
     }
+
+    public Color GetClassColor(ScriptableCard scriptableCard)
+    {
+        Color color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+
+        if (scriptableCard.mainClass == CharacterManager.MainClass.Knight)
+        {
+            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
+        }
+        else if (scriptableCard.mainClass == CharacterManager.MainClass.Rogue)
+        {
+            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
+        }
+
+        return color;
+    }
+
+//    public Color32 GetClassColor(ScriptableCard scriptableCard)
+//    {
+
+//        Color32 color32 = whiteColor;
+
+//        if (scriptableCard.mainClass == CharacterManager.MainClass.Knight)
+//        {
+//            color32 = redColor;
+//        }
+//        else if (scriptableCard.mainClass == CharacterManager.MainClass.Rogue)
+//        {
+//color32 = 
+//        }
+
+//        Color colorFromHex;
+//        ColorUtility.TryParseHtmlString("#FFEC19", out colorFromHex);
+
+//        return color32;
+
+//    }
 
 
 }

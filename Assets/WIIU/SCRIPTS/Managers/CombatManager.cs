@@ -31,10 +31,6 @@ public class CombatManager : MonoBehaviour
     public int manaAvailable = 0;
 
     //ui healthbar colors
-    public Color32 redColor =  new Color32(255,0,0,255);
-    public Color32 blueColor = new Color32(0, 121, 255, 255);
-    public Color32 whiteColor = new Color32(255, 255, 255, 255);
-
     private float fillbarVelocity = 0;
     private float fillbarSmoothValue = 0.3f;
 
@@ -239,7 +235,7 @@ public class CombatManager : MonoBehaviour
                     enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
 
                     //make the bar blue
-                    enemyClass.fillBar.GetComponent<Image>().color = blueColor;
+                    enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
 
                 }
                 else
@@ -248,7 +244,7 @@ public class CombatManager : MonoBehaviour
                     enemyClass.shield = 0;
 
                     //make the bar red
-                    enemyClass.fillBar.GetComponent<Image>().color = redColor;
+                    enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
                     //hide the icon
                     enemyClass.shieldIcon.SetActive(false);
@@ -321,7 +317,7 @@ public class CombatManager : MonoBehaviour
                 enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
 
                 //make the bar blue
-                enemyClass.fillBar.GetComponent<Image>().color = blueColor;
+                enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
             }
 
         }
@@ -375,7 +371,7 @@ public class CombatManager : MonoBehaviour
                     characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
 
                     //make the bar blue
-                    characterClass.fillBar.GetComponent<Image>().color = blueColor;
+                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
 
                 }
                 else
@@ -384,7 +380,7 @@ public class CombatManager : MonoBehaviour
                     characterClass.shield = 0;
 
                     //make the bar red
-                    characterClass.fillBar.GetComponent<Image>().color = redColor;
+                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
 
                     //hide the icon
                     characterClass.shieldIcon.SetActive(false);
@@ -457,7 +453,7 @@ public class CombatManager : MonoBehaviour
                 characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
 
                 //make the bar blue
-                characterClass.fillBar.GetComponent<Image>().color = blueColor;
+                characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
             }
 
         }
@@ -486,19 +482,19 @@ public class CombatManager : MonoBehaviour
 
     public Color32 AdjustNumberModeColor(AdjustNumberMode adjustNumberMode)
     {
-        Color32 colorToChange = whiteColor;
+        Color32 colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
 
         if (adjustNumberMode == AdjustNumberMode.ATTACK)
         {
-            colorToChange = whiteColor;
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
         }
         else if(adjustNumberMode == AdjustNumberMode.HEAL)
         {
-            colorToChange = redColor;
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); ;
         }
         else if (adjustNumberMode == AdjustNumberMode.SHIELD)
         {
-            colorToChange = blueColor;
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); ;
         }
 
         return colorToChange;
@@ -523,19 +519,20 @@ public class CombatManager : MonoBehaviour
     public void UpdateCardAfterManaChange(GameObject cardPrefab)
     {
         ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
         TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
 
 
         //check the mana cost of each
-        if (CombatManager.Instance.manaAvailable < scriptableCard.primaryManaCost)
+        if (CombatManager.Instance.manaAvailable < cardScript.primaryManaCost)
         {
             //cannot be played
-            cardManaCostText.color = new Color(255, 0, 0, 255);
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
         }
         else
         {
             //can be played
-            cardManaCostText.color = new Color(255, 255, 255, 255);
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
         }
     }
 
@@ -562,8 +559,7 @@ public class CombatManager : MonoBehaviour
 
     public void StartCombat()
     {
-        //give mana to player
-        RefillMana();
+
 
         //change into combat mode
         SystemManager.Instance.currentSystemMode = SystemManager.SystemModes.COMBAT;
@@ -574,8 +570,20 @@ public class CombatManager : MonoBehaviour
         //open the UI combat menu
         UIManager.Instance.UICOMBAT.SetActive(true);
 
-        //test deck
-        DeckManager.Instance.BuildStartingDeck();
+        //give mana to player
+        RefillMana();
+
+        //initialize the combat deck
+        DeckManager.Instance.combatDeck.Clear();
+        DeckManager.Instance.combatDeck = new List<CardScript>(DeckManager.Instance.mainDeck);
+        DeckManager.Instance.ShuffleDeck(DeckManager.Instance.combatDeck);
+
+        //clean up discard pile
+        DeckManager.Instance.discardedPile.Clear();
+
+        //clean up banished pile
+        DeckManager.Instance.banishedPile.Clear();
+
 
         StartCoroutine(WaitPlayerTurns());
 

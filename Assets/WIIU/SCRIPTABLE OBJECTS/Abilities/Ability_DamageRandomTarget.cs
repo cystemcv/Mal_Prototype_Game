@@ -10,25 +10,25 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Deal " + GetAbilityVariable(scriptableCard) + " to a random enemy";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Deal " + GetAbilityVariable(cardScript) + " to a random enemy";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
 
         //get all enemies
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         int randomNmbr = Random.Range(0, enemies.Length);
 
-        CombatManager.Instance.AdjustHealth(enemies[randomNmbr], GetAbilityVariable(scriptableCard), false, CombatManager.AdjustNumberMode.ATTACK);
+        CombatManager.Instance.AdjustHealth(enemies[randomNmbr], GetAbilityVariable(cardScript), false, CombatManager.AdjustNumberMode.ATTACK);
 
 
 

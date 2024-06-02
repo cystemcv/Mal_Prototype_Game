@@ -10,18 +10,18 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Deal " + GetAbilityVariable(scriptableCard) + " to an enemy";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
         BuffSystemManager.Instance.AddDebuffToEnemyTarget(this, CombatManager.Instance.targetClicked, 3);
 
     }

@@ -10,20 +10,20 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Deal " + GetAbilityVariable(scriptableCard) + " to an enemy (Ignore Block)";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy (Ignore Block)";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard), true, CombatManager.AdjustNumberMode.ATTACK);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), true, CombatManager.AdjustNumberMode.ATTACK);
 
 
     }

@@ -10,20 +10,20 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Heal " + GetAbilityVariable(scriptableCard) + " to character";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Heal " + GetAbilityVariable(cardScript) + " to character";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard), false, CombatManager.AdjustNumberMode.HEAL);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, CombatManager.AdjustNumberMode.HEAL);
 
 
     }

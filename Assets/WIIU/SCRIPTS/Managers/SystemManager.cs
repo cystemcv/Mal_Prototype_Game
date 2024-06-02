@@ -7,6 +7,21 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 {
     public static SystemManager Instance;
 
+    //common colors
+    public string colorWhite = "FFFFFF";
+    public string colorRed = "FF0000";
+    public string colorBlue = "003FFF";
+    public string colorLightBlue = "0079FF";
+    public string colorYellow = "F9FF00";
+    public string colorGreen = "25FF00";
+
+    //completely transparent
+    public string colorTransparent = "FFFFFF00";
+
+    //specific
+    public string colorActivationFail = "FF000060";
+    public string colorActivationSuccess = "25FF0060";
+
     public GameObject uiManager;
     public GameObject audioManager;
     public GameObject dataPersistenceManager;
@@ -138,5 +153,14 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public void RuntimeInitializeOnLoadMethod()
     {
    
+    }
+
+    public Color GetColorFromHex(string hex)
+    {
+     
+        Color colorFromHex = Color.white;
+        bool boolColor = ColorUtility.TryParseHtmlString("#" + hex, out colorFromHex);
+
+        return colorFromHex;
     }
 }

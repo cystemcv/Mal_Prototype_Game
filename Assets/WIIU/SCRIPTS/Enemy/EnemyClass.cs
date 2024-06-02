@@ -33,7 +33,7 @@ public class EnemyClass : MonoBehaviour
 
         //make the healthbar red and hide shield
         shieldIcon.gameObject.SetActive(false);
-        fillBar.GetComponent<Image>().color = CombatManager.Instance.redColor;
+        fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
         //update based on enemy hp and max hp
         healthText.GetComponent<TMP_Text>().text = health + " / " + maxHealth;
@@ -48,7 +48,7 @@ public class EnemyClass : MonoBehaviour
             shieldText.GetComponent<TMP_Text>().text = shield.ToString();
 
             //make the bar blue
-            fillBar.GetComponent<Image>().color = CombatManager.Instance.blueColor;
+            fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
 
             //make shield icon visible
             shieldIcon.SetActive(true);

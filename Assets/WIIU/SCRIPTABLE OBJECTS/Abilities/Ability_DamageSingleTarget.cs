@@ -10,22 +10,22 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(ScriptableCard scriptableCard)
+    public override string AbilityDescription(CardScript cardScript)
     {
-        string keyword = base.AbilityDescription(scriptableCard);
-        string description = "Deal " + GetAbilityVariable(scriptableCard) + " to an enemy";
+        string keyword = base.AbilityDescription(cardScript);
+        string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
         string final = keyword + " : " + description;
 
         return final;
     }
 
-    public override void OnPlayCard(ScriptableCard scriptableCard)
+    public override void OnPlayCard(CardScript cardScript)
     {
-        //base.OnPlayCard();
+        base.OnPlayCard(cardScript);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(scriptableCard), false, CombatManager.AdjustNumberMode.ATTACK);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, CombatManager.AdjustNumberMode.ATTACK);
 
-        Debug.Log("Deal " + GetAbilityVariable(scriptableCard) +  " damage to target " + CombatManager.Instance.targetClicked.name);
+        Debug.Log("Deal " + GetAbilityVariable(cardScript) +  " damage to target " + CombatManager.Instance.targetClicked.name);
 
     }
 
