@@ -32,6 +32,7 @@ public class CharacterClass : MonoBehaviour
     public TMP_Text characterTitle;
     public Image uiPanelBorder;
 
+
     [Header("ID")]
     public string characterID;
 

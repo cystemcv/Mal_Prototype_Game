@@ -17,7 +17,10 @@ public class CombatManager : MonoBehaviour
     public LineRenderer lineRenderer;
     public GameObject targetClicked;
 
+    //our combat scene
+    public GameObject combatScene;
 
+    public List<GameObject> characterSpawns;
 
     public enum combatTurn { playerStartTurn,playerTurn, playerEndTurn, enemyStartTurn,enemyTurn, enemyEndTurn }
     public int turns = 0;
@@ -704,6 +707,20 @@ public class CombatManager : MonoBehaviour
 
         PlayerTurn();
         yield return new WaitForSeconds(2f);
+
+    }
+
+    public void InstantiateCharacter(ScriptablePlayer scriptablePlayer, int spawnPosition)
+    {
+
+        //instantiate the character prefab based on the spawnPosition
+        GameObject character = Instantiate(scriptablePlayer.characterPrefab, characterSpawns[spawnPosition].transform.position, Quaternion.identity);
+
+        //pass it the scriptable object to the class
+        character.GetComponent<CharacterClass>().scriptablePlayer = scriptablePlayer;
+
+        //parent it to our characters object
+        character.transform.SetParent(CombatManager.Instance.combatScene.transform.Find("Characters"));
 
     }
 }

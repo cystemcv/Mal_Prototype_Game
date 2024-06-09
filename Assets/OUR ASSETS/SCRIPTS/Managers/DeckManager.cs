@@ -65,7 +65,7 @@ public class DeckManager : MonoBehaviour
         mainDeck.Clear();
 
         //loop throught each character on the character list and then add those cards to our deck
-        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayer)
+        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayerList)
         {
 
             //loop for each starting card list and add it to our deck
@@ -364,15 +364,15 @@ public class DeckManager : MonoBehaviour
         bool accepted = false;
 
         //check if the card can be added based on the mode
-        if (CharacterManager.Instance.scriptablePlayer.Count == 1 && scriptableCard.playerMode1 == true)
+        if (CharacterManager.Instance.scriptablePlayerList.Count == 1 && scriptableCard.playerMode1 == true)
         {
             accepted = true;
         }
-        else if (CharacterManager.Instance.scriptablePlayer.Count == 2 && scriptableCard.playerMode2 == true)
+        else if (CharacterManager.Instance.scriptablePlayerList.Count == 2 && scriptableCard.playerMode2 == true)
         {
             accepted = true;
         }
-        else if (CharacterManager.Instance.scriptablePlayer.Count == 3 && scriptableCard.playerMode3 == true)
+        else if (CharacterManager.Instance.scriptablePlayerList.Count == 3 && scriptableCard.playerMode3 == true)
         {
             accepted = true;
         }
@@ -462,7 +462,7 @@ public class DeckManager : MonoBehaviour
         cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
         cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
 
-        cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard);
+        cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
 
         //mana cost
         cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();

@@ -8,7 +8,7 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptablePlayer> characterList;
 
-    public List<ScriptablePlayer> scriptablePlayer;
+    public List<ScriptablePlayer> scriptablePlayerList;
 
     public enum GameMode { MainMode,DuoMode,AnyMode }
 
@@ -32,6 +32,27 @@ public class CharacterManager : MonoBehaviour
 
     }
 
+
+    public int CheckCharacterLimitBasedOnMode()
+    {
+
+        int limit = 0;
+
+        if (gameMode == GameMode.MainMode) {
+            limit = 1;
+        }
+        else if (gameMode == GameMode.DuoMode)
+        {
+            limit = 2;
+        }
+        else
+        {
+            limit = 1;
+        }
+
+        return limit;
+
+    }
    
 
 }

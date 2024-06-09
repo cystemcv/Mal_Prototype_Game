@@ -39,15 +39,15 @@ public class CardListManager : MonoBehaviour
 
     }
 
-    public Color GetClassColor(ScriptableCard scriptableCard)
+    public Color GetClassColor(CharacterManager.MainClass mainClass)
     {
         Color color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
 
-        if (scriptableCard.mainClass == CharacterManager.MainClass.Knight)
+        if (mainClass == CharacterManager.MainClass.Knight)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
         }
-        else if (scriptableCard.mainClass == CharacterManager.MainClass.Rogue)
+        else if (mainClass == CharacterManager.MainClass.Rogue)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
         }

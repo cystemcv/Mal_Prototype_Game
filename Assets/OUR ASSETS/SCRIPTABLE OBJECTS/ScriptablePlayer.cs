@@ -21,6 +21,8 @@ public class ScriptablePlayer : ScriptableObject
 
     public Sprite characterIcon;
 
+    public string characterDescription;
+
     //Character Stats - Obviously subject to alteration
     public int strength = 1;
     //affects damage with most weapons, weapons and armor that can be used, and possibly... carry weight (does not affect damage for things like crossbows)

@@ -70,6 +70,7 @@ public class UIManager : MonoBehaviour
     [Header("CHARACTERS")]
     public GameObject characterSelectionContent;
     public GameObject characterPanelUIPrefab;
+    public GameObject proceedToGame;
 
     public delegate void OnCurrentModeChange();
     public event OnCurrentModeChange onCurrentModeChange;
@@ -322,6 +323,12 @@ public class UIManager : MonoBehaviour
         //change the mode
         CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
 
+        //clear the list
+        CharacterManager.Instance.scriptablePlayerList.Clear();
+
+        //disable the proceed button
+        UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
+
         //display all characters
         DisplayAllCharacters();
 
@@ -353,7 +360,13 @@ public class UIManager : MonoBehaviour
         headerText.text = "CHOOSE 2 CHARACTERS!";
 
         //change the mode
-        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+        CharacterManager.Instance.gameMode = CharacterManager.GameMode.DuoMode;
+
+        //clear the list
+        CharacterManager.Instance.scriptablePlayerList.Clear();
+
+        //disable the proceed button
+        UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
 
         //display all characters
         DisplayAllCharacters();
@@ -662,7 +675,7 @@ public class UIManager : MonoBehaviour
 
             //generate each character
             GameObject characterPanel = Instantiate(characterPanelUIPrefab, characterSelectionContent.transform.position, Quaternion.identity);
-            characterPanel.GetComponent<CharacterClass>().scriptablePlayer = scriptablePlayer;
+            characterPanel.transform.GetChild(0).GetComponent<CharacterCard>().scriptablePlayer = scriptablePlayer;
  
             //set it as a child of the parent
             characterPanel.transform.SetParent(characterSelectionContent.transform);
@@ -684,5 +697,127 @@ public class UIManager : MonoBehaviour
         MainMenuNext("CHARACTER SELECTION MENU");
 
     }
+
+    public void DisableButton(GameObject button)
+    {
+        //disable it
+        button.GetComponent<Button>().interactable = false;
+
+        //then we disable everything except the bg
+
+        foreach (Transform child in button.transform)
+        {
+
+            //we want to get the color
+
+            //check if its not the background because we do not want to affect this
+            if (child.name == "background")
+            {
+
+                continue;
+            }
+
+            //check if its a text
+            TMP_Text childText = child.GetComponent<TMP_Text>();
+
+            if(childText != null)
+            {
+                Color32 originalColor = childText.color;
+
+                //change the color to transparetn
+                childText.color = new Color32(originalColor.r,originalColor.g, originalColor.b, 30);
+            }
+
+
+            //check if its an image
+            Image childImage = child.GetComponent<Image>();
+
+            if (childImage != null)
+            {
+                Color32 originalColor = childImage.color;
+
+                //change the color to transparetn
+                childImage.color = new Color32(originalColor.r, originalColor.g, originalColor.b, 30);
+            }
+
+        }
+
+
+    }
+
+    public void EnableButton(GameObject button)
+    {
+        //disable it
+        button.GetComponent<Button>().interactable = true;
+
+        //then we disable everything except the bg
+
+        foreach (Transform child in button.transform)
+        {
+
+            //we want to get the color
+
+            //check if its not the background because we do not want to affect this
+            if (child.name == "background")
+            {
+
+                continue;
+            }
+
+            //check if its a text
+            TMP_Text childText = child.GetComponent<TMP_Text>();
+
+            if (childText != null)
+            {
+                Color32 originalColor = childText.color;
+
+                //change the color to transparetn
+                childText.color = new Color32(originalColor.r, originalColor.g, originalColor.b, 255);
+            }
+
+
+            //check if its an image
+            Image childImage = child.GetComponent<Image>();
+
+            if (childImage != null)
+            {
+                Color32 originalColor = childImage.color;
+
+                //change the color to transparetn
+                childImage.color = new Color32(originalColor.r, originalColor.g, originalColor.b, 255);
+            }
+
+        }
+
+
+    }
+
+    public void ProceedToGame()
+    {
+
+        //destroy any previous characters
+        SystemManager.Instance.DestroyAllChildren(CombatManager.Instance.combatScene.transform.Find("Characters").gameObject);
+
+        int positionSpawn = 0;
+        //generate the selected characters that will be used throught the game
+        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayerList)
+        {
+            //instantiate our character or characters
+            CombatManager.Instance.InstantiateCharacter(scriptablePlayer, positionSpawn);
+
+            //increase to the next position
+            positionSpawn++;
+        }
+
+
+        //build the deck
+        DeckManager.Instance.BuildStartingDeck();
+
+        //then start combat
+        CombatManager.Instance.StartCombat();
+
+    }
+
+    
 
 }

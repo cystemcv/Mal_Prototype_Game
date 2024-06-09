@@ -11,7 +11,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 	//public Sprite selectedIcon;
 	//public Sprite nonSelectedIcon;
 	public LTDescr scaleTween;
-	private float hoverScale = 1.1f;
+	public float hoverScale = 1.1f;
 	private float transitionTime = 0.1f;
 	private Vector3 originalScale;
 
