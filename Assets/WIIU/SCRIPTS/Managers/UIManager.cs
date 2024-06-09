@@ -10,6 +10,17 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    public enum UIScreens { MainMenu, ModeSelectionMenu, CharacterSelectionMenu, SaveMenu, LoadMenu, LibraryMenu, OptionsMenu }
+
+    public UIScreens currentUIScreen = UIScreens.MainMenu;
+
+
+    public Image logo;
+    public TMP_Text headerText;
+    public TMP_Text footerText;
+    public GameObject bgCanvas;
+    public GameObject uiParticles;
+
     //main ui components
     public GameObject UIMENU;
     public GameObject UICOMBAT;
@@ -20,18 +31,11 @@ public class UIManager : MonoBehaviour
 
 
 
+
     //UI background
     public Image solidColorBackground;
 
-    //main menu buttons
-    public GameObject btnNewGame;
-    public GameObject btnContinue;
-    public GameObject btnSave;
-    public GameObject btnLoad;
-    public GameObject btnOptions;
-    public GameObject btnClose;
-    public GameObject btnMainMenu;
-    public GameObject btnExit;
+
 
     //maintext
     public GameObject txtMainMenu;
@@ -63,6 +67,10 @@ public class UIManager : MonoBehaviour
     public GameObject notificationParent;
     public GameObject notificationPb;
 
+    [Header("CHARACTERS")]
+    public GameObject characterSelectionContent;
+    public GameObject characterPanelUIPrefab;
+
     public delegate void OnCurrentModeChange();
     public event OnCurrentModeChange onCurrentModeChange;
 
@@ -76,6 +84,23 @@ public class UIManager : MonoBehaviour
             SystemManager.Instance.currentSystemMode = value;
             if (onCurrentModeChange != null)
                 onCurrentModeChange();
+        }
+    }
+
+
+    public delegate void OnCurrentUIScreenChange();
+    public event OnCurrentUIScreenChange onCurrentUIScreenChange;
+
+    //this variable has event so we use getter and setter
+    public UIScreens CurrentUIScreen
+    {
+        get { return currentUIScreen; }
+        set
+        {
+            if (currentUIScreen == value) return;
+            currentUIScreen = value;
+            if (onCurrentUIScreenChange != null)
+                onCurrentUIScreenChange();
         }
     }
 
@@ -99,17 +124,20 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         onCurrentModeChange += UIModeChangeDetectEvent;
+        onCurrentUIScreenChange += UIScreenChangeDetectEvent;
     }
 
     private void OnDisable()
     {
         onCurrentModeChange -= UIModeChangeDetectEvent;
+        onCurrentUIScreenChange -= UIScreenChangeDetectEvent;
     }
 
     // Start is called before the first frame update
     void Start()
     {
 
+        CurrentUIScreen = UIScreens.MainMenu;
 
         //check if there is a saved user setting
         if (PlayerPrefs.GetInt("user_save_settings") == 1)
@@ -168,36 +196,43 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void UIScreenChangeDetectEvent()
+    {
+
+        Debug.Log("test");
+
+    }
+
     public void InitializeMainMenu()
     {
-        btnNewGame.SetActive(true);
-        btnContinue.SetActive(true);
-        btnSave.SetActive(false);
-        btnLoad.SetActive(true);
-        btnOptions.SetActive(true);
-        btnClose.SetActive(false);
-        btnMainMenu.SetActive(false);
-        btnExit.SetActive(true);
+        //btnNewGame.SetActive(true);
+        //btnContinue.SetActive(true);
+        //btnSave.SetActive(false);
+        //btnLoad.SetActive(true);
+        //btnOptions.SetActive(true);
+        //btnClose.SetActive(false);
+        //btnMainMenu.SetActive(false);
+        //btnExit.SetActive(true);
 
         //uiAnimatedBg.color = new Color32(0, 95, 166, 255);
-        txtMainMenu.SetActive(true);
+        //txtMainMenu.SetActive(true);
 
         //solidColorBackground.color = new Color32(68,53,135,255);
     }
 
     public void InitializeMainMenuGameplay()
     {
-        btnNewGame.SetActive(false);
-        btnContinue.SetActive(false);
-        btnSave.SetActive(true);
-        btnLoad.SetActive(true);
-        btnOptions.SetActive(true);
-        btnClose.SetActive(true);
-        btnMainMenu.SetActive(true);
-        btnExit.SetActive(true);
+        //btnNewGame.SetActive(false);
+        //btnContinue.SetActive(false);
+        //btnSave.SetActive(true);
+        //btnLoad.SetActive(true);
+        //btnOptions.SetActive(true);
+        //btnClose.SetActive(true);
+        //btnMainMenu.SetActive(true);
+        //btnExit.SetActive(true);
 
         //uiAnimatedBg.color = new Color32(90,10,0,255);
-        txtMainMenu.SetActive(false);
+        //txtMainMenu.SetActive(false);
 
         //solidColorBackground.color = new Color32(68, 53, 135, 0);
     }
@@ -209,6 +244,8 @@ public class UIManager : MonoBehaviour
         {
             goMenuItem.SetActive(false);
         }
+
+
     }
 
     public void MainMenuNext(string menuName)
@@ -230,6 +267,125 @@ public class UIManager : MonoBehaviour
 
         //open the correct menu
         NavigateMenu(menuName);
+    }
+
+    public void GoToGameModeSelection(string mode)
+    {
+        //play audio
+        //play audio
+        if (mode == "BACK")
+        {
+            AudioManager.Instance.PlaySfx("UI_goBack");
+        }
+        else
+        {
+            AudioManager.Instance.PlaySfx("UI_goNext");
+        }
+
+
+        //change visibity
+        logo.gameObject.SetActive(false);
+        footerText.gameObject.SetActive(false);
+
+
+        //change header text
+        headerText.gameObject.SetActive(true);
+        headerText.text = "CHOOSE A MODE!";
+
+        //open the correct menu
+        NavigateMenu("GAME MODE MENU");
+    }
+
+    public void GoToCharacterSelection_MainMode(string mode)
+    {
+        //play audio
+        //play audio
+        if (mode == "BACK")
+        {
+            AudioManager.Instance.PlaySfx("UI_goBack");
+        }
+        else
+        {
+            AudioManager.Instance.PlaySfx("UI_goNext");
+        }
+
+
+        //change visibity
+        logo.gameObject.SetActive(false);
+        footerText.gameObject.SetActive(false);
+
+
+        //change header text
+        headerText.gameObject.SetActive(true);
+        headerText.text = "CHOOSE A CHARACTER!";
+
+        //change the mode
+        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+
+        //display all characters
+        DisplayAllCharacters();
+
+        //open the correct menu
+        NavigateMenu("CHARACTER SELECTION MENU");
+    }
+
+    public void GoToCharacterSelection_DuoMode(string mode)
+    {
+        //play audio
+        //play audio
+        if (mode == "BACK")
+        {
+            AudioManager.Instance.PlaySfx("UI_goBack");
+        }
+        else
+        {
+            AudioManager.Instance.PlaySfx("UI_goNext");
+        }
+
+
+        //change visibity
+        logo.gameObject.SetActive(false);
+        footerText.gameObject.SetActive(false);
+
+
+        //change header text
+        headerText.gameObject.SetActive(true);
+        headerText.text = "CHOOSE 2 CHARACTERS!";
+
+        //change the mode
+        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+
+        //display all characters
+        DisplayAllCharacters();
+
+        //open the correct menu
+        NavigateMenu("CHARACTER SELECTION MENU");
+    }
+
+    public void GoToMainMenu(string mode)
+    {
+        //play audio
+        if (mode == "BACK")
+        {
+            AudioManager.Instance.PlaySfx("UI_goBack");
+        }
+        else
+        {
+            AudioManager.Instance.PlaySfx("UI_goNext");
+        }
+  
+
+        //change visibity
+        logo.gameObject.SetActive(true);
+        footerText.gameObject.SetActive(true);
+
+
+        //change header text
+        headerText.gameObject.SetActive(false);
+        headerText.text = "";
+
+        //open the correct menu
+        NavigateMenu("MAIN MENU");
     }
 
     public void NavigateMenu(string menuName)
@@ -493,6 +649,39 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         OffNotification(notificationPrefab, 2f);
 
+
+    }
+
+    public void DisplayAllCharacters()
+    {
+        //destroy all children objects
+        SystemManager.Instance.DestroyAllChildren(characterSelectionContent);
+
+        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.characterList)
+        {
+
+            //generate each character
+            GameObject characterPanel = Instantiate(characterPanelUIPrefab, characterSelectionContent.transform.position, Quaternion.identity);
+            characterPanel.GetComponent<CharacterClass>().scriptablePlayer = scriptablePlayer;
+ 
+            //set it as a child of the parent
+            characterPanel.transform.SetParent(characterSelectionContent.transform);
+
+            //make the local scale 1,1,1
+            characterPanel.transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
+
+    public void GoToMainMode()
+    {
+        //change the mode
+        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+
+        //display all characters
+        DisplayAllCharacters();
+
+        //navigate to the menu
+        MainMenuNext("CHARACTER SELECTION MENU");
 
     }
 

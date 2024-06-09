@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "New Player", menuName = "Player/Class")]
 public class ScriptablePlayer : ScriptableObject
@@ -14,8 +15,11 @@ public class ScriptablePlayer : ScriptableObject
     //Player's primary class
 
     //prefab that contains the visuals + animations and other crucial scripts
-    public GameObject playerPrefab;
+    public GameObject characterPrefab;
 
+    public Sprite characterImage;
+
+    public Sprite characterIcon;
 
     //Character Stats - Obviously subject to alteration
     public int strength = 1;

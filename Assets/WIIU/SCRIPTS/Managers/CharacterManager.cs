@@ -6,10 +6,16 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
 
+    public List<ScriptablePlayer> characterList;
+
     public List<ScriptablePlayer> scriptablePlayer;
 
+    public enum GameMode { MainMode,DuoMode,AnyMode }
+
+    public GameMode gameMode = GameMode.MainMode;
+
     //used by scriptable objects
-    public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger }; //Actual classes to be determined
+    public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
 
     private void Awake()
     {

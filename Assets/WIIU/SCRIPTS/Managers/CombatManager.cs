@@ -570,9 +570,14 @@ public class CombatManager : MonoBehaviour
 
         //close the UI window
         UIManager.Instance.UIMENU.SetActive(false);
+        UIManager.Instance.bgCanvas.SetActive(false);
+        UIManager.Instance.uiParticles.SetActive(false);
 
         //open the UI combat menu
         UIManager.Instance.UICOMBAT.SetActive(true);
+
+        //play music
+        AudioManager.Instance.PlayMusic("Combat_1");
 
         //give mana to player
         RefillMana();

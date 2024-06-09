@@ -10,6 +10,10 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 	//public Sprite selectedIcon;
 	//public Sprite nonSelectedIcon;
+	public LTDescr scaleTween;
+	private float hoverScale = 1.1f;
+	private float transitionTime = 0.1f;
+	private Vector3 originalScale;
 
 	public Animator animator;
 
@@ -19,15 +23,16 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 	void Awake()
     {
-		txt = GetComponentInChildren<TMP_Text>();
-		icon = this.transform.Find("Icon").GetComponent<Image>();
-		animator = this.GetComponent<Animator>();
+		//txt = GetComponentInChildren<TMP_Text>();
+		//icon = this.transform.Find("Icon").GetComponent<Image>();
+		//animator = this.GetComponent<Animator>();
 	}
 
 	void Start()
 	{
+		originalScale = transform.localScale;
 		//icon.sprite = nonSelectedIcon;
-		animator.SetBool("selectedButton", false);
+		//animator.SetBool("selectedButton", false);
 	}
 
 	void Update()
@@ -37,15 +42,21 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
+		// Scale up the hovered card
+		scaleTween = LeanTween.scale(this.gameObject, originalScale * hoverScale, transitionTime);
+
 		//icon.sprite = selectedIcon;
-		animator.SetBool("selectedButton", true);
+		//animator.SetBool("selectedButton", true);
 		AudioManager.Instance.PlaySfx("UI_Error");
 	}
 
 	public void OnPointerExit(PointerEventData eventData)
 	{
+		// Scale up the hovered card
+		scaleTween = LeanTween.scale(this.gameObject, originalScale, transitionTime);
+
 		//icon.sprite = nonSelectedIcon;
-		animator.SetBool("selectedButton", false);
+		//animator.SetBool("selectedButton", false);
 	}
 
 	public void OnPointerDown(PointerEventData eventData)
@@ -65,6 +76,11 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 
     }
+
+	public void BackToOriginalState()
+    {
+		this.gameObject.transform.localScale = originalScale;
+	}
 
 
 

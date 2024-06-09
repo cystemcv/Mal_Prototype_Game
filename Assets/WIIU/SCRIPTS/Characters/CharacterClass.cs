@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CharacterClass : MonoBehaviour
 {
-
+    public bool isUI = false;
     public ScriptablePlayer scriptablePlayer;
 
     public List<GameObject> listBuffDebuffClass;
@@ -19,6 +19,7 @@ public class CharacterClass : MonoBehaviour
     public int shield;
     public int maxShield;
 
+    //combat
     public GameObject sliderBar;
     public Slider slider;
     public GameObject shieldIcon;
@@ -26,11 +27,31 @@ public class CharacterClass : MonoBehaviour
     public GameObject healthText;
     public GameObject fillBar;
 
+    //ui
+    public Image mainImage;
+    public TMP_Text characterTitle;
+    public Image uiPanelBorder;
 
+    [Header("ID")]
+    public string characterID;
+
+    public CharacterClass()
+    {
+
+        //add an id to this scriptableCard, this is in order to identify it by comparisons
+        characterID = System.Guid.NewGuid().ToString();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        //if its ui element we dont wanna do anything
+        if (isUI)
+        {
+            InitializeUICharacterPanel();
+            return;
+        }
+
         InititializeCharacter();
 
         sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
@@ -65,6 +86,21 @@ public class CharacterClass : MonoBehaviour
         }
 
 
+    }
+
+    public void InitializeUICharacterPanel()
+    {
+        mainImage = this.gameObject.transform.Find("MainImage").Find("Image").GetComponent<Image>();
+        characterTitle = this.gameObject.transform.Find("Title").Find("Text").GetComponent<TMP_Text>();
+        uiPanelBorder = this.gameObject.transform.Find("uiPanelBorder").GetComponent<Image>();
+
+        if (scriptablePlayer != null)
+        {
+
+
+            mainImage.sprite = scriptablePlayer.characterImage;
+            characterTitle.text = scriptablePlayer.mainClass.ToString();
+        }
     }
 
     // Update is called once per frame
