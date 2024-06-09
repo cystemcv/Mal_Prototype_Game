@@ -10,25 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
-  m_Name: card_Blind Attack
+  m_Name: card_Long Range Shot
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
-  cardName: Blind Attack
-  mainClass: 0
-  primaryManaCost: 3
+  cardName: Long Range Shot
+  mainClass: 5
+  primaryManaCost: 1
   secondaryManaCost: 1
+  cardType: 0
   ourRarity: 0
-  cardArt: {fileID: 21300000, guid: ee0eaef4ad2b08c4d81b2597d16e58a7, type: 3}
+  cardArt: {fileID: 21300000, guid: 237f66d97752c80499436fa9c0e4f2a8, type: 3}
   cardDesc: 
   cardFlavor: 
-  ability1Var: 30
+  ability1Var: 7
   ability2Var: 0
   ability3Var: 0
   ability4Var: 0
   ability5Var: 0
   ability6Var: 0
   scriptableCardAbilities:
-  - {fileID: 11400000, guid: aaa2fe9d5f95f514e92a15c17bce6355, type: 2}
-  canTarget: 0
+  - {fileID: 11400000, guid: 748b2eabb76c20c4db603ecdf730a55b, type: 2}
+  canTarget: 1
+  targetEnemy: 1
   playerMode1: 1
   playerMode2: 1
   playerMode3: 1
