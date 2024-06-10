@@ -293,6 +293,9 @@ public class UIManager : MonoBehaviour
         headerText.gameObject.SetActive(true);
         headerText.text = "CHOOSE A MODE!";
 
+        //disable the 3rd option for now
+        DisableButton(UIMENU.transform.Find("HOLDER").Find("GAME MODE MENU").Find("ListOfGameModes").Find("Panel").Find("btn_UNKOWN").gameObject);
+
         //open the correct menu
         NavigateMenu("GAME MODE MENU");
     }

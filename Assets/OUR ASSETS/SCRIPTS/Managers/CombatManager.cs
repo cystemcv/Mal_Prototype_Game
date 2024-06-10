@@ -22,7 +22,7 @@ public class CombatManager : MonoBehaviour
 
     public List<GameObject> characterSpawns;
 
-    public enum combatTurn { playerStartTurn,playerTurn, playerEndTurn, enemyStartTurn,enemyTurn, enemyEndTurn }
+    public enum combatTurn { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
     public int turns = 0;
 
     public combatTurn currentTurn;
@@ -76,9 +76,10 @@ public class CombatManager : MonoBehaviour
         UIManager.Instance.manaText.GetComponent<TMP_Text>().text = manaAvailable.ToString();
 
         //go throught each card in the hand and update them
-        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList) {
+        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
+        {
             UpdateCardAfterManaChange(cardPrefab);
-        } 
+        }
 
     }
 
@@ -121,7 +122,7 @@ public class CombatManager : MonoBehaviour
 
                 // Update the positions of the line renderer
                 lineRenderer.SetPosition(0, targetPosition);
-                lineRenderer.SetPosition(1, mousePosition );
+                lineRenderer.SetPosition(1, mousePosition);
             }
 
             CheckClickTarget();
@@ -133,54 +134,13 @@ public class CombatManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Cast a ray from mouse position
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-
-            // Check if the ray intersects with any colliders
-            if (hit.collider != null)
-            {
-                //check if the target is the required one
-                if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player" )
-                {
-                    return;
-                }
-
-                string cardTag = "";
-                if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
-                {
-                    cardTag = "Enemy";
-                }
-                else 
-                {
-                    cardTag = "Player";
-                }
-
-                if (hit.collider.gameObject.tag != cardTag)
-                {
-                    return;
-                }
-
-                // Handle the click
-                Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
-                // Add your click handling code here
-                targetClicked = hit.collider.gameObject;
-
-                //do the effects 
-                DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
-                //return everything where it was
-                HandManager.Instance.SetHandCards();
-
-                //remove line renderer
-                lineRenderer.gameObject.SetActive(false);
-
-                //leave from target
-                abilityMode = AbilityModes.NONE;
-
-
-            }
+            HitTarget();
         }
-        else if(Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButtonUp(0))
+        {
+            HitTarget();
+        }
+        else if (Input.GetMouseButtonDown(1))
         {
             //remove line renderer
             lineRenderer.gameObject.SetActive(false);
@@ -190,6 +150,56 @@ public class CombatManager : MonoBehaviour
 
             //leave from target
             abilityMode = AbilityModes.NONE;
+        }
+    }
+
+    public void HitTarget()
+    {
+        // Cast a ray from mouse position
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        // Check if the ray intersects with any colliders
+        if (hit.collider != null)
+        {
+            //check if the target is the required one
+            if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player")
+            {
+                return;
+            }
+
+            string cardTag = "";
+            if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
+            {
+                cardTag = "Enemy";
+            }
+            else
+            {
+                cardTag = "Player";
+            }
+
+            if (hit.collider.gameObject.tag != cardTag)
+            {
+                return;
+            }
+
+            // Handle the click
+            Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
+            // Add your click handling code here
+            targetClicked = hit.collider.gameObject;
+
+            //do the effects 
+            DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
+            //return everything where it was
+            HandManager.Instance.SetHandCards();
+
+            //remove line renderer
+            lineRenderer.gameObject.SetActive(false);
+
+            //leave from target
+            abilityMode = AbilityModes.NONE;
+
+
         }
     }
 
@@ -205,7 +215,7 @@ public class CombatManager : MonoBehaviour
         {
             AdjustHealthEnemy(target, adjustNumber, bypassShield, adjustNumberMode);
         }
-        else if(target.tag == "Player")
+        else if (target.tag == "Player")
         {
             AdjustHealthCharacter(target, adjustNumber, bypassShield, adjustNumberMode);
         }
@@ -216,9 +226,9 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode )
+    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
     {
-      
+
         EnemyClass enemyClass = target.GetComponent<EnemyClass>();
 
         if (adjustNumberMode == AdjustNumberMode.ATTACK)
@@ -324,7 +334,7 @@ public class CombatManager : MonoBehaviour
                 enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
 
                 //make the bar blue
-                enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
+                enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
             }
 
         }
@@ -346,7 +356,7 @@ public class CombatManager : MonoBehaviour
 
         if (enemyClass.health <= 0)
         {
-            Destroy(target,1f);
+            Destroy(target, 1f);
         }
 
 
@@ -378,7 +388,7 @@ public class CombatManager : MonoBehaviour
                     characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
 
                     //make the bar blue
-                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
+                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
 
                 }
                 else
@@ -387,7 +397,7 @@ public class CombatManager : MonoBehaviour
                     characterClass.shield = 0;
 
                     //make the bar red
-                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
+                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
                     //hide the icon
                     characterClass.shieldIcon.SetActive(false);
@@ -460,7 +470,7 @@ public class CombatManager : MonoBehaviour
                 characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
 
                 //make the bar blue
-                characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
+                characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
             }
 
         }
@@ -471,7 +481,7 @@ public class CombatManager : MonoBehaviour
         numberOnScreenPrefab.transform.SetParent(target.transform);
 
         //assign the number change
-        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().color = AdjustNumberModeColor( adjustNumberMode);
+        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().color = AdjustNumberModeColor(adjustNumberMode);
 
         numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
 
@@ -489,13 +499,13 @@ public class CombatManager : MonoBehaviour
 
     public Color32 AdjustNumberModeColor(AdjustNumberMode adjustNumberMode)
     {
-        Color32 colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
+        Color32 colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
 
         if (adjustNumberMode == AdjustNumberMode.ATTACK)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
         }
-        else if(adjustNumberMode == AdjustNumberMode.HEAL)
+        else if (adjustNumberMode == AdjustNumberMode.HEAL)
         {
             colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); ;
         }
@@ -509,7 +519,7 @@ public class CombatManager : MonoBehaviour
 
     public void UpdateHealthBarSmoothly(float health, float maxHealth, Slider slider)
     {
-        StartCoroutine(SmoothUpdateHealthBar( health,  maxHealth, slider));
+        StartCoroutine(SmoothUpdateHealthBar(health, maxHealth, slider));
     }
 
     private IEnumerator SmoothUpdateHealthBar(float health, float maxHealth, Slider slider)
@@ -534,12 +544,12 @@ public class CombatManager : MonoBehaviour
         if (CombatManager.Instance.manaAvailable < cardScript.primaryManaCost)
         {
             //cannot be played
-            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
         }
         else
         {
             //can be played
-            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite); 
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
         }
     }
 
@@ -575,6 +585,9 @@ public class CombatManager : MonoBehaviour
         UIManager.Instance.UIMENU.SetActive(false);
         UIManager.Instance.bgCanvas.SetActive(false);
         UIManager.Instance.uiParticles.SetActive(false);
+
+        //reset turns
+        turns = 0;
 
         //open the UI combat menu
         UIManager.Instance.UICOMBAT.SetActive(true);
@@ -617,11 +630,14 @@ public class CombatManager : MonoBehaviour
         //start player turn
         currentTurn = combatTurn.playerStartTurn;
 
+        //increase turn;
+        turns += 1;
+
         //mana should go back to full
         RefillMana();
 
-        //discard cards
-        DeckManager.Instance.DiscardWholeHand();
+        //remove mana
+        RemoveShieldFromAllCharacters();
 
         //draw cards
         DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
@@ -650,15 +666,20 @@ public class CombatManager : MonoBehaviour
 
     public void PlayerEndTurnButton()
     {
-        if (currentTurn == combatTurn.playerTurn) {
+        if (currentTurn == combatTurn.playerTurn)
+        {
             StartCoroutine(WaitEnemyTurns());
         }
     }
 
     public void PlayerTurnEnd()
     {
+
         currentTurn = combatTurn.playerEndTurn;
         UIManager.Instance.OnNotification("PLAYER ENDING TURN", 1);
+
+        //discard cards
+        DeckManager.Instance.DiscardWholeHand();
 
     }
 
@@ -721,6 +742,38 @@ public class CombatManager : MonoBehaviour
 
         //parent it to our characters object
         character.transform.SetParent(CombatManager.Instance.combatScene.transform.Find("Characters"));
+
+    }
+
+    public void RemoveShieldFromAllCharacters()
+    {
+
+        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach (GameObject character in characters)
+        {
+            RemoveShieldFromCharacter(character);
+        }
+
+    }
+
+    public void RemoveShieldFromCharacter(GameObject character)
+    {
+
+        CharacterClass characterClass = character.GetComponent<CharacterClass>();
+
+        characterClass.InititializeCharacter();
+
+        characterClass.shield = 0;
+
+        //dont show the icon
+        characterClass.shieldIcon.SetActive(false);
+
+        //update text on shield
+        characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
+
+        //make the bar red
+        characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
     }
 }

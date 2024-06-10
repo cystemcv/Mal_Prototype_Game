@@ -55,36 +55,6 @@ public class CharacterClass : MonoBehaviour
 
         InititializeCharacter();
 
-        sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
-        slider = sliderBar.GetComponent<Slider>();
-        shieldIcon = sliderBar.transform.Find("ShieldIcon").gameObject;
-        shieldText = shieldIcon.transform.Find("TEXT").gameObject;
-        healthText = sliderBar.transform.Find("TEXT").gameObject;
-        fillBar = sliderBar.transform.Find("Fill").gameObject;
-
-        //make the healthbar red and hide shield
-        shieldIcon.gameObject.SetActive(false);
-        fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-
-        //update based on enemy hp and max hp
-        healthText.GetComponent<TMP_Text>().text = health + " / " + maxHealth;
-
-        //adjust the hp bar
-        slider.value = (float)health / (float)maxHealth;
-
-        if (shield > 0)
-        {
-
-            //update text on shield
-            shieldText.GetComponent<TMP_Text>().text = shield.ToString();
-
-            //make the bar blue
-            fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-
-            //make shield icon visible
-            shieldIcon.SetActive(true);
-
-        }
 
 
     }
@@ -116,5 +86,37 @@ public class CharacterClass : MonoBehaviour
         poisongDmg = scriptablePlayer.poisonDmg;
         health = scriptablePlayer.currHealth;
         maxHealth = scriptablePlayer.maxHealth;
+
+
+        sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
+        slider = sliderBar.GetComponent<Slider>();
+        shieldIcon = sliderBar.transform.Find("ShieldIcon").gameObject;
+        shieldText = shieldIcon.transform.Find("TEXT").gameObject;
+        healthText = sliderBar.transform.Find("TEXT").gameObject;
+        fillBar = sliderBar.transform.Find("Fill").gameObject;
+
+        //make the healthbar red and hide shield
+        shieldIcon.gameObject.SetActive(false);
+        fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+
+        //update based on enemy hp and max hp
+        healthText.GetComponent<TMP_Text>().text = health + " / " + maxHealth;
+
+        //adjust the hp bar
+        slider.value = (float)health / (float)maxHealth;
+
+        if (shield > 0)
+        {
+
+            //update text on shield
+            shieldText.GetComponent<TMP_Text>().text = shield.ToString();
+
+            //make the bar blue
+            fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+
+            //make shield icon visible
+            shieldIcon.SetActive(true);
+
+        }
     }
 }
