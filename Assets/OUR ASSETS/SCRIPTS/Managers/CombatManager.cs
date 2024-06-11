@@ -107,7 +107,9 @@ public class CombatManager : MonoBehaviour
             if (targetUIElement != null)
             {
                 // Get the position of the target UI element in screen space
-                Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
+                //Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
+                Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, targetUIElement.Find("LineRendererStart").position);
+  
 
                 // Convert the screen space position to world space
                 Vector3 targetPosition = Camera.main.ScreenToWorldPoint(targetScreenPosition);

@@ -15,13 +15,14 @@ public class HandManager : MonoBehaviour
     //
     public float angleDelta = 0;
     public float[] angleDeltaArray;
-   // public float radius = 0;
-    public float radiusMultiplier = 0.1f; // Multiplier to control the radius
+    // public float radius = 0;
+    //public float radiusMultiplier = 0.1f; // Multiplier to control the radius
+    public float radiusValue = 25f;
     public GameObject centerObject;
 
     public float pushingSpeed = 0.2f;
     public float pushingDistance = 200f;
-
+    public float pushingLimit = 200f;
     public float pushingMultiplierLeft = 0.1f;
     public float pushingMultiplierRight = 0.1f;
     //public float[] pushingDistanceArray;
@@ -103,13 +104,27 @@ public class HandManager : MonoBehaviour
                 //get how far is the card from index 5 3
                 int howManyCardsFromIndex = Mathf.Abs(cardPos - index);
 
-                float screenHeight = Screen.height;
+                //float screenHeight = Screen.height;
                 float limitPushBasedOnHand = ((maxHandCardsLimit + 1) - cardsInHandList.Count);
 
-                float pushLeft = (screenHeight / limitPushBasedOnHand) * pushingMultiplierLeft;
-                float pushRight = (screenHeight / limitPushBasedOnHand) * pushingMultiplierRight;
+                //float pushLeft = (screenHeight / limitPushBasedOnHand) * pushingMultiplierLeft;
+                //float pushRight = (screenHeight / limitPushBasedOnHand) * pushingMultiplierRight;
 
-   
+                float tempPushingDistance = pushingDistance;
+                float pushLeft = 0;
+                float pushRight = 0;
+
+                if (cardsInHandList.Count < 6)
+                {
+                    pushLeft = ((pushingDistance / 2) * cardsInHandList.Count) * pushingMultiplierLeft;
+                    pushRight = ((pushingDistance / 2)  * cardsInHandList.Count) * pushingMultiplierRight;
+                }
+                else
+                {
+                    pushLeft = (pushingDistance * cardsInHandList.Count) * pushingMultiplierLeft;
+                    pushRight = (pushingDistance * cardsInHandList.Count) * pushingMultiplierRight;
+                }
+
                 //push more the more cards you have in the hand
 
                 if (cardPos < index)
@@ -190,21 +205,29 @@ public class HandManager : MonoBehaviour
         angle *= -Mathf.Deg2Rad;
 
         // Adjust the radius based on the screen height
-        float screenHeight = Screen.height;
-        float radius = screenHeight * radiusMultiplier;
+        //float screenHeight = Screen.height;
+        //float radius = screenHeight * radiusMultiplier;
+        //float radius = 25f; 
 
-        float x = Mathf.Sin(angle) * radius;
-        float y = Mathf.Cos(angle) * radius;
+        float x = Mathf.Sin(angle) * radiusValue;
+        float y = Mathf.Cos(angle) * radiusValue;
         //cards[index].transform.position = new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0);
 
+        // Calculate the target position in world space
+        Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radiusValue, 0);
+
+        // Convert target position from world space to canvas space
+        Vector3 canvasPosition = SystemManager.Instance.uiCamera.WorldToScreenPoint(targetPosition);
+        canvasPosition.z = 0; // Set z to 0 because we are working in 2D space
+
         // Set the position relative to the bottom center of the screen
-        Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radius, 0);
+        //Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radius, 0);
         LeanTween.move(cardsInHandList[index], targetPosition, drawSpeed);
         //LeanTween.move(cardsInHandList[index], new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0), drawSpeed);
 
         //save the original position
         cardsInHandList[index].GetComponent<CardEvents>().originalPosX = centerObject.transform.position.x + x;
-        cardsInHandList[index].GetComponent<CardEvents>().originalPosY = (centerObject.transform.position.y + y) - radius;
+        cardsInHandList[index].GetComponent<CardEvents>().originalPosY = (centerObject.transform.position.y + y) - radiusValue;
 
         //save the sort order
         cardsInHandList[index].GetComponent<CardEvents>().sortOrder = index;
@@ -226,26 +249,41 @@ public class HandManager : MonoBehaviour
     //}
 
 
+    //public bool CheckActivation(RectTransform rectTransform)
+    //{
+    //    bool insideArea = false;
+
+    //    if (activateArea == null) return false;
+
+    //    Vector2 activateAreaScreenPos = RectTransformUtility.WorldToScreenPoint(null, activateArea.position);
+    //    Vector2 cardScreenPos = RectTransformUtility.WorldToScreenPoint(null, rectTransform.position);
+
+    //    float screenHeight = Screen.height;
+
+    //    float activateAreaY = screenHeight * (1 - activationThreshold);
+
+    //    if (cardScreenPos.y >= activateAreaY)
+    //    {
+    //        insideArea = true;
+    //    }
+
+    //    return insideArea;
+    //}
+
     public bool CheckActivation(RectTransform rectTransform)
     {
-        bool insideArea = false;
+        if (activateArea == null || SystemManager.Instance.uiCamera == null) return false;
 
-        if (activateArea == null) return false;
+        // Get the screen position of the activateArea and the rectTransform using the canvas camera
+        Vector2 activateAreaScreenPos = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, activateArea.position);
+        Vector2 cardScreenPos = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, rectTransform.position);
 
-        Vector2 activateAreaScreenPos = RectTransformUtility.WorldToScreenPoint(null, activateArea.position);
-        Vector2 cardScreenPos = RectTransformUtility.WorldToScreenPoint(null, rectTransform.position);
-
+        // Calculate the activation threshold in screen coordinates
         float screenHeight = Screen.height;
-
         float activateAreaY = screenHeight * (1 - activationThreshold);
 
-        if (cardScreenPos.y >= activateAreaY)
-        {
-            insideArea = true;
-        }
-
-        return insideArea;
+        // Check if the card is within the activation area
+        return cardScreenPos.y >= activateAreaY;
     }
-
 
 }

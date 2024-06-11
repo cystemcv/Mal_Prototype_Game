@@ -9,7 +9,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private float hoverScale = 1.2f;
     private float hoverChoiceScale = 1.5f;
     private float transitionTime = 0.1f;
-    private float hoverHeight = 70f;
+    private float hoverHeight = 0.6f;
 
     public int sortOrder = 0;
 

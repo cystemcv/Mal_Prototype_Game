@@ -7,6 +7,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 {
     public static SystemManager Instance;
 
+    public Camera mainCamera;
+    public Camera uiCamera;
+
     //common colors
     public string colorWhite = "FFFFFF";
     public string colorRed = "FF0000";
