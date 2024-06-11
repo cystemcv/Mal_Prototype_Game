@@ -13,6 +13,8 @@ public class CombatManager : MonoBehaviour
 
     public AbilityModes abilityMode = AbilityModes.NONE;
 
+    public GameObject arrowHead;
+
     public RectTransform targetUIElement;
     public LineRenderer lineRenderer;
     public GameObject targetClicked;
@@ -119,17 +121,53 @@ public class CombatManager : MonoBehaviour
                 Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePosition.z = 0f; // Ensure that the z-coordinate is set to 0
 
+                // Calculate the control point for the Bezier curve
+                Vector3 controlPoint = (targetPosition + mousePosition) / 2;
+                controlPoint.y += Mathf.Abs(mousePosition.x - targetPosition.x) / 2; // Adjust the curve height
+
+
+                // Generate the points for the Bezier curve
+                int segmentCount = 20;
+                Vector3[] curvePoints = new Vector3[segmentCount + 1];
+                for (int i = 0; i <= segmentCount; i++)
+                {
+                    float t = i / (float)segmentCount;
+                    curvePoints[i] = CalculateQuadraticBezierPoint(t, targetPosition, controlPoint, mousePosition);
+                }
+
+                // Set the positions for the line renderer
+                lineRenderer.positionCount = curvePoints.Length;
+                lineRenderer.SetPositions(curvePoints);
+
+                // Position the arrowhead at the end of the curve
+                arrowHead.transform.position = curvePoints[curvePoints.Length - 1];
+                // Rotate the arrowhead to face the direction of the line
+                Vector3 direction = curvePoints[curvePoints.Length - 1] - curvePoints[curvePoints.Length - 2];
+                arrowHead.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+
+
                 //remove line renderer
                 lineRenderer.gameObject.SetActive(true);
+                arrowHead.SetActive(true);
 
                 // Update the positions of the line renderer
-                lineRenderer.SetPosition(0, targetPosition);
-                lineRenderer.SetPosition(1, mousePosition);
+                //lineRenderer.SetPosition(0, targetPosition);
+                //lineRenderer.SetPosition(1, mousePosition);
             }
 
             CheckClickTarget();
         }
 
+    }
+
+    private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+
+        Vector3 point = (uu * p0) + (2 * u * t * p1) + (tt * p2);
+        return point;
     }
 
     public void CheckClickTarget()
@@ -146,6 +184,7 @@ public class CombatManager : MonoBehaviour
         {
             //remove line renderer
             lineRenderer.gameObject.SetActive(false);
+            arrowHead.SetActive(false);
 
             //return everything where it was
             HandManager.Instance.SetHandCards();
@@ -197,6 +236,7 @@ public class CombatManager : MonoBehaviour
 
             //remove line renderer
             lineRenderer.gameObject.SetActive(false);
+            arrowHead.SetActive(false);
 
             //leave from target
             abilityMode = AbilityModes.NONE;
