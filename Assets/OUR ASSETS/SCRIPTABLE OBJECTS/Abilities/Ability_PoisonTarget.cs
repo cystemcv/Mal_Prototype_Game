@@ -19,9 +19,9 @@ public class Ability_PoisonTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript)
+    public override void OnPlayCard(CardScript cardScript, GameObject character)
     {
-        base.OnPlayCard(cardScript);
+        base.OnPlayCard(cardScript, character);
         BuffSystemManager.Instance.AddDebuffToEnemyTarget(this, CombatManager.Instance.targetClicked, 3);
 
     }

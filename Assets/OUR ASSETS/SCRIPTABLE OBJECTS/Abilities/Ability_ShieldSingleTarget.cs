@@ -19,9 +19,9 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript)
+    public override void OnPlayCard(CardScript cardScript, GameObject character)
     {
-        base.OnPlayCard(cardScript);
+        base.OnPlayCard(cardScript,character);
 
         CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
 

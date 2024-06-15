@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Ability_ChooseACardFromList_RoqueAttack
   m_EditorClassIdentifier: 
   abilityName: CHOICE
-  waitForAbility: 0
+  waitForAbility: 0.2
   scriptableBuffDebuff: {fileID: 0}
+  abilityEffect: {fileID: 0}
+  cardCharacterAnimation: 2
+  cardCharacterSound: 0
   mainClass: 1
   cardType: 0
   addCardTo: 0
   setManaCost: 0
   modifyManaCost: 0
   cardsToChoose: 4
-  addToHand: 0
-  addToDeck: 0
-  addToDiscardPile: 0

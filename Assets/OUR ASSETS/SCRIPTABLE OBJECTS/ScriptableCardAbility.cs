@@ -7,22 +7,37 @@ public class ScriptableCardAbility : ScriptableObject
 {
 
     public string abilityName;
-    public float waitForAbility = 0f;
+    public float waitForAbility = 0.2f;
+
 
     public ScriptableBuffDebuff scriptableBuffDebuff;
 
 
+    public GameObject abilityEffect;
+    public SystemManager.CardCharacterAnimation cardCharacterAnimation = SystemManager.CardCharacterAnimation.MeleeAttack;
+    public SystemManager.CardCharacterSound cardCharacterSound = SystemManager.CardCharacterSound.Generic;
 
     public virtual string AbilityDescription(CardScript cardScript)
     {
         return "<color=blue>" + abilityName + "</color>";
     }
 
-    public virtual void OnPlayCard(CardScript cardScript)
+    public virtual void OnPlayCard(CardScript cardScript, GameObject character)
     {
 
+        //then do animations
+        Animator animator = character.transform.Find("model").GetComponent<Animator>();
 
-  
+        if (animator != null)
+        {
+            animator.SetTrigger(cardCharacterAnimation.ToString());
+        }
+
+        Debug.Log("PLAYED CARD BY " + character.GetComponent<CharacterClass>().scriptablePlayer.mainClass);
+
+        //sounds
+        AudioManager.Instance.PlayCardSound(cardCharacterSound.ToString());
+
     }
 
     public virtual void OnDiscardCard(CardScript cardScript)
@@ -100,4 +115,6 @@ public class ScriptableCardAbility : ScriptableObject
 
         return this;
     }
+
+
 }

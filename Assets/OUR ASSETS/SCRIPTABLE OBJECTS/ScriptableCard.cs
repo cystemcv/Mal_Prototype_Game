@@ -16,6 +16,9 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public SystemManager.CardType cardType;
    
     public enum rarity { Common, Rare, Exalted, Legendary}; // Rarity of the card. Affects Strength of card, rules for cost, and likelihood of obtaining the card
+
+
+
     public rarity ourRarity; // Make enum show in inspector
     public Sprite cardArt; // Art to be displayed and attached to the card
     public string cardDesc; // Description of what the card does

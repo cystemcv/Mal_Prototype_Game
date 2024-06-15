@@ -40,9 +40,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript)
+    public override void OnPlayCard(CardScript cardScript, GameObject character)
     {
-        base.OnPlayCard(cardScript);
+        base.OnPlayCard(cardScript, character);
 
         List<ScriptableCard> listToChoose;
 
@@ -82,7 +82,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
             CardScript cardScriptTemp = new CardScript();
             cardScriptTemp.scriptableCard = filteredCardList[randomIndex];
 
-     
+
 
             if (setManaCost)
             {

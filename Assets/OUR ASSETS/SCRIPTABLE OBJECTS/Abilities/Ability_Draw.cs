@@ -19,11 +19,11 @@ public class Ability_Draw : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript)
+    public override void OnPlayCard(CardScript cardScript, GameObject character)
     {
-        base.OnPlayCard(cardScript);
+        base.OnPlayCard(cardScript,character);
 
-        Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
+       // Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 
         int cardsToDraw = GetAbilityVariable(cardScript);
 

@@ -42,7 +42,7 @@ public class DisplayTabController : MonoBehaviour
         string height = splitWH[1];
 
         Screen.SetResolution(int.Parse(width), int.Parse(height), screenMode);
-        Debug.Log("screen resolution");
+        //Debug.Log("screen resolution");
     }
 
     public void SelectScreenMode(bool playSound = true)
@@ -70,7 +70,7 @@ public class DisplayTabController : MonoBehaviour
             screenMode = FullScreenMode.Windowed;
         }
 
-        Debug.Log("screen mode");
+        //Debug.Log("screen mode");
 
         Screen.fullScreenMode = screenMode;
     }

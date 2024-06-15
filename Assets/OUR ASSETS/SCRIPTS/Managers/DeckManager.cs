@@ -155,7 +155,7 @@ public class DeckManager : MonoBehaviour
         {
             CardScript cardScript = combatDeck[index];
 
-            Debug.Log("inside : " + cardScript.changedMana);
+            //Debug.Log("inside : " + cardScript.changedMana);
 
             //add it to the hand
             handCards.Add(cardScript);
@@ -246,12 +246,16 @@ public class DeckManager : MonoBehaviour
 
     IEnumerator PlayCardCoroutine(CardScript cardScript)
     {
-
+        //get the character to be used
+        GameObject character = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
 
         foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {
+
+
+
             // Wait for 2 seconds
-            scriptableCardAbility.OnPlayCard(cardScript);
+            scriptableCardAbility.OnPlayCard(cardScript, character);
 
             //check to reset mana to the original cost if neeeded
             if (cardScript.resetManaCost)
@@ -261,8 +265,16 @@ public class DeckManager : MonoBehaviour
                 cardScript.changedMana = false;
             }
 
-            yield return new WaitForSeconds(playCardWaitTime);
+            yield return new WaitForSeconds(scriptableCardAbility.waitForAbility);
 
+        }
+
+        //go back to idle animation
+        Animator animator = character.transform.Find("model").GetComponent<Animator>();
+
+        if (animator != null)
+        {
+            animator.SetTrigger("Idle");
         }
 
 
@@ -417,7 +429,7 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CardScript>().changedMana = cardScript.changedMana;
         cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
 
-        Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
+        //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
 
         if (cardScript.changedMana == false)
         {

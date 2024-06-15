@@ -8,9 +8,11 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource musicSource;
     public AudioSource sfxSource;
+    public AudioSource cardSource;
 
     public List<SoundSO> musicSounds;
     public List<SoundSO> sfxSounds;
+    public List<SoundSO> cardSounds;
 
 
     private void Awake()
@@ -55,12 +57,27 @@ public class AudioManager : MonoBehaviour
 
         if (soundSO == null)
         {
-            Debug.Log("Music not found");
+            Debug.Log("SFX Audio not found");
         }
         else
         {
             sfxSource.PlayOneShot(soundSO.soundClip);
    
+        }
+    }
+
+    public void PlayCardSound(string name)
+    {
+        SoundSO soundSO = cardSounds.Find(item => item.soundName == name);
+
+        if (soundSO == null)
+        {
+            Debug.Log("Card Audio not found");
+        }
+        else
+        {
+            cardSource.PlayOneShot(soundSO.soundClip);
+
         }
     }
 

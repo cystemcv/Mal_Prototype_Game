@@ -230,7 +230,7 @@ public class CombatManager : MonoBehaviour
             }
 
             // Handle the click
-            Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
+            //Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
             // Add your click handling code here
             targetClicked = hit.collider.gameObject;
 
@@ -864,6 +864,37 @@ public class CombatManager : MonoBehaviour
 
         //make the bar red
         characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+
+    }
+
+    public GameObject GetTheCharacterThatUsesTheCard(CardScript cardScript)
+    {
+
+        GameObject character = null;
+
+        //check if the card belongs to any of our characters
+        foreach (GameObject characterInCombat in CombatManager.Instance.charactersInCombat)
+        {
+
+            if (characterInCombat.GetComponent<CharacterClass>().scriptablePlayer.mainClass == cardScript.scriptableCard.mainClass)
+            {
+
+                //then it belongs to a character we have
+                character = characterInCombat;
+                break;
+            }
+
+        }
+
+        //in case the type of the card does not belong to the card then
+        if (character == null)
+        {
+            //then assign the card to the leader
+            character = CombatManager.Instance.leaderCharacter;
+        }
+
+        //return the appropriate character
+        return character;
 
     }
 }

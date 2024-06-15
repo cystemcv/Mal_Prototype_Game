@@ -33,7 +33,7 @@ public class EffectGoToTarget : MonoBehaviour
     private void OnTargetReached()
     {
         // Code to execute when the target is reached
-        Debug.Log("Target reached!");
+        //Debug.Log("Target reached!");
         Destroy(this.gameObject,0.2f);
         // Add any additional logic you want to execute here
     }
