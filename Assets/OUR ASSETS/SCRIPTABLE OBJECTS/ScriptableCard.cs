@@ -9,11 +9,11 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     [Header("MAIN")]
     public string cardName;
-    public CharacterManager.MainClass mainClass;
+    public SystemManager.MainClass mainClass;
     public int primaryManaCost; // Amount of mana of the primary type to spend to play the card
     public int secondaryManaCost; // Amount of mana of the secondary type to spend to play the card
 
-    public CardListManager.CardType cardType;
+    public SystemManager.CardType cardType;
    
     public enum rarity { Common, Rare, Exalted, Legendary}; // Rarity of the card. Affects Strength of card, rules for cost, and likelihood of obtaining the card
     public rarity ourRarity; // Make enum show in inspector

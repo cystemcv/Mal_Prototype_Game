@@ -7,6 +7,39 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 {
     public static SystemManager Instance;
 
+    //enums
+    public enum GameMode { MainMode, DuoMode, AnyMode }
+    public GameMode gameMode = GameMode.MainMode;
+
+    public enum SystemModes { MAINMENU, PAUSED, GAMEPLAY, COMBAT}
+    public SystemModes systemMode = SystemModes.MAINMENU;
+
+    public enum UIScreens { MainMenu, ModeSelectionMenu, CharacterSelectionMenu, SaveMenu, LoadMenu, LibraryMenu, OptionsMenu }
+    public UIScreens currentUIScreen = UIScreens.MainMenu;
+
+    public enum SaveLoadModes { SAVE, LOAD}
+    public SaveLoadModes saveLoadMode = SaveLoadModes.SAVE;
+
+    public enum AbilityModes { NONE, TARGET, CHOICE }
+    public AbilityModes abilityMode = AbilityModes.NONE;
+
+    public enum CombatTurns { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
+    public CombatTurns combatTurn;
+
+    public enum AdjustNumberModes { ATTACK, HEAL, SHIELD }
+    public AdjustNumberModes adjustNumberModes;
+
+    public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
+    public AddCardTo addCardTo;
+
+    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, }
+    public CardType cardType;
+
+    public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
+    public MainClass mainClass;
+
+    //end of enums
+
     public Camera mainCamera;
     public Camera uiCamera;
 
@@ -32,15 +65,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     //system variables
     public float totalTimePlayed = 0f;
 
-    public enum SystemModes {
-    
-        MAINMENU,
-        PAUSED,
-        GAMEPLAY,
-        COMBAT
-    }
 
-    public SystemModes currentSystemMode = SystemModes.MAINMENU;
 
     private void Awake()
     {
@@ -75,11 +100,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         //check if the scene is main menu
         if (scene.name == "scene_MainMenu")
         {
-            currentSystemMode = SystemModes.MAINMENU;
+            systemMode = SystemModes.MAINMENU;
         }
         else
         {
-            currentSystemMode = SystemModes.GAMEPLAY;
+            systemMode = SystemModes.GAMEPLAY;
         }
 
     }
@@ -125,7 +150,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void Update()
     {
-        if (this.currentSystemMode == SystemModes.GAMEPLAY) {
+        if (this.systemMode == SystemModes.GAMEPLAY) {
             this.totalTimePlayed += Time.deltaTime;
         }
     }

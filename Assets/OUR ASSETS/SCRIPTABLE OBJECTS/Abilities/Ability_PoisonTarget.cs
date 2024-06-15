@@ -30,7 +30,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
     public override bool OnEnemyTurnStart( GameObject target)
     {
-        CombatManager.Instance.AdjustHealth(target, 1, false, CombatManager.AdjustNumberMode.ATTACK);
+        CombatManager.Instance.AdjustHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
 
         //activated
         return true;

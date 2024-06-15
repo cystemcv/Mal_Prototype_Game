@@ -543,6 +543,12 @@ public class DeckManager : MonoBehaviour
             //remove it from the gameobject list
             HandManager.Instance.cardsInHandList.RemoveAt(index);
 
+            //instantiate the effect
+            GameObject cardSoul = Instantiate(CombatManager.Instance.particleCardSoul, cardToDelete.transform.position, Quaternion.identity);
+
+            //and assign the target
+            cardSoul.GetComponent<EffectGoToTarget>().target = UIManager.Instance.discardText;
+
             //destroy it as we do not need it anymore
             Destroy(cardToDelete);
 
@@ -556,7 +562,7 @@ public class DeckManager : MonoBehaviour
     public void AddCardToList(CardScript cardScript)
     {
 
-        if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.Hand)
+        if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.Hand)
         {
             //add to deck then draw it
             combatDeck.Add(cardScript);
@@ -567,15 +573,15 @@ public class DeckManager : MonoBehaviour
             DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex);
 
         }
-        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.discardPile)
+        else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.discardPile)
         {
             discardedPile.Add(cardScript);
         }
-        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.combatDeck)
+        else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.combatDeck)
         {
             combatDeck.Add(cardScript);
         }
-        else if (CardListManager.Instance.addCardTo == CardListManager.AddCardTo.mainDeck)
+        else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.mainDeck)
         {
             mainDeck.Add(cardScript);
         }
@@ -584,7 +590,7 @@ public class DeckManager : MonoBehaviour
         UIManager.Instance.chooseACardScreen.SetActive(false);
 
         //resume
-        CombatManager.Instance.abilityMode = CombatManager.AbilityModes.NONE;
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
         SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
 

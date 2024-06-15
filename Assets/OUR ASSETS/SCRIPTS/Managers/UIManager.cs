@@ -10,9 +10,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public enum UIScreens { MainMenu, ModeSelectionMenu, CharacterSelectionMenu, SaveMenu, LoadMenu, LibraryMenu, OptionsMenu }
 
-    public UIScreens currentUIScreen = UIScreens.MainMenu;
 
 
     public Image logo;
@@ -78,11 +76,11 @@ public class UIManager : MonoBehaviour
     //this variable has event so we use getter and setter
     public SystemManager.SystemModes UICurrentMode
     {
-        get { return SystemManager.Instance.currentSystemMode; }
+        get { return SystemManager.Instance.systemMode; }
         set
         {
-            if (SystemManager.Instance.currentSystemMode == value) return;
-            SystemManager.Instance.currentSystemMode = value;
+            if (SystemManager.Instance.systemMode == value) return;
+            SystemManager.Instance.systemMode = value;
             if (onCurrentModeChange != null)
                 onCurrentModeChange();
         }
@@ -93,13 +91,13 @@ public class UIManager : MonoBehaviour
     public event OnCurrentUIScreenChange onCurrentUIScreenChange;
 
     //this variable has event so we use getter and setter
-    public UIScreens CurrentUIScreen
+    public  SystemManager.UIScreens CurrentUIScreen
     {
-        get { return currentUIScreen; }
+        get { return SystemManager.Instance.currentUIScreen; }
         set
         {
-            if (currentUIScreen == value) return;
-            currentUIScreen = value;
+            if (SystemManager.Instance.currentUIScreen == value) return;
+            SystemManager.Instance.currentUIScreen = value;
             if (onCurrentUIScreenChange != null)
                 onCurrentUIScreenChange();
         }
@@ -138,7 +136,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
 
-        CurrentUIScreen = UIScreens.MainMenu;
+        CurrentUIScreen = SystemManager.UIScreens.MainMenu;
 
         //check if there is a saved user setting
         if (PlayerPrefs.GetInt("user_save_settings") == 1)
@@ -157,11 +155,11 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.GAMEPLAY)
+        if (SystemManager.Instance.systemMode == SystemManager.SystemModes.GAMEPLAY)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
         }
-        else if (SystemManager.Instance.currentSystemMode == SystemManager.SystemModes.COMBAT)
+        else if (SystemManager.Instance.systemMode == SystemManager.SystemModes.COMBAT)
         {
             playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
             deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
@@ -324,7 +322,7 @@ public class UIManager : MonoBehaviour
         headerText.text = "CHOOSE A CHARACTER!";
 
         //change the mode
-        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+        SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
 
         //clear the list
         CharacterManager.Instance.scriptablePlayerList.Clear();
@@ -363,7 +361,7 @@ public class UIManager : MonoBehaviour
         headerText.text = "CHOOSE 2 CHARACTERS!";
 
         //change the mode
-        CharacterManager.Instance.gameMode = CharacterManager.GameMode.DuoMode;
+        SystemManager.Instance.gameMode = SystemManager.GameMode.DuoMode;
 
         //clear the list
         CharacterManager.Instance.scriptablePlayerList.Clear();
@@ -389,7 +387,7 @@ public class UIManager : MonoBehaviour
         {
             AudioManager.Instance.PlaySfx("UI_goNext");
         }
-  
+
 
         //change visibity
         logo.gameObject.SetActive(true);
@@ -609,7 +607,7 @@ public class UIManager : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
-        UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.SAVE;
+        SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.SAVE;
 
         //open the correct menu
         NavigateMenu("SAVELOAD MENU");
@@ -621,7 +619,7 @@ public class UIManager : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
-        UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.LOAD;
+        SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.LOAD;
 
         //open the correct menu
         NavigateMenu("SAVELOAD MENU");
@@ -679,7 +677,7 @@ public class UIManager : MonoBehaviour
             //generate each character
             GameObject characterPanel = Instantiate(characterPanelUIPrefab, characterSelectionContent.transform.position, Quaternion.identity);
             characterPanel.transform.GetChild(0).GetComponent<CharacterCard>().scriptablePlayer = scriptablePlayer;
- 
+
             //set it as a child of the parent
             characterPanel.transform.SetParent(characterSelectionContent.transform);
 
@@ -691,7 +689,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMode()
     {
         //change the mode
-        CharacterManager.Instance.gameMode = CharacterManager.GameMode.MainMode;
+        SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
 
         //display all characters
         DisplayAllCharacters();
@@ -723,12 +721,12 @@ public class UIManager : MonoBehaviour
             //check if its a text
             TMP_Text childText = child.GetComponent<TMP_Text>();
 
-            if(childText != null)
+            if (childText != null)
             {
                 Color32 originalColor = childText.color;
 
                 //change the color to transparetn
-                childText.color = new Color32(originalColor.r,originalColor.g, originalColor.b, 30);
+                childText.color = new Color32(originalColor.r, originalColor.g, originalColor.b, 30);
             }
 
 
@@ -795,6 +793,7 @@ public class UIManager : MonoBehaviour
 
     }
 
+    //starts combat might need to change the name
     public void ProceedToGame()
     {
 
@@ -806,7 +805,10 @@ public class UIManager : MonoBehaviour
         foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayerList)
         {
             //instantiate our character or characters
-            CombatManager.Instance.InstantiateCharacter(scriptablePlayer, positionSpawn);
+            GameObject characterInCombat = CombatManager.Instance.InstantiateCharacter(scriptablePlayer, positionSpawn);
+
+            //assign the characters in combat
+            CombatManager.Instance.charactersInCombat.Add(characterInCombat);
 
             //increase to the next position
             positionSpawn++;
@@ -816,11 +818,12 @@ public class UIManager : MonoBehaviour
         //build the deck
         DeckManager.Instance.BuildStartingDeck();
 
+
         //then start combat
         CombatManager.Instance.StartCombat();
 
     }
 
-    
+
 
 }

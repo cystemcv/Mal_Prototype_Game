@@ -36,6 +36,8 @@ public class CharacterClass : MonoBehaviour
     [Header("ID")]
     public string characterID;
 
+    
+
     public CharacterClass()
     {
 

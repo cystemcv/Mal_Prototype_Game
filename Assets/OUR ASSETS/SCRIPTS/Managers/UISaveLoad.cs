@@ -20,23 +20,16 @@ public class UISaveLoad : MonoBehaviour
 
     public List<GameObject> saveLoadButtons;
 
-    public enum saveLoadMode
-    {
-        SAVE,
-        LOAD
-    }
 
-    //initialize current mode
-    public saveLoadMode currentMode = saveLoadMode.SAVE;
 
     //this variable has event so we use getter and setter
-    public saveLoadMode CurrentMode
+    public SystemManager.SaveLoadModes SaveLoadMode
     {
-        get { return currentMode; }
+        get { return SystemManager.Instance.saveLoadMode; }
         set
         {
             //if (currentMode == value) return;
-            currentMode = value;
+            SystemManager.Instance.saveLoadMode = value;
             if (onCurrentModeChange != null)
                 onCurrentModeChange();
         }
@@ -82,7 +75,7 @@ public class UISaveLoad : MonoBehaviour
         //check each button if there is a savefile
         InitializeSaveLoadButtons();
 
-        if (currentMode == UISaveLoad.saveLoadMode.SAVE)
+        if (SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.SAVE)
         {
             saveLoadTitleText.text = "SAVE";
         }
@@ -111,7 +104,7 @@ public class UISaveLoad : MonoBehaviour
             //check if auto save button
             //if yes and we are on save then disable i
 
-            if (currentMode == UISaveLoad.saveLoadMode.SAVE && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
+            if (SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.SAVE && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
             {
                 //disable button
                 //Debug.Log("DISABLED");
@@ -120,7 +113,7 @@ public class UISaveLoad : MonoBehaviour
                 ChangeButtonTransparency(TextGroup, empty, IconParent, border, 70);
 
             }
-            else if(currentMode == UISaveLoad.saveLoadMode.LOAD && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
+            else if(SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.LOAD && saveLoadButton.GetComponent<GameObjectID>().objectID == "AutoSave")
             {
                 //saveLoadButton.SetActive(true);
                 //Debug.Log("NOT DISABLED");
@@ -142,7 +135,7 @@ public class UISaveLoad : MonoBehaviour
                 TextGroup.SetActive(false);
                 empty.SetActive(true);
 
-                if(UISaveLoad.Instance.currentMode == saveLoadMode.LOAD)
+                if(SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.LOAD)
                 {
                     saveLoadButton.GetComponent<Button>().interactable = false;
                     ChangeButtonTransparency(TextGroup, empty, IconParent, border, 70);

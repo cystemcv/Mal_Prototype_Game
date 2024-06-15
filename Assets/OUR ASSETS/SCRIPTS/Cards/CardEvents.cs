@@ -60,11 +60,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerEnter_TargetMode();
         }
-        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE) {
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE) {
             OnPointerEnter_ChoiceMode();
         }
 
@@ -78,11 +78,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerExit_TargetMode();
         }
-        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE)
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE)
         {
             OnPointerExit_ChoiceMode();
         }
@@ -92,17 +92,17 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if ( CombatManager.Instance.currentTurn != CombatManager.combatTurn.playerTurn)
+        if ( SystemManager.Instance.combatTurn != SystemManager.CombatTurns.playerTurn)
         {
             return;
         }
 
 
-        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerDown_TargetMode(eventData);
         }
-        else if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.CHOICE)
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE)
         {
             OnPointerDown_ChoiceMode(eventData);
         }
@@ -114,7 +114,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnDrag(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnDrag_TargetMode(eventData);
         }
@@ -127,7 +127,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
 
 
-        if (CombatManager.Instance.abilityMode == CombatManager.AbilityModes.NONE)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerUp_TargetMode(eventData);
         }
@@ -251,7 +251,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
             //leave from target
-            CombatManager.Instance.abilityMode = CombatManager.AbilityModes.NONE;
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
             return;
         }
@@ -274,7 +274,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 //if the card is targetable
 
                 //enter click mode which will disable all events from the cards
-                CombatManager.Instance.abilityMode = CombatManager.AbilityModes.TARGET;
+                SystemManager.Instance.abilityMode = SystemManager.AbilityModes.TARGET;
 
                 CombatManager.Instance.targetUIElement = this.gameObject.GetComponent<RectTransform>();
 

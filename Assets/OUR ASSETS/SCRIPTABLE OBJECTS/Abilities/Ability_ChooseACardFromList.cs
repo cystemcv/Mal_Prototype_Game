@@ -6,9 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability_ChooseACardFromList", menuName = "CardAbility/Ability_ChooseACardFromList")]
 public class Ability_ChooseACardFromList : ScriptableCardAbility
 {
-    public CharacterManager.MainClass mainClass;
-    public CardListManager.CardType cardType;
-    public CardListManager.AddCardTo addCardTo;
+    public SystemManager.MainClass mainClass;
+    public SystemManager.CardType cardType;
+    public SystemManager.AddCardTo addCardTo;
     public bool setManaCost = false;
     public bool modifyManaCost = false;
     public int cardsToChoose = 3;
@@ -61,10 +61,10 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         UIManager.Instance.chooseACardScreen.SetActive(true);
 
         //change the mode
-        CombatManager.Instance.abilityMode = CombatManager.AbilityModes.CHOICE;
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
 
         //where to add card
-        CardListManager.Instance.addCardTo = CardListManager.AddCardTo.Hand;
+        SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
 
         //get the cards to display
         for (int i = 0; i < cardsToChoose; i++)

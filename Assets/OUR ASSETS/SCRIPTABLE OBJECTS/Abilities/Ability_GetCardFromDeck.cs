@@ -7,7 +7,7 @@ using UnityEngine;
 public class Ability_GetCardFromDeck : ScriptableCardAbility
 {
 
-    public CardListManager.CardType cardType;
+    public SystemManager.CardType cardType;
     public bool setManaCost = false;
     public bool modifyManaCost = false;
 

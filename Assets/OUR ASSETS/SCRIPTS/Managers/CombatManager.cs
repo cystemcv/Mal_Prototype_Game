@@ -9,10 +9,9 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance;
 
     //targeting system
-    public enum AbilityModes { NONE, TARGET, CHOICE }
 
-    public AbilityModes abilityMode = AbilityModes.NONE;
 
+    public GameObject particleCardSoul;
     public GameObject arrowHead;
 
     public RectTransform targetUIElement;
@@ -24,10 +23,10 @@ public class CombatManager : MonoBehaviour
 
     public List<GameObject> characterSpawns;
 
-    public enum combatTurn { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
+
     public int turns = 0;
 
-    public combatTurn currentTurn;
+
 
     //---------------
 
@@ -43,8 +42,14 @@ public class CombatManager : MonoBehaviour
     private float fillbarVelocity = 0;
     private float fillbarSmoothValue = 0.3f;
 
-    //adjust number enum
-    public enum AdjustNumberMode { ATTACK, HEAL, SHIELD }
+
+
+    //leader
+    public GameObject leaderCharacter;
+    public GameObject leaderIndicator;
+
+    //characters
+    public List<GameObject> charactersInCombat;
 
     public int ManaAvailable
     {
@@ -102,7 +107,7 @@ public class CombatManager : MonoBehaviour
     public void Update()
     {
 
-        if (abilityMode == AbilityModes.TARGET)
+        if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.TARGET)
         {
 
             // Check if the target UI element is available
@@ -190,7 +195,7 @@ public class CombatManager : MonoBehaviour
             HandManager.Instance.SetHandCards();
 
             //leave from target
-            abilityMode = AbilityModes.NONE;
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         }
     }
 
@@ -239,13 +244,13 @@ public class CombatManager : MonoBehaviour
             arrowHead.SetActive(false);
 
             //leave from target
-            abilityMode = AbilityModes.NONE;
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
 
         }
     }
 
-    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
+    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
 
@@ -268,12 +273,12 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
+    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
         EnemyClass enemyClass = target.GetComponent<EnemyClass>();
 
-        if (adjustNumberMode == AdjustNumberMode.ATTACK)
+        if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
 
             int remainingShield = 0;
@@ -336,7 +341,7 @@ public class CombatManager : MonoBehaviour
             }
 
         }
-        else if (adjustNumberMode == AdjustNumberMode.HEAL)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)
         {
             //increase the hp
 
@@ -355,7 +360,7 @@ public class CombatManager : MonoBehaviour
             UpdateHealthBarSmoothly(enemyClass.health, enemyClass.maxHealth, enemyClass.slider);
 
         }
-        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
             //increase the shield
 
@@ -404,12 +409,12 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void AdjustHealthCharacter(GameObject target, int adjustNumber, bool bypassShield, AdjustNumberMode adjustNumberMode)
+    public void AdjustHealthCharacter(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
         CharacterClass characterClass = target.GetComponent<CharacterClass>();
 
-        if (adjustNumberMode == AdjustNumberMode.ATTACK)
+        if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
 
             int remainingShield = 0;
@@ -472,7 +477,7 @@ public class CombatManager : MonoBehaviour
             }
 
         }
-        else if (adjustNumberMode == AdjustNumberMode.HEAL)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)
         {
             //increase the hp
 
@@ -491,7 +496,7 @@ public class CombatManager : MonoBehaviour
             UpdateHealthBarSmoothly(characterClass.health, characterClass.maxHealth, characterClass.slider);
 
         }
-        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
             //increase the shield
 
@@ -539,19 +544,19 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public Color32 AdjustNumberModeColor(AdjustNumberMode adjustNumberMode)
+    public Color32 AdjustNumberModeColor(SystemManager.AdjustNumberModes adjustNumberMode)
     {
         Color32 colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
 
-        if (adjustNumberMode == AdjustNumberMode.ATTACK)
+        if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
             colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
         }
-        else if (adjustNumberMode == AdjustNumberMode.HEAL)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)
         {
             colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); ;
         }
-        else if (adjustNumberMode == AdjustNumberMode.SHIELD)
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
             colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); ;
         }
@@ -621,7 +626,7 @@ public class CombatManager : MonoBehaviour
 
 
         //change into combat mode
-        SystemManager.Instance.currentSystemMode = SystemManager.SystemModes.COMBAT;
+        SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
 
         //close the UI window
         UIManager.Instance.UIMENU.SetActive(false);
@@ -651,6 +656,9 @@ public class CombatManager : MonoBehaviour
         //clean up banished pile
         DeckManager.Instance.banishedPile.Clear();
 
+        //asign leader the first character
+        AssignLeader(charactersInCombat[0]);
+
 
         StartCoroutine(WaitPlayerTurns());
 
@@ -667,10 +675,35 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    public void AssignLeader(GameObject characterInCombat)
+    {
+        //assign the leader
+        leaderCharacter = characterInCombat;
+
+        //position the ui indicator on the leader
+        leaderIndicator.SetActive(true);
+        leaderIndicator.transform.position = new Vector2(leaderCharacter.transform.position.x, leaderCharacter.GetComponent<CharacterClass>().scriptablePlayer.leaderIndicatorHeight);
+    }  
+
+    public void ReverseLeader()
+    {
+        foreach (GameObject characterInCombat in charactersInCombat)
+        {
+
+            if (leaderCharacter != characterInCombat)
+            {
+                AssignLeader(characterInCombat);
+                break;
+            }
+
+        }
+    }
+
+
     public void PlayerTurnStart()
     {
         //start player turn
-        currentTurn = combatTurn.playerStartTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
         //increase turn;
         turns += 1;
@@ -685,11 +718,17 @@ public class CombatManager : MonoBehaviour
         DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
 
         UIManager.Instance.OnNotification("PLAYER STARTING TURN", 1);
+
+        //check if its not turn 1 and also only in duo mode
+        if (turns != 1)
+        {
+            ReverseLeader();
+        }
     }
 
     public void PlayerTurn()
     {
-        currentTurn = combatTurn.playerTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerTurn;
         UIManager.Instance.OnNotification("PLAYER TURN", 1);
 
     }
@@ -708,7 +747,7 @@ public class CombatManager : MonoBehaviour
 
     public void PlayerEndTurnButton()
     {
-        if (currentTurn == combatTurn.playerTurn)
+        if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerTurn)
         {
             StartCoroutine(WaitEnemyTurns());
         }
@@ -717,7 +756,7 @@ public class CombatManager : MonoBehaviour
     public void PlayerTurnEnd()
     {
 
-        currentTurn = combatTurn.playerEndTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerEndTurn;
         UIManager.Instance.OnNotification("PLAYER ENDING TURN", 1);
 
         //discard cards
@@ -727,7 +766,7 @@ public class CombatManager : MonoBehaviour
 
     public void EnemyTurnStart()
     {
-        currentTurn = combatTurn.enemyStartTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
         UIManager.Instance.OnNotification("ENEMY STARTING TURN", 1);
 
         //loop for all buffs and debuffs
@@ -736,14 +775,14 @@ public class CombatManager : MonoBehaviour
 
     public void EnemyTurn()
     {
-        currentTurn = combatTurn.enemyTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
         UIManager.Instance.OnNotification("ENEMY TURN", 1);
 
     }
 
     public void EnemyTurnEnd()
     {
-        currentTurn = combatTurn.enemyEndTurn;
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
         UIManager.Instance.OnNotification("ENEMY ENDING TURN", 1);
 
     }
@@ -773,7 +812,7 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void InstantiateCharacter(ScriptablePlayer scriptablePlayer, int spawnPosition)
+    public GameObject InstantiateCharacter(ScriptablePlayer scriptablePlayer, int spawnPosition)
     {
 
         //instantiate the character prefab based on the spawnPosition
@@ -785,18 +824,27 @@ public class CombatManager : MonoBehaviour
         //parent it to our characters object
         character.transform.SetParent(CombatManager.Instance.combatScene.transform.Find("Characters"));
 
+        return character;
+
     }
 
     public void RemoveShieldFromAllCharacters()
     {
 
-        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] characters = GetAllCharactersGameObjects();
 
         foreach (GameObject character in characters)
         {
             RemoveShieldFromCharacter(character);
         }
 
+    }
+
+    public GameObject[] GetAllCharactersGameObjects()
+    {
+        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+
+        return characters;
     }
 
     public void RemoveShieldFromCharacter(GameObject character)

@@ -12,7 +12,7 @@ public class GameObjectID: MonoBehaviour
     public void SaveOrLoadButtonClick()
     {
         //save
-        if (UISaveLoad.Instance.currentMode == UISaveLoad.saveLoadMode.SAVE)
+        if (SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.SAVE)
         {
             GameObjectID gameObjectID = this.gameObject.GetComponent<GameObjectID>();
             DataPersistenceManager.Instance.SaveGame(gameObjectID.objectID);

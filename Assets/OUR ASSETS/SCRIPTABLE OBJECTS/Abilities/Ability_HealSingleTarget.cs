@@ -23,7 +23,7 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
     {
         base.OnPlayCard(cardScript);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, CombatManager.AdjustNumberMode.HEAL);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.HEAL);
 
 
     }

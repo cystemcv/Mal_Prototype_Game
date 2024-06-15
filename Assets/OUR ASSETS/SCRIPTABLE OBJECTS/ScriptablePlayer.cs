@@ -11,7 +11,7 @@ public class ScriptablePlayer : ScriptableObject
 
     [Header("MAIN")]
     public string playerName;
-    public CharacterManager.MainClass mainClass; //Actual classes to be determined
+    public SystemManager.MainClass mainClass; //Actual classes to be determined
     //Player's primary class
 
     //prefab that contains the visuals + animations and other crucial scripts
@@ -22,6 +22,8 @@ public class ScriptablePlayer : ScriptableObject
     public Sprite characterIcon;
 
     public string characterDescription;
+
+    public float leaderIndicatorHeight = 0f;
 
     //Character Stats - Obviously subject to alteration
     public int strength = 1;

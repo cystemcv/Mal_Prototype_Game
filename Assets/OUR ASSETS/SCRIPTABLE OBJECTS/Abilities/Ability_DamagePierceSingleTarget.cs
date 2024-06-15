@@ -23,7 +23,7 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     {
         base.OnPlayCard(cardScript);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), true, CombatManager.AdjustNumberMode.ATTACK);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), true, SystemManager.AdjustNumberModes.ATTACK);
 
 
     }

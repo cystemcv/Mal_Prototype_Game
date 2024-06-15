@@ -10,12 +10,12 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptablePlayer> scriptablePlayerList;
 
-    public enum GameMode { MainMode,DuoMode,AnyMode }
 
-    public GameMode gameMode = GameMode.MainMode;
+
+
 
     //used by scriptable objects
-    public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
+
 
     private void Awake()
     {
@@ -38,10 +38,10 @@ public class CharacterManager : MonoBehaviour
 
         int limit = 0;
 
-        if (gameMode == GameMode.MainMode) {
+        if (SystemManager.Instance.gameMode == SystemManager.GameMode.MainMode) {
             limit = 1;
         }
-        else if (gameMode == GameMode.DuoMode)
+        else if (SystemManager.Instance.gameMode == SystemManager.GameMode.DuoMode)
         {
             limit = 2;
         }

@@ -18,10 +18,7 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> Chaos_Mage_CardPool;
     public List<ScriptableCard> Ranger_CardPool;
 
-    public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
-    public AddCardTo addCardTo;
 
-    public enum CardType { Attack, Magic, Skill , Focus , Status, Curse,  }
 
 
     private void Awake()
@@ -39,15 +36,15 @@ public class CardListManager : MonoBehaviour
 
     }
 
-    public Color GetClassColor(CharacterManager.MainClass mainClass)
+    public Color GetClassColor(SystemManager.MainClass mainClass)
     {
         Color color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
 
-        if (mainClass == CharacterManager.MainClass.Knight)
+        if (mainClass == SystemManager.MainClass.Knight)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
         }
-        else if (mainClass == CharacterManager.MainClass.Rogue)
+        else if (mainClass == SystemManager.MainClass.Rogue)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
         }
