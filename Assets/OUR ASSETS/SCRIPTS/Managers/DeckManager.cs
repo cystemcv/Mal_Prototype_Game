@@ -275,7 +275,7 @@ public class DeckManager : MonoBehaviour
             }
 
             //add also a small delay
-            waitAmount += 0.05f;
+            waitAmount += 0.2f;
 
              yield return new WaitForSeconds(waitAmount);
             //yield return new WaitForSeconds(10f);
