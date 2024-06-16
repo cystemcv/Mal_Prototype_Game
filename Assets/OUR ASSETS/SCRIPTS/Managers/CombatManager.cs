@@ -92,7 +92,7 @@ public class CombatManager : MonoBehaviour
 
     public void Start()
     {
-        lineRenderer = this.transform.Find("LINERENDERER").GetComponent<LineRenderer>();
+        lineRenderer = this.transform.Find("TARGET LINERENDERER").GetComponent<LineRenderer>();
 
         // Set the initial positions of the line (start and end)
         lineRenderer.positionCount = 2;
@@ -116,7 +116,7 @@ public class CombatManager : MonoBehaviour
                 // Get the position of the target UI element in screen space
                 //Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
                 Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, targetUIElement.Find("LineRendererStart").position);
-  
+
 
                 // Convert the screen space position to world space
                 Vector3 targetPosition = Camera.main.ScreenToWorldPoint(targetScreenPosition);
@@ -159,7 +159,7 @@ public class CombatManager : MonoBehaviour
                 //lineRenderer.SetPosition(0, targetPosition);
                 //lineRenderer.SetPosition(1, mousePosition);
             }
-
+            CheckHitTarget();
             CheckClickTarget();
         }
 
@@ -177,6 +177,7 @@ public class CombatManager : MonoBehaviour
 
     public void CheckClickTarget()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
             HitTarget();
@@ -248,6 +249,67 @@ public class CombatManager : MonoBehaviour
 
 
         }
+    }
+
+    public void CheckHitTarget()
+    {
+        // Cast a ray from mouse position
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        string cardTag = "";
+        if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
+        {
+            cardTag = "Enemy";
+        }
+        else
+        {
+            cardTag = "Player";
+        }
+
+        // Check if the ray intersects with any colliders
+        if (hit.collider != null)
+        {
+            //check if the target is the required one
+            if (hit.collider.gameObject.tag == "Enemy" && cardTag == "Enemy")
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue));
+
+            }
+            else if (hit.collider.gameObject.tag == "Player" && cardTag == "Player")
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue));
+
+            }
+            else
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
+            }
+
+        }
+        else
+        {
+            if (cardTag == "Player")
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen));
+            }
+            else if (cardTag == "Enemy")
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
+            }
+            else
+            {
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
+            }
+        }
+
+    }
+
+    public void ChangeLineAndArrowColor(Color color)
+    {
+        arrowHead.GetComponent<SpriteRenderer>().color = color;
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
     }
 
     public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
@@ -683,7 +745,7 @@ public class CombatManager : MonoBehaviour
         //position the ui indicator on the leader
         leaderIndicator.SetActive(true);
         leaderIndicator.transform.position = new Vector2(leaderCharacter.transform.position.x, leaderCharacter.GetComponent<CharacterClass>().scriptablePlayer.leaderIndicatorHeight);
-    }  
+    }
 
     public void ReverseLeader()
     {
