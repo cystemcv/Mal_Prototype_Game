@@ -38,7 +38,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardCharacterAnimation { MeleeAttack, RangeAttack, SpellCast, HealingCast }; //Actual classes to be determined
     public CardCharacterAnimation cardCharacterAnimation;
 
-    public enum CardCharacterSound { Generic }; //Actual classes to be determined
+    public enum CardCharacterSound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public CardCharacterSound cardCharacterSound;
 
     public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
