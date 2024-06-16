@@ -820,6 +820,8 @@ public class CombatManager : MonoBehaviour
 
         //pass it the scriptable object to the class
         character.GetComponent<CharacterClass>().scriptablePlayer = scriptablePlayer;
+        //svae the position as it can be used later
+        character.GetComponent<CharacterClass>().originalCombatPos = characterSpawns[spawnPosition].transform;
 
         //parent it to our characters object
         character.transform.SetParent(CombatManager.Instance.combatScene.transform.Find("Characters"));

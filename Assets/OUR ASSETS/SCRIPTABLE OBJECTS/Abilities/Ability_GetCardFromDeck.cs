@@ -38,9 +38,9 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript,character);
+        base.OnPlayCard(cardScript,character, null);
         //based on the type
         // Filter the combatDeck to get only the cards of the specified type
         List<CardScript> filteredDeck = DeckManager.Instance.combatDeck.Where(card => card.scriptableCard.cardType == cardType).ToList();

@@ -19,9 +19,39 @@ public class Ability_PoisonTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+
+
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript, character);
+
+
+        base.OnPlayCard(cardScript, character, CombatManager.Instance.targetClicked);
+
+
+
+        if (base.runToTarget)
+        {
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+
+        }
+        else
+        {
+            ProceedToAbility(cardScript, character);
+        }
+
+
+
+    }
+
+    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    {
+        // Proceed with animation and sound after the movement
+        ProceedToAbility(cardScript, character);
+    }
+
+    private void ProceedToAbility(CardScript cardScript, GameObject character)
+    {
+
         BuffSystemManager.Instance.AddDebuffToEnemyTarget(this, CombatManager.Instance.targetClicked, 3);
 
     }

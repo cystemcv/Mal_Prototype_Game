@@ -36,7 +36,7 @@ public class CharacterClass : MonoBehaviour
     [Header("ID")]
     public string characterID;
 
-    
+    public Transform originalCombatPos;
 
     public CharacterClass()
     {

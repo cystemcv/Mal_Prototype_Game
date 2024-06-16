@@ -40,9 +40,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript, character);
+        base.OnPlayCard(cardScript, character, null);
 
         List<ScriptableCard> listToChoose;
 

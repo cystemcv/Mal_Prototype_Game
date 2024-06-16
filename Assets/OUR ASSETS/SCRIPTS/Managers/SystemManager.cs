@@ -46,6 +46,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     //end of enums
 
+    public bool thereIsActivatedCard = false;
+
     public Camera mainCamera;
     public Camera uiCamera;
 

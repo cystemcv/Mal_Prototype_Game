@@ -210,7 +210,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             //check activation
             canActivate = HandManager.Instance.CheckActivation(rectTransform);
 
-            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable)
+            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable && SystemManager.Instance.thereIsActivatedCard == false)
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
                 //activation should not be visible
@@ -224,6 +224,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             }
             else
             {
+
                 //red color
                 gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationFail);
             }
@@ -238,7 +239,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
 
         //if it cancel drag
-        if (isDragging == false)
+        if (isDragging == false || SystemManager.Instance.thereIsActivatedCard == true)
         {
             //reset everything
             //remove line renderer

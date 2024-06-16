@@ -19,9 +19,9 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript,character);
+        base.OnPlayCard(cardScript,character, null);
 
         CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.HEAL);
 

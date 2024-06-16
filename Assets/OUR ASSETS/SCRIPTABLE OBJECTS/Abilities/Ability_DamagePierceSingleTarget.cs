@@ -19,12 +19,40 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+
+
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript,character);
+
+
+        base.OnPlayCard(cardScript, character, CombatManager.Instance.targetClicked);
+
+
+
+        if (base.runToTarget)
+        {
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+
+        }
+        else
+        {
+            ProceedToAbility(cardScript, character);
+        }
+
+
+
+    }
+
+    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    {
+        // Proceed with animation and sound after the movement
+        ProceedToAbility(cardScript, character);
+    }
+
+    private void ProceedToAbility(CardScript cardScript, GameObject character)
+    {
 
         CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), true, SystemManager.AdjustNumberModes.ATTACK);
-
 
     }
 

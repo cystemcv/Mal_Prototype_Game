@@ -246,6 +246,9 @@ public class DeckManager : MonoBehaviour
 
     IEnumerator PlayCardCoroutine(CardScript cardScript)
     {
+
+        SystemManager.Instance.thereIsActivatedCard = true;
+
         //get the character to be used
         GameObject character = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
 
@@ -255,7 +258,7 @@ public class DeckManager : MonoBehaviour
 
 
             // Wait for 2 seconds
-            scriptableCardAbility.OnPlayCard(cardScript, character);
+            scriptableCardAbility.OnPlayCard(cardScript, character, null);
 
             //check to reset mana to the original cost if neeeded
             if (cardScript.resetManaCost)
@@ -265,8 +268,17 @@ public class DeckManager : MonoBehaviour
                 cardScript.changedMana = false;
             }
 
-            yield return new WaitForSeconds(scriptableCardAbility.waitForAbility);
+            float waitAmount = scriptableCardAbility.waitForAbility;
+            if (scriptableCardAbility.runToTarget)
+            {
+                waitAmount += scriptableCardAbility.timeToGetToTarget;
+            }
 
+            //add also a small delay
+            waitAmount += 0.05f;
+
+             yield return new WaitForSeconds(waitAmount);
+            //yield return new WaitForSeconds(10f);
         }
 
         //go back to idle animation
@@ -274,10 +286,12 @@ public class DeckManager : MonoBehaviour
 
         if (animator != null)
         {
+            Debug.Log("idle?");
             animator.SetTrigger("Idle");
         }
 
-
+        //card ended
+        SystemManager.Instance.thereIsActivatedCard = false;
 
     }
 

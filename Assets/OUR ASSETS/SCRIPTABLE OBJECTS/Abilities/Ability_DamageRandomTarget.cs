@@ -7,7 +7,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 {
 
     // public int damage;
-
+    private GameObject targetEnemy;
 
 
     public override string AbilityDescription(CardScript cardScript)
@@ -19,19 +19,44 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
-    {
-        base.OnPlayCard(cardScript,character);
 
+
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    {
         //get all enemies
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         int randomNmbr = Random.Range(0, enemies.Length);
 
-        CombatManager.Instance.AdjustHealth(enemies[randomNmbr], GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
+        targetEnemy = enemies[randomNmbr];
+
+        base.OnPlayCard(cardScript, character, targetEnemy);
+
+
+        if (base.runToTarget)
+        {
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+
+        }
+        else
+        {
+            ProceedToAbility(cardScript, character);
+        }
 
 
 
+    }
+
+    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    {
+        // Proceed with animation and sound after the movement
+        ProceedToAbility(cardScript, character);
+    }
+
+    private void ProceedToAbility(CardScript cardScript, GameObject character)
+    {
+
+        CombatManager.Instance.AdjustHealth(targetEnemy, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

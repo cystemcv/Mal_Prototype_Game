@@ -8,36 +8,92 @@ public class ScriptableCardAbility : ScriptableObject
 
     public string abilityName;
     public float waitForAbility = 0.2f;
+    public bool runToTarget = false;
+    public float timeToGetToTarget = 0.2f;
 
+    public float originalCharacterPosX;
 
     public ScriptableBuffDebuff scriptableBuffDebuff;
-
+    public LTDescr localMoveTween;
 
     public GameObject abilityEffect;
     public SystemManager.CardCharacterAnimation cardCharacterAnimation = SystemManager.CardCharacterAnimation.MeleeAttack;
     public SystemManager.CardCharacterSound cardCharacterSound = SystemManager.CardCharacterSound.Generic;
+
+    private Animator characterAnimator;
 
     public virtual string AbilityDescription(CardScript cardScript)
     {
         return "<color=blue>" + abilityName + "</color>";
     }
 
-    public virtual void OnPlayCard(CardScript cardScript, GameObject character)
+    public virtual void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
 
-        //then do animations
-        Animator animator = character.transform.Find("model").GetComponent<Animator>();
+        // Trigger the animation
+        characterAnimator = character.transform.Find("model").GetComponent<Animator>();
 
-        if (animator != null)
+        if (runToTarget)
         {
-            animator.SetTrigger(cardCharacterAnimation.ToString());
+
+
+            // Move the character
+            localMoveTween = LeanTween.moveX(character, target.transform.position.x, timeToGetToTarget);
+
+            if (characterAnimator != null)
+            {
+                characterAnimator.SetTrigger("Run");
+            }
+
+            // Invoke the method to proceed after the movement duration using InvokeHelper
+            InvokeHelper.Instance.Invoke(() => OnMovementComplete(character), timeToGetToTarget);
+
+            // Then invoke this to go back
+            InvokeHelper.Instance.Invoke(() => OnAnimationComplete(character), timeToGetToTarget + waitForAbility);
+        }
+        else
+        {
+            // If no movement, proceed directly to the animation and sound
+            ProceedWithAnimationAndSound(character);
+        }
+    }
+
+    private void OnMovementComplete(GameObject character)
+    {
+        // Proceed with animation and sound after the movement
+        ProceedWithAnimationAndSound(character);
+    }
+
+    private void ProceedWithAnimationAndSound(GameObject character)
+    {
+
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetTrigger(cardCharacterAnimation.ToString());
         }
 
         Debug.Log("PLAYED CARD BY " + character.GetComponent<CharacterClass>().scriptablePlayer.mainClass);
 
-        //sounds
+        // Play the sound
         AudioManager.Instance.PlayCardSound(cardCharacterSound.ToString());
+    }
 
+    private void OnAnimationComplete(GameObject character)
+    {
+        // Proceed with animation and sound after the movement
+        ProceedToGoBack(character);
+    }
+
+    private void ProceedToGoBack(GameObject character)
+    {
+
+        // Move the character back
+        localMoveTween = LeanTween.moveX(character, character.GetComponent<CharacterClass>().originalCombatPos.position.x, timeToGetToTarget);
+
+        if (characterAnimator != null)
+        {
+            characterAnimator.SetTrigger("RunBack");
+        }
     }
 
     public virtual void OnDiscardCard(CardScript cardScript)

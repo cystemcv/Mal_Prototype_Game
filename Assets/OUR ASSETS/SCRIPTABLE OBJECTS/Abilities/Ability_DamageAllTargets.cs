@@ -19,9 +19,9 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         return final;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character)
+    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
-        base.OnPlayCard(cardScript,character);
+        base.OnPlayCard(cardScript,character, null);
 
         //get all enemies
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
