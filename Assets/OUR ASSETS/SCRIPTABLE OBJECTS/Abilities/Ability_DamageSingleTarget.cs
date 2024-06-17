@@ -10,14 +10,20 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
-        string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
+        int cardDmg = GetAbilityVariable(cardScript);
+        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, null);
+    
+
+        string keyword = base.AbilityDescription(cardScript, character);
+        string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
         string final = keyword + " : " + description;
 
         return final;
     }
+
+
 
     public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
@@ -49,8 +55,8 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject character)
     {
-
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, CombatManager.Instance.targetClicked);
+        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

@@ -42,6 +42,7 @@ public class CombatManager : MonoBehaviour
     private float fillbarVelocity = 0;
     private float fillbarSmoothValue = 0.3f;
 
+    public int tempBoostAttack = 0;
 
 
     //leader
@@ -604,6 +605,32 @@ public class CombatManager : MonoBehaviour
         //}
 
 
+    }
+
+    public int CalculateCharacterDmg(int startingDmg, GameObject character, GameObject enemy)
+    {
+        // Get character attack, debuff, and buff percentages
+        int character_Attack = character.GetComponent<CharacterClass>().attack;
+        float character_attackDebuffPerc = character.GetComponent<CharacterClass>().attackDebuffPerc;
+        float character_attackBuffPerc = character.GetComponent<CharacterClass>().attackBuffPerc;
+
+        // Calculate combined attack
+        int combinedAttack = startingDmg + character_Attack;
+
+        // Apply debuff and buff multiplicatively
+        float finalAttackMultiplier = 1 + (character_attackBuffPerc / 100) - (character_attackDebuffPerc / 100);
+
+        // Check if the enemy is vulnerable and apply additional damage multiplier
+        //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
+        //if (isVulnerable)
+        //{
+        //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
+        //}
+
+        // Calculate final damage and clamp to a minimum of zero
+        int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedAttack+ tempBoostAttack) * finalAttackMultiplier));
+
+        return finalDmg;
     }
 
     public Color32 AdjustNumberModeColor(SystemManager.AdjustNumberModes adjustNumberMode)

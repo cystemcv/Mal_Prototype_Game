@@ -10,14 +10,16 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
+        string keyword = base.AbilityDescription(cardScript, character);
         string description = "Heal " + GetAbilityVariable(cardScript) + " to character";
         string final = keyword + " : " + description;
 
         return final;
     }
+
+
 
     public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {

@@ -295,25 +295,25 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public string GenerateCardAbilityDescription(CardScript cardScript)
-    {
-        string abilityDescription = "";
+    //public string GenerateCardAbilityDescription(CardScript cardScript)
+    //{
+    //    string abilityDescription = "";
 
-        //check if the card has any abilities to be played
-        if (cardScript.scriptableCard.scriptableCardAbilities.Count == 0)
-        {
-            return abilityDescription;
-        }
+    //    //check if the card has any abilities to be played
+    //    if (cardScript.scriptableCard.scriptableCardAbilities.Count == 0)
+    //    {
+    //        return abilityDescription;
+    //    }
 
-        //activate all card abilities
-        foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
-        {
-            abilityDescription += scriptableCardAbility.AbilityDescription(cardScript);
-        }
+    //    //activate all card abilities
+    //    foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
+    //    {
+    //        abilityDescription += scriptableCardAbility.AbilityDescription(cardScript);
+    //    }
 
-        return abilityDescription;
+    //    return abilityDescription;
 
-    }
+    //}
 
     public void PlayCardFromHandRandom()
     {
@@ -483,6 +483,9 @@ public class DeckManager : MonoBehaviour
         CardScript cardScript = cardPrefab.GetComponent<CardScript>();
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
+        //get the character to be used
+        GameObject character = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+
         //for example
         cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
         cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
@@ -498,10 +501,46 @@ public class DeckManager : MonoBehaviour
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
         foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
         {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(cardScript) + "\n";
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(cardScript, character) + "\n";
         }
         //activation should not be visible
         cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+    }
+
+
+    public void UpdateCardDescription(GameObject cardPrefab)
+    {
+
+        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        Transform cardChild = cardPrefab.transform.GetChild(0);
+
+        //get the character to be used
+        GameObject character = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
+        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        {
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(cardScript, character) + "\n";
+        }
+    }
+
+    public string GetBonusAttackAsDescription(int cardDmg, int calculatedDmg)
+    {
+
+        int result = calculatedDmg - cardDmg;
+
+        if (result > 0)
+        {
+            return "<color=green>(+" + result + ")</color>";
+        }
+        else if (result < 0)
+        {
+            return "<color=red>(-" + Mathf.Abs(result) + ")</color>";
+        }
+        else
+        {
+            return "";
+        }
     }
 
     //public Color32 AssignCardColor()

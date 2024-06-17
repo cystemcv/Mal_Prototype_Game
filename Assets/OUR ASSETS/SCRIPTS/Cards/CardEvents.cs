@@ -55,6 +55,12 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //canvasGroup = GetComponent<CanvasGroup>();
     }
 
+    void Update()
+    {
+        //update the description of the card
+        //DeckManager.Instance.UpdateCardDescription(this.gameObject);
+    }
+
     #region EVENTS
 
     public void OnPointerEnter(PointerEventData eventData)

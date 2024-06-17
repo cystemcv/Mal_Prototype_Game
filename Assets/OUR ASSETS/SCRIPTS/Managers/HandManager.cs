@@ -70,6 +70,7 @@ public class HandManager : MonoBehaviour
     {
         foreach (GameObject cardRef in cardsInHandList)
         {
+            DeckManager.Instance.UpdateCardDescription(cardRef);
             SetCardPosition(cardRef);
         }
     }

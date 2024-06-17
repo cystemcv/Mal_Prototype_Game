@@ -22,10 +22,12 @@ public class ScriptableCardAbility : ScriptableObject
 
     private Animator characterAnimator;
 
-    public virtual string AbilityDescription(CardScript cardScript)
+    public virtual string AbilityDescription(CardScript cardScript, GameObject character)
     {
         return "<color=blue>" + abilityName + "</color>";
     }
+
+
 
     public virtual void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {

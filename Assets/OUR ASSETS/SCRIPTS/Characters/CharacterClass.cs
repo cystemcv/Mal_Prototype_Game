@@ -13,6 +13,10 @@ public class CharacterClass : MonoBehaviour
 
     public int poisongDmg;
 
+    public int attack = 0;
+    public float attackDebuffPerc = 0;
+    public float attackBuffPerc = 0;
+
     public int health;
     public int maxHealth;
 
@@ -88,7 +92,7 @@ public class CharacterClass : MonoBehaviour
         poisongDmg = scriptablePlayer.poisonDmg;
         health = scriptablePlayer.currHealth;
         maxHealth = scriptablePlayer.maxHealth;
-
+        attack = scriptablePlayer.strength;
 
         sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
         slider = sliderBar.GetComponent<Slider>();

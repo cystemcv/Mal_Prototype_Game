@@ -14,9 +14,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
     public int cardsToChoose = 3;
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
+        string keyword = base.AbilityDescription(cardScript, character);
         string description = "Choose a " + mainClass + " " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
@@ -39,6 +39,8 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
         return final;
     }
+
+
 
     public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {

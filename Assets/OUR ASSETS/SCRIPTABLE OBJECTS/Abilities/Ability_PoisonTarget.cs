@@ -10,9 +10,9 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
+        string keyword = base.AbilityDescription(cardScript, character);
         string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
         string final = keyword + " : " + description;
 

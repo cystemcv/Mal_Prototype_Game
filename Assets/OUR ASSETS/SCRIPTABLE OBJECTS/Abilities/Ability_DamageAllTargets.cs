@@ -10,14 +10,20 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
-        string description = "Deal " + GetAbilityVariable(cardScript) + " to all enemies";
+
+        int cardDmg = GetAbilityVariable(cardScript);
+        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, null);
+
+        string keyword = base.AbilityDescription(cardScript, character);
+        string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to all enemies";
         string final = keyword + " : " + description;
 
         return final;
     }
+
+
 
     public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
@@ -26,10 +32,12 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         //get all enemies
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
+
         //then loop
         foreach (GameObject enemy in enemies)
         {
-            CombatManager.Instance.AdjustHealth(enemy, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
+            int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, enemy);
+            CombatManager.Instance.AdjustHealth(enemy, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
         }
       
 

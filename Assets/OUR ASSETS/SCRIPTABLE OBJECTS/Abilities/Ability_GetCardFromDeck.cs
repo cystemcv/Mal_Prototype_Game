@@ -12,9 +12,9 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
     public bool modifyManaCost = false;
 
 
-    public override string AbilityDescription(CardScript cardScript)
+    public override string AbilityDescription(CardScript cardScript, GameObject character)
     {
-        string keyword = base.AbilityDescription(cardScript);
+        string keyword = base.AbilityDescription(cardScript, character);
         string description = "Find a random " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
@@ -37,6 +37,7 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
 
         return final;
     }
+
 
     public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
     {
