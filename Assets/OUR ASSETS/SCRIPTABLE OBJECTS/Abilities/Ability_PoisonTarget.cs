@@ -29,7 +29,8 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-        if (base.runToTarget)
+        if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
+            || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
             InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
 

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1181120843825703942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5712600558956514165}
+  m_Layer: 0
+  m_Name: PROJECTILESPAWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5712600558956514165
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181120843825703942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.66, y: 2.311, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2928478260159505619}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2928478260159505618
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +63,7 @@ Transform:
   m_Children:
   - {fileID: 1686806435262038755}
   - {fileID: 4578996976991076001}
+  - {fileID: 5712600558956514165}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -77,6 +109,9 @@ MonoBehaviour:
   scriptablePlayer: {fileID: 11400000, guid: 28218b9bdf38b7d46b971aeca7523186, type: 2}
   listBuffDebuffClass: []
   poisongDmg: 0
+  attack: 0
+  attackDebuffPerc: 0
+  attackBuffPerc: 0
   health: 0
   maxHealth: 0
   shield: 0
@@ -91,6 +126,7 @@ MonoBehaviour:
   characterTitle: {fileID: 0}
   uiPanelBorder: {fileID: 0}
   characterID: 4fd621b9-e731-4ea6-8ec1-c6019077d218
+  originalCombatPos: {fileID: 0}
 --- !u!1001 &2928478260997523327
 PrefabInstance:
   m_ObjectHideFlags: 0

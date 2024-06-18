@@ -8,8 +8,10 @@ public class ScriptableCardAbility : ScriptableObject
 
     public string abilityName;
     public float waitForAbility = 0.2f;
-    public bool runToTarget = false;
+    //public bool runToTarget = false;
+    public SystemManager.TypeOfAttack typeOfAttack = SystemManager.TypeOfAttack.SIMPLE;
     public float timeToGetToTarget = 0.2f;
+
 
     public float originalCharacterPosX;
 
@@ -17,6 +19,8 @@ public class ScriptableCardAbility : ScriptableObject
     public LTDescr localMoveTween;
 
     public GameObject abilityEffect;
+    public GameObject abilityAfterEffect;
+    public float abilityAfterEffectLifetime = 0.2f;
     public SystemManager.CardCharacterAnimation cardCharacterAnimation = SystemManager.CardCharacterAnimation.MeleeAttack;
     public SystemManager.CardCharacterSound cardCharacterSound = SystemManager.CardCharacterSound.Generic;
 
@@ -35,7 +39,28 @@ public class ScriptableCardAbility : ScriptableObject
         // Trigger the animation
         characterAnimator = character.transform.Find("model").GetComponent<Animator>();
 
-        if (runToTarget)
+        if (typeOfAttack == SystemManager.TypeOfAttack.SIMPLE)
+        {
+            ProceedWithAnimationAndSound(character);
+        }
+        else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
+        {
+
+            ProceedWithAnimationAndSound(character);
+
+            Transform projectileSpawn = character.transform.Find("PROJECTILESPAWN");
+
+            //spawn the projectile
+            GameObject projectile = Instantiate(abilityEffect, projectileSpawn.position, Quaternion.identity);
+
+            // Move the projectile
+            localMoveTween = LeanTween.moveX(projectile, target.transform.position.x, timeToGetToTarget);
+
+            // Invoke the method to proceed after the movement duration using InvokeHelper
+            InvokeHelper.Instance.Invoke(() => OnProjectileCompleted(projectile, target), timeToGetToTarget + waitForAbility);
+
+        }
+        else if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE)
         {
 
 
@@ -64,6 +89,20 @@ public class ScriptableCardAbility : ScriptableObject
     {
         // Proceed with animation and sound after the movement
         ProceedWithAnimationAndSound(character);
+    }
+
+    private void OnProjectileCompleted(GameObject projectile, GameObject target)
+    {
+        //destroy main projectile
+        Destroy(projectile);
+
+        //spawn after effect 
+        if (abilityAfterEffect != null) {
+            GameObject temp_abilityAfterEffect = Instantiate(abilityAfterEffect, target.transform.position, Quaternion.identity);
+            Destroy(temp_abilityAfterEffect, abilityAfterEffectLifetime);
+        }
+  
+
     }
 
     private void ProceedWithAnimationAndSound(GameObject character)
@@ -118,7 +157,7 @@ public class ScriptableCardAbility : ScriptableObject
         return false;
     }
 
-    public virtual bool OnEnemyTurnStart( GameObject target)
+    public virtual bool OnEnemyTurnStart(GameObject target)
     {
         return false;
     }
