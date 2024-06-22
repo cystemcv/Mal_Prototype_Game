@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
+  m_Name: card_Dark Ball
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
+  cardName: Dark Ball
+  mainClass: 5
+  primaryManaCost: 3
+  secondaryManaCost: 1
+  cardType: 1
+  ourRarity: 3
+  cardArt: {fileID: 21300000, guid: 9cfa39010fe314547b3c17a05ff5f403, type: 3}
+  cardDesc: 
+  cardFlavor: 
+  ability1Var: 8
+  ability2Var: 0
+  ability3Var: 0
+  ability4Var: 0
+  ability5Var: 0
+  ability6Var: 0
+  scriptableCardAbilities:
+  - {fileID: 11400000, guid: 084929f2812748f4098506897ef63545, type: 2}
+  canTarget: 1
+  targetEnemy: 1
+  playerMode1: 1
+  playerMode2: 1
+  playerMode3: 1
+  unlockable: 0

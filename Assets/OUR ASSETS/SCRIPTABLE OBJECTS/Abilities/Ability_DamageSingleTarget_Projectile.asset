@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8edae90560ff70949b7b809b2cf732bd, type: 3}
-  m_Name: Ability_DamageSingleTarget
+  m_Name: Ability_DamageSingleTarget_Projectile
   m_EditorClassIdentifier: 
   abilityName: TARGET DMG
   waitForAbility: 0.2
-  runToTarget: 1
-  typeOfAttack: 1
+  typeOfAttack: 2
   timeToGetToTarget: 0.2
   originalCharacterPosX: -4.37
   scriptableBuffDebuff: {fileID: 0}
-  abilityEffect: {fileID: 0}
-  abilityAfterEffect: {fileID: 0}
-  abilityAfterEffectLifetime: 0.2
-  cardCharacterAnimation: 0
-  cardCharacterSound: 3
+  abilityEffect: {fileID: 2065528568157238557, guid: 6d06bb325d3bd354886b33dbb36e3eb3, type: 3}
+  abilityAfterEffect: {fileID: 1403866022652251619, guid: 1ecd58f233634464b95867c3546ea950, type: 3}
+  abilityAfterEffectLifetime: 2
+  cardCharacterAnimation: 1
+  cardCharacterSound: 0

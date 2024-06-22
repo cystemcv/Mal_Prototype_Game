@@ -269,7 +269,8 @@ public class DeckManager : MonoBehaviour
             }
 
             float waitAmount = scriptableCardAbility.waitForAbility;
-            if (scriptableCardAbility.runToTarget)
+            if (scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
+               || scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
             {
                 waitAmount += scriptableCardAbility.timeToGetToTarget;
             }
