@@ -25,8 +25,6 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
-
         //assign target 
         if (target != null)
         {
@@ -36,6 +34,10 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
         {
             realTarget = CombatManager.Instance.targetClicked;
         }
+
+        base.OnPlayCard(cardScript, entity, null);
+
+
 
         Debug.Log("RT : " + realTarget.name);
 

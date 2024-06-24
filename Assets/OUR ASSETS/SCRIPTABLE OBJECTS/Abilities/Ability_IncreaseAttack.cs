@@ -8,7 +8,7 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
 
     [Header("UNIQUE")]
     public int buffLifeTime = 0;
-
+    private GameObject realTarget;
 
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
@@ -33,9 +33,17 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
+        //assign target 
+        if (target != null)
+        {
+            realTarget = target;
+        }
+        else
+        {
+            realTarget = CombatManager.Instance.targetClicked;
+        }
 
-
-        base.OnPlayCard(cardScript, entity, CombatManager.Instance.targetClicked);
+        base.OnPlayCard(cardScript, entity, realTarget);
 
 
         if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
@@ -62,16 +70,16 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, CombatManager.Instance.targetClicked, 3);
+        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
 
         //get the buff or debuff to do things
-        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(CombatManager.Instance.targetClicked, this.scriptableBuffDebuff.nameID);
+        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
 
         //increase the variable that will store the temp attack
         buffDebuffClass.tempVariable += GetAbilityVariable(cardScript);
 
         //increase character attack
-        EntityClass entityClass = CombatManager.Instance.targetClicked.GetComponent<EntityClass>();
+        EntityClass entityClass = realTarget.GetComponent<EntityClass>();
         entityClass.attack += GetAbilityVariable(cardScript);
 
 

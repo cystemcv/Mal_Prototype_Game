@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Enemy\IntendClass.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanTween.cs" />
     <Compile Include="Assets\LeanTween\Framework\LTDescr.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_ShieldSingleTarget.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\FileDataHandler.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowManagerButton.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_ChooseACardFromList.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Enemy\AIBrain.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Modal Window\ModalWindowManager.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralEventsListeners.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\GraphicsTabController.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Charts\PieChart.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Enemies\AIAbilityHolder.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\BuffSystemManager.cs" />
     <Compile Include="Assets\LeanTween\Testing\PerformanceTests.cs" />
@@ -192,6 +195,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RangeMaxSlider.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Progress Bar\ProgressBar.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableCard.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Characters\EntityClass.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerDropdownItem.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\CardListManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Demo\InputSystemChecker.cs" />
@@ -275,10 +279,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\BuffDebuffClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Characters\EntityClass.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Enemy\AIBrain.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Enemies\AIAbilityHolder.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Enemy\IntendClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OUR ASSETS\SHADERS\NewSurfaceShader.shader" />

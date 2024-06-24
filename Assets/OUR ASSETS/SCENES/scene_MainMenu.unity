@@ -11413,6 +11413,7 @@ Transform:
   m_Children:
   - {fileID: 942931752}
   - {fileID: 1039207855}
+  - {fileID: 1270600754}
   m_Father: {fileID: 579947297}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11542,7 +11543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardScriptList:
-  - {fileID: 4565181565519962387, guid: a04620c6b760f494f96cc05fb0a42e4b, type: 3}
+  - {fileID: 4565181565519962387, guid: ac62e145bc380644aa63566d9a048743, type: 3}
   aiLogicStep: 0
   targetsList: []
 --- !u!1 &839003532
@@ -13486,6 +13487,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012115128}
   m_CullTransparentMesh: 0
+--- !u!1 &1014501601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1014501602}
+  m_Layer: 0
+  m_Name: PROJECTILESPAWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1014501602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014501601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.6, y: 0.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1844248580}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1017029943
 GameObject:
   m_ObjectHideFlags: 0
@@ -15545,6 +15577,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134288002}
   m_CullTransparentMesh: 1
+--- !u!1 &1140365834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140365835}
+  m_Layer: 0
+  m_Name: PROJECTILESPAWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140365835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140365834}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.24, y: -0.02, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1632736123}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1154999805
 GameObject:
   m_ObjectHideFlags: 0
@@ -17156,6 +17219,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263553753}
   m_CullTransparentMesh: 1
+--- !u!1 &1270600753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1270600754}
+  m_Layer: 0
+  m_Name: PROJECTILESPAWN
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1270600754
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1270600753}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.42, y: 0.49, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 828638767}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1273073676
 GameObject:
   m_ObjectHideFlags: 0
@@ -20483,6 +20577,7 @@ Transform:
   m_Children:
   - {fileID: 1573881859}
   - {fileID: 1468298539}
+  - {fileID: 1140365835}
   m_Father: {fileID: 579947297}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20612,6 +20707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardScriptList:
+  - {fileID: 4565181565519962387, guid: 2144a3eef7aa1484e96b6dd4a25fb57b, type: 3}
   - {fileID: 4565181565519962387, guid: 28c2df923f4e3ed44adac506afde05ca, type: 3}
   - {fileID: 4565181565519962387, guid: a04620c6b760f494f96cc05fb0a42e4b, type: 3}
   aiLogicStep: 0
@@ -27978,6 +28074,7 @@ Transform:
   m_Children:
   - {fileID: 709830531}
   - {fileID: 823997009}
+  - {fileID: 1014501602}
   m_Father: {fileID: 579947297}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28107,8 +28204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardScriptList:
+  - {fileID: 4565181565519962387, guid: 6344f39db316ea74fa8d63f97a63906a, type: 3}
   - {fileID: 4565181565519962387, guid: 2b34c5834315da548b4758050226118e, type: 3}
-  - {fileID: 4565181565519962387, guid: 045db27b14824da4ca3f586e156a448f, type: 3}
   - {fileID: 4565181565519962387, guid: 29fdcf6808d918540920615a6a2b7fd6, type: 3}
   aiLogicStep: 0
   targetsList: []

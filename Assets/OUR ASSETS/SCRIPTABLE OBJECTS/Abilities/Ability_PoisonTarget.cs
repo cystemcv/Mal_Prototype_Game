@@ -8,7 +8,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
     [Header("UNIQUE")]
     public int empty;
-
+    private GameObject realTarget;
 
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
@@ -23,9 +23,17 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
+        //assign target 
+        if (target != null)
+        {
+            realTarget = target;
+        }
+        else
+        {
+            realTarget = CombatManager.Instance.targetClicked;
+        }
 
-
-        base.OnPlayCard(cardScript, entity, CombatManager.Instance.targetClicked);
+        base.OnPlayCard(cardScript, entity, realTarget);
 
 
 
@@ -53,7 +61,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
     private void ProceedToAbility(CardScript cardScript, GameObject character)
     {
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, CombatManager.Instance.targetClicked, 3);
+        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
 
     }
 

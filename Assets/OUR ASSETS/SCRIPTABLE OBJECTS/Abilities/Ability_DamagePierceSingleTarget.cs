@@ -9,6 +9,8 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     [Header("UNIQUE")]
     public int empty;
 
+    private GameObject realTarget;
+
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         int cardDmg = GetAbilityVariable(cardScript);
@@ -26,8 +28,17 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
 
+        //assign target 
+        if (target != null)
+        {
+            realTarget = target;
+        }
+        else
+        {
+            realTarget = CombatManager.Instance.targetClicked;
+        }
 
-        base.OnPlayCard(cardScript, entity, CombatManager.Instance.targetClicked);
+        base.OnPlayCard(cardScript, entity, realTarget);
 
 
 
@@ -54,8 +65,8 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, CombatManager.Instance.targetClicked);
-        CombatManager.Instance.AdjustTargetHealth(CombatManager.Instance.targetClicked, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
+        CombatManager.Instance.AdjustTargetHealth(realTarget, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 
