@@ -671,12 +671,12 @@ public class UIManager : MonoBehaviour
         //destroy all children objects
         SystemManager.Instance.DestroyAllChildren(characterSelectionContent);
 
-        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.characterList)
+        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.characterList)
         {
 
             //generate each character
             GameObject characterPanel = Instantiate(characterPanelUIPrefab, characterSelectionContent.transform.position, Quaternion.identity);
-            characterPanel.transform.GetChild(0).GetComponent<CharacterCard>().scriptablePlayer = scriptablePlayer;
+            characterPanel.transform.GetChild(0).GetComponent<CharacterCard>().scriptableEntity = scriptableEntity;
 
             //set it as a child of the parent
             characterPanel.transform.SetParent(characterSelectionContent.transform);
@@ -802,13 +802,16 @@ public class UIManager : MonoBehaviour
 
         int positionSpawn = 0;
         //generate the selected characters that will be used throught the game
-        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayerList)
+        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
         {
             //instantiate our character or characters
-            GameObject characterInCombat = CombatManager.Instance.InstantiateCharacter(scriptablePlayer, positionSpawn);
+            GameObject characterInCombat = CombatManager.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
 
             //assign the characters in combat
             CombatManager.Instance.charactersInCombat.Add(characterInCombat);
+
+            //initialize the stats
+            characterInCombat.GetComponent<EntityClass>().InititializeEntity();
 
             //increase to the next position
             positionSpawn++;

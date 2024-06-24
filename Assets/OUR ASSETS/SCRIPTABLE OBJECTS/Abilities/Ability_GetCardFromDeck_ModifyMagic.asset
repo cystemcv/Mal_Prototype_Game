@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: FIND
   waitForAbility: 0.2
-  runToTarget: 0
+  typeOfAttack: 0
   timeToGetToTarget: 0.2
-  originalCharacterPosX: 0
+  originalEntityPosX: 0
   scriptableBuffDebuff: {fileID: 0}
   abilityEffect: {fileID: 0}
-  cardCharacterAnimation: 2
-  cardCharacterSound: 4
+  abilityAfterEffect: {fileID: 0}
+  abilityAfterEffectLifetime: 0.2
+  entityAnimation: 2
+  entitySound: 0
   cardType: 1
   setManaCost: 0
   modifyManaCost: 1

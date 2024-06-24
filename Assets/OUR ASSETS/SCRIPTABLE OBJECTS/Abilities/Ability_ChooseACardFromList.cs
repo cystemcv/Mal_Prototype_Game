@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability_ChooseACardFromList", menuName = "CardAbility/Ability_ChooseACardFromList")]
 public class Ability_ChooseACardFromList : ScriptableCardAbility
 {
+
+    [Header("UNIQUE")]
     public SystemManager.MainClass mainClass;
     public SystemManager.CardType cardType;
     public SystemManager.AddCardTo addCardTo;
@@ -14,9 +16,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
     public int cardsToChoose = 3;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Choose a " + mainClass + " " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
@@ -42,9 +44,9 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, character, null);
+        base.OnPlayCard(cardScript, entity, null);
 
         List<ScriptableCard> listToChoose;
 

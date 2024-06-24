@@ -6,16 +6,16 @@ using UnityEngine;
 public class Ability_DamageRandomTarget : ScriptableCardAbility
 {
 
-    // public int damage;
-    private GameObject targetEnemy;
+    [Header("UNIQUE")]
+    private GameObject targetFound;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, null);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to a random enemy";
         string final = keyword + " : " + description;
 
@@ -25,43 +25,52 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        //get all enemies
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //get all targets
+        GameObject[] targetsFound;
 
-        int randomNmbr = Random.Range(0, enemies.Length);
+        if (entity.tag == "Player")
+        {
+            targetsFound = GameObject.FindGameObjectsWithTag("Enemy");
+        }
+        else
+        {
+            targetsFound = GameObject.FindGameObjectsWithTag("Player");
+        }
 
-        targetEnemy = enemies[randomNmbr];
+        int randomNmbr = Random.Range(0, targetsFound.Length);
 
-        base.OnPlayCard(cardScript, character, targetEnemy);
+        targetFound = targetsFound[randomNmbr];
+
+        base.OnPlayCard(cardScript, entity, targetFound);
 
 
         if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
            || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
 
         }
         else
         {
-            ProceedToAbility(cardScript, character);
+            ProceedToAbility(cardScript, entity);
         }
 
 
 
     }
 
-    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    private void OnCompleteBase(CardScript cardScript, GameObject entity)
     {
         // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript, character);
+        ProceedToAbility(cardScript, entity);
     }
 
-    private void ProceedToAbility(CardScript cardScript, GameObject character)
+    private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, targetEnemy);
-        CombatManager.Instance.AdjustHealth(targetEnemy, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+        CombatManager.Instance.AdjustTargetHealth(targetFound, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

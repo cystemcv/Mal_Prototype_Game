@@ -5,15 +5,16 @@ using static BuffSystemManager;
 
 public class ScriptableCardAbility : ScriptableObject
 {
-
+    [Header("COMMON")]
     public string abilityName;
     public float waitForAbility = 0.2f;
     //public bool runToTarget = false;
     public SystemManager.TypeOfAttack typeOfAttack = SystemManager.TypeOfAttack.SIMPLE;
     public float timeToGetToTarget = 0.2f;
+    public float waitAmountDelay = 0.2f; //another delay
 
 
-    public float originalCharacterPosX;
+    public float originalEntityPosX;
 
     public ScriptableBuffDebuff scriptableBuffDebuff;
     public LTDescr localMoveTween;
@@ -21,34 +22,54 @@ public class ScriptableCardAbility : ScriptableObject
     public GameObject abilityEffect;
     public GameObject abilityAfterEffect;
     public float abilityAfterEffectLifetime = 0.2f;
-    public SystemManager.CardCharacterAnimation cardCharacterAnimation = SystemManager.CardCharacterAnimation.MeleeAttack;
-    public SystemManager.CardCharacterSound cardCharacterSound = SystemManager.CardCharacterSound.Generic;
+    public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
+    public SystemManager.EntitySound entitySound = SystemManager.EntitySound.Generic;
 
-    private Animator characterAnimator;
+    private Animator entityAnimator;
 
-    public virtual string AbilityDescription(CardScript cardScript, GameObject character)
+    [Header("AI SETTINGS")]
+    public SystemManager.AIIntend aIIntend;
+    public SystemManager.AITypeOfAttack aITypeOfAttack;
+    public SystemManager.AIWhoToTarget aIWhoToTarget;
+
+    public float GetFullAbilityWaitingTime()
+    {
+        float totalTime = waitForAbility;
+        if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE
+           || typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
+        {
+            totalTime += timeToGetToTarget;
+        }
+
+        //add also a small delay
+        totalTime += waitAmountDelay;
+
+        return totalTime;
+    }
+
+    public virtual string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         return "<color=blue>" + abilityName + "</color>";
     }
 
-
-
-    public virtual void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public virtual void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
 
+        Debug.Log(entity);
+
         // Trigger the animation
-        characterAnimator = character.transform.Find("model").GetComponent<Animator>();
+        entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
 
         if (typeOfAttack == SystemManager.TypeOfAttack.SIMPLE)
         {
-            ProceedWithAnimationAndSound(character);
+            ProceedWithAnimationAndSound(entity);
         }
         else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
 
-            ProceedWithAnimationAndSound(character);
+            ProceedWithAnimationAndSound(entity);
 
-            Transform projectileSpawn = character.transform.Find("PROJECTILESPAWN");
+            Transform projectileSpawn = entity.transform.Find("PROJECTILESPAWN");
 
             //spawn the projectile
             GameObject projectile = Instantiate(abilityEffect, projectileSpawn.position, Quaternion.identity);
@@ -65,23 +86,23 @@ public class ScriptableCardAbility : ScriptableObject
 
 
             // Move the character
-            localMoveTween = LeanTween.moveX(character, target.transform.position.x, timeToGetToTarget);
+            localMoveTween = LeanTween.moveX(entity, target.transform.position.x, timeToGetToTarget);
 
-            if (characterAnimator != null)
+            if (entityAnimator != null)
             {
-                characterAnimator.SetTrigger("Run");
+                entityAnimator.SetTrigger("Run");
             }
 
             // Invoke the method to proceed after the movement duration using InvokeHelper
-            InvokeHelper.Instance.Invoke(() => OnMovementComplete(character), timeToGetToTarget);
+            InvokeHelper.Instance.Invoke(() => OnMovementComplete(entity), timeToGetToTarget);
 
             // Then invoke this to go back
-            InvokeHelper.Instance.Invoke(() => OnAnimationComplete(character), timeToGetToTarget + waitForAbility);
+            InvokeHelper.Instance.Invoke(() => OnAnimationComplete(entity), timeToGetToTarget + waitForAbility);
         }
         else
         {
             // If no movement, proceed directly to the animation and sound
-            ProceedWithAnimationAndSound(character);
+            ProceedWithAnimationAndSound(entity);
         }
     }
 
@@ -108,15 +129,14 @@ public class ScriptableCardAbility : ScriptableObject
     private void ProceedWithAnimationAndSound(GameObject character)
     {
 
-        if (characterAnimator != null)
+        if (entityAnimator != null)
         {
-            characterAnimator.SetTrigger(cardCharacterAnimation.ToString());
+            entityAnimator.SetTrigger(entityAnimation.ToString());
         }
 
-        Debug.Log("PLAYED CARD BY " + character.GetComponent<CharacterClass>().scriptablePlayer.mainClass);
 
         // Play the sound
-        AudioManager.Instance.PlayCardSound(cardCharacterSound.ToString());
+        AudioManager.Instance.PlayCardSound(entitySound.ToString());
     }
 
     private void OnAnimationComplete(GameObject character)
@@ -129,11 +149,11 @@ public class ScriptableCardAbility : ScriptableObject
     {
 
         // Move the character back
-        localMoveTween = LeanTween.moveX(character, character.GetComponent<CharacterClass>().originalCombatPos.position.x, timeToGetToTarget);
+        localMoveTween = LeanTween.moveX(character, character.GetComponent<EntityClass>().OriginXPos, timeToGetToTarget);
 
-        if (characterAnimator != null)
+        if (entityAnimator != null)
         {
-            characterAnimator.SetTrigger("RunBack");
+            entityAnimator.SetTrigger("RunBack");
         }
     }
 
@@ -165,6 +185,11 @@ public class ScriptableCardAbility : ScriptableObject
     public virtual bool OnEnemyTurnEnd(GameObject target)
     {
         return false;
+    }
+
+    public virtual void OnExpireBuffDebuff(GameObject target)
+    {
+
     }
 
     public int GetAbilityVariable(CardScript cardScript)
@@ -213,5 +238,13 @@ public class ScriptableCardAbility : ScriptableObject
         return this;
     }
 
+    //public string GetAbilityAIIntend()
+    //{
+    //    string intend = aIIntend + "-" + aITypeOfAttack + "-" + aIWhoToTarget;
+
+    //    return intend;
+    //}
+
+    
 
 }

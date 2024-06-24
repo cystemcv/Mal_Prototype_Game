@@ -14,14 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: CHOICE
   waitForAbility: 0.2
-  runToTarget: 0
+  typeOfAttack: 0
   timeToGetToTarget: 0.2
-  originalCharacterPosX: 0
+  waitAmountDelay: 0.2
+  originalEntityPosX: 0
   scriptableBuffDebuff: {fileID: 0}
   abilityEffect: {fileID: 0}
-  cardCharacterAnimation: 2
-  cardCharacterSound: 4
-  mainClass: 0
+  abilityAfterEffect: {fileID: 0}
+  abilityAfterEffectLifetime: 0.2
+  entityAnimation: 2
+  entitySound: 0
+  aIIntend: 0
+  aITypeOfAttack: 0
+  aIWhoToTarget: 0
+  mainClass: 1
   cardType: 2
   addCardTo: 0
   setManaCost: 1

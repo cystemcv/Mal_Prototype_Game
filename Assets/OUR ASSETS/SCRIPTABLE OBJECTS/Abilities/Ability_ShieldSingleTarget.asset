@@ -14,10 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: SHIELD
   waitForAbility: 0.2
-  runToTarget: 0
+  typeOfAttack: 0
   timeToGetToTarget: 0.2
-  originalCharacterPosX: 0
+  waitAmountDelay: 0.2
+  originalEntityPosX: 0
   scriptableBuffDebuff: {fileID: 0}
   abilityEffect: {fileID: 0}
-  cardCharacterAnimation: 2
-  cardCharacterSound: 4
+  abilityAfterEffect: {fileID: 0}
+  abilityAfterEffectLifetime: 0.2
+  entityAnimation: 2
+  entitySound: 4
+  aIIntend: 2
+  aITypeOfAttack: 0
+  aIWhoToTarget: 0
+  empty: 0

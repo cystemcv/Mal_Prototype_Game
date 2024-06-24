@@ -4,22 +4,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterClass : MonoBehaviour
+public class EntityClass : MonoBehaviour
 {
+
+
+    [Header("CHARACTER SPECIFIC")]
     public bool isUI = false;
-    public ScriptablePlayer scriptablePlayer;
+    public ScriptableEntity scriptableEntity;
 
+    [Header("ENEMY SPECIFIC")]
+
+    [Header("COMMON")]
     public List<GameObject> listBuffDebuffClass;
-
     public int poisongDmg;
-
     public int attack = 0;
     public float attackDebuffPerc = 0;
     public float attackBuffPerc = 0;
-
     public int health;
     public int maxHealth;
-
     public int shield;
     public int maxShield;
 
@@ -33,20 +35,21 @@ public class CharacterClass : MonoBehaviour
 
     //ui
     public Image mainImage;
-    public TMP_Text characterTitle;
+    public TMP_Text entityTitle;
     public Image uiPanelBorder;
 
+    public Transform originalCombatPos;
+    public float OriginXPos;
 
     [Header("ID")]
-    public string characterID;
+    public string entityID;
 
-    public Transform originalCombatPos;
 
-    public CharacterClass()
+    public EntityClass()
     {
 
         //add an id to this scriptableCard, this is in order to identify it by comparisons
-        characterID = System.Guid.NewGuid().ToString();
+        entityID = System.Guid.NewGuid().ToString();
     }
 
     // Start is called before the first frame update
@@ -55,28 +58,28 @@ public class CharacterClass : MonoBehaviour
         //if its ui element we dont wanna do anything
         if (isUI)
         {
-            InitializeUICharacterPanel();
+            InitializeUIEntityPanel();
             return;
         }
 
-        InititializeCharacter();
+        InititializeEntity();
 
 
 
     }
 
-    public void InitializeUICharacterPanel()
+    public void InitializeUIEntityPanel()
     {
         mainImage = this.gameObject.transform.Find("MainImage").Find("Image").GetComponent<Image>();
-        characterTitle = this.gameObject.transform.Find("Title").Find("Text").GetComponent<TMP_Text>();
+        entityTitle = this.gameObject.transform.Find("Title").Find("Text").GetComponent<TMP_Text>();
         uiPanelBorder = this.gameObject.transform.Find("uiPanelBorder").GetComponent<Image>();
 
-        if (scriptablePlayer != null)
+        if (scriptableEntity != null)
         {
 
 
-            mainImage.sprite = scriptablePlayer.characterImage;
-            characterTitle.text = scriptablePlayer.mainClass.ToString();
+            mainImage.sprite = scriptableEntity.entityImage;
+            entityTitle.text = scriptableEntity.mainClass.ToString();
         }
     }
 
@@ -86,14 +89,22 @@ public class CharacterClass : MonoBehaviour
 
     }
 
-    public void InititializeCharacter()
+    public void InititializeEntity()
     {
         //variables that can change during battle
-        poisongDmg = scriptablePlayer.poisonDmg;
-        health = scriptablePlayer.currHealth;
-        maxHealth = scriptablePlayer.maxHealth;
-        attack = scriptablePlayer.strength;
+        poisongDmg = scriptableEntity.poisonDmg;
+        health = scriptableEntity.currHealth;
+        maxHealth = scriptableEntity.maxHealth;
+        attack = scriptableEntity.strength;
 
+        InitUI();
+
+        //save current position , so it can go back if needed
+        OriginXPos = this.gameObject.transform.position.x;
+    }
+
+    public void InitUI()
+    {
         sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
         slider = sliderBar.GetComponent<Slider>();
         shieldIcon = sliderBar.transform.Find("ShieldIcon").gameObject;

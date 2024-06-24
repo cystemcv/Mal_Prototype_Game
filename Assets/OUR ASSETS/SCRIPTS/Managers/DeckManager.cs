@@ -65,11 +65,11 @@ public class DeckManager : MonoBehaviour
         mainDeck.Clear();
 
         //loop throught each character on the character list and then add those cards to our deck
-        foreach (ScriptablePlayer scriptablePlayer in CharacterManager.Instance.scriptablePlayerList)
+        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
         {
 
             //loop for each starting card list and add it to our deck
-            foreach (ScriptableCard scriptableCard in scriptablePlayer.startingCards)
+            foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
             {
 
                 //add the card on the deck depending on the mode
@@ -244,21 +244,54 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public void PlayCardOnlyAbilities(CardScript cardScript)
+    {
+        StartCoroutine(PlayCardCoroutine(cardScript));
+    }
+
     IEnumerator PlayCardCoroutine(CardScript cardScript)
     {
 
         SystemManager.Instance.thereIsActivatedCard = true;
 
+        GameObject entity;
+
         //get the character to be used
-        GameObject character = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+        if (cardScript.whoUsedCard != null && cardScript.whoUsedCard.tag == "Enemy")
+        {
+            entity = cardScript.whoUsedCard;
+        }
+        else
+        {
+            entity = CombatManager.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+        }
+
+        int count = 0;
+
+
 
         foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {
 
+            GameObject target = null;
 
+            //get the character to be used
+            if (cardScript.whoUsedCard != null && cardScript.whoUsedCard.tag == "Enemy")
+            {
+                List<GameObject> intendList = SystemManager.Instance.GetAllChildren(entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject);
+
+                //based on the ability position
+                target = intendList[count].GetComponent<IntendClass>().target;
+            }
+            else
+            {
+                target = null;
+            }
 
             // Wait for 2 seconds
-            scriptableCardAbility.OnPlayCard(cardScript, character, null);
+            scriptableCardAbility.OnPlayCard(cardScript, entity, target);
+
+            count++;
 
             //check to reset mana to the original cost if neeeded
             if (cardScript.resetManaCost)
@@ -268,33 +301,72 @@ public class DeckManager : MonoBehaviour
                 cardScript.changedMana = false;
             }
 
-            float waitAmount = scriptableCardAbility.waitForAbility;
-            if (scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
-               || scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
-            {
-                waitAmount += scriptableCardAbility.timeToGetToTarget;
-            }
-
-            //add also a small delay
-            waitAmount += 0.2f;
-
-             yield return new WaitForSeconds(waitAmount);
+             yield return new WaitForSeconds(scriptableCardAbility.GetFullAbilityWaitingTime());
             //yield return new WaitForSeconds(10f);
         }
 
         //go back to idle animation
-        Animator animator = character.transform.Find("model").GetComponent<Animator>();
+        Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
         if (animator != null)
         {
-            Debug.Log("idle?");
+      
             animator.SetTrigger("Idle");
         }
-
+     
         //card ended
         SystemManager.Instance.thereIsActivatedCard = false;
 
     }
+
+    //IEnumerator PlayScriptableCardCoroutine(ScriptableCard scriptableCard, GameObject entity)
+    //{
+
+    //    SystemManager.Instance.thereIsActivatedCard = true;
+
+
+    //    foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+    //    {
+
+
+    //        // Wait for 2 seconds
+    //        scriptableCardAbility.OnPlayCard(cardScript, entity, null);
+
+    //        //check to reset mana to the original cost if neeeded
+    //        if (cardScript.resetManaCost)
+    //        {
+    //            cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
+    //            cardScript.resetManaCost = false;
+    //            cardScript.changedMana = false;
+    //        }
+
+    //        float waitAmount = scriptableCardAbility.waitForAbility;
+    //        if (scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
+    //           || scriptableCardAbility.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
+    //        {
+    //            waitAmount += scriptableCardAbility.timeToGetToTarget;
+    //        }
+
+    //        //add also a small delay
+    //        waitAmount += 0.2f;
+
+    //        yield return new WaitForSeconds(waitAmount);
+    //        //yield return new WaitForSeconds(10f);
+    //    }
+
+    //    //go back to idle animation
+    //    Animator animator = entity.transform.Find("model").GetComponent<Animator>();
+
+    //    if (animator != null)
+    //    {
+
+    //        animator.SetTrigger("Idle");
+    //    }
+
+    //    //card ended
+    //    SystemManager.Instance.thereIsActivatedCard = false;
+
+    //}
 
     //public string GenerateCardAbilityDescription(CardScript cardScript)
     //{

@@ -6,17 +6,16 @@ using UnityEngine;
 public class Ability_DamageAllTargets : ScriptableCardAbility
 {
 
-   // public int damage;
+    [Header("UNIQUE")]
+    public int empty;
 
-
-
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
 
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, null);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to all enemies";
         string final = keyword + " : " + description;
 
@@ -25,19 +24,27 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript,character, null);
-
-        //get all enemies
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        base.OnPlayCard(cardScript, entity, null);
+        GameObject[] targetsFound;
+        //get all targets
+        if (entity.tag == "Player")
+        {
+            targetsFound = GameObject.FindGameObjectsWithTag("Enemy");
+        }
+        else 
+        {
+            targetsFound = GameObject.FindGameObjectsWithTag("Player");
+        }
+  
 
 
         //then loop
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject targetFound in targetsFound)
         {
-            int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, enemy);
-            CombatManager.Instance.AdjustHealth(enemy, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+            CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
         }
       
 

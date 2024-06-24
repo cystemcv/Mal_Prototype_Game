@@ -14,10 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: AOE DMG
   waitForAbility: 0.2
-  runToTarget: 0
+  typeOfAttack: 0
   timeToGetToTarget: 0.2
-  originalCharacterPosX: 0
+  originalEntityPosX: 0
   scriptableBuffDebuff: {fileID: 0}
   abilityEffect: {fileID: 0}
-  cardCharacterAnimation: 0
-  cardCharacterSound: 3
+  abilityAfterEffect: {fileID: 0}
+  abilityAfterEffectLifetime: 0.2
+  entityAnimation: 0
+  entitySound: 3
+  empty: 0

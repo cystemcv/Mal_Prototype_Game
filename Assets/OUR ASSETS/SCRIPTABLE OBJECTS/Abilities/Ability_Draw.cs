@@ -6,13 +6,13 @@ using UnityEngine;
 public class Ability_Draw : ScriptableCardAbility
 {
 
-   // public int damage;
+    [Header("UNIQUE")]
+    public int empty;
 
 
-
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Draw " + GetAbilityVariable(cardScript) + " cards";
         string final = keyword + " : " + description;
 
@@ -21,9 +21,9 @@ public class Ability_Draw : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript,character, null);
+        base.OnPlayCard(cardScript, entity, null);
 
        // Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 

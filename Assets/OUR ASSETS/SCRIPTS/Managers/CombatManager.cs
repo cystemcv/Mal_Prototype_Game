@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class CombatManager : MonoBehaviour
 {
@@ -313,68 +314,50 @@ public class CombatManager : MonoBehaviour
         lineRenderer.endColor = color;
     }
 
-    public void AdjustHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
+
+
+
+    public void AdjustTargetHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
+        EntityClass entityClass = target.GetComponent<EntityClass>();
 
-        //update ui
-
-        //update based on type
-
-        if (target.tag == "Enemy")
-        {
-            AdjustHealthEnemy(target, adjustNumber, bypassShield, adjustNumberMode);
-        }
-        else if (target.tag == "Player")
-        {
-            AdjustHealthCharacter(target, adjustNumber, bypassShield, adjustNumberMode);
-        }
-        else
-        {
-            //we do nothing
-        }
-
-    }
-
-    public void AdjustHealthEnemy(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
-    {
-
-        EnemyClass enemyClass = target.GetComponent<EnemyClass>();
+        Debug.Log("dame1");
 
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
 
             int remainingShield = 0;
             //check if there is a shield
-            if (enemyClass.shield > 0 && bypassShield == false)
+            if (entityClass.shield > 0 && bypassShield == false)
             {
 
                 //then do dmg to shield
-                remainingShield = enemyClass.shield - adjustNumber;
+                remainingShield = entityClass.shield - adjustNumber;
 
                 //update the ui
                 if (remainingShield > 0)
                 {
                     //update enemy script
-                    enemyClass.shield = remainingShield;
+                    entityClass.shield = remainingShield;
 
                     //update text on shield
-                    enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+                    entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
 
                     //make the bar blue
-                    enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
 
                 }
                 else
                 {
                     //then the enemy has no shield left
-                    enemyClass.shield = 0;
+                    entityClass.shield = 0;
 
                     //make the bar red
-                    enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
                     //hide the icon
-                    enemyClass.shieldIcon.SetActive(false);
+                    entityClass.shieldIcon.SetActive(false);
                 }
 
             }
@@ -388,18 +371,18 @@ public class CombatManager : MonoBehaviour
             {
 
                 //then we subtract from the health the remaining amount
-                enemyClass.health += remainingShield;
+                entityClass.health += remainingShield;
 
-                if (enemyClass.health < 0)
+                if (entityClass.health < 0)
                 {
-                    enemyClass.health = 0;
+                    entityClass.health = 0;
                 }
 
                 //update text on hp
-                enemyClass.healthText.GetComponent<TMP_Text>().text = enemyClass.health + " / " + enemyClass.maxHealth;
+                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
 
                 //adjust the hp bar
-                UpdateHealthBarSmoothly(enemyClass.health, enemyClass.maxHealth, enemyClass.slider);
+                UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
 
             }
 
@@ -408,179 +391,43 @@ public class CombatManager : MonoBehaviour
         {
             //increase the hp
 
-            enemyClass.health = enemyClass.health + adjustNumber;
+            entityClass.health = entityClass.health + adjustNumber;
 
             //check if max from hp
-            if (enemyClass.health > enemyClass.maxHealth)
+            if (entityClass.health > entityClass.maxHealth)
             {
-                enemyClass.health = enemyClass.maxHealth;
+                entityClass.health = entityClass.maxHealth;
             }
 
             //update text on hp
-            enemyClass.healthText.GetComponent<TMP_Text>().text = enemyClass.health + " / " + enemyClass.maxHealth;
+            entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
 
             //adjust the hp bar
-            UpdateHealthBarSmoothly(enemyClass.health, enemyClass.maxHealth, enemyClass.slider);
+            UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
 
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
             //increase the shield
-
-            enemyClass.shield = enemyClass.shield + adjustNumber;
+            Debug.Log("dame2");
+            entityClass.shield = entityClass.shield + adjustNumber;
 
             //check if max from hp
-            if (enemyClass.shield > enemyClass.maxShield)
+            if (entityClass.shield > entityClass.maxShield)
             {
-                enemyClass.shield = enemyClass.maxShield;
+                entityClass.shield = entityClass.maxShield;
             }
 
-            if (enemyClass.shield > 0)
+            if (entityClass.shield > 0)
             {
                 //show the icon
-                enemyClass.shieldIcon.SetActive(true);
+                entityClass.shieldIcon.SetActive(true);
 
                 //update text on shield
-                enemyClass.shieldText.GetComponent<TMP_Text>().text = enemyClass.shield.ToString();
+                entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
 
                 //make the bar blue
-                enemyClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-            }
-
-        }
-
-        //spawn numberOn screen
-        // Instantiate at position (0, 0, 0) and zero rotation.
-        GameObject numberOnScreenPrefab = Instantiate(numberOnScreen, target.transform.position, Quaternion.identity);
-        numberOnScreenPrefab.transform.SetParent(target.transform);
-
-        //assign the number change
-        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().color = AdjustNumberModeColor(adjustNumberMode);
-
-        //assign the number change
-        numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
-
-        Destroy(numberOnScreenPrefab, 1f);
-
-        //if an enemy reach 0 hp then it should be destroyed
-
-        if (enemyClass.health <= 0)
-        {
-            Destroy(target, 1f);
-        }
-
-
-    }
-
-    public void AdjustHealthCharacter(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
-    {
-
-        CharacterClass characterClass = target.GetComponent<CharacterClass>();
-
-        if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
-        {
-
-            int remainingShield = 0;
-            //check if there is a shield
-            if (characterClass.shield > 0 && bypassShield == false)
-            {
-
-                //then do dmg to shield
-                remainingShield = characterClass.shield - adjustNumber;
-
-                //update the ui
-                if (remainingShield > 0)
-                {
-                    //update enemy script
-                    characterClass.shield = remainingShield;
-
-                    //update text on shield
-                    characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
-
-                    //make the bar blue
-                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-
-                }
-                else
-                {
-                    //then the enemy has no shield left
-                    characterClass.shield = 0;
-
-                    //make the bar red
-                    characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-
-                    //hide the icon
-                    characterClass.shieldIcon.SetActive(false);
-                }
-
-            }
-            else
-            {
-                //if there is no shield go straight to the health hp
-                remainingShield = adjustNumber * -1;
-            }
-
-            if (remainingShield < 0)
-            {
-
-                //then we subtract from the health the remaining amount
-                characterClass.health += remainingShield;
-
-                if (characterClass.health < 0)
-                {
-                    characterClass.health = 0;
-                }
-
-                //update text on hp
-                characterClass.healthText.GetComponent<TMP_Text>().text = characterClass.health + " / " + characterClass.maxHealth;
-
-                //adjust the hp bar
-                UpdateHealthBarSmoothly(characterClass.health, characterClass.maxHealth, characterClass.slider);
-
-            }
-
-        }
-        else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)
-        {
-            //increase the hp
-
-            characterClass.health = characterClass.health + adjustNumber;
-
-            //check if max from hp
-            if (characterClass.health > characterClass.maxHealth)
-            {
-                characterClass.health = characterClass.maxHealth;
-            }
-
-            //update text on hp
-            characterClass.healthText.GetComponent<TMP_Text>().text = characterClass.health + " / " + characterClass.maxHealth;
-
-            //adjust the hp bar
-            UpdateHealthBarSmoothly(characterClass.health, characterClass.maxHealth, characterClass.slider);
-
-        }
-        else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
-        {
-            //increase the shield
-
-            characterClass.shield = characterClass.shield + adjustNumber;
-
-            //check if max from hp
-            if (characterClass.shield > characterClass.maxShield)
-            {
-                characterClass.shield = characterClass.maxShield;
-            }
-
-            if (characterClass.shield > 0)
-            {
-                //show the icon
-                characterClass.shieldIcon.SetActive(true);
-
-                //update text on shield
-                characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
-
-                //make the bar blue
-                characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+                entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
             }
 
         }
@@ -607,18 +454,18 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public int CalculateCharacterDmg(int startingDmg, GameObject character, GameObject enemy)
+    public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target)
     {
         // Get character attack, debuff, and buff percentages
-        int character_Attack = character.GetComponent<CharacterClass>().attack;
-        float character_attackDebuffPerc = character.GetComponent<CharacterClass>().attackDebuffPerc;
-        float character_attackBuffPerc = character.GetComponent<CharacterClass>().attackBuffPerc;
+        int entity_Attack = entity.GetComponent<EntityClass>().attack;
+        float entity_attackDebuffPerc = entity.GetComponent<EntityClass>().attackDebuffPerc;
+        float entity_attackBuffPerc = entity.GetComponent<EntityClass>().attackBuffPerc;
 
         // Calculate combined attack
-        int combinedAttack = startingDmg + character_Attack;
+        int combinedAttack = startingDmg + entity_Attack;
 
         // Apply debuff and buff multiplicatively
-        float finalAttackMultiplier = 1 + (character_attackBuffPerc / 100) - (character_attackDebuffPerc / 100);
+        float finalAttackMultiplier = 1 + (entity_attackBuffPerc / 100) - (entity_attackDebuffPerc / 100);
 
         // Check if the enemy is vulnerable and apply additional damage multiplier
         //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
@@ -771,7 +618,7 @@ public class CombatManager : MonoBehaviour
 
         //position the ui indicator on the leader
         leaderIndicator.SetActive(true);
-        leaderIndicator.transform.position = new Vector2(leaderCharacter.transform.position.x, leaderCharacter.GetComponent<CharacterClass>().scriptablePlayer.leaderIndicatorHeight);
+        leaderIndicator.transform.position = new Vector2(leaderCharacter.transform.position.x, leaderCharacter.GetComponent<EntityClass>().scriptableEntity.leaderIndicatorHeight);
     }
 
     public void ReverseLeader()
@@ -801,7 +648,7 @@ public class CombatManager : MonoBehaviour
         RefillMana();
 
         //remove mana
-        RemoveShieldFromAllCharacters();
+        RemoveShieldFromEntitiesBasedOnTag("Player");
 
         //draw cards
         DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
@@ -813,6 +660,29 @@ public class CombatManager : MonoBehaviour
         {
             ReverseLeader();
         }
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        //generate intend for all enemies
+        GenerateEnemyIntends();
+    }
+
+    public void GenerateEnemyIntends()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<GameObject> enemyList = enemies.ToList();
+
+        foreach (GameObject enemy in enemyList)
+        {
+
+            //destroy intends
+            SystemManager.Instance.DestroyAllChildren(enemy.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject);
+
+            //generate new intends
+            enemy.GetComponent<AIBrain>().GenerateIntend();
+        }
+
     }
 
     public void PlayerTurn()
@@ -851,6 +721,9 @@ public class CombatManager : MonoBehaviour
         //discard cards
         DeckManager.Instance.DiscardWholeHand();
 
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
     }
 
     public void EnemyTurnStart()
@@ -859,7 +732,10 @@ public class CombatManager : MonoBehaviour
         UIManager.Instance.OnNotification("ENEMY STARTING TURN", 1);
 
         //loop for all buffs and debuffs
-        BuffSystemManager.Instance.EnemyTurnStartBD();
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        //remove shield from all enemies
+        RemoveShieldFromEntitiesBasedOnTag("Enemy");
     }
 
     public void EnemyTurn()
@@ -867,12 +743,52 @@ public class CombatManager : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
         UIManager.Instance.OnNotification("ENEMY TURN", 1);
 
+        //do the ai logic for each enemy
+        StartCoroutine(EnemyAiAct());
+    }
+
+    public IEnumerator EnemyAiAct()
+    {
+
+        //get how many enemies will act
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject enemy in enemies)
+        {
+            AIBrain aIBrain = enemy.GetComponent<AIBrain>();
+
+            //if no ai brain the get continue to the next
+            if (aIBrain == null)
+            {
+                continue;
+            }
+
+            ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep].scriptableCard;
+            float totalAbilitiesWaitTime = 0;
+
+            //go throught every ability and calculate the waitTime
+            foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+            {
+                totalAbilitiesWaitTime += scriptableCardAbility.GetFullAbilityWaitingTime();
+            }
+
+            //execute ai
+            aIBrain.ExecuteCommand();
+
+            //loop between them and execute the command
+            yield return new WaitForSeconds(totalAbilitiesWaitTime);
+        }
+
+
     }
 
     public void EnemyTurnEnd()
     {
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
         UIManager.Instance.OnNotification("ENEMY ENDING TURN", 1);
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
     }
 
@@ -901,16 +817,16 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public GameObject InstantiateCharacter(ScriptablePlayer scriptablePlayer, int spawnPosition)
+    public GameObject InstantiateCharacter(ScriptableEntity scriptableEntity, int spawnPosition)
     {
 
         //instantiate the character prefab based on the spawnPosition
-        GameObject character = Instantiate(scriptablePlayer.characterPrefab, characterSpawns[spawnPosition].transform.position, Quaternion.identity);
+        GameObject character = Instantiate(scriptableEntity.entityPrefab, characterSpawns[spawnPosition].transform.position, Quaternion.identity);
 
         //pass it the scriptable object to the class
-        character.GetComponent<CharacterClass>().scriptablePlayer = scriptablePlayer;
+        character.GetComponent<EntityClass>().scriptableEntity = scriptableEntity;
         //svae the position as it can be used later
-        character.GetComponent<CharacterClass>().originalCombatPos = characterSpawns[spawnPosition].transform;
+        character.GetComponent<EntityClass>().originalCombatPos = characterSpawns[spawnPosition].transform;
 
         //parent it to our characters object
         character.transform.SetParent(CombatManager.Instance.combatScene.transform.Find("Characters"));
@@ -919,42 +835,42 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void RemoveShieldFromAllCharacters()
+    public void RemoveShieldFromEntitiesBasedOnTag(string tag)
     {
 
-        GameObject[] characters = GetAllCharactersGameObjects();
+        GameObject[] characters = GameObject.FindGameObjectsWithTag(tag);
 
         foreach (GameObject character in characters)
         {
-            RemoveShieldFromCharacter(character);
+            RemoveShieldFromEntity(character);
         }
 
     }
 
-    public GameObject[] GetAllCharactersGameObjects()
+    //public GameObject[] GetAllCharactersGameObjects()
+    //{
+    //    GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+
+    //    return characters;
+    //}
+
+    public void RemoveShieldFromEntity(GameObject entity)
     {
-        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
 
-        return characters;
-    }
+        EntityClass entityClass = entity.GetComponent<EntityClass>();
 
-    public void RemoveShieldFromCharacter(GameObject character)
-    {
+        //characterClass.InititializeCharacter();
 
-        CharacterClass characterClass = character.GetComponent<CharacterClass>();
-
-        characterClass.InititializeCharacter();
-
-        characterClass.shield = 0;
+        entityClass.shield = 0;
 
         //dont show the icon
-        characterClass.shieldIcon.SetActive(false);
+        entityClass.shieldIcon.SetActive(false);
 
         //update text on shield
-        characterClass.shieldText.GetComponent<TMP_Text>().text = characterClass.shield.ToString();
+        entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
 
         //make the bar red
-        characterClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+        entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
     }
 
@@ -967,7 +883,7 @@ public class CombatManager : MonoBehaviour
         foreach (GameObject characterInCombat in CombatManager.Instance.charactersInCombat)
         {
 
-            if (characterInCombat.GetComponent<CharacterClass>().scriptablePlayer.mainClass == cardScript.scriptableCard.mainClass)
+            if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass)
             {
 
                 //then it belongs to a character we have

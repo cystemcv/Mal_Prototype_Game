@@ -13,7 +13,7 @@ public class CharacterCard : MonoBehaviour
     public TMP_Text cardName;
     public TMP_Text cardDescription;
 
-    public ScriptablePlayer scriptablePlayer;
+    public ScriptableEntity scriptableEntity;
 
     [Header("ID")]
     public string characterID;
@@ -28,7 +28,7 @@ public class CharacterCard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (scriptablePlayer == null)
+        if (scriptableEntity == null)
         {
             return;
         }
@@ -39,11 +39,11 @@ public class CharacterCard : MonoBehaviour
         cardName = this.gameObject.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>();
         cardDescription = this.gameObject.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>();
 
-        bgImage.color = CardListManager.Instance.GetClassColor(scriptablePlayer.mainClass);
+        bgImage.color = CardListManager.Instance.GetClassColor(scriptableEntity.mainClass);
         activation.SetActive(false);
-        cardImage.sprite = scriptablePlayer.characterImage;
-        cardName.text = scriptablePlayer.mainClass.ToString();
-        cardDescription.text = scriptablePlayer.characterDescription;
+        cardImage.sprite = scriptableEntity.entityImage;
+        cardName.text = scriptableEntity.mainClass.ToString();
+        cardDescription.text = scriptableEntity.entityDescription;
 
     }
 
@@ -57,11 +57,11 @@ public class CharacterCard : MonoBehaviour
     {
 
         //check if the character is already on the list
-        if (CharacterManager.Instance.scriptablePlayerList.Contains(scriptablePlayer))
+        if (CharacterManager.Instance.scriptablePlayerList.Contains(scriptableEntity))
         {
 
             //remove it from the list
-            CharacterManager.Instance.scriptablePlayerList.Remove(scriptablePlayer);
+            CharacterManager.Instance.scriptablePlayerList.Remove(scriptableEntity);
 
             //deactivate card ui
             activation.SetActive(false);
@@ -86,7 +86,7 @@ public class CharacterCard : MonoBehaviour
             {
                 characterCardFound = card.GetChild(0).GetComponent<CharacterCard>();
 
-                if (characterCardFound.scriptablePlayer == CharacterManager.Instance.scriptablePlayerList[0])
+                if (characterCardFound.scriptableEntity == CharacterManager.Instance.scriptablePlayerList[0])
                 {
                     //get out of the loop we found what we need
                     break;
@@ -101,7 +101,7 @@ public class CharacterCard : MonoBehaviour
         }
 
         //add to the list
-        CharacterManager.Instance.scriptablePlayerList.Add(scriptablePlayer);
+        CharacterManager.Instance.scriptablePlayerList.Add(scriptableEntity);
 
         //activate card ui
         activation.SetActive(true);

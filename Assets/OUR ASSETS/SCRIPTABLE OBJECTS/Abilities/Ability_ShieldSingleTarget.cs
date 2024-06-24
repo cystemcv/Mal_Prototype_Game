@@ -5,14 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability_ShieldSingleTarget", menuName = "CardAbility/Ability_ShieldSingleTarget")]
 public class Ability_ShieldSingleTarget : ScriptableCardAbility
 {
+    [Header("UNIQUE")]
+     public int empty;
 
-   // public int damage;
+    private GameObject realTarget;
 
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Add " + GetAbilityVariable(cardScript) + " shield to character";
         string final = keyword + " : " + description;
 
@@ -21,11 +23,23 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript,character, null);
+        base.OnPlayCard(cardScript, entity, null);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
+        //assign target 
+        if (target != null)
+        {
+            realTarget = target;
+        }
+        else
+        {
+            realTarget = CombatManager.Instance.targetClicked;
+        }
+
+        Debug.Log("RT : " + realTarget.name);
+
+        CombatManager.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }

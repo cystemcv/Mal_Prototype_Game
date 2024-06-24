@@ -6,15 +6,15 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Ability_GetCardFromDeck", menuName = "CardAbility/Ability_GetCardFromDeck")]
 public class Ability_GetCardFromDeck : ScriptableCardAbility
 {
-
+    [Header("UNIQUE")]
     public SystemManager.CardType cardType;
     public bool setManaCost = false;
     public bool modifyManaCost = false;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Find a random " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
@@ -39,9 +39,9 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
     }
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript,character, null);
+        base.OnPlayCard(cardScript, entity, null);
         //based on the type
         // Filter the combatDeck to get only the cards of the specified type
         List<CardScript> filteredDeck = DeckManager.Instance.combatDeck.Where(card => card.scriptableCard.cardType == cardType).ToList();

@@ -6,13 +6,13 @@ using UnityEngine;
 public class Ability_HealSingleTarget : ScriptableCardAbility
 {
 
-   // public int damage;
+    [Header("UNIQUE")]
+    public int empty;
 
 
-
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Heal " + GetAbilityVariable(cardScript) + " to character";
         string final = keyword + " : " + description;
 
@@ -21,11 +21,11 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript,character, null);
+        base.OnPlayCard(cardScript, entity, null);
 
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.HEAL);
+        CombatManager.Instance.AdjustTargetHealth(CombatManager.Instance.targetClicked, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.HEAL);
 
 
     }

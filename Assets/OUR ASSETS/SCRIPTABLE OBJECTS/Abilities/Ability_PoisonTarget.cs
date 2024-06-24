@@ -6,13 +6,13 @@ using UnityEngine;
 public class Ability_PoisonTarget : ScriptableCardAbility
 {
 
-   // public int damage;
+    [Header("UNIQUE")]
+    public int empty;
 
 
-
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
         string final = keyword + " : " + description;
 
@@ -21,39 +21,39 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
 
 
-        base.OnPlayCard(cardScript, character, CombatManager.Instance.targetClicked);
+        base.OnPlayCard(cardScript, entity, CombatManager.Instance.targetClicked);
 
 
 
         if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
             || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
 
         }
         else
         {
-            ProceedToAbility(cardScript, character);
+            ProceedToAbility(cardScript, entity);
         }
 
 
 
     }
 
-    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    private void OnCompleteBase(CardScript cardScript, GameObject entity)
     {
         // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript, character);
+        ProceedToAbility(cardScript, entity);
     }
 
     private void ProceedToAbility(CardScript cardScript, GameObject character)
     {
 
-        BuffSystemManager.Instance.AddDebuffToEnemyTarget(this, CombatManager.Instance.targetClicked, 3);
+        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, CombatManager.Instance.targetClicked, 3);
 
     }
 
@@ -61,7 +61,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
     public override bool OnEnemyTurnStart( GameObject target)
     {
-        CombatManager.Instance.AdjustHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
+        CombatManager.Instance.AdjustTargetHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
 
         //activated
         return true;

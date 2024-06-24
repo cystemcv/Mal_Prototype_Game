@@ -2,29 +2,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New Player", menuName = "Player/Class")]
-public class ScriptablePlayer : ScriptableObject
+[CreateAssetMenu(fileName = "ScriptableEntity", menuName = "Entity/ScriptableEntity")]
+public class ScriptableEntity : ScriptableObject
 {
     [Header("CARDS")]
     public List<ScriptableCard> startingCards; //assign the cards you want the class to start building the deck
 
-
-    [Header("MAIN")]
-    public string playerName;
+    [Header("CHARACTER SPECIFIC")]
     public SystemManager.MainClass mainClass; //Actual classes to be determined
-    //Player's primary class
-
-    //prefab that contains the visuals + animations and other crucial scripts
-    public GameObject characterPrefab;
-
-    public Sprite characterImage;
-
-    public Sprite characterIcon;
-
-    public string characterDescription;
-
     public float leaderIndicatorHeight = 0f;
 
+    [Header("ENEMY SPECIFIC")]
+
+    [Header("COMMON")]
+    public string entityName;
+    public GameObject entityPrefab;
+    public Sprite entityImage;
+    public Sprite entityIcon;
+    public string entityDescription;
+
+
+    [Header("STATS")]
     //Character Stats - Obviously subject to alteration
     public int strength = 1;
     //affects damage with most weapons, weapons and armor that can be used, and possibly... carry weight (does not affect damage for things like crossbows)

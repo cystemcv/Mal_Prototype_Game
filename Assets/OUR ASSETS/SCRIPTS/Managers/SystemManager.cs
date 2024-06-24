@@ -35,17 +35,22 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, }
     public CardType cardType;
 
-    public enum CardCharacterAnimation { MeleeAttack, ProjectileAttack, SpellCast }; //Actual classes to be determined
-    public CardCharacterAnimation cardCharacterAnimation;
+    public enum EntityAnimation { MeleeAttack, ProjectileAttack, SpellCast }; //Actual classes to be determined
+    public EntityAnimation entityAnimation;
 
-    public enum CardCharacterSound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
-    public CardCharacterSound cardCharacterSound;
+    public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
+    public EntitySound entitySound;
 
-    public enum MainClass { Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
+    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum TypeOfAttack { SIMPLE, MELLEE, PROJECTILE }
 
+    public enum AITypeOfAttack { SINGLETARGET,AOE }
+
+    public enum AIWhoToTarget { ENEMY, PLAYER }
+
+    public enum AIIntend { ATTACK, MAGIC, BUFF, DEBUFF }
 
     //end of enums
 
@@ -55,6 +60,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public Camera uiCamera;
 
     //common colors
+    public string colorGolden = "FFAD04";
+    public string colorDarkGrey = "252525";
+    public string colorLightGrey = "727272";
+
     public string colorWhite = "FFFFFF";
     public string colorRed = "FF0000";
     public string colorBlue = "003FFF";
@@ -76,7 +85,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     //system variables
     public float totalTimePlayed = 0f;
 
+    public Sprite intend_Attack;
+    public Sprite intend_Magic;
+    public Sprite intend_Buff;
+    public Sprite intend_Debuff;
 
+    public GameObject intendObject;
 
     private void Awake()
     {
@@ -213,4 +227,20 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
     }
+
+    public List<GameObject> GetAllChildren(GameObject parent)
+    {
+        List<GameObject> listOfChildGameobjects = new List<GameObject>(); 
+
+        foreach (Transform child in parent.transform)
+        {
+            Debug.Log(child.name);
+            // Destroy each child GameObject
+            listOfChildGameobjects.Add(child.gameObject);
+        }
+
+        return listOfChildGameobjects;
+
+    }
+
 }

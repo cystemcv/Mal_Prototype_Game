@@ -29,45 +29,121 @@ public class BuffSystemManager : MonoBehaviour
     }
 
 
-    public void AddDebuffToEnemyTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnForDebuff)
+    //public void AddDebuffToEnemyTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailable)
+    //{
+    //    GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+    //    BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
+    //    List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
+
+
+    //    int index = gridSystemItemList.FindIndex(item => item.scriptableCardAbility.scriptableBuffDebuff.nameID == scriptableCardAbility.scriptableBuffDebuff.nameID);
+
+    //    //if already exist just increase the counter
+    //    if (index != -1)
+    //    {
+    //        gridSystemItemList[index].turnsAvailable += turnsAvailable;
+    //        gridSystem.transform.GetChild(index).transform.Find("TEXT").GetComponent<TMP_Text>().text = gridSystemItemList[index].turnsAvailable.ToString();
+    //    }
+    //    else {
+
+    //        //instantiate the gameobject prefab
+        
+    //        GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
+
+    //        buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+
+    //        //create the debuff
+    //        BuffDebuffClass debuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+    //        debuffClass.scriptableCardAbility = scriptableCardAbility;
+    //        debuffClass.turnsAvailable = turnsAvailable;
+
+    //        //ui
+    //        buffdebuffPrefabLocal.GetComponent<Image>().sprite = debuffClass.scriptableCardAbility.scriptableBuffDebuff.icon;
+    //        buffdebuffPrefabLocal.transform.Find("TEXT").GetComponent<TMP_Text>().text = debuffClass.turnsAvailable.ToString();
+
+    //        EnemyClass enemyClass = target.GetComponent<EnemyClass>();
+    //        enemyClass.listBuffDebuffClass.Add(buffdebuffPrefabLocal);
+    //    }
+
+    //}
+
+    public void AddBuffDebuffToTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailable)
     {
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
+
+        //there is already a buff with this id, then add more turns into it
+        if (buffDebuffClass != null)
+        {
+            buffDebuffClass.IncreaseTurnsAvailable(turnsAvailable);
+        }
+        else
+        {
+            //if not then add this buff
+            //create the gameobject and add it
+            GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
+            buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+            buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+
+            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility,target, turnsAvailable);
+
+            ////create the debuff
+            //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+            //buffDebuffClass.scriptableCardAbility = scriptableCardAbility;
+
+            //buffDebuffClass.IncreaseTurnsAvailable(turnsAvailable);
+
+            ////add the target with the debuff
+            //buffDebuffClass.targetWithDebuff = target;
+
+            ////add icon
+            //buffdebuffPrefabLocal.GetComponent<Image>().sprite = buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.icon;
+            //if (buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.isBuff)
+            //{
+
+            //}
+            //else
+            //{
+
+            //}
+            //buffdebuffPrefabLocal.GetComponent<Image>().color = buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.isBuff;
+
+
+        }
+
+
+
+    }
+
+    public BuffDebuffClass GetBuffDebuffClassFromTarget(GameObject target, string buffDebuffNameID)
+    {
+        BuffDebuffClass buffDebuffClass = null;
+
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
         List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
 
 
-        int index = gridSystemItemList.FindIndex(item => item.scriptableCardAbility.scriptableBuffDebuff.nameID == scriptableCardAbility.scriptableBuffDebuff.nameID);
+        int index = gridSystemItemList.FindIndex(item => item.scriptableCardAbility.scriptableBuffDebuff.nameID == buffDebuffNameID);
 
-        //if already exist just increase the counter
         if (index != -1)
         {
-            gridSystemItemList[index].turnsAvailable += turnForDebuff;
-            gridSystem.transform.GetChild(index).transform.Find("TEXT").GetComponent<TMP_Text>().text = gridSystemItemList[index].turnsAvailable.ToString();
-        }
-        else {
-
-            //instantiate the gameobject prefab
-        
-            GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
-
-            buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
-
-            //create the debuff
-            BuffDebuffClass debuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
-            debuffClass.scriptableCardAbility = scriptableCardAbility;
-            debuffClass.turnsAvailable = turnForDebuff;
-
-            //ui
-            buffdebuffPrefabLocal.GetComponent<Image>().sprite = debuffClass.scriptableCardAbility.scriptableBuffDebuff.icon;
-            buffdebuffPrefabLocal.transform.Find("TEXT").GetComponent<TMP_Text>().text = debuffClass.turnsAvailable.ToString();
-
-            EnemyClass enemyClass = target.GetComponent<EnemyClass>();
-            enemyClass.listBuffDebuffClass.Add(buffdebuffPrefabLocal);
+            buffDebuffClass = gridSystemItemList[index];
         }
 
+        return buffDebuffClass;
     }
-    
-    public void EnemyTurnStartBD()
+
+    public List<BuffDebuffClass> GetAllBuffDebuffFromTarget(GameObject target)
+    {
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
+        List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
+
+        return gridSystemItemList;
+    }
+
+    public void ActivateAllBuffsDebuffs()
     {
 
         //get all characters
@@ -75,27 +151,62 @@ public class BuffSystemManager : MonoBehaviour
 
         foreach (GameObject character in characters)
         {
-            CharacterClass characterClass = character.GetComponent<CharacterClass>();
-           
-            foreach (GameObject buffdebufPRefab in characterClass.listBuffDebuffClass)
+            List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(character);
+
+            foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
             {
-                BuffDebuffClass buffDebuffClass = buffdebufPRefab.GetComponent<BuffDebuffClass>();
+                BuffDebuffClass buffDebuffClass = buffdebufPRefab;
+
+                bool activated = false;
                 //activate buffs/debuffs
-                bool activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(character);
-
-                if (activated)
+                if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
-                    //decrease by 1
-                    buffDebuffClass.turnsAvailable -= 1;
+              
+                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnStart(character);
+                 
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(character);
 
-                    //update ui
-                    buffdebufPRefab.transform.Find("TEXT").GetComponent<TMP_Text>().text = buffDebuffClass.turnsAvailable.ToString();
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnEnd(character);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnEnd(character);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
                 }
 
-                if (buffDebuffClass.turnsAvailable <= 0)
-                {
-                    Destroy(buffdebufPRefab);
-                }
+
+  
+
+                //check if destroyed
+                buffDebuffClass.CheckIfExpired();
+
             }
         }
 
@@ -104,27 +215,65 @@ public class BuffSystemManager : MonoBehaviour
 
         foreach (GameObject enemy in enemies)
         {
-            EnemyClass enemyClass = enemy.GetComponent<EnemyClass>();
+            List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(enemy);
 
-            foreach (GameObject buffdebufPRefab in enemyClass.listBuffDebuffClass)
+            foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
             {
-                BuffDebuffClass buffDebuffClass = buffdebufPRefab.GetComponent<BuffDebuffClass>();
-                //activate buffs/debuffs
-                bool activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(enemy);
+                BuffDebuffClass buffDebuffClass = buffdebufPRefab;
 
+
+                bool activated = false;
+                //activate buffs/debuffs
+                if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnStart(enemy);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(enemy);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnEnd(enemy);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
+                {
+                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnEnd(enemy);
+
+                    //if activated then we decrease the turns
+                    if (activated)
+                    {
+                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                    }
+                }
+
+
+                //if activated then we decrease the turns
                 if (activated)
                 {
-                    //decrease by 1
-                    buffDebuffClass.turnsAvailable -= 1;
-
-                    //update ui
-                    buffdebufPRefab.transform.Find("TEXT").GetComponent<TMP_Text>().text = buffDebuffClass.turnsAvailable.ToString();
+                    buffDebuffClass.DecreaseTurnsAvailable(1);
                 }
 
-                if (buffDebuffClass.turnsAvailable <= 0)
-                {
-                    Destroy(buffdebufPRefab);
-                }
+                //check if destroyed
+                buffDebuffClass.CheckIfExpired();
             }
         }
     }

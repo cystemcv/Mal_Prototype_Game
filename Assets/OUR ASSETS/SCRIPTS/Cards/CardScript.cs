@@ -8,6 +8,10 @@ public class CardScript : MonoBehaviour
 
     public ScriptableCard scriptableCard;
 
+    public List<AIAbilityHolder> aIAbilityHolders;
+
+    public GameObject whoUsedCard;
+
     [Header("ID")]
     public string cardID;
 

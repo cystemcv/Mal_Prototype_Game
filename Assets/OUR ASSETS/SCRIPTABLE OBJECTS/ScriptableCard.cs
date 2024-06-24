@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ScriptableCard : ScriptableObject // Not sure if cards will be made from here or specialized for each class. Possibly change to abstract class later
 {
 
-
+    [Header("COMMON")]
     [Header("MAIN")]
     public string cardName;
     public SystemManager.MainClass mainClass;
@@ -40,6 +40,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public bool playerMode2 = false;//available on 2 character mode
     public bool playerMode3 = false;//available on 3 character mode
     public bool unlockable = false;//available from start = false, unlockable = true
+
 
 
 }

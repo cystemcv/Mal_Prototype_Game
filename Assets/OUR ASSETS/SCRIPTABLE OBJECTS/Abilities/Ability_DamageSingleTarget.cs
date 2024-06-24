@@ -6,17 +6,18 @@ using UnityEngine;
 public class Ability_DamageSingleTarget : ScriptableCardAbility
 {
 
-   // public int damage;
+    [Header("UNIQUE")]
+    public int empty;
 
+    private GameObject realTarget;
 
-
-    public override string AbilityDescription(CardScript cardScript, GameObject character)
+    public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, null);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
     
 
-        string keyword = base.AbilityDescription(cardScript, character);
+        string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
         string final = keyword + " : " + description;
 
@@ -25,39 +26,47 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject character, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
+        //assign target 
+        if (target != null)
+        {
+            realTarget = target;
+        }
+        else
+        {
+            realTarget = CombatManager.Instance.targetClicked;
+        }
 
-
-        base.OnPlayCard(cardScript,character, CombatManager.Instance.targetClicked);
+        base.OnPlayCard(cardScript, entity, realTarget);
 
 
 
         if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
                || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, character), base.timeToGetToTarget);
+            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
 
         }
         else
         {
-            ProceedToAbility(cardScript, character);
+            ProceedToAbility(cardScript, entity);
         }
 
 
 
     }
 
-    private void OnCompleteBase(CardScript cardScript, GameObject character)
+    private void OnCompleteBase(CardScript cardScript, GameObject entity)
     {
         // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript,character);
+        ProceedToAbility(cardScript, entity);
     }
 
-    private void ProceedToAbility(CardScript cardScript, GameObject character)
+    private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateCharacterDmg(GetAbilityVariable(cardScript), character, CombatManager.Instance.targetClicked);
-        CombatManager.Instance.AdjustHealth(CombatManager.Instance.targetClicked, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
+        CombatManager.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

@@ -6,9 +6,9 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager Instance;
 
-    public List<ScriptablePlayer> characterList;
+    public List<ScriptableEntity> characterList;
 
-    public List<ScriptablePlayer> scriptablePlayerList;
+    public List<ScriptableEntity> scriptablePlayerList;
 
 
 
