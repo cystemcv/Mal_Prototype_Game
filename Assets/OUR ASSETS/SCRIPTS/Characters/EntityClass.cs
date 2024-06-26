@@ -45,6 +45,22 @@ public class EntityClass : MonoBehaviour
     public string entityID;
 
 
+    //spawn prefabs on entity
+    [Header("PREFABS")]
+    public bool spawnBuffDebuffObject;
+    public Vector3 spawnBuffDebuffObjectAdjustment = new Vector3(0,0,0);
+    public bool spawnHealthBarObject;
+    public Vector3 spawnHealthBarObjectAdjustment = new Vector3(0, 0, 0);
+    public bool spawnIntendObject;
+    public Vector3 spawnIntendObjectAdjustment = new Vector3(0, 0, 0);
+
+    [Header("PREFABS LIVE ADJUSTMENTS")]
+    public bool allowPrefabLiveAdjustments = true;
+    private GameObject bdO;
+    private GameObject hpO;
+    private GameObject intentO;
+    private GameObject gameobjectUI;
+
     public EntityClass()
     {
 
@@ -52,9 +68,44 @@ public class EntityClass : MonoBehaviour
         entityID = System.Guid.NewGuid().ToString();
     }
 
+    void Update()
+    {
+
+        if (allowPrefabLiveAdjustments == false)
+        {
+            return;
+        }
+
+        if (hpO != null)
+        {
+            hpO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnHealthBarObjectAdjustment.x, gameobjectUI.transform.position.y + spawnHealthBarObjectAdjustment.y, gameobjectUI.transform.position.z + spawnHealthBarObjectAdjustment.z);
+        }
+
+        if (bdO != null)
+        {
+            bdO.transform.position = new Vector3(hpO.transform.position.x + spawnBuffDebuffObjectAdjustment.x, hpO.transform.position.y + spawnBuffDebuffObjectAdjustment.y, hpO.transform.position.z + spawnBuffDebuffObjectAdjustment.z);
+        }
+
+        if (intentO != null)
+        {
+            intentO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.z);
+        }
+
+    }
+
+
+    private void Awake()
+    {
+
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+
+        //SpawnUI();
+
         //if its ui element we dont wanna do anything
         if (isUI)
         {
@@ -65,7 +116,88 @@ public class EntityClass : MonoBehaviour
         InititializeEntity();
 
 
+    }
 
+    public void SpawnUI()
+    {
+
+        Debug.Log(this.gameObject.name + "1");
+
+        //get the entity ui spawner
+        gameobjectUI = this.gameObject.transform.Find("gameobjectUI").gameObject;
+
+        if (spawnHealthBarObject)
+        {
+            //if already exist then keep it
+            if (gameobjectUI.transform.Find("Bars") != null)
+            {
+
+            }
+            else
+            {
+                //spawn new ui
+                Vector3 spawnPos = new Vector3(gameobjectUI.transform.position.x + spawnHealthBarObjectAdjustment.x, gameobjectUI.transform.position.y + spawnHealthBarObjectAdjustment.y, gameobjectUI.transform.position.z + spawnHealthBarObjectAdjustment.z);
+                GameObject newUI = Instantiate(SystemManager.Instance.entity_healthBarObject, spawnPos, Quaternion.identity);
+                newUI.name = "Bars";
+                hpO = newUI;
+                //parent it
+                hpO.transform.SetParent(gameobjectUI.transform);
+
+
+            }
+
+
+        }
+
+        //spawn ui for entities
+        if (spawnBuffDebuffObject)
+        {
+            //if already exist then destroy it
+            if (gameobjectUI.transform.Find("BuffDebuffList") != null)
+            {
+
+            }
+            else
+            {
+                //spawn new ui
+                Vector3 spawnPos = new Vector3(hpO.transform.position.x + spawnBuffDebuffObjectAdjustment.x, hpO.transform.position.y + spawnBuffDebuffObjectAdjustment.y - 0.1f, hpO.transform.position.z + spawnBuffDebuffObjectAdjustment.z);
+                GameObject newUI = Instantiate(SystemManager.Instance.entity_buffDebuffObject, spawnPos, Quaternion.identity);
+                newUI.name = "BuffDebuffList";
+                bdO = newUI;
+                //parent it
+                bdO.transform.SetParent(gameobjectUI.transform);
+            }
+        }
+
+
+
+        if (spawnIntendObject)
+        {
+            //if already exist then destroy it
+            if (gameobjectUI.transform.Find("intendList") != null)
+            {
+
+            }
+            else
+            {
+                //spawn new ui
+                Vector3 spawnPos = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.y);
+                GameObject newUI = Instantiate(SystemManager.Instance.entity_intendObject, spawnPos, Quaternion.identity);
+                newUI.name = "intendList";
+                intentO = newUI;
+                //parent it
+                intentO.transform.SetParent(gameobjectUI.transform);
+            }
+        }
+    }
+
+    private IEnumerator InitializeHealthBar(GameObject newUI)
+    {
+        // Wait until the end of the frame to ensure the object is fully instantiated and set up
+        yield return new WaitForEndOfFrame();
+
+        // Call InitUIBar now that the object is fully set up
+        InitUIBar();
     }
 
     public void InitializeUIEntityPanel()
@@ -84,27 +216,27 @@ public class EntityClass : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
 
-    }
 
     public void InititializeEntity()
     {
+        SpawnUI();
+
         //variables that can change during battle
         poisongDmg = scriptableEntity.poisonDmg;
         health = scriptableEntity.currHealth;
         maxHealth = scriptableEntity.maxHealth;
         attack = scriptableEntity.strength;
 
-        InitUI();
+        InitUIBar();
 
         //save current position , so it can go back if needed
         OriginXPos = this.gameObject.transform.position.x;
     }
 
-    public void InitUI()
+    public void InitUIBar()
     {
+
         sliderBar = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("Health").gameObject;
         slider = sliderBar.GetComponent<Slider>();
         shieldIcon = sliderBar.transform.Find("ShieldIcon").gameObject;

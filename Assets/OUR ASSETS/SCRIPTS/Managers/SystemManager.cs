@@ -92,6 +92,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public GameObject intendObject;
 
+    [Header("PREFABS FOR ENTITIES")]
+    public GameObject entity_buffDebuffObject;
+    public GameObject entity_healthBarObject;
+    public GameObject entity_intendObject;
+
     private void Awake()
     {
         if (Instance == null)
