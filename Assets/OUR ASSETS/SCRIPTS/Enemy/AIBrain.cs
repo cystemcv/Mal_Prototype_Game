@@ -89,6 +89,11 @@ public class AIBrain : MonoBehaviour
                 intendImage.sprite = SystemManager.Instance.intend_Debuff;
                 intendText.gameObject.SetActive(false);
             }
+            else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.CARDDECK)
+            {
+                intendImage.sprite = SystemManager.Instance.intend_CardDeck;
+                intendText.gameObject.SetActive(false);
+            }
 
             //get the target and the color
             if (scriptableCardAbility.aITypeOfAttack == SystemManager.AITypeOfAttack.AOE)

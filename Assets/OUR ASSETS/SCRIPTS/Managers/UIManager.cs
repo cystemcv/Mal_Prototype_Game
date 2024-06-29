@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     public GameObject handObjectParent;
     public GameObject deckUIObject;
     public GameObject deckText;
-    public GameObject discardUISpawn;
+    public GameObject handFullSpawnCard;
     public GameObject discardText;
     public GameObject banishedText;
     public GameObject manaText;

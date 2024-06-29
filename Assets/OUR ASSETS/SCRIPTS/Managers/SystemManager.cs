@@ -50,7 +50,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum AIWhoToTarget { ENEMY, PLAYER }
 
-    public enum AIIntend { ATTACK, MAGIC, BUFF, DEBUFF }
+    public enum AIIntend { ATTACK, MAGIC, BUFF, DEBUFF, CARDDECK }
+
+    public enum CardThrow { DISCARD, BANISH, DECK }
 
     //end of enums
 
@@ -89,6 +91,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public Sprite intend_Magic;
     public Sprite intend_Buff;
     public Sprite intend_Debuff;
+    public Sprite intend_CardDeck;
 
     public GameObject intendObject;
 
@@ -239,7 +242,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
         foreach (Transform child in parent.transform)
         {
-            Debug.Log(child.name);
+     
             // Destroy each child GameObject
             listOfChildGameobjects.Add(child.gameObject);
         }

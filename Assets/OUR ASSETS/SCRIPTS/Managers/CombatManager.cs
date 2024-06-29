@@ -12,7 +12,8 @@ public class CombatManager : MonoBehaviour
     //targeting system
 
 
-    public GameObject particleCardSoul;
+    public GameObject discardEffect;
+    public GameObject banishEffect;
     public GameObject arrowHead;
 
     public RectTransform targetUIElement;
@@ -322,7 +323,7 @@ public class CombatManager : MonoBehaviour
 
         EntityClass entityClass = target.GetComponent<EntityClass>();
 
-        Debug.Log("dame1");
+
 
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {

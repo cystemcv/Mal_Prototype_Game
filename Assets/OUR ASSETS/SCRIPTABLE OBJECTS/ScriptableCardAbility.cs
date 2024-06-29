@@ -55,7 +55,7 @@ public class ScriptableCardAbility : ScriptableObject
     public virtual void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
 
-        Debug.Log(entity);
+
 
         // Trigger the animation
         entityAnimator = entity.transform.Find("model").GetComponent<Animator>();

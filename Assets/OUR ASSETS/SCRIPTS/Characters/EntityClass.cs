@@ -121,7 +121,7 @@ public class EntityClass : MonoBehaviour
     public void SpawnUI()
     {
 
-        Debug.Log(this.gameObject.name + "1");
+     
 
         //get the entity ui spawner
         gameobjectUI = this.gameObject.transform.Find("gameobjectUI").gameObject;

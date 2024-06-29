@@ -57,6 +57,8 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         // Select a random card from the filtered list
         int randomIndex = Random.Range(0, filteredDeck.Count);
 
+        Debug.Log("randomIndex : " + randomIndex);
+
         CardScript foundFilteredCard = filteredDeck[randomIndex];
 
         //find the index of the card we are discarding
@@ -68,10 +70,12 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         if (DeckManager.Instance.handCards.Count >= HandManager.Instance.maxHandCardsLimit)
         {
 
+ 
+
             //discard it
             DeckManager.Instance.discardedPile.Add(cardScript);
 
-            DeckManager.Instance.InitializeCardPrefabDiscard(cardScript);
+            DeckManager.Instance.HandFullSpawnCardFunction(cardScript);
 
             return;
         }
@@ -97,9 +101,8 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         }
 
 
-        Debug.Log("card 21s " + foundCardScript.changedMana);
- 
-    
+
+
         DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex);
 
 

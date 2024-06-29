@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e08cc93726e1544abd614c52ab9fa6d, type: 3}
-  m_Name: Ability_ChooseACardFromList_KnightAttack
+  m_Script: {fileID: 11500000, guid: a8c68ffecedd1af4082e2438dd11599d, type: 3}
+  m_Name: Ability_BanishCardFromHand
   m_EditorClassIdentifier: 
-  abilityName: CHOICE
+  abilityName: BANISH
   waitForAbility: 0.2
   typeOfAttack: 0
   timeToGetToTarget: 0.2
@@ -23,13 +23,8 @@ MonoBehaviour:
   abilityAfterEffect: {fileID: 0}
   abilityAfterEffectLifetime: 0.2
   entityAnimation: 2
-  entitySound: 0
-  aIIntend: 4
+  entitySound: 5
+  aIIntend: 0
   aITypeOfAttack: 0
   aIWhoToTarget: 0
-  mainClass: 1
-  cardType: 0
-  addCardTo: 0
-  setManaCost: 0
-  modifyManaCost: 0
-  cardsToChoose: 3
+  empty: 0
