@@ -24,6 +24,10 @@ public class DeckManager : MonoBehaviour
     //Hand Cards 
     public List<CardScript> handCards;
 
+
+    public CardScript savedPlayedCardScript;
+    public LTDescr savedtweenCardPlayed;
+
     [Header("FAN SHAPE")]
     //public List<GameObject> cards;
     public Transform handCenter; // The center point of your hand
@@ -132,7 +136,7 @@ public class DeckManager : MonoBehaviour
                 handCards.Add(cardScript);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, true);
+                InitializeCardPrefab(cardScript, UIManager.Instance.HAND, true);
 
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
@@ -162,7 +166,7 @@ public class DeckManager : MonoBehaviour
             handCards.Add(cardScript);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UIManager.Instance.handObjectParent, true);
+            InitializeCardPrefab(cardScript, UIManager.Instance.HAND, true);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -187,6 +191,53 @@ public class DeckManager : MonoBehaviour
 
 
 
+    }
+
+    public void RemovePlayedCardFromHand(CardScript cardScript)
+    {
+
+
+        //remove the card based on the index
+        int index = handCards.FindIndex(item => item.cardID == cardScript.cardID);
+        handCards.RemoveAt(index);
+
+
+        index = -1;
+        GameObject cardToDelete = null;
+
+        //find the card object
+        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
+        {
+            //get the cardscript so we can compare the scriptable objects
+            CardScript cardScriptFromGameObject = cardPrefab.GetComponent<CardScript>();
+
+            //if they are equal then we destroy it
+            if (cardScriptFromGameObject.cardID == cardScript.cardID)
+            {
+                //find the index of the card we are discarding
+                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardScript.cardID);
+
+                cardToDelete = cardPrefab;
+
+                break;
+
+            }
+        }
+
+        //remove it from the gameobject list
+        HandManager.Instance.cardsInHandList.RemoveAt(index);
+
+        //parent it
+        cardScript.gameObject.transform.SetParent(UIManager.Instance.CARDPLAYED.transform);
+
+        //deactivate events
+        cardScript.gameObject.GetComponent<CardEvents>().enabled = false;
+
+        //move the card
+        savedtweenCardPlayed = LeanTween.move(cardScript.gameObject, UIManager.Instance.CARDPLAYED.transform, 0.2f);
+
+        //save the cardscript
+        savedPlayedCardScript = cardScript;
     }
 
     public void BanishCardFromHand(CardScript cardScript)
@@ -251,8 +302,10 @@ public class DeckManager : MonoBehaviour
         //decrease available mana
         CombatManager.Instance.ManaAvailable -= cardScript.primaryManaCost;
 
-        //activate all card abilities
+        //remove from hand and add it to the played card
+        RemovePlayedCardFromHand(tempCardScript);
 
+        //activate all card abilities
         PlayCardOnlyAbilities(tempCardScript);
 
 
@@ -286,13 +339,6 @@ public class DeckManager : MonoBehaviour
 
         foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {
-
-
-
-            if (entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
-            {
-                break;
-            }
 
             GameObject target = null;
 
@@ -339,9 +385,11 @@ public class DeckManager : MonoBehaviour
         SystemManager.Instance.thereIsActivatedCard = false;
 
         //if not already discarded by abilities then discard
-        if (cardScript != null && entity.tag != "Enemy")
+        if (savedPlayedCardScript != null && entity.tag != "Enemy")
         {
-            DiscardCardFromHand(cardScript);
+            //destroy the prefab
+            DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
+            //DiscardCardFromHand(cardScript);
         }
 
     }
@@ -603,6 +651,9 @@ public class DeckManager : MonoBehaviour
         //update the information on the card prefab
         UpdateCardUI(cardPrefab);
 
+        //deactivate events
+        cardPrefab.GetComponent<CardEvents>().enabled = false;
+
         StartCoroutine(DestroyHandExceedCard(cardPrefab));
         
 
@@ -621,6 +672,37 @@ public class DeckManager : MonoBehaviour
 
     }
 
+
+    public void DestroyPlayedCard( SystemManager.CardThrow cardThrow)
+    {
+        //instantiate the effect
+        GameObject cardSoul;
+
+        if (cardThrow == SystemManager.CardThrow.DISCARD)
+        {
+            //add it to the discard pile
+            discardedPile.Add(savedPlayedCardScript);
+
+            cardSoul = Instantiate(CombatManager.Instance.discardEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            //and assign the target
+            cardSoul.GetComponent<EffectGoToTarget>().target = UIManager.Instance.discardText;
+        }
+        else if (cardThrow == SystemManager.CardThrow.BANISH)
+        {
+            //add it to the banished pile
+            banishedPile.Add(savedPlayedCardScript);
+
+            cardSoul = Instantiate(CombatManager.Instance.banishEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            //and assign the target
+            cardSoul.GetComponent<EffectGoToTarget>().target = UIManager.Instance.banishedText;
+        }
+
+        //destroy it as we do not need it anymore
+        Destroy(savedPlayedCardScript.gameObject);
+
+        //rearrange hand
+        HandManager.Instance.SetHandCards();
+    }
 
     public void DestroyCardPrefab(CardScript cardScript, SystemManager.CardThrow cardThrow)
     {

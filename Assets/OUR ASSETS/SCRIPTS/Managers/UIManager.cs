@@ -46,7 +46,8 @@ public class UIManager : MonoBehaviour
 
 
     [Header("UICOMBAT")]
-    public GameObject handObjectParent;
+    public GameObject HAND;
+    public GameObject CARDPLAYED;
     public GameObject deckUIObject;
     public GameObject deckText;
     public GameObject handFullSpawnCard;

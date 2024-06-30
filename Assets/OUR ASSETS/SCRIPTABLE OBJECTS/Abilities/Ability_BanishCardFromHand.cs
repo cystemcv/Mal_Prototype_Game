@@ -25,7 +25,9 @@ public class Ability_BanishCardFromHand : ScriptableCardAbility
     {
         base.OnPlayCard(cardScript, entity, null);
 
-        DeckManager.Instance.BanishCardFromHand(cardScript);
+        DeckManager.Instance.DestroyPlayedCard(SystemManager.CardThrow.BANISH);
+
+        //DeckManager.Instance.BanishCardFromHand(cardScript);
 
     }
 
