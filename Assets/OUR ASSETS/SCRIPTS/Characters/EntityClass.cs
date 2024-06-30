@@ -44,6 +44,7 @@ public class EntityClass : MonoBehaviour
     [Header("ID")]
     public string entityID;
 
+    public SystemManager.EntityMode entityMode = SystemManager.EntityMode.NORMAL;
 
     //spawn prefabs on entity
     [Header("PREFABS")]

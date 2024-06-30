@@ -28,6 +28,10 @@ public class CombatManager : MonoBehaviour
 
     public int turns = 0;
 
+    //win /lose conditions
+    public int charactersAlive = 0;
+    public int enemiesAlive = 0;
+
 
 
     //---------------
@@ -212,8 +216,8 @@ public class CombatManager : MonoBehaviour
         // Check if the ray intersects with any colliders
         if (hit.collider != null)
         {
-            //check if the target is the required one
-            if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player")
+            //check if the target is the required one or it is not dead
+            if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player" || (hit.collider.gameObject.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD))
             {
                 return;
             }
@@ -323,7 +327,10 @@ public class CombatManager : MonoBehaviour
 
         EntityClass entityClass = target.GetComponent<EntityClass>();
 
-
+        if(entityClass.entityMode == SystemManager.EntityMode.DEAD)
+        {
+            return;
+        }
 
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
@@ -445,13 +452,61 @@ public class CombatManager : MonoBehaviour
 
         Destroy(numberOnScreenPrefab, 1f);
 
-        //if an enemy reach 0 hp then it should be destroyed
+        //if the target reach to 0
+        CheckIfEntityIsDead(entityClass);
 
-        //if (enemyClass.health <= 0)
-        //{
-        //    Destroy(target, 1f);
-        //}
 
+    }
+
+    public void CheckIfEntityIsDead(EntityClass entityClass)
+    {
+
+        if (entityClass.health <= 0)
+        {
+
+            entityClass.entityMode = SystemManager.EntityMode.DEAD;
+            Animator animator = entityClass.transform.Find("model").GetComponent<Animator>();
+
+            if (animator != null)
+            {
+                animator.SetTrigger("Dead");
+            }
+
+            EntityDeadDestroy(entityClass.gameObject);
+
+            if (entityClass.gameObject.tag == "Player")
+            {
+                charactersAlive -= 1;
+
+                //need to regenerate intend 
+                //generate intend for all enemies
+                GenerateEnemyIntends();
+            }
+            else
+            {
+                enemiesAlive -= 1;
+            }
+
+        }
+
+    }
+
+    public void EntityDeadDestroy(GameObject entity)
+    {
+        GameObject buffsdebuffs = entity.transform.Find("gameobjectUI").Find("BuffDebuffList").Find("Panel").gameObject;
+        GameObject intends = null;
+        if (entity.tag == "Enemy") {
+             intends = entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
+        }
+
+        if (intends != null) {
+            SystemManager.Instance.DestroyAllChildren(intends);
+        }
+
+        if (buffsdebuffs != null)
+        {
+            SystemManager.Instance.DestroyAllChildren(buffsdebuffs);
+        }
 
     }
 
@@ -562,8 +617,7 @@ public class CombatManager : MonoBehaviour
     {
 
 
-        //change into combat mode
-        SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
+
 
         //close the UI window
         UIManager.Instance.UIMENU.SetActive(false);
@@ -596,6 +650,34 @@ public class CombatManager : MonoBehaviour
         //asign leader the first character
         AssignLeader(charactersInCombat[0]);
 
+        //initialize dead count
+        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+
+        charactersAlive = 0;
+        foreach (GameObject character in characters)
+        {
+            //count how many alive
+            if (character.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD )
+            {
+                charactersAlive += 1;
+            }
+        }
+
+        //initialize dead count
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        enemiesAlive = 0;
+        foreach (GameObject enemy in enemies)
+        {
+            //count how many alive
+            if (enemy.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+            {
+                enemiesAlive += 1;
+            }
+        }
+
+        //change into combat mode
+        SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
 
         StartCoroutine(WaitPlayerTurns());
 
@@ -620,6 +702,10 @@ public class CombatManager : MonoBehaviour
         //position the ui indicator on the leader
         leaderIndicator.SetActive(true);
         leaderIndicator.transform.position = new Vector2(leaderCharacter.transform.position.x, leaderCharacter.GetComponent<EntityClass>().scriptableEntity.leaderIndicatorHeight);
+
+        //parent it
+        leaderIndicator.transform.SetParent(leaderCharacter.transform);
+
     }
 
     public void ReverseLeader()
@@ -628,6 +714,20 @@ public class CombatManager : MonoBehaviour
         {
 
             if (leaderCharacter != characterInCombat)
+            {
+                AssignLeader(characterInCombat);
+                break;
+            }
+
+        }
+    }
+
+    public void AssignLeaderToAlive()
+    {
+        foreach (GameObject characterInCombat in charactersInCombat)
+        {
+
+            if (characterInCombat.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
             {
                 AssignLeader(characterInCombat);
                 break;
@@ -657,9 +757,19 @@ public class CombatManager : MonoBehaviour
         UIManager.Instance.OnNotification("PLAYER STARTING TURN", 1);
 
         //check if its not turn 1 and also only in duo mode
-        if (turns != 1)
+ 
+
+        //if there is only 1 character then assign it to it
+        if (charactersAlive == 1)
         {
-            ReverseLeader();
+            AssignLeaderToAlive();
+        }
+        else
+        {
+            if (turns != 1)
+            {
+                ReverseLeader();
+            }
         }
 
         //loop for all buffs and debuffs
@@ -758,8 +868,8 @@ public class CombatManager : MonoBehaviour
         {
             AIBrain aIBrain = enemy.GetComponent<AIBrain>();
 
-            //if no ai brain the get continue to the next
-            if (aIBrain == null)
+            //if no ai brain the get continue to the next or deasd
+            if (aIBrain == null || enemy.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
             {
                 continue;
             }
@@ -884,7 +994,8 @@ public class CombatManager : MonoBehaviour
         foreach (GameObject characterInCombat in CombatManager.Instance.charactersInCombat)
         {
 
-            if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass)
+            if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass 
+                && characterInCombat.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
             {
 
                 //then it belongs to a character we have

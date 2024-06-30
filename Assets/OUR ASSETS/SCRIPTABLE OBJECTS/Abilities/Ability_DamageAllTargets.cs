@@ -37,14 +37,16 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         {
             targetsFound = GameObject.FindGameObjectsWithTag("Player");
         }
-  
+
 
 
         //then loop
         foreach (GameObject targetFound in targetsFound)
         {
-            int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
-            CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD) {
+                int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+                CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            }
         }
       
 

@@ -287,6 +287,13 @@ public class DeckManager : MonoBehaviour
         foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {
 
+
+
+            if (entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+            {
+                break;
+            }
+
             GameObject target = null;
 
             //get the character to be used

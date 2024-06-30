@@ -54,6 +54,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum CardThrow { DISCARD, BANISH, DECK }
 
+    public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD}
+
     //end of enums
 
     public bool thereIsActivatedCard = false;

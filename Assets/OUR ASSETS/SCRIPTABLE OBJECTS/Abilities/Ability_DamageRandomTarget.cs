@@ -30,6 +30,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
         //get all targets
         GameObject[] targetsFound;
 
+
         if (entity.tag == "Player")
         {
             targetsFound = GameObject.FindGameObjectsWithTag("Enemy");
@@ -39,13 +40,29 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
             targetsFound = GameObject.FindGameObjectsWithTag("Player");
         }
 
-        int randomNmbr = Random.Range(0, targetsFound.Length);
+        List<GameObject> targetsList = new List<GameObject>();
 
-        targetFound = targetsFound[randomNmbr];
+        //remove dead
+        foreach (GameObject targetF in targetsFound)
+        {
+            if (targetF.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+            {
+                targetsList.Add(targetF);
+            }
+        }
+
+        if (targetsList.Count == 0)
+        {
+            return;
+        }
+
+
+        int randomNmbr = Random.Range(0, targetsList.Count);
+
+        targetFound = targetsList[randomNmbr];
 
         base.OnPlayCard(cardScript, entity, targetFound);
-
-
+ 
         if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
            || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {

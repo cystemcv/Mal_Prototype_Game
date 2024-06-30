@@ -44,6 +44,12 @@ public class AIBrain : MonoBehaviour
 
     public void GenerateIntend()
     {
+
+        if (this.gameObject.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+        {
+            return;
+        }
+
         //get the intends gameobject which is gonna be the parent of the icons
         GameObject intends = this.gameObject.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
 
@@ -52,7 +58,7 @@ public class AIBrain : MonoBehaviour
         //loop throught the abilities
         foreach (ScriptableCardAbility scriptableCardAbility in cardScriptList[aiLogicStep].scriptableCard.scriptableCardAbilities)
         {
-
+            targetsList.Clear();
             //create the intend based on the ai choices
             GameObject intendObject = Instantiate(SystemManager.Instance.intendObject, intends.transform.position, Quaternion.identity);
             //parent it
@@ -66,6 +72,7 @@ public class AIBrain : MonoBehaviour
             Image intendImage = intendObject.transform.Find("Icon").GetComponent<Image>();
             TMP_Text intendText = intendObject.transform.Find("Text").GetComponent<TMP_Text>();
 
+            intendText.text = "";
             //intendImage.sprite = GetIntendIcon(scriptableCardAbility);
 
             //put the icon based on the intend
@@ -82,35 +89,39 @@ public class AIBrain : MonoBehaviour
             else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.BUFF)
             {
                 intendImage.sprite = SystemManager.Instance.intend_Buff;
-                intendText.gameObject.SetActive(false);
+                intendText.text = "<>";
+               // intendText.gameObject.SetActive(false);
             }
             else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.DEBUFF)
             {
                 intendImage.sprite = SystemManager.Instance.intend_Debuff;
-                intendText.gameObject.SetActive(false);
+                intendText.text = "<>";
+                // intendText.gameObject.SetActive(false);
             }
             else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.CARDDECK)
             {
                 intendImage.sprite = SystemManager.Instance.intend_CardDeck;
+                //intendText.text = "T";
                 intendText.gameObject.SetActive(false);
             }
 
             //get the target and the color
             if (scriptableCardAbility.aITypeOfAttack == SystemManager.AITypeOfAttack.AOE)
             {
+
                 //check for what targets its the aoe
                 if (scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.PLAYER)
                 {
 
                     //golden
-                    intendImage.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGolden);
+                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGolden);
 
                 }
                 else if(scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.ENEMY)
                 {
 
                     //dark grey
-                    intendImage.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkGrey);
+                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkGrey);
 
                 }
             }
@@ -122,7 +133,18 @@ public class AIBrain : MonoBehaviour
 
                     //add the target
                     GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
-                    targetsList = targets.ToList();
+
+                
+                    //remove dead
+                    foreach (GameObject target in targets)
+                    {
+                        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+                        {
+                            targetsList.Add(target);
+                        }
+                    }
+
+                    //targetsList = targets.ToList();
 
                     //get the random target
                     int indexTarget = Random.Range(0, targetsList.Count);
@@ -132,14 +154,25 @@ public class AIBrain : MonoBehaviour
                     intendClass.target = targetsList[indexTarget];
 
                     //color of the character class
-                    intendImage.color = CardListManager.Instance.GetClassColor(entityClass.scriptableEntity.mainClass);
+                    intendText.color = CardListManager.Instance.GetClassColor(entityClass.scriptableEntity.mainClass);
                 }
                 else if (scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.ENEMY)
                 {
 
                     //add the target
                     GameObject[] targets = GameObject.FindGameObjectsWithTag("Enemy");
-                    targetsList = targets.ToList();
+
+
+                    //remove dead
+                    foreach (GameObject target in targets)
+                    {
+                        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+                        {
+                            targetsList.Add(target);
+                        }
+                    }
+
+                    //targetsList = targets.ToList();
 
                     //get the random target
                     int indexTarget = Random.Range(0, targetsList.Count);
@@ -149,7 +182,7 @@ public class AIBrain : MonoBehaviour
                     intendClass.target = targetsList[indexTarget];
 
                     //lighter grey
-                    intendImage.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightGrey);
+                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightGrey);
             
                 }
             }
