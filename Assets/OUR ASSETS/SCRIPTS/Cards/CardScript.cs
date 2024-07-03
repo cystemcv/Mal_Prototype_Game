@@ -16,6 +16,7 @@ public class CardScript : MonoBehaviour
     public string cardID;
 
     //cards temp values
+    public int tempValue = 0; //used for any ability that need to store value
     public int primaryManaCost = 0;
     public bool resetManaCost = false;
     public bool changedMana = false;

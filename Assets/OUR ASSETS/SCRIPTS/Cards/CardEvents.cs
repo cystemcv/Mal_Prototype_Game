@@ -73,7 +73,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE) {
             OnPointerEnter_ChoiceMode();
         }
-
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.SHIELDCHOICE)
+        {
+            OnPointerEnter_ShieldChoiceMode();
+        }
 
 
 
@@ -91,6 +94,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE)
         {
             OnPointerExit_ChoiceMode();
+        }
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.SHIELDCHOICE)
+        {
+            OnPointerExit_ShieldChoiceMode();
         }
 
 
@@ -111,6 +118,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.CHOICE)
         {
             OnPointerDown_ChoiceMode(eventData);
+        }
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.SHIELDCHOICE)
+        {
+            OnPointerDown_ShieldChoiceMode(eventData);
         }
 
     }
@@ -326,6 +337,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
     }
 
+  
     public void OnPointerDown_ChoiceMode(PointerEventData eventData)
     {
 
@@ -338,6 +350,49 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else
         {
             DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>());
+
+        }
+    }
+
+
+
+    #endregion
+
+    //SHIELD CHOICE MODE
+    #region SHIELDCHOICEMODE
+    public void OnPointerEnter_ShieldChoiceMode()
+    {
+        // Scale up the hovered card
+        scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverChoiceScale, transitionTime);
+        gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+    }
+
+    public void OnPointerExit_ShieldChoiceMode()
+    {
+        // Scale down the card
+        scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+    }
+
+
+    public void OnPointerDown_ShieldChoiceMode(PointerEventData eventData)
+    {
+
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+
+
+
+        }
+        else
+        {
+            //close the thing 
+            UIManager.Instance.chooseACardScreen.SetActive(false);
+
+            //resume
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
+
+            //add the chosen shield (this is not scaleable)
+            CombatManager.Instance.AdjustTargetHealth(CombatManager.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
 
         }
     }

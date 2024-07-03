@@ -242,17 +242,19 @@ public class CombatManager : MonoBehaviour
             // Add your click handling code here
             targetClicked = hit.collider.gameObject;
 
-            //do the effects 
-            DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
-            //return everything where it was
-            HandManager.Instance.SetHandCards();
-
             //remove line renderer
             lineRenderer.gameObject.SetActive(false);
             arrowHead.SetActive(false);
 
             //leave from target
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
+
+            //do the effects 
+            DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
+            //return everything where it was
+            HandManager.Instance.SetHandCards();
+
+
 
 
         }

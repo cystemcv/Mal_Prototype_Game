@@ -20,7 +20,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum SaveLoadModes { SAVE, LOAD}
     public SaveLoadModes saveLoadMode = SaveLoadModes.SAVE;
 
-    public enum AbilityModes { NONE, TARGET, CHOICE }
+    public enum AbilityModes { NONE, TARGET, CHOICE, SHIELDCHOICE }
     public AbilityModes abilityMode = AbilityModes.NONE;
 
     public enum CombatTurns { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
@@ -41,7 +41,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper }; //Actual classes to be determined
+    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper, Righteous }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum TypeOfAttack { SIMPLE, MELLEE, PROJECTILE }

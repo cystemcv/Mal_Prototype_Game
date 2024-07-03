@@ -87,7 +87,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
         int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
-        CombatManager.Instance.AdjustTargetHealth(targetFound, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.ATTACK);
+        CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

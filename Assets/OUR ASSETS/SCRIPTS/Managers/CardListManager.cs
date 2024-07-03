@@ -19,6 +19,8 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> Ranger_CardPool;
 
 
+    //card abilities prefabs
+    public GameObject cardPrefabShield;
 
 
     private void Awake()
@@ -47,6 +49,10 @@ public class CardListManager : MonoBehaviour
         else if (mainClass == SystemManager.MainClass.Rogue)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
+        }
+        else if (mainClass == SystemManager.MainClass.Righteous)
+        {
+            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
         }
 
         return color;
