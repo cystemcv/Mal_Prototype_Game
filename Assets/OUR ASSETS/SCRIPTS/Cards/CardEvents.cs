@@ -394,6 +394,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             //add the chosen shield (this is not scaleable)
             CombatManager.Instance.AdjustTargetHealth(CombatManager.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
 
+            //destroy children of the choice parent
+            SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+
         }
     }
 

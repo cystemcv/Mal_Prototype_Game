@@ -119,8 +119,10 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Modal Window\ModalWindowManager.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralEventsListeners.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\GraphicsTabController.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\DungeonGenerator\DungeonGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Dropdown\DropdownMultiSelectEditor.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\RadialMotion.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_PoisonTarget.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingIssue2.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathBezier2d.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Tooltip\TooltipManagerEditor.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\AudioTabController.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\DungeonGenerator\CustomDungeonGenerator.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\IconLibraryEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerButton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
@@ -213,6 +216,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Dropdown\CustomDropdown.cs" />
     <Compile Include="Assets\LeanTween\Testing\FollowingTests.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowManagerEditor.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\ImprovedRadialFillController.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSlider.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\SliderManagerEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Dropdown\DropdownMultiSelect.cs" />
@@ -245,6 +249,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListViewEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerWindowManager.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_SelectShieldAmount.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanTest.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerProgressBarLoopEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerPieChart.cs" />
@@ -255,6 +260,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\IconManagerEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Input Field\CustomInputField.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathSplinePerformance.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\DungeonGenerator\RoomScript.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Tooltip\TooltipContent.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Horizontal Selector\HorizontalSelectorEditor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSwitch.cs" />
@@ -263,6 +269,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\GameData.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Switch\SwitchManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Toggle\CustomToggle.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Camera\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingColorTweening.cs" />
@@ -281,7 +288,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\BuffDebuffClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_SelectShieldAmount.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\OUR ASSETS\SHADERS\NewSurfaceShader.shader" />
@@ -311,6 +317,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\OUR ASSETS\SHADERS\ui\RadialFillShader.shader" />
     <None Include="Assets\OUR ASSETS\SHADERS\LineRendererShaderUI.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
@@ -1030,11 +1037,17 @@
     <Reference Include="Unity.2D.IK.Runtime">
       <HintPath>Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Services.Core.Analytics">
       <HintPath>Library\ScriptAssemblies\Unity.Services.Core.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
       <HintPath>Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.Shared.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.Shared.Editor.dll</HintPath>

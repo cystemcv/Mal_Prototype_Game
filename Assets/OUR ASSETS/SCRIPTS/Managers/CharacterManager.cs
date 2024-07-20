@@ -10,7 +10,8 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptableEntity> scriptablePlayerList;
 
-
+    //characters
+    public List<GameObject> charactersInAdventure;
 
 
 

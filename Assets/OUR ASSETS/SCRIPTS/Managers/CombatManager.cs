@@ -55,8 +55,7 @@ public class CombatManager : MonoBehaviour
     public GameObject leaderCharacter;
     public GameObject leaderIndicator;
 
-    //characters
-    public List<GameObject> charactersInCombat;
+
 
     public int ManaAvailable
     {
@@ -618,6 +617,13 @@ public class CombatManager : MonoBehaviour
     public void StartCombat()
     {
 
+        //hide ui
+        SystemManager.Instance.uiManager.SetActive(true);
+        SystemManager.Instance.combatManager.SetActive(true);
+        SystemManager.Instance.combatScene.SetActive(true);
+
+        //generate dungeon
+        SystemManager.Instance.dungeonGeneratorManager.SetActive(false);
 
 
 
@@ -650,7 +656,7 @@ public class CombatManager : MonoBehaviour
         DeckManager.Instance.banishedPile.Clear();
 
         //asign leader the first character
-        AssignLeader(charactersInCombat[0]);
+        AssignLeader(CharacterManager.Instance.charactersInAdventure[0]);
 
         //initialize dead count
         GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
@@ -712,7 +718,7 @@ public class CombatManager : MonoBehaviour
 
     public void ReverseLeader()
     {
-        foreach (GameObject characterInCombat in charactersInCombat)
+        foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
         {
 
             if (leaderCharacter != characterInCombat)
@@ -726,7 +732,7 @@ public class CombatManager : MonoBehaviour
 
     public void AssignLeaderToAlive()
     {
-        foreach (GameObject characterInCombat in charactersInCombat)
+        foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
         {
 
             if (characterInCombat.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
@@ -993,7 +999,7 @@ public class CombatManager : MonoBehaviour
         GameObject character = null;
 
         //check if the card belongs to any of our characters
-        foreach (GameObject characterInCombat in CombatManager.Instance.charactersInCombat)
+        foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
         {
 
             if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass 

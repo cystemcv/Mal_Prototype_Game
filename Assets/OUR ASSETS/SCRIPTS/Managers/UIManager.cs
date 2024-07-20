@@ -809,7 +809,7 @@ public class UIManager : MonoBehaviour
             GameObject characterInCombat = CombatManager.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
 
             //assign the characters in combat
-            CombatManager.Instance.charactersInCombat.Add(characterInCombat);
+            CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
 
             //initialize the stats
             characterInCombat.GetComponent<EntityClass>().InititializeEntity();
@@ -823,8 +823,17 @@ public class UIManager : MonoBehaviour
         DeckManager.Instance.BuildStartingDeck();
 
 
+        //hide ui
+        SystemManager.Instance.uiManager.SetActive(false);
+        SystemManager.Instance.combatManager.SetActive(false);
+        SystemManager.Instance.combatScene.SetActive(false);
+
+        //generate dungeon
+        SystemManager.Instance.dungeonGeneratorManager.SetActive(true);
+        CustomDungeonGenerator.Instance.StartDungeonGeneration();
+
         //then start combat
-        CombatManager.Instance.StartCombat();
+        //CombatManager.Instance.StartCombat();
 
     }
 

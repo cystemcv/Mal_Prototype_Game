@@ -39,8 +39,7 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
     {
         base.OnPlayCard(cardScript, entity, null);
 
-        //destroy children of the choice parent
-        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+
 
         //display screen
         UIManager.Instance.chooseACardScreen.SetActive(true);

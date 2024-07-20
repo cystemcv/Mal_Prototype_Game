@@ -11,7 +11,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum GameMode { MainMode, DuoMode, AnyMode }
     public GameMode gameMode = GameMode.MainMode;
 
-    public enum SystemModes { MAINMENU, PAUSED, GAMEPLAY, COMBAT}
+    public enum SystemModes { MAINMENU, PAUSED, GAMEPLAY, COMBAT, DUNGEON}
     public SystemModes systemMode = SystemModes.MAINMENU;
 
     public enum UIScreens { MainMenu, ModeSelectionMenu, CharacterSelectionMenu, SaveMenu, LoadMenu, LibraryMenu, OptionsMenu }
@@ -56,6 +56,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD}
 
+    //dungeon generator
+    public enum RoomType { Start, Battle, Boss, Empty, Chest, Event, Trap, Rest }
+
     //end of enums
 
     public bool thereIsActivatedCard = false;
@@ -85,6 +88,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public GameObject uiManager;
     public GameObject audioManager;
     public GameObject dataPersistenceManager;
+    public GameObject deckManager;
+    public GameObject handManager;
+    public GameObject combatManager;
+    public GameObject dungeonGeneratorManager;
+    public GameObject combatScene;
 
     //system variables
     public float totalTimePlayed = 0f;
@@ -101,6 +109,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public GameObject entity_buffDebuffObject;
     public GameObject entity_healthBarObject;
     public GameObject entity_intendObject;
+
+    [Header("OBJECTS ON SCENE THAT CAN BE USED")]
+    public GameObject object_HighlightButton;
 
     private void Awake()
     {
@@ -227,15 +238,50 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         return colorFromHex;
     }
 
-    public void DestroyAllChildren(GameObject parent)
+    public IEnumerator DestroyAllChildrenIE(GameObject parent)
     {
+        // Create a list to hold references to children
+        List<Transform> children = new List<Transform>();
 
+        // Collect references to all children first
         foreach (Transform child in parent.transform)
         {
-            // Destroy each child GameObject
-            Destroy(child.gameObject);
+            children.Add(child);
         }
 
+        // Now destroy each collected child using a for loop
+        for (int i = 0; i < children.Count; i++)
+        {
+            Transform child = children[i];
+            // Destroy each child GameObject
+            Destroy(child.gameObject);
+            string objName = child.gameObject.name;
+            yield return null; // Wait for a frame to ensure destruction
+            Debug.Log("DESTROYED GAMEOBJECT : " + objName);
+        }
+    }
+
+    public void DestroyAllChildren(GameObject parent)
+    {
+        // Create a list to hold references to children
+        List<Transform> children = new List<Transform>();
+
+        // Collect references to all children first
+        foreach (Transform child in parent.transform)
+        {
+            children.Add(child);
+        }
+
+        // Now destroy each collected child using a for loop
+        for (int i = 0; i < children.Count; i++)
+        {
+            Transform child = children[i];
+            // Destroy each child GameObject
+            Destroy(child.gameObject);
+            string objName = child.gameObject.name;
+
+            Debug.Log("DESTROYED GAMEOBJECT : " + objName);
+        }
     }
 
     public List<GameObject> GetAllChildren(GameObject parent)
