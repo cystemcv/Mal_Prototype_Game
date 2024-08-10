@@ -32,17 +32,23 @@ public class ScriptableCardAbility : ScriptableObject
     public SystemManager.AITypeOfAttack aITypeOfAttack;
     public SystemManager.AIWhoToTarget aIWhoToTarget;
 
-    public float GetFullAbilityWaitingTime()
+    private float animationTime = 0f;
+
+    public float GetFullAbilityWaitingTime(GameObject entity)
     {
-        float totalTime = waitForAbility;
-        if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE
-           || typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
+
+        Debug.Log("ERROR");
+        entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
+        float totalTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
+        if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE)
+        {
+            totalTime += timeToGetToTarget * 2; //because it goes to target and back
+        }
+        else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
             totalTime += timeToGetToTarget;
         }
 
-        //add also a small delay
-        totalTime += waitAmountDelay;
 
         return totalTime;
     }
@@ -56,9 +62,13 @@ public class ScriptableCardAbility : ScriptableObject
     {
 
 
-
         // Trigger the animation
         entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
+
+        //reset it
+        animationTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
+        Debug.Log("entityAnimation.ToString() : " + entityAnimation.ToString());
+        Debug.Log("ANIMATION TIME : " + animationTime);
 
         if (typeOfAttack == SystemManager.TypeOfAttack.SIMPLE)
         {
@@ -67,18 +77,8 @@ public class ScriptableCardAbility : ScriptableObject
         else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
         {
 
-            ProceedWithAnimationAndSound(entity);
-
-            Transform projectileSpawn = entity.transform.Find("PROJECTILESPAWN");
-
-            //spawn the projectile
-            GameObject projectile = Instantiate(abilityEffect, projectileSpawn.position, Quaternion.identity);
-
-            // Move the projectile
-            localMoveTween = LeanTween.moveX(projectile, target.transform.position.x, timeToGetToTarget);
-
-            // Invoke the method to proceed after the movement duration using InvokeHelper
-            InvokeHelper.Instance.Invoke(() => OnProjectileCompleted(projectile, target), timeToGetToTarget + waitForAbility);
+            // Start the coroutine that waits for the animation to end before proceeding
+            CoroutineHelper.Instance.StartCoroutine(SpawnProjectileAfterAnimation(entity, target));
 
         }
         else if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE)
@@ -86,7 +86,19 @@ public class ScriptableCardAbility : ScriptableObject
 
 
             // Move the character
-            localMoveTween = LeanTween.moveX(entity, target.transform.position.x, timeToGetToTarget);
+            float posOrNeg = entity.transform.position.x - target.transform.position.x;
+            float distanceAwayFromTarget = 0;
+            Debug.Log(posOrNeg);
+            if (posOrNeg <= 0)
+            {
+                distanceAwayFromTarget = -1.5f;
+            }
+            else
+            {
+                distanceAwayFromTarget = 1.5f;
+            }
+
+            localMoveTween = LeanTween.moveX(entity, target.transform.position.x + distanceAwayFromTarget, timeToGetToTarget);
 
             if (entityAnimator != null)
             {
@@ -97,12 +109,41 @@ public class ScriptableCardAbility : ScriptableObject
             InvokeHelper.Instance.Invoke(() => OnMovementComplete(entity), timeToGetToTarget);
 
             // Then invoke this to go back
-            InvokeHelper.Instance.Invoke(() => OnAnimationComplete(entity), timeToGetToTarget + waitForAbility);
+            InvokeHelper.Instance.Invoke(() => OnAnimationComplete(entity), timeToGetToTarget + animationTime);
         }
         else
         {
             // If no movement, proceed directly to the animation and sound
             ProceedWithAnimationAndSound(entity);
+        }
+    }
+
+    // Coroutine to handle spawning the projectile after the animation ends
+    private IEnumerator SpawnProjectileAfterAnimation(GameObject entity, GameObject target)
+    {
+        // Proceed with the animation and sound
+        ProceedWithAnimationAndSound(entity);
+
+        // Assuming "animationTime" is the time it takes for the animation to complete
+        yield return new WaitForSeconds(animationTime);
+
+        // After the animation ends, proceed with spawning the projectile
+        Transform projectileSpawn = entity.transform.Find("PROJECTILESPAWN");
+
+        if (projectileSpawn != null)
+        {
+            // Spawn the projectile
+            GameObject projectile = Instantiate(abilityEffect, projectileSpawn.position, Quaternion.identity);
+
+            // Move the projectile
+            localMoveTween = LeanTween.moveX(projectile, target.transform.position.x, timeToGetToTarget);
+
+            // Invoke the method to proceed after the movement duration using InvokeHelper
+            InvokeHelper.Instance.Invoke(() => OnProjectileCompleted(projectile, target), timeToGetToTarget);
+        }
+        else
+        {
+            Debug.LogWarning("Projectile spawn point not found!");
         }
     }
 
@@ -129,14 +170,39 @@ public class ScriptableCardAbility : ScriptableObject
     private void ProceedWithAnimationAndSound(GameObject character)
     {
 
+        float m_CurrentClipLength = 0;
+        string m_ClipName = "";
+
         if (entityAnimator != null)
         {
             entityAnimator.SetTrigger(entityAnimation.ToString());
         }
 
+  
 
         // Play the sound
         AudioManager.Instance.PlayCardSound(entitySound.ToString());
+    }
+
+    public float GetAnimationTime(Animator animator , string animation)
+    {
+
+      
+        // Get the RuntimeAnimatorController from the Animator
+        RuntimeAnimatorController controller = animator.runtimeAnimatorController;
+
+        // Loop through all the animation clips in the controller
+        foreach (AnimationClip clip in controller.animationClips)
+        {
+            // Find the clip by name
+            if (clip.name == animation)
+            {
+                return clip.length;
+            }
+        }
+
+        //if not found
+        return 0;
     }
 
     private void OnAnimationComplete(GameObject character)

@@ -9,13 +9,16 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void ClickedRoom()
     {
 
+        SystemManager.Instance.object_HighlightButton.SetActive(false);
+
         //get the neighbor rooms
         CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
         if (roomType == SystemManager.RoomType.Battle) {
             CombatManager.Instance.StartCombat();
         }
-   
+
+
 
         //change this object to clicked
         //this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);

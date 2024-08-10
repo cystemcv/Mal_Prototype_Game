@@ -368,7 +368,7 @@ public class DeckManager : MonoBehaviour
                 cardScript.changedMana = false;
             }
 
-            yield return new WaitForSeconds(scriptableCardAbility.GetFullAbilityWaitingTime());
+            yield return new WaitForSeconds(scriptableCardAbility.GetFullAbilityWaitingTime(entity));
             //yield return new WaitForSeconds(10f);
         }
 

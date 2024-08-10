@@ -41,7 +41,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper, Righteous }; //Actual classes to be determined
+    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper, Righteous, Trickster }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum TypeOfAttack { SIMPLE, MELLEE, PROJECTILE }
@@ -257,7 +257,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Destroy(child.gameObject);
             string objName = child.gameObject.name;
             yield return null; // Wait for a frame to ensure destruction
-            Debug.Log("DESTROYED GAMEOBJECT : " + objName);
+         
         }
     }
 
@@ -280,7 +280,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Destroy(child.gameObject);
             string objName = child.gameObject.name;
 
-            Debug.Log("DESTROYED GAMEOBJECT : " + objName);
+       
         }
     }
 

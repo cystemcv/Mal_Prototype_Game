@@ -39,8 +39,6 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-        Debug.Log("RT : " + realTarget.name);
-
         CombatManager.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
 
 

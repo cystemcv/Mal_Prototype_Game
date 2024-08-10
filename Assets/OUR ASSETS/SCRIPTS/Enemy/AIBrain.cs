@@ -144,10 +144,17 @@ public class AIBrain : MonoBehaviour
                         }
                     }
 
-                    //targetsList = targets.ToList();
+                    //if no more players stop
+                    if(targetsList.Count <= 0)
+                    {
+                        return;
+                    }
 
                     //get the random target
                     int indexTarget = Random.Range(0, targetsList.Count);
+
+          
+
                     EntityClass entityClass = targetsList[indexTarget].GetComponent<EntityClass>();
 
                     //add them to the list

@@ -54,6 +54,10 @@ public class CardListManager : MonoBehaviour
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
         }
+        else if (mainClass == SystemManager.MainClass.Trickster)
+        {
+            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
+        }
 
         return color;
     }

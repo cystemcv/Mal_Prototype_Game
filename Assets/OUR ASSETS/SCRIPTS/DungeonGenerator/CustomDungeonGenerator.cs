@@ -93,7 +93,6 @@ public class CustomDungeonGenerator : MonoBehaviour
         ValidateAssignments();
         try
         {
-            Debug.Log("-1");
             StartCoroutine(GenerateDungeon());
         }
         catch(Exception ex)
@@ -145,7 +144,6 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public IEnumerator GenerateDungeon()
     {
-        Debug.Log("-2");
         //check the dungeon so it can not create another one until the current one is finished
         dungeonIsGenerating = true;
         //start generating
@@ -184,7 +182,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         //start generating the dungeon by creating rooms
         while (rooms.Count < maxRoomLevels)
         {
-            Debug.Log("GenerateLevel");
+     
             //generate rooms
             yield return StartCoroutine(GenerateLevel());
             //yield return null; // Wait for next frame to ensure all updates are applied
@@ -390,7 +388,7 @@ public class CustomDungeonGenerator : MonoBehaviour
                 if (randomPercentage <= allowedPercentage)
                 {
                     // Connect the rooms
-                    Debug.Log("Connecting existing room");
+              
                     ConnectRooms(room, adjacentRoom);
                 }
 
@@ -403,7 +401,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             //if it is allowed based on our custom parameter
             if (randomPercentage <= allowedPercentage)
             {
-                Debug.Log("Start creating room");
+       
                 //then create room
                 //get random room type
                 SystemManager.RoomType roomType = GetRoomType();
@@ -500,11 +498,11 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (roomConnections.ContainsKey(clickedRoom))
         {
             List<GameObject> connectedRooms = roomConnections[clickedRoom];
-            Debug.Log("Connected Rooms: " + connectedRooms.Count);
+ 
             foreach (GameObject room in connectedRooms)
             {
                 // Here you can add code to highlight or show the connected rooms
-                Debug.Log(room.name + " is connected to " + clickedRoom.name);
+       
 
                 //make the room appear
                 room.SetActive(true);

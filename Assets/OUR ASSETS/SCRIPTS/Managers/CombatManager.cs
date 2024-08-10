@@ -418,7 +418,7 @@ public class CombatManager : MonoBehaviour
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
             //increase the shield
-            Debug.Log("dame2");
+ 
             entityClass.shield = entityClass.shield + adjustNumber;
 
             //check if max from hp
@@ -888,7 +888,7 @@ public class CombatManager : MonoBehaviour
             //go throught every ability and calculate the waitTime
             foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
             {
-                totalAbilitiesWaitTime += scriptableCardAbility.GetFullAbilityWaitingTime();
+                totalAbilitiesWaitTime += scriptableCardAbility.GetFullAbilityWaitingTime(enemy);
             }
 
             //execute ai
