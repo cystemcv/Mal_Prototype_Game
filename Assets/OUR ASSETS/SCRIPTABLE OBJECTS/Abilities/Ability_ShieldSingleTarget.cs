@@ -32,14 +32,14 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, null);
 
 
 
-        CombatManager.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }

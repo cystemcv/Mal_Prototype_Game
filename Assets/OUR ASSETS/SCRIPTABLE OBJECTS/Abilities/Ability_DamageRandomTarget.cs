@@ -13,7 +13,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
         string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to a random enemy";
@@ -86,8 +86,8 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
-        CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+        Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

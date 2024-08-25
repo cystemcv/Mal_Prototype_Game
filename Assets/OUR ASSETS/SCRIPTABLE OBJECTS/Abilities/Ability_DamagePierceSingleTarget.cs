@@ -14,7 +14,7 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
         string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy (Ignore Block)";
@@ -35,7 +35,7 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);
@@ -65,8 +65,8 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
-        CombatManager.Instance.AdjustTargetHealth(realTarget, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
+        Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

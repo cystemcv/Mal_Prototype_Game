@@ -57,8 +57,6 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         // Select a random card from the filtered list
         int randomIndex = Random.Range(0, filteredDeck.Count);
 
-        Debug.Log("randomIndex : " + randomIndex);
-
         CardScript foundFilteredCard = filteredDeck[randomIndex];
 
         //find the index of the card we are discarding

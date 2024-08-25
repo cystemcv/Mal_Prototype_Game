@@ -64,7 +64,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public bool thereIsActivatedCard = false;
 
     public Camera mainCamera;
-    public Camera uiCamera;
+    //public Camera uiCamera;
 
     //common colors
     public string colorGolden = "FFAD04";

@@ -218,7 +218,7 @@ public class HandManager : MonoBehaviour
         Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radiusValue, 0);
 
         // Convert target position from world space to canvas space
-        Vector3 canvasPosition = SystemManager.Instance.uiCamera.WorldToScreenPoint(targetPosition);
+        Vector3 canvasPosition = CombatCardHandler.Instance.mainCamera.WorldToScreenPoint(targetPosition);
         canvasPosition.z = 0; // Set z to 0 because we are working in 2D space
 
         // Set the position relative to the bottom center of the screen
@@ -273,11 +273,11 @@ public class HandManager : MonoBehaviour
 
     public bool CheckActivation(RectTransform rectTransform)
     {
-        if (activateArea == null || SystemManager.Instance.uiCamera == null) return false;
+        if (activateArea == null || CombatCardHandler.Instance.mainCamera == null) return false;
 
         // Get the screen position of the activateArea and the rectTransform using the canvas camera
-        Vector2 activateAreaScreenPos = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, activateArea.position);
-        Vector2 cardScreenPos = RectTransformUtility.WorldToScreenPoint(SystemManager.Instance.uiCamera, rectTransform.position);
+        Vector2 activateAreaScreenPos = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, activateArea.position);
+        Vector2 cardScreenPos = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, rectTransform.position);
 
         // Calculate the activation threshold in screen coordinates
         float screenHeight = Screen.height;

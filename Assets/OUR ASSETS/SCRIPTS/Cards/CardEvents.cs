@@ -260,7 +260,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
             //reset everything
             //remove line renderer
-            CombatManager.Instance.lineRenderer.gameObject.SetActive(false);
+            UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
 
             //return everything where it was
             HandManager.Instance.SetHandCards();
@@ -294,9 +294,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 //enter click mode which will disable all events from the cards
                 SystemManager.Instance.abilityMode = SystemManager.AbilityModes.TARGET;
 
-                CombatManager.Instance.targetUIElement = this.gameObject.GetComponent<RectTransform>();
+                CombatCardHandler.Instance.targetUIElement = this.gameObject.GetComponent<RectTransform>();
 
-                CombatManager.Instance.targetClicked = null;
+                CombatCardHandler.Instance.targetClicked = null;
 
                 //when mouse click on sprite do the shit
                 HandManager.Instance.SetHandCard(this.gameObject);
@@ -386,16 +386,16 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else
         {
             //close the thing 
-            UIManager.Instance.chooseACardScreen.SetActive(false);
+            UI_Combat.Instance.chooseACardScreen.SetActive(false);
 
             //resume
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
             //add the chosen shield (this is not scaleable)
-            CombatManager.Instance.AdjustTargetHealth(CombatManager.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
+            Combat.Instance.AdjustTargetHealth(CombatCardHandler.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
 
             //destroy children of the choice parent
-            SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+            SystemManager.Instance.DestroyAllChildren(UI_Combat.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
 
         }
     }

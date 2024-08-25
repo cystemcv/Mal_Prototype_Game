@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
     {
+        try { 
         base.OnPlayCard(cardScript, entity, null);
 
         List<ScriptableCard> listToChoose;
@@ -62,7 +64,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         }
 
         //display screen
-        UIManager.Instance.chooseACardScreen.SetActive(true);
+        UI_Combat.Instance.chooseACardScreen.SetActive(true);
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
@@ -70,50 +72,55 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         //where to add card
         SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
 
-        //get the cards to display
-        for (int i = 0; i < cardsToChoose; i++)
-        {
-            //get the random card from the filtered list
-            int randomIndex = Random.Range(0, filteredCardList.Count);
-
-            //go for next item
-            if (randomIndex == -1)
+            //get the cards to display
+            for (int i = 0; i < cardsToChoose; i++)
             {
-                continue;
-            }
+                //get the random card from the filtered list
+                int randomIndex = UnityEngine.Random.Range(0, filteredCardList.Count);
 
-            //generate cardScript
-            CardScript cardScriptTemp = new CardScript();
-            cardScriptTemp.scriptableCard = filteredCardList[randomIndex];
-
-
-
-            if (setManaCost)
-            {
-                cardScriptTemp.primaryManaCost = GetAbilityVariable(cardScript);
-
-                cardScriptTemp.resetManaCost = true;
-                cardScriptTemp.changedMana = true;
-            }
-            else if (modifyManaCost)
-            {
-                cardScriptTemp.primaryManaCost += GetAbilityVariable(cardScript);
-                //reset to 0 if its below
-                if (cardScriptTemp.primaryManaCost <= 0)
+                //go for next item
+                if (randomIndex == -1)
                 {
-                    cardScriptTemp.primaryManaCost = 0;
+                    continue;
                 }
 
-                cardScriptTemp.resetManaCost = true;
-                cardScriptTemp.changedMana = true;
+                //generate cardScript
+                CardScript cardScriptTemp = new CardScript();
+                cardScriptTemp.scriptableCard = filteredCardList[randomIndex];
+
+
+
+                if (setManaCost)
+                {
+                    cardScriptTemp.primaryManaCost = GetAbilityVariable(cardScript);
+
+                    cardScriptTemp.resetManaCost = true;
+                    cardScriptTemp.changedMana = true;
+                }
+                else if (modifyManaCost)
+                {
+                    cardScriptTemp.primaryManaCost += GetAbilityVariable(cardScript);
+                    //reset to 0 if its below
+                    if (cardScriptTemp.primaryManaCost <= 0)
+                    {
+                        cardScriptTemp.primaryManaCost = 0;
+                    }
+
+                    cardScriptTemp.resetManaCost = true;
+                    cardScriptTemp.changedMana = true;
+                }
+
+
+                //generate the card and parent it
+                DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UI_Combat.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false);
             }
+         
 
 
-            //generate the card and parent it
-            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false);
-
-
-
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Ability Error : " + ex.Message);
         }
 
     }

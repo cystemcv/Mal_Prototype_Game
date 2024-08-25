@@ -30,7 +30,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);
@@ -94,7 +94,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
             //get the buff or debuff to do things
             BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.scriptableBuffDebuff.nameID);
 
-            CombatManager.Instance.AdjustTargetHealth(target, buffDebuffClass.tempVariable, false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(target, buffDebuffClass.tempVariable, false, SystemManager.AdjustNumberModes.SHIELD);
 
 
         return true;

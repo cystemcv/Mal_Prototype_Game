@@ -30,7 +30,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);
@@ -69,7 +69,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
     public override bool OnEnemyTurnStart( GameObject target)
     {
-        CombatManager.Instance.AdjustTargetHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
+        Combat.Instance.AdjustTargetHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
 
         //activated
         return true;

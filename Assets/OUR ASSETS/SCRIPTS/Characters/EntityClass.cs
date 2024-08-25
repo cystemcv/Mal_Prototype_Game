@@ -38,7 +38,7 @@ public class EntityClass : MonoBehaviour
     public TMP_Text entityTitle;
     public Image uiPanelBorder;
 
-    public Transform originalCombatPos;
+    public Vector3 originalCombatPos;
     public float OriginXPos;
 
     [Header("ID")]

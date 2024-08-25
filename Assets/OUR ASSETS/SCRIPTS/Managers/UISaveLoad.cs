@@ -72,17 +72,17 @@ public class UISaveLoad : MonoBehaviour
 
     public void SaveLoadModeChangeDetectEvent()
     {
-        //check each button if there is a savefile
-        InitializeSaveLoadButtons();
+        ////check each button if there is a savefile
+        //InitializeSaveLoadButtons();
 
-        if (SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.SAVE)
-        {
-            saveLoadTitleText.text = "SAVE";
-        }
-        else
-        {
-            saveLoadTitleText.text = "LOAD";
-        }
+        //if (SystemManager.Instance.saveLoadMode == SystemManager.SaveLoadModes.SAVE)
+        //{
+        //    saveLoadTitleText.text = "SAVE";
+        //}
+        //else
+        //{
+        //    saveLoadTitleText.text = "LOAD";
+        //}
 
    
     }

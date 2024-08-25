@@ -43,24 +43,24 @@ public class CameraController : MonoBehaviour
     void Update()
     {
 
-        //no camera control except for dungeon mode
-        if(SystemManager.Instance.systemMode != SystemManager.SystemModes.DUNGEON)
-        {
-            cameraReset = true;
-            SystemManager.Instance.mainCamera.transform.position = new Vector3(0, 0, -10);
-            return;
-        }
-        else 
-        {
+        ////no camera control except for dungeon mode
+        //if(SystemManager.Instance.systemMode != SystemManager.SystemModes.DUNGEON)
+        //{
+        //    cameraReset = true;
+        //    SystemManager.Instance.mainCamera.transform.position = new Vector3(0, 0, -10);
+        //    return;
+        //}
+        //else 
+        //{
 
-            if (cameraReset)
-            {
-               this.transform.position = savedCameraPosition;
-                cameraReset = false;
-            }
+        //    if (cameraReset)
+        //    {
+        //       this.transform.position = savedCameraPosition;
+        //        cameraReset = false;
+        //    }
 
-            savedCameraPosition = this.transform.position;
-        }
+        //    savedCameraPosition = this.transform.position;
+        //}
 
         // Handle panning
         if (Input.GetMouseButtonDown(1))

@@ -9,13 +9,13 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void ClickedRoom()
     {
 
-        SystemManager.Instance.object_HighlightButton.SetActive(false);
+        //SystemManager.Instance.object_HighlightButton.SetActive(false);
 
         //get the neighbor rooms
         CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
         if (roomType == SystemManager.RoomType.Battle) {
-            CombatManager.Instance.StartCombat();
+            Combat.Instance.StartCombat();
         }
 
 
@@ -28,13 +28,13 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        SystemManager.Instance.object_HighlightButton.SetActive(false);
+        //SystemManager.Instance.object_HighlightButton.SetActive(false);
 
-        SystemManager.Instance.object_HighlightButton.transform.position = this.gameObject.transform.position;
+        //SystemManager.Instance.object_HighlightButton.transform.position = this.gameObject.transform.position;
 
-        SystemManager.Instance.object_HighlightButton.GetComponent<ImprovedRadialFillController>().InitMaterial();
+        //SystemManager.Instance.object_HighlightButton.GetComponent<ImprovedRadialFillController>().InitMaterial();
 
-        SystemManager.Instance.object_HighlightButton.SetActive(true);
+        //SystemManager.Instance.object_HighlightButton.SetActive(true);
 
         AudioManager.Instance.PlaySfx("UI_goNext");
 
@@ -44,7 +44,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SystemManager.Instance.object_HighlightButton.SetActive(false);
+        //SystemManager.Instance.object_HighlightButton.SetActive(false);
     }
 
 }

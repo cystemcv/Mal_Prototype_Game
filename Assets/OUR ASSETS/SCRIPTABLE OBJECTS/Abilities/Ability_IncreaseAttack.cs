@@ -40,7 +40,7 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);

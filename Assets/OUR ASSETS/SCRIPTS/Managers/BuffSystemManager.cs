@@ -136,8 +136,11 @@ public class BuffSystemManager : MonoBehaviour
 
     public List<BuffDebuffClass> GetAllBuffDebuffFromTarget(GameObject target)
     {
+
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
+
         List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
 
         return gridSystemItemList;
@@ -151,6 +154,8 @@ public class BuffSystemManager : MonoBehaviour
 
         foreach (GameObject character in characters)
         {
+
+
             List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(character);
 
             foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
@@ -215,6 +220,8 @@ public class BuffSystemManager : MonoBehaviour
 
         foreach (GameObject enemy in enemies)
         {
+
+
             List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(enemy);
 
             foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)

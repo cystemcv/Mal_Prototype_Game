@@ -13,7 +13,7 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
     {
 
         int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
         string keyword = base.AbilityDescription(cardScript, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to all enemies";
@@ -44,8 +44,8 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         foreach (GameObject targetFound in targetsFound)
         {
             if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD) {
-                int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
-                CombatManager.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+                int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+                Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
             }
         }
       

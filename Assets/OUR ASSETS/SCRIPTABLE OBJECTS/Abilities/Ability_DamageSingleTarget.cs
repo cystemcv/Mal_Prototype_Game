@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +14,24 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
     public override string AbilityDescription(CardScript cardScript, GameObject entity)
     {
-        int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
-    
+        try
+        {
+            int cardDmg = GetAbilityVariable(cardScript);
+            int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
 
-        string keyword = base.AbilityDescription(cardScript, entity);
-        string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
-        string final = keyword + " : " + description;
 
-        return final;
+            string keyword = base.AbilityDescription(cardScript, entity);
+            string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
+            string final = keyword + " : " + description;
+
+            return final;
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError("Ability Description Error" + ex.Message);
+
+            return "ERROR";
+        }
     }
 
 
@@ -35,7 +45,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatManager.Instance.targetClicked;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);
@@ -65,8 +75,8 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
-        int calculatedDmg = CombatManager.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
-        CombatManager.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
+        Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

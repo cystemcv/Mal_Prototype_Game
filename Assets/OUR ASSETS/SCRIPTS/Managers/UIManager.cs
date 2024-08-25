@@ -137,40 +137,40 @@ public class UIManager : MonoBehaviour
     void Start()
     {
 
-        CurrentUIScreen = SystemManager.UIScreens.MainMenu;
+        //CurrentUIScreen = SystemManager.UIScreens.MainMenu;
 
-        //check if there is a saved user setting
-        if (PlayerPrefs.GetInt("user_save_settings") == 1)
-        {
-            //if true then load
-            LoadSettings();
-        }
-        else
-        {
-            //else initialize
-            DefaultSettings();
-        }
+        ////check if there is a saved user setting
+        //if (PlayerPrefs.GetInt("user_save_settings") == 1)
+        //{
+        //    //if true then load
+        //    LoadSettings();
+        //}
+        //else
+        //{
+        //    //else initialize
+        //    DefaultSettings();
+        //}
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SystemManager.Instance.systemMode == SystemManager.SystemModes.GAMEPLAY)
-        {
-            playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
-        }
-        else if (SystemManager.Instance.systemMode == SystemManager.SystemModes.COMBAT)
-        {
-            playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
-            deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
-            discardText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
-            banishedText.transform.GetChild(0).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
-        }
-        else
-        {
-            playerTimeText.text = "";
-        }
+        //if (SystemManager.Instance.systemMode == SystemManager.SystemModes.GAMEPLAY)
+        //{
+        //    playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
+        //}
+        //else if (SystemManager.Instance.systemMode == SystemManager.SystemModes.COMBAT)
+        //{
+        //    playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
+        //    deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
+        //    discardText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
+        //    banishedText.transform.GetChild(0).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
+        //}
+        //else
+        //{
+        //    playerTimeText.text = "";
+        //}
     }
 
     public void UIModeChangeDetectEvent()
@@ -806,7 +806,7 @@ public class UIManager : MonoBehaviour
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
         {
             //instantiate our character or characters
-            GameObject characterInCombat = CombatManager.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
+            GameObject characterInCombat = Combat.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
 
             //assign the characters in combat
             CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);

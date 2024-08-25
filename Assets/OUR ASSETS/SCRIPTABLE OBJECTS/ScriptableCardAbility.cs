@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,20 +38,29 @@ public class ScriptableCardAbility : ScriptableObject
     public float GetFullAbilityWaitingTime(GameObject entity)
     {
 
-        Debug.Log("ERROR");
-        entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
-        float totalTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
-        if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE)
+        try
         {
-            totalTime += timeToGetToTarget * 2; //because it goes to target and back
-        }
-        else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
-        {
-            totalTime += timeToGetToTarget;
-        }
+
+            entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
+            float totalTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
+            if (typeOfAttack == SystemManager.TypeOfAttack.MELLEE)
+            {
+                totalTime += timeToGetToTarget * 2; //because it goes to target and back
+            }
+            else if (typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
+            {
+                totalTime += timeToGetToTarget;
+            }
 
 
-        return totalTime;
+            return totalTime;
+        }
+        catch(Exception ex)
+        {
+            Debug.LogError("Ability waiting time error : " + ex.Message);
+
+            return 0;
+        }
     }
 
     public virtual string AbilityDescription(CardScript cardScript, GameObject entity)
@@ -67,8 +77,7 @@ public class ScriptableCardAbility : ScriptableObject
 
         //reset it
         animationTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
-        Debug.Log("entityAnimation.ToString() : " + entityAnimation.ToString());
-        Debug.Log("ANIMATION TIME : " + animationTime);
+
 
         if (typeOfAttack == SystemManager.TypeOfAttack.SIMPLE)
         {
@@ -88,7 +97,7 @@ public class ScriptableCardAbility : ScriptableObject
             // Move the character
             float posOrNeg = entity.transform.position.x - target.transform.position.x;
             float distanceAwayFromTarget = 0;
-            Debug.Log(posOrNeg);
+  
             if (posOrNeg <= 0)
             {
                 distanceAwayFromTarget = -1.5f;
