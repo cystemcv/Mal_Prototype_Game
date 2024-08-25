@@ -14,6 +14,9 @@ public class CombatCardHandler : MonoBehaviour
     public RectTransform targetUIElement;
     public GameObject targetClicked;
 
+    [Header("VISUAL PREFABS")]
+    public GameObject discardEffect;
+    public GameObject banishEffect;
 
     private void Awake()
     {

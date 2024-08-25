@@ -794,48 +794,48 @@ public class UIManager : MonoBehaviour
 
     }
 
-    //starts combat might need to change the name
-    public void ProceedToGame()
-    {
+    ////starts combat might need to change the name
+    //public void ProceedToGame()
+    //{
 
-        //destroy any previous characters
-        SystemManager.Instance.DestroyAllChildren(CombatManager.Instance.combatScene.transform.Find("Characters").gameObject);
+    //    //destroy any previous characters
+    //    //SystemManager.Instance.DestroyAllChildren(CombatManager.Instance.combatScene.transform.Find("Characters").gameObject);
 
-        int positionSpawn = 0;
-        //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
-        {
-            //instantiate our character or characters
-            GameObject characterInCombat = Combat.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
+    //    int positionSpawn = 0;
+    //    //generate the selected characters that will be used throught the game
+    //    foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
+    //    {
+    //        //instantiate our character or characters
+    //        GameObject characterInCombat = Combat.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
 
-            //assign the characters in combat
-            CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
+    //        //assign the characters in combat
+    //        CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
 
-            //initialize the stats
-            characterInCombat.GetComponent<EntityClass>().InititializeEntity();
+    //        //initialize the stats
+    //        characterInCombat.GetComponent<EntityClass>().InititializeEntity();
 
-            //increase to the next position
-            positionSpawn++;
-        }
-
-
-        //build the deck
-        DeckManager.Instance.BuildStartingDeck();
+    //        //increase to the next position
+    //        positionSpawn++;
+    //    }
 
 
-        //hide ui
-        SystemManager.Instance.uiManager.SetActive(false);
-        SystemManager.Instance.combatManager.SetActive(false);
-        SystemManager.Instance.combatScene.SetActive(false);
+    //    //build the deck
+    //    DeckManager.Instance.BuildStartingDeck();
 
-        //generate dungeon
-        SystemManager.Instance.dungeonGeneratorManager.SetActive(true);
-        CustomDungeonGenerator.Instance.StartDungeonGeneration();
 
-        //then start combat
-        //CombatManager.Instance.StartCombat();
+    //    //hide ui
+    //    SystemManager.Instance.uiManager.SetActive(false);
+    //    SystemManager.Instance.combatManager.SetActive(false);
+    //    SystemManager.Instance.combatScene.SetActive(false);
 
-    }
+    //    //generate dungeon
+    //    SystemManager.Instance.dungeonGeneratorManager.SetActive(true);
+    //    CustomDungeonGenerator.Instance.StartDungeonGeneration();
+
+    //    //then start combat
+    //    //CombatManager.Instance.StartCombat();
+
+    //}
 
 
 

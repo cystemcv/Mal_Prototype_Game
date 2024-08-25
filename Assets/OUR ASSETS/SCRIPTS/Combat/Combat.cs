@@ -104,6 +104,124 @@ public class Combat : MonoBehaviour
         yield return WaitPlayerTurns();
     }
 
+
+    public IEnumerator WaitEnemyTurns()
+    {
+        yield return PlayerTurnEnd();
+        yield return EnemyTurnStart();
+        yield return EnemyTurn();
+        yield return EnemyTurnEnd();
+        yield return PlayerTurnStart();
+        yield return PlayerTurn();
+
+
+    }
+
+    public IEnumerator PlayerTurnStart()
+    {
+        //start player turn
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
+
+        //increase turn;
+        turns += 1;
+
+        //mana should go back to full
+        RefillMana();
+
+        //remove mana
+        RemoveShieldFromEntitiesBasedOnTag("Player");
+
+        //draw cards
+        DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
+
+        UI_Combat.Instance.OnNotification("PLAYER STARTING TURN", 1);
+
+        //check if its not turn 1 and also only in duo mode
+
+
+        //if there is only 1 character then assign it to it
+        if (charactersAlive == 1)
+        {
+            AssignLeaderToAlive();
+        }
+        else
+        {
+            if (turns != 1)
+            {
+                ReverseLeader();
+            }
+        }
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        //generate intend for all enemies
+        GenerateEnemyIntends();
+
+        yield return null; // Wait for a frame 
+    }
+
+    public IEnumerator PlayerTurn()
+    {
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerTurn;
+        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+
+        yield return null; //wait for frame
+
+    }
+
+    public IEnumerator PlayerTurnEnd()
+    {
+
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerEndTurn;
+        UI_Combat.Instance.OnNotification("PLAYER ENDING TURN", 1);
+
+        //discard cards
+        DeckManager.Instance.DiscardWholeHand();
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        yield return null; //skip frame
+
+    }
+
+    public IEnumerator EnemyTurnStart()
+    {
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
+        UI_Combat.Instance.OnNotification("ENEMY STARTING TURN", 1);
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        //remove shield from all enemies
+        RemoveShieldFromEntitiesBasedOnTag("Enemy");
+
+        yield return null;
+    }
+
+    public IEnumerator EnemyTurn()
+    {
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
+        UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
+
+        //do the ai logic for each enemy
+        yield return EnemyAiAct();
+
+        yield return null;
+    }
+
+    public IEnumerator EnemyTurnEnd()
+    {
+        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
+        UI_Combat.Instance.OnNotification("ENEMY ENDING TURN", 1);
+
+        //loop for all buffs and debuffs
+        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+
+        yield return null;
+    }
+
     public IEnumerator SpawnCharacters()
     {
         int positionSpawn = 0;
@@ -275,7 +393,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    IEnumerator WaitPlayerTurns()
+    public IEnumerator WaitPlayerTurns()
     {
         //yield return new WaitForSeconds(2f);
         //player turn start
@@ -286,49 +404,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public IEnumerator PlayerTurnStart()
-    {
-        //start player turn
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
-        //increase turn;
-        turns += 1;
-
-        //mana should go back to full
-        RefillMana();
-
-        //remove mana
-        RemoveShieldFromEntitiesBasedOnTag("Player");
-
-        //draw cards
-        DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
-
-        UI_Combat.Instance.OnNotification("PLAYER STARTING TURN", 1);
-
-        //check if its not turn 1 and also only in duo mode
-
-
-        //if there is only 1 character then assign it to it
-        if (charactersAlive == 1)
-        {
-            AssignLeaderToAlive();
-        }
-        else
-        {
-            if (turns != 1)
-            {
-                ReverseLeader();
-            }
-        }
-
-        //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
-
-        //generate intend for all enemies
-        GenerateEnemyIntends();
-
-        yield return null; // Wait for a frame 
-    }
 
     public void RemoveShieldFromEntitiesBasedOnTag(string tag)
     {
@@ -407,14 +483,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public IEnumerator PlayerTurn()
-    {
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerTurn;
-        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
 
-        yield return null; //wait for frame
-
-    }
 
     public void AdjustTargetHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
@@ -672,28 +741,9 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public void PlayerTurnEnd()
-    {
 
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerEndTurn;
-        UI_Combat.Instance.OnNotification("PLAYER ENDING TURN", 1);
 
-        //discard cards
-        DeckManager.Instance.DiscardWholeHand();
 
-        //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
-
-    }
-
-    public void EnemyTurn()
-    {
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
-        UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
-
-        //do the ai logic for each enemy
-        StartCoroutine(EnemyAiAct());
-    }
 
     public IEnumerator EnemyAiAct()
     {
@@ -730,52 +780,11 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void EnemyTurnEnd()
-    {
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
-        UI_Combat.Instance.OnNotification("ENEMY ENDING TURN", 1);
 
-        //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
-    }
 
-    IEnumerator WaitEnemyTurns()
-    {
 
-        //player turn start
-        PlayerTurnEnd();
-        yield return new WaitForSeconds(2f);
 
-        //player turn
-        EnemyTurnStart();
-        yield return new WaitForSeconds(2f);
-
-        EnemyTurn();
-        yield return new WaitForSeconds(2f);
-
-        EnemyTurnEnd();
-        yield return new WaitForSeconds(2f);
-
-        PlayerTurnStart();
-        yield return new WaitForSeconds(2f);
-
-        PlayerTurn();
-        yield return new WaitForSeconds(2f);
-
-    }
-
-    public void EnemyTurnStart()
-    {
-        SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
-        UI_Combat.Instance.OnNotification("ENEMY STARTING TURN", 1);
-
-        //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
-
-        //remove shield from all enemies
-        RemoveShieldFromEntitiesBasedOnTag("Enemy");
-    }
 
     public GameObject GetTheCharacterThatUsesTheCard(CardScript cardScript)
     {

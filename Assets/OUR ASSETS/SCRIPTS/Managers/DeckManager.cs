@@ -686,7 +686,7 @@ public class DeckManager : MonoBehaviour
         // Wait for 2 seconds
         yield return new WaitForSeconds(1f);
         Destroy(cardPrefab);
-        GameObject cardSoul = Instantiate(CombatManager.Instance.discardEffect, UI_Combat.Instance.handFullSpawnCard.transform.position, Quaternion.identity);
+        GameObject cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, UI_Combat.Instance.handFullSpawnCard.transform.position, Quaternion.identity);
         //and assign the target
         cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
 
@@ -704,7 +704,7 @@ public class DeckManager : MonoBehaviour
             //add it to the discard pile
             discardedPile.Add(savedPlayedCardScript);
 
-            cardSoul = Instantiate(CombatManager.Instance.discardEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
             //and assign the target
             cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
         }
@@ -713,7 +713,7 @@ public class DeckManager : MonoBehaviour
             //add it to the banished pile
             banishedPile.Add(savedPlayedCardScript);
 
-            cardSoul = Instantiate(CombatManager.Instance.banishEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
             //and assign the target
             cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedUIObject;
         }
@@ -761,13 +761,13 @@ public class DeckManager : MonoBehaviour
 
             if (cardThrow == SystemManager.CardThrow.DISCARD)
             {
-                cardSoul = Instantiate(CombatManager.Instance.discardEffect, cardToDelete.transform.position, Quaternion.identity);
+                cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, cardToDelete.transform.position, Quaternion.identity);
                 //and assign the target
                 cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
             }
             else if (cardThrow == SystemManager.CardThrow.BANISH)
             {
-                cardSoul = Instantiate(CombatManager.Instance.banishEffect, cardToDelete.transform.position, Quaternion.identity);
+                cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, cardToDelete.transform.position, Quaternion.identity);
                 //and assign the target
                 cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedUIObject;
             }
