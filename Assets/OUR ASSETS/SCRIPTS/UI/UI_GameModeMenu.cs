@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_GameModeMenu : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class UI_GameModeMenu : MonoBehaviour
         SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("CHARACTER SELECTION MENU");
+        SceneManager.LoadScene("scene_CharacterSelectionMenu");
     }
 
 
@@ -28,7 +29,7 @@ public class UI_GameModeMenu : MonoBehaviour
         SystemManager.Instance.gameMode = SystemManager.GameMode.DuoMode;
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("CHARACTER SELECTION MENU");
+        SceneManager.LoadScene("scene_CharacterSelectionMenu");
     }
 
     public void BackToMainMenu()
@@ -37,7 +38,7 @@ public class UI_GameModeMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("MAIN MENU");
+        SceneManager.LoadScene("scene_MainMenu");
     }
 
 }

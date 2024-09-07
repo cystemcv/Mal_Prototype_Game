@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class UI_Menus : MonoBehaviour
 {
     public static UI_Menus Instance;
@@ -23,24 +24,7 @@ public class UI_Menus : MonoBehaviour
 
     }
 
-    public void NavigateMenu(string menuName)
-    {
-
-        //make everything inactive
-        MakeAllMenuInactive();
-
-        //make the menu we need active
-        GameObject goMenuItem = list_goMenuItem.Find(item => item.name == menuName);
-        goMenuItem.SetActive(true);
-    }
-
-    public void MakeAllMenuInactive()
-    {
-        foreach (GameObject goMenuItem in list_goMenuItem)
-        {
-            goMenuItem.SetActive(false);
-        }
 
 
-    }
+
 }

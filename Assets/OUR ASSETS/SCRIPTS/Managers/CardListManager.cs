@@ -58,6 +58,10 @@ public class CardListManager : MonoBehaviour
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
         }
+        else if (mainClass == SystemManager.MainClass.Angel)
+        {
+            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
+        }
 
         return color;
     }

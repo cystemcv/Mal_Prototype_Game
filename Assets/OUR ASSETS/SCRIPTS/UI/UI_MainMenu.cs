@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class UI_MainMenu : MonoBehaviour
         //DisableButton(UIMENU.transform.Find("HOLDER").Find("GAME MODE MENU").Find("ListOfGameModes").Find("Panel").Find("btn_UNKOWN").gameObject);
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("GAME MODE MENU");
+        SceneManager.LoadScene("scene_GameModeMenu");
     }
 
     //LOAD
@@ -47,7 +48,7 @@ public class UI_MainMenu : MonoBehaviour
         SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.SAVE;
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("SAVELOAD MENU");
+        SceneManager.LoadScene("scene_LoadSaveMenu");
     }
 
 
@@ -62,7 +63,7 @@ public class UI_MainMenu : MonoBehaviour
         SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.LOAD;
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("SAVELOAD MENU");
+        SceneManager.LoadScene("scene_LoadSaveMenu");
     }
 
     //OPTIONS
@@ -75,7 +76,7 @@ public class UI_MainMenu : MonoBehaviour
         SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.LOAD;
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("OPTIONS MENU");
+        SceneManager.LoadScene("scene_OptionsMenu");
     }
 
     //EXIT

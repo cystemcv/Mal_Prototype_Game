@@ -51,7 +51,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("GAME MODE MENU");
+        SceneManager.LoadScene("scene_GameModeMenu");
     }
 
     public void BackToMainMenu()
@@ -60,7 +60,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        UI_Menus.Instance.NavigateMenu("MAIN MENU");
+        SceneManager.LoadScene("scene_MainMenu");
     }
 
     public void ProceedToGame()
