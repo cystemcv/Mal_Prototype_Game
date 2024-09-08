@@ -86,6 +86,10 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
+
+        //spawn prefab
+        base.SpawnEffectPrefab(targetFound);
+
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
         Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 

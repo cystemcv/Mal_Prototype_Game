@@ -21,6 +21,11 @@ public class Combat : MonoBehaviour
 
     [Header("COMBAT COMMON VARIABLES")]
     public int turns = 0;
+    public float deathLaunchSpeed = 2f;
+    public float deathLaunchTimer = 0.4f;
+    public float upwardForce = 800f;  // Force applied upwards
+    public float sideForce = 400f;    // Force applied to the right
+    public GameObject deathExplosion;
 
     [Header("LEADER MECHANIC")]
     public GameObject leaderCharacter;
@@ -634,8 +639,6 @@ public class Combat : MonoBehaviour
                 animator.SetTrigger("Dead");
             }
 
-            EntityDeadDestroy(entityClass.gameObject);
-
             if (entityClass.gameObject.tag == "Player")
             {
                 charactersAlive -= 1;
@@ -649,6 +652,8 @@ public class Combat : MonoBehaviour
                 enemiesAlive -= 1;
             }
 
+            EntityDeadDestroy(entityClass.gameObject);
+
         }
 
     }
@@ -660,17 +665,26 @@ public class Combat : MonoBehaviour
         if (entity.tag == "Enemy")
         {
             intends = entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
+
+
+
+
+
+
         }
 
-        if (intends != null)
+        if (entity != null && intends != null )
         {
             SystemManager.Instance.DestroyAllChildren(intends);
         }
 
-        if (buffsdebuffs != null)
+        if (entity != null && buffsdebuffs != null)
         {
             SystemManager.Instance.DestroyAllChildren(buffsdebuffs);
         }
+
+        entity.GetComponent<EntityClass>().DestroyEntityInCombat();
+
 
     }
 
@@ -791,6 +805,11 @@ public class Combat : MonoBehaviour
         //check if the card belongs to any of our characters
         foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
         {
+
+            if(characterInCombat == null)
+            {
+                break;
+            }
 
             if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass
                 && characterInCombat.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)

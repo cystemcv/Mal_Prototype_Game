@@ -37,7 +37,8 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, entity, null);
 
-
+        //spawn prefab
+        base.SpawnEffectPrefab(realTarget);
 
         Combat.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
 

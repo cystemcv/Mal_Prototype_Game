@@ -21,6 +21,7 @@ public class ScriptableCardAbility : ScriptableObject
     public LTDescr localMoveTween;
 
     public GameObject abilityEffect;
+    public float abilityEffectLifetime = 0.2f;
     public GameObject abilityAfterEffect;
     public float abilityAfterEffectLifetime = 0.2f;
     public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
@@ -311,6 +312,21 @@ public class ScriptableCardAbility : ScriptableObject
     {
 
         return this;
+    }
+
+    public void SpawnEffectPrefab(GameObject target)
+    {
+        //spawn prefab
+        GameObject abilityEffect = Instantiate(this.abilityEffect, target.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
+        abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
+
+        //if the target is player then we wanna rotate 
+        if (target.tag == "Player")
+        {
+            abilityEffect.transform.Rotate(new Vector3(0, 180, 0));
+        }
+
+        Destroy(abilityEffect, this.abilityEffectLifetime);
     }
 
     //public string GetAbilityAIIntend()

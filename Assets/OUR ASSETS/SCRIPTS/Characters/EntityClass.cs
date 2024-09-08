@@ -24,6 +24,8 @@ public class EntityClass : MonoBehaviour
     public int maxHealth;
     public int shield;
     public int maxShield;
+    float rotationSpeed = -2000f;  // Degrees per second
+    public bool allowEntityRotation = false;
 
     //combat
     public GameObject sliderBar;
@@ -62,6 +64,8 @@ public class EntityClass : MonoBehaviour
     private GameObject intentO;
     private GameObject gameobjectUI;
 
+    private GameObject model;
+
     public EntityClass()
     {
 
@@ -71,6 +75,11 @@ public class EntityClass : MonoBehaviour
 
     void Update()
     {
+
+        if (allowEntityRotation)
+        {
+            RotateEntity();
+        }
 
         if (allowPrefabLiveAdjustments == false)
         {
@@ -92,6 +101,9 @@ public class EntityClass : MonoBehaviour
             intentO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.z);
         }
 
+    
+
+
     }
 
 
@@ -106,6 +118,7 @@ public class EntityClass : MonoBehaviour
     {
 
         //SpawnUI();
+        model = this.gameObject.transform.Find("model").gameObject;
 
         //if its ui element we dont wanna do anything
         if (isUI)
@@ -268,5 +281,35 @@ public class EntityClass : MonoBehaviour
             shieldIcon.SetActive(true);
 
         }
+    }
+
+    public void RotateEntity()
+    {
+        model.transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+    }
+
+    public void DestroyEntityInCombat()
+    {
+        //launch enemy and then kaboom
+        allowEntityRotation = true;
+
+        // Get the Rigidbody2D component of the enemy
+        Rigidbody2D enemyRb = this.gameObject.GetComponent<Rigidbody2D>();
+
+        // Launch the enemy up and to the right
+        Vector2 launchDirection = new Vector2(Combat.Instance.sideForce, Combat.Instance.upwardForce);
+        enemyRb.AddForce(launchDirection);
+
+        StartCoroutine(DestroyEntityInCombatIE());
+    }
+
+    public IEnumerator DestroyEntityInCombatIE()
+    {
+
+        yield return new WaitForSeconds(Combat.Instance.deathLaunchTimer);
+
+        GameObject deathExplostion = Instantiate(Combat.Instance.deathExplosion, this.gameObject.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
+        Destroy(deathExplostion, 0.6f);
+        Destroy(this.gameObject);
     }
 }

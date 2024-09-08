@@ -340,11 +340,22 @@ public class DeckManager : MonoBehaviour
         }
         else
         {
-            entity = Combat.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+            try
+            {
+                entity = Combat.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+            }
+            catch(Exception ex)
+            {
+                entity = null;
+            }
         }
 
         int count = 0;
 
+        if (entity == null)
+        {
+            yield return  null;
+        }
 
         foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
         {

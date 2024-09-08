@@ -45,7 +45,14 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
         }
         else
         {
-            realTarget = CombatCardHandler.Instance.targetClicked;
+            if (CombatCardHandler.Instance.targetClicked == null)
+            {
+                return;
+            }
+            else
+            {
+                realTarget = CombatCardHandler.Instance.targetClicked;
+            }
         }
 
         base.OnPlayCard(cardScript, entity, realTarget);
@@ -75,6 +82,9 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
 
     private void ProceedToAbility(CardScript cardScript, GameObject entity)
     {
+        //spawn prefab
+        base.SpawnEffectPrefab(realTarget);
+
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, realTarget);
         Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 

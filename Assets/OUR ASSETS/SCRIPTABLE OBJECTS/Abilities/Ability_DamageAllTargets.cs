@@ -44,6 +44,10 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         foreach (GameObject targetFound in targetsFound)
         {
             if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD) {
+
+                //spawn prefab
+                base.SpawnEffectPrefab(targetFound);
+
                 int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
                 Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
             }
