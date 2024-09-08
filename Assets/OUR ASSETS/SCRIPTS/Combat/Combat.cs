@@ -134,7 +134,7 @@ public class Combat : MonoBehaviour
         //draw cards
         DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
 
-        UI_Combat.Instance.OnNotification("PLAYER STARTING TURN", 1);
+        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
 
         //check if its not turn 1 and also only in duo mode
 
@@ -164,7 +164,7 @@ public class Combat : MonoBehaviour
     public IEnumerator PlayerTurn()
     {
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerTurn;
-        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+     
 
         yield return null; //wait for frame
 
@@ -174,8 +174,7 @@ public class Combat : MonoBehaviour
     {
 
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerEndTurn;
-        UI_Combat.Instance.OnNotification("PLAYER ENDING TURN", 1);
-
+   
         //discard cards
         DeckManager.Instance.DiscardWholeHand();
 
@@ -189,7 +188,7 @@ public class Combat : MonoBehaviour
     public IEnumerator EnemyTurnStart()
     {
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
-        UI_Combat.Instance.OnNotification("ENEMY STARTING TURN", 1);
+        UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
 
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
@@ -203,7 +202,6 @@ public class Combat : MonoBehaviour
     public IEnumerator EnemyTurn()
     {
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
-        UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
 
         //do the ai logic for each enemy
         yield return EnemyAiAct();
@@ -214,7 +212,6 @@ public class Combat : MonoBehaviour
     public IEnumerator EnemyTurnEnd()
     {
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
-        UI_Combat.Instance.OnNotification("ENEMY ENDING TURN", 1);
 
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
