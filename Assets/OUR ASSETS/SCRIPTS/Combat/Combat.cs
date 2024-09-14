@@ -33,10 +33,8 @@ public class Combat : MonoBehaviour
     [Header("CONDITIONS")]
     public int charactersAlive = 0;
     public int enemiesAlive = 0;
-
-
-
-
+    public bool conditionsEnabled = false;
+    public bool combatEnded = false;
 
 
     public int tempBoostAttack = 0;
@@ -53,19 +51,48 @@ public class Combat : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        //at the start of combat
+        StartCombat();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-       
-        //at the start of combat
-        StartCombat();
+
+
 
     }
 
 
+    public void Update()
+    {
+
+        if (conditionsEnabled == true &&
+            (charactersAlive <= 0 || enemiesAlive <= 0))
+        {
+            CombatOver();
+        }
+
+    }
+
+
+
+    public void CombatOver()
+    {
+
+        //always check characters first, if both lost = game over
+        if (charactersAlive <= 0)
+        {
+            //lose
+            UI_Combat.Instance.gameover.SetActive(true);
+        }
+        else if (enemiesAlive <= 0)
+        {
+            //win
+            UI_Combat.Instance.victory.SetActive(true);
+        }
+
+    }
 
 
     public IEnumerator InitializeCombat()
@@ -74,15 +101,18 @@ public class Combat : MonoBehaviour
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
 
+       //Debug.Log("Test dsck"  + DeckManager.Instance.scriptableDeck.mainDeck[0].scriptableCard.cardName);
+
         //reset turns
         turns = 0;
 
         //play music
         AudioManager.Instance.PlayMusic("Combat_1");
 
+
+
         //destroy any previous characters
         yield return SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject);
-
 
         //destroy any previous enemies
         yield return SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Enemies").gameObject);
@@ -93,8 +123,13 @@ public class Combat : MonoBehaviour
         //spawn the enemies
         yield return SpawnEnemies();
 
+        yield return new WaitForSeconds(0.5f);
+
+        //build the deck from Scriptable Object deck
+        yield return CopyDeckFromSO();
+
         //initialize all things card related, deck, combat deck, discard pile, etc
-        InitializeCardsAndDecks();
+        yield return InitializeCardsAndDecks();
 
         //asign leader the first character
         AssignLeader(CharacterManager.Instance.charactersInAdventure[0]);
@@ -105,6 +140,9 @@ public class Combat : MonoBehaviour
         //check the enemies that are alive
         CheckEnemiesAlive();
 
+        //start win conditions
+        conditionsEnabled = true;
+
         //start the player
         yield return WaitPlayerTurns();
     }
@@ -112,18 +150,63 @@ public class Combat : MonoBehaviour
 
     public IEnumerator WaitEnemyTurns()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return PlayerTurnEnd();
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return EnemyTurnStart();
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return EnemyTurn();
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return EnemyTurnEnd();
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return PlayerTurnStart();
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         yield return PlayerTurn();
 
-
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
     }
 
     public IEnumerator PlayerTurnStart()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         //start player turn
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
@@ -137,6 +220,7 @@ public class Combat : MonoBehaviour
         RemoveShieldFromEntitiesBasedOnTag("Player");
 
         //draw cards
+        Debug.Log("HandManager.Instance.turnHandCardsLimit : " + HandManager.Instance.turnHandCardsLimit);
         DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
 
         UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
@@ -168,8 +252,14 @@ public class Combat : MonoBehaviour
 
     public IEnumerator PlayerTurn()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerTurn;
-     
+
 
         yield return null; //wait for frame
 
@@ -178,8 +268,13 @@ public class Combat : MonoBehaviour
     public IEnumerator PlayerTurnEnd()
     {
 
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerEndTurn;
-   
+
         //discard cards
         DeckManager.Instance.DiscardWholeHand();
 
@@ -192,6 +287,12 @@ public class Combat : MonoBehaviour
 
     public IEnumerator EnemyTurnStart()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
         UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
 
@@ -206,6 +307,12 @@ public class Combat : MonoBehaviour
 
     public IEnumerator EnemyTurn()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
 
         //do the ai logic for each enemy
@@ -216,6 +323,12 @@ public class Combat : MonoBehaviour
 
     public IEnumerator EnemyTurnEnd()
     {
+
+        if (combatEnded)
+        {
+            yield return null; //stops function
+        }
+
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
 
         //loop for all buffs and debuffs
@@ -273,18 +386,18 @@ public class Combat : MonoBehaviour
     public GameObject InstantiateCharacter(ScriptableEntity scriptableEntity, int spawnPosition)
     {
 
-       
-        Vector3 spawn = new Vector3(0,0,0);
+
+        Vector3 spawn = new Vector3(0, 0, 0);
 
         if (scriptableEntity.mainClass == SystemManager.MainClass.Enemy)
         {
-       
-            spawn = new Vector3( enemyStartSpawn.transform.position.x - spawnCharacterDistance - spawnEnemyDistanceVariance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
+
+            spawn = new Vector3(enemyStartSpawn.transform.position.x - spawnCharacterDistance - spawnEnemyDistanceVariance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
             spawnCharacterDistance += 2;
         }
         else
         {
-   
+
             spawn = new Vector3(characterStartSpawn.transform.position.x + spawnEnemyDistance + spawnCharacterDistanceVariance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
             spawnEnemyDistance += 2;
         }
@@ -354,14 +467,10 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public void InitializeCardsAndDecks()
+    public IEnumerator InitializeCardsAndDecks()
     {
 
-        //if deck is not created then create it / this should only be available when not having deck
-        if (DeckManager.Instance.mainDeck.Count == 0)
-        {
-            DeckManager.Instance.BuildStartingDeck();
-        }
+
 
         //initialize the combat deck
         DeckManager.Instance.combatDeck.Clear();
@@ -373,6 +482,27 @@ public class Combat : MonoBehaviour
 
         //clean up banished pile
         DeckManager.Instance.banishedPile.Clear();
+
+        yield return null; // Wait for a frame 
+    }
+
+    public IEnumerator CopyDeckFromSO()
+    {
+
+        //if deck is not created then create it / this should only be available when not having deck
+        //if (DeckManager.Instance.mainDeck.Count == 0)
+        //{
+            DeckManager.Instance.BuildStartingDeckSO();
+        //}
+
+        //clear local deck
+        DeckManager.Instance.mainDeck.Clear();
+
+        //copy the deck
+        DeckManager.Instance.mainDeck = new List<CardScript>(DeckManager.Instance.scriptableDeck.mainDeck);
+        //mainDeck = scriptableDeck.mainDeck;
+
+        yield return null; // Wait for a frame 
     }
 
     public void RefillMana()
@@ -383,6 +513,12 @@ public class Combat : MonoBehaviour
 
     public void AssignLeader(GameObject characterInCombat)
     {
+
+        if (characterInCombat == null)
+        {
+            return;
+        }
+
         //assign the leader
         leaderCharacter = characterInCombat;
 
@@ -646,6 +782,9 @@ public class Combat : MonoBehaviour
                 //need to regenerate intend 
                 //generate intend for all enemies
                 GenerateEnemyIntends();
+
+                //unparent leader indicator
+                UI_Combat.Instance.leaderIndicator.transform.SetParent(null);
             }
             else
             {
@@ -673,7 +812,7 @@ public class Combat : MonoBehaviour
 
         }
 
-        if (entity != null && intends != null )
+        if (entity != null && intends != null)
         {
             SystemManager.Instance.DestroyAllChildren(intends);
         }
@@ -711,6 +850,12 @@ public class Combat : MonoBehaviour
 
     public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target)
     {
+
+        if (combatEnded || entity == null)
+        {
+            return 0; //stops function
+        }
+
         try
         {
             // Get character attack, debuff, and buff percentages
@@ -806,7 +951,7 @@ public class Combat : MonoBehaviour
         foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
         {
 
-            if(characterInCombat == null)
+            if (characterInCombat == null)
             {
                 break;
             }

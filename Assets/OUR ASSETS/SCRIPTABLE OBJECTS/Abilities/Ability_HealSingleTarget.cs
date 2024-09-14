@@ -33,6 +33,16 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
             realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
+        if (realTarget == null && entity != null)
+        {
+            realTarget = entity;
+        }
+
+        if (realTarget == null)
+        {
+            return;
+        }
+
         base.OnPlayCard(cardScript, entity, null);
 
         Combat.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.HEAL);

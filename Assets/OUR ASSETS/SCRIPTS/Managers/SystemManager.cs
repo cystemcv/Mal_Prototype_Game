@@ -113,6 +113,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     [Header("OBJECTS ON SCENE THAT CAN BE USED")]
     public GameObject object_HighlightButton;
 
+    [Header("LOADING")]
+    public GameObject LoadingScreen;
+
     private void Awake()
     {
         if (Instance == null)
@@ -168,7 +171,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         if (enable)
         {
             //make the default Main menu
-            UIManager.Instance.NavigateMenu("MAIN MENU");
+
             uiManager.SetActive(true);
         }
         else
@@ -296,6 +299,39 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
         return listOfChildGameobjects;
+
+    }
+
+    //loading screen
+    public void LoadScene(string sceneName, float manualLoadingTime)
+    {
+
+        StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime));
+    }
+
+    public IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime)
+    {
+
+        //wait for the transition
+        Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+        loadingAnimator.SetTrigger("LoadingStart");
+        yield return new WaitForSeconds(manualLoadingTime);
+
+        //do the async operation
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+
+
+        //check operation if is done
+        while (!asyncOperation.isDone)
+        {
+
+            yield return null;
+
+        }
+
+        //now the scene is loaded
+        loadingAnimator.SetTrigger("LoadingEnd");
+        yield return new WaitForSeconds(manualLoadingTime);
 
     }
 

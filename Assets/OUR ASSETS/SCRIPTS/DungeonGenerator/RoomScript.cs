@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -15,7 +16,9 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
         if (roomType == SystemManager.RoomType.Battle) {
-            Combat.Instance.StartCombat();
+            //Debug.Log("TEST COMBAT");
+            //SceneManager.LoadScene("scene_Combat");
+            SystemManager.Instance.LoadScene("scene_Combat", 0.4f);
         }
 
 

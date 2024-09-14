@@ -5,6 +5,23 @@ using UnityEngine.SceneManagement;
 public class UI_CharacterSelectionMenu : MonoBehaviour
 {
 
+    public static UI_CharacterSelectionMenu Instance;
+
+    private void Awake()
+    {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+
+    }
+
     [Header("CHARACTERS")]
     public GameObject characterSelectionContent;
     public GameObject characterPanelUIPrefab;
@@ -17,7 +34,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         CharacterManager.Instance.scriptablePlayerList.Clear();
 
         //disable the proceed button
-        UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
+        UIManager.Instance.DisableButton(proceedToGame);
 
         //display all characters
         DisplayAllCharacters();
@@ -51,7 +68,8 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        SceneManager.LoadScene("scene_GameModeMenu");
+        //SceneManager.LoadScene("scene_GameModeMenu");
+        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0.2f);
     }
 
     public void BackToMainMenu()
@@ -60,16 +78,18 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        SceneManager.LoadScene("scene_MainMenu");
+        //SceneManager.LoadScene("scene_MainMenu");
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
     }
 
     public void ProceedToGame()
     {
 
-        //build the deck
-        DeckManager.Instance.BuildStartingDeck();
+        //build the deck for the scriptable deck
+        DeckManager.Instance.BuildStartingDeckSO();
 
-        SceneManager.LoadScene("scene_Adventure");
+        //SceneManager.LoadScene("scene_Adventure");
+        SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
 
 
     }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Ability_ShieldSingleTarget : ScriptableCardAbility
 {
     [Header("UNIQUE")]
-     public int empty;
+    public int empty;
 
     private GameObject realTarget;
 
@@ -33,6 +33,16 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
         else
         {
             realTarget = CombatCardHandler.Instance.targetClicked;
+        }
+
+        if (realTarget == null && entity != null)
+        {
+            realTarget = entity;
+        }
+
+        if (realTarget == null)
+        {
+            return;
         }
 
         base.OnPlayCard(cardScript, entity, null);

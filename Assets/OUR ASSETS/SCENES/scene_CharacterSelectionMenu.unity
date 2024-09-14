@@ -396,7 +396,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.4745098, g: 0.305973, b: 0.19215688, a: 0}
+  m_BackGroundColor: {r: 0.9980461, g: 1, b: 0.6839622, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2316,7 +2316,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 716303024}
+      - m_Target: {fileID: 875850213124741864}
         m_TargetAssemblyTypeName: UI_CharacterSelectionMenu, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
@@ -3296,7 +3296,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 716303023}
-  - component: {fileID: 716303024}
   m_Layer: 6
   m_Name: CHARACTER SELECTION MENU
   m_TagString: Untagged
@@ -3326,21 +3325,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 67.07617}
   m_SizeDelta: {x: 0, y: -133.95}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &716303024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716303022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4abf0281de65bc240a04d2165d85e591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterSelectionContent: {fileID: 299419072}
-  characterPanelUIPrefab: {fileID: 2501518557207666840, guid: 13e3be6fbca53ca45a318c1544cb82f9, type: 3}
-  proceedToGame: {fileID: 1080206346}
 --- !u!1 &719102076
 GameObject:
   m_ObjectHideFlags: 0
@@ -3774,7 +3758,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 716303024}
+      - m_Target: {fileID: 875850213124741864}
         m_TargetAssemblyTypeName: UI_CharacterSelectionMenu, Assembly-CSharp
         m_MethodName: BackToGameModeMenu
         m_Mode: 1
@@ -4911,7 +4895,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 716303024}
+      - m_Target: {fileID: 875850213124741864}
         m_TargetAssemblyTypeName: UI_CharacterSelectionMenu, Assembly-CSharp
         m_MethodName: ProceedToGame
         m_Mode: 1
@@ -5915,7 +5899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1352413853
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6551,7 +6535,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1656715887
 Transform:
   m_ObjectHideFlags: 0
@@ -13841,7 +13825,6 @@ GameObject:
   - component: {fileID: 875850212011485594}
   - component: {fileID: 875850212011485588}
   - component: {fileID: 875850212011485595}
-  - component: {fileID: 875850212011485596}
   m_Layer: 6
   m_Name: UI_MENUS
   m_TagString: Untagged
@@ -13900,24 +13883,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &875850212011485596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875850212011485593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f08e2752fff91394f9a29251ee8c3029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  list_goMenuItem:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 716303022}
 --- !u!225 &875850212183457152
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14403,6 +14368,7 @@ GameObject:
   - component: {fileID: 875850213124741858}
   - component: {fileID: 875850213124741857}
   - component: {fileID: 875850213124741856}
+  - component: {fileID: 875850213124741864}
   m_Layer: 6
   m_Name: UI
   m_TagString: Untagged
@@ -14410,6 +14376,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &875850213124741864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875850213124741863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4abf0281de65bc240a04d2165d85e591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSelectionContent: {fileID: 299419072}
+  characterPanelUIPrefab: {fileID: 2501518557207666840, guid: 13e3be6fbca53ca45a318c1544cb82f9, type: 3}
+  proceedToGame: {fileID: 1080206346}
 --- !u!114 &875850213345076896
 MonoBehaviour:
   m_ObjectHideFlags: 0

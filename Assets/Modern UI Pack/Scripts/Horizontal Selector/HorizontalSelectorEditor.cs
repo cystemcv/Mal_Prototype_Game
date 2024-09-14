@@ -79,7 +79,7 @@ namespace Michsky.MUIP
                         GUILayout.BeginHorizontal();
 
                         GUI.enabled = false;
-                        EditorGUILayout.LabelField(new GUIContent("Selected Item:"), customSkin.FindStyle("Text"), GUILayout.Width(78));
+                        EditorGUILayout.LabelField(new GUIContent("Selected Item:"), customSkin.FindStyle("Text"), GUILayout.Width(82));
                         GUI.enabled = true;
 
                         EditorGUILayout.LabelField(new GUIContent(hsTarget.items[defaultIndex.intValue].itemTitle), customSkin.FindStyle("Text"));
@@ -209,7 +209,7 @@ namespace Michsky.MUIP
                     break;
             }
 
-            this.Repaint();
+            if (Application.isPlaying == false) { this.Repaint(); }
             serializedObject.ApplyModifiedProperties();
         }
     }

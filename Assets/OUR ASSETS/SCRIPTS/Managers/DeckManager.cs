@@ -14,6 +14,10 @@ public class DeckManager : MonoBehaviour
 
     //Deck
     public List<CardScript> mainDeck;
+
+    public ScriptableDeck scriptableDeck;
+
+    //combat deck
     public List<CardScript> combatDeck;
 
     //Discarded Cards
@@ -60,14 +64,17 @@ public class DeckManager : MonoBehaviour
         //-1 is no card hovering
         // ArrangeCardsHover(-1);
 
-        DeckManager.Instance.BuildStartingDeck();
+        //DeckManager.Instance.BuildStartingDeck();
     }
+
+
 
     public void BuildStartingDeck()
     {
 
         // Clear the deck before building a new one
         mainDeck.Clear();
+    
 
         //loop throught each character on the character list and then add those cards to our deck
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
@@ -86,6 +93,7 @@ public class DeckManager : MonoBehaviour
                     CardScript cardScript = new CardScript();
                     cardScript.scriptableCard = scriptableCard;
                     mainDeck.Add(cardScript);
+                
                 }
             }
 
@@ -93,6 +101,41 @@ public class DeckManager : MonoBehaviour
 
         // Shuffle the deck
         ShuffleDeck(mainDeck);
+  
+    }
+
+    public void BuildStartingDeckSO()
+    {
+
+        // Clear the deck before building a new one
+        scriptableDeck.mainDeck.Clear();
+
+
+        //loop throught each character on the character list and then add those cards to our deck
+        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
+        {
+
+            //loop for each starting card list and add it to our deck
+            foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
+            {
+
+                //add the card on the deck depending on the mode
+                if (CheckModeAvailabilityForCard(scriptableCard))
+                {
+
+
+                    //add cards to the deck
+                    CardScript cardScript = new CardScript();
+                    cardScript.scriptableCard = scriptableCard;
+                    scriptableDeck.mainDeck.Add(cardScript);
+
+                }
+            }
+
+        }
+
+        // Shuffle the deck
+        ShuffleDeck(scriptableDeck.mainDeck);
 
     }
 
@@ -112,8 +155,8 @@ public class DeckManager : MonoBehaviour
 
         //do not draw if both discard and deck pile is at 0
 
-        try
-        {
+        //try
+        //{
 
             if (combatDeck.Count != 0 || discardedPile.Count != 0)
             {
@@ -140,7 +183,7 @@ public class DeckManager : MonoBehaviour
                     handCards.Add(cardScript);
 
                     //instantiate the card
-                    InitializeCardPrefab(cardScript, UIManager.Instance.HAND, true);
+                    InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
 
                     //rearrange hand
                     HandManager.Instance.SetHandCards();
@@ -153,11 +196,11 @@ public class DeckManager : MonoBehaviour
 
 
             }
-        }
-        catch(Exception ex)
-        {
-            Debug.LogError("Draw Card Error : " + ex.Message);
-        }
+        //}
+        //catch(Exception ex)
+        //{
+        //    Debug.LogError("Draw Card Error : " + ex.Message);
+        //}
     }
 
     public void GetCardFromCombatDeckToHand(int index)
@@ -174,7 +217,7 @@ public class DeckManager : MonoBehaviour
             handCards.Add(cardScript);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UIManager.Instance.HAND, true);
+            InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -236,13 +279,13 @@ public class DeckManager : MonoBehaviour
         HandManager.Instance.cardsInHandList.RemoveAt(index);
 
         //parent it
-        cardScript.gameObject.transform.SetParent(UIManager.Instance.CARDPLAYED.transform);
+        cardScript.gameObject.transform.SetParent(UI_Combat.Instance.CARDPLAYED.transform);
 
         //deactivate events
         cardScript.gameObject.GetComponent<CardEvents>().enabled = false;
 
         //move the card
-        savedtweenCardPlayed = LeanTween.move(cardScript.gameObject, UIManager.Instance.CARDPLAYED.transform, 0.2f);
+        savedtweenCardPlayed = LeanTween.move(cardScript.gameObject, UI_Combat.Instance.CARDPLAYED.transform, 0.2f);
 
         //save the cardscript
         savedPlayedCardScript = cardScript;
@@ -403,13 +446,18 @@ public class DeckManager : MonoBehaviour
         }
 
         //go back to idle animation
-        Animator animator = entity.transform.Find("model").GetComponent<Animator>();
+        if (entity != null) {
+            Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
-        if (animator != null)
-        {
+            if (animator != null)
+            {
 
-            animator.SetTrigger("Idle");
+                animator.SetTrigger("Idle");
+            }
+
         }
+
+
 
         //card ended
         SystemManager.Instance.thereIsActivatedCard = false;
@@ -526,6 +574,7 @@ public class DeckManager : MonoBehaviour
         GameObject cardPrefab = CardListManager.Instance.cardPrefab;
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
         mainDeck.Add(null);
+    
     }
 
     public void AddCardOnCombatDeck(CardScript cardScript)
@@ -818,6 +867,7 @@ public class DeckManager : MonoBehaviour
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.mainDeck)
         {
             mainDeck.Add(cardScript);
+          
         }
 
         //close the thing 

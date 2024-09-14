@@ -28,4 +28,5 @@ public class CardScript : MonoBehaviour
         cardID = System.Guid.NewGuid().ToString();
     }
 
+
 }

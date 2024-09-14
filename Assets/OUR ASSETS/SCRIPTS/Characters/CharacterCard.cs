@@ -67,7 +67,7 @@ public class CharacterCard : MonoBehaviour
             activation.SetActive(false);
 
             //disable the proceed button
-            UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
+            UIManager.Instance.DisableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
 
             return;
 
@@ -82,7 +82,7 @@ public class CharacterCard : MonoBehaviour
 
             //find the object that has that scriptable character
             CharacterCard characterCardFound = null;
-            foreach(Transform card in UIManager.Instance.characterSelectionContent.transform)
+            foreach(Transform card in UI_CharacterSelectionMenu.Instance.characterSelectionContent.transform)
             {
                 characterCardFound = card.GetChild(0).GetComponent<CharacterCard>();
 
@@ -110,11 +110,11 @@ public class CharacterCard : MonoBehaviour
         if (CharacterManager.Instance.scriptablePlayerList.Count == CharacterManager.Instance.CheckCharacterLimitBasedOnMode())
         {
             //disable the proceed button
-            UIManager.Instance.EnableButton(UIManager.Instance.proceedToGame);
+            UIManager.Instance.EnableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
         }
         else
         {
-            UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
+            UIManager.Instance.DisableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
         }
 
     }

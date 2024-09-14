@@ -6,6 +6,23 @@ using UnityEngine.SceneManagement;
 public class UI_GameModeMenu : MonoBehaviour
 {
 
+    public static UI_GameModeMenu Instance;
+
+    private void Awake()
+    {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+
+    }
+
     public void GoToCharacterSelection_MainMode()
     {
         //play audio
@@ -15,7 +32,8 @@ public class UI_GameModeMenu : MonoBehaviour
         SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
 
         //open the correct menu
-        SceneManager.LoadScene("scene_CharacterSelectionMenu");
+       // SceneManager.LoadScene("scene_CharacterSelectionMenu");
+        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0.2f);
     }
 
 
@@ -29,7 +47,8 @@ public class UI_GameModeMenu : MonoBehaviour
         SystemManager.Instance.gameMode = SystemManager.GameMode.DuoMode;
 
         //open the correct menu
-        SceneManager.LoadScene("scene_CharacterSelectionMenu");
+        //SceneManager.LoadScene("scene_CharacterSelectionMenu");
+        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0.2f);
     }
 
     public void BackToMainMenu()
@@ -38,7 +57,8 @@ public class UI_GameModeMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        SceneManager.LoadScene("scene_MainMenu");
+        //SceneManager.LoadScene("scene_MainMenu");
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
     }
 
 }

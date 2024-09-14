@@ -46,8 +46,7 @@ public class UIManager : MonoBehaviour
 
 
     [Header("UICOMBAT")]
-    public GameObject HAND;
-    public GameObject CARDPLAYED;
+
     public GameObject deckUIObject;
     public GameObject deckText;
     public GameObject handFullSpawnCard;
@@ -66,10 +65,7 @@ public class UIManager : MonoBehaviour
     public GameObject notificationParent;
     public GameObject notificationPb;
 
-    [Header("CHARACTERS")]
-    public GameObject characterSelectionContent;
-    public GameObject characterPanelUIPrefab;
-    public GameObject proceedToGame;
+
 
     public delegate void OnCurrentModeChange();
     public event OnCurrentModeChange onCurrentModeChange;
@@ -117,302 +113,32 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        InitializeMainMenu();
+   
     }
 
-    //subscribe events
-    private void OnEnable()
-    {
-        onCurrentModeChange += UIModeChangeDetectEvent;
-        onCurrentUIScreenChange += UIScreenChangeDetectEvent;
-    }
 
-    private void OnDisable()
-    {
-        onCurrentModeChange -= UIModeChangeDetectEvent;
-        onCurrentUIScreenChange -= UIScreenChangeDetectEvent;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
 
-        //CurrentUIScreen = SystemManager.UIScreens.MainMenu;
-
-        ////check if there is a saved user setting
-        //if (PlayerPrefs.GetInt("user_save_settings") == 1)
-        //{
-        //    //if true then load
-        //    LoadSettings();
-        //}
-        //else
-        //{
-        //    //else initialize
-        //    DefaultSettings();
-        //}
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (SystemManager.Instance.systemMode == SystemManager.SystemModes.GAMEPLAY)
-        //{
-        //    playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
-        //}
-        //else if (SystemManager.Instance.systemMode == SystemManager.SystemModes.COMBAT)
-        //{
-        //    playerTimeText.text = SystemManager.Instance.ConvertTimeToReadable(SystemManager.Instance.totalTimePlayed);
-        //    deckText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
-        //    discardText.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
-        //    banishedText.transform.GetChild(0).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
-        //}
-        //else
-        //{
-        //    playerTimeText.text = "";
-        //}
-    }
-
-    public void UIModeChangeDetectEvent()
-    {
-
-        if (UICurrentMode == SystemManager.SystemModes.MAINMENU)
-        {
-            InitializeMainMenu();
-        }
-        else if (UICurrentMode == SystemManager.SystemModes.GAMEPLAY)
-        {
-            InitializeMainMenuGameplay();
-        }
-        else if (UICurrentMode == SystemManager.SystemModes.COMBAT)
-        {
-            InitializeMainMenuGameplay();
-
-        }
-        else
-        {
-            InitializeMainMenu();
-        }
 
     }
 
-    public void UIScreenChangeDetectEvent()
-    {
-
-        Debug.Log("test");
-
-    }
-
-    public void InitializeMainMenu()
-    {
-        //btnNewGame.SetActive(true);
-        //btnContinue.SetActive(true);
-        //btnSave.SetActive(false);
-        //btnLoad.SetActive(true);
-        //btnOptions.SetActive(true);
-        //btnClose.SetActive(false);
-        //btnMainMenu.SetActive(false);
-        //btnExit.SetActive(true);
-
-        //uiAnimatedBg.color = new Color32(0, 95, 166, 255);
-        //txtMainMenu.SetActive(true);
-
-        //solidColorBackground.color = new Color32(68,53,135,255);
-    }
-
-    public void InitializeMainMenuGameplay()
-    {
-        //btnNewGame.SetActive(false);
-        //btnContinue.SetActive(false);
-        //btnSave.SetActive(true);
-        //btnLoad.SetActive(true);
-        //btnOptions.SetActive(true);
-        //btnClose.SetActive(true);
-        //btnMainMenu.SetActive(true);
-        //btnExit.SetActive(true);
-
-        //uiAnimatedBg.color = new Color32(90,10,0,255);
-        //txtMainMenu.SetActive(false);
-
-        //solidColorBackground.color = new Color32(68, 53, 135, 0);
-    }
 
 
-    public void MakeAllMenuInactive()
-    {
-        foreach (GameObject goMenuItem in list_goMenuItem)
-        {
-            goMenuItem.SetActive(false);
-        }
 
 
-    }
-
-    public void MainMenuNext(string menuName)
-    {
-
-        //play audio
-        AudioManager.Instance.PlaySfx("UI_goNext");
-
-        //UISaveLoad.Instance.CurrentMode = UISaveLoad.saveLoadMode.SAVE;
-
-        //open the correct menu
-        NavigateMenu(menuName);
-    }
-
-    public void MainMenuBack(string menuName)
-    {
-        //play audio
-        AudioManager.Instance.PlaySfx("UI_goBack");
-
-        //open the correct menu
-        NavigateMenu(menuName);
-    }
-
-    public void GoToGameModeSelection(string mode)
-    {
-        //play audio
-        //play audio
-        if (mode == "BACK")
-        {
-            AudioManager.Instance.PlaySfx("UI_goBack");
-        }
-        else
-        {
-            AudioManager.Instance.PlaySfx("UI_goNext");
-        }
 
 
-        //change visibity
-        logo.gameObject.SetActive(false);
-        footerText.gameObject.SetActive(false);
 
 
-        //change header text
-        headerText.gameObject.SetActive(true);
-        headerText.text = "CHOOSE A MODE!";
-
-        //disable the 3rd option for now
-        DisableButton(UIMENU.transform.Find("HOLDER").Find("GAME MODE MENU").Find("ListOfGameModes").Find("Panel").Find("btn_UNKOWN").gameObject);
-
-        //open the correct menu
-        NavigateMenu("GAME MODE MENU");
-    }
-
-    public void GoToCharacterSelection_MainMode(string mode)
-    {
-        //play audio
-        //play audio
-        if (mode == "BACK")
-        {
-            AudioManager.Instance.PlaySfx("UI_goBack");
-        }
-        else
-        {
-            AudioManager.Instance.PlaySfx("UI_goNext");
-        }
-
-
-        //change visibity
-        logo.gameObject.SetActive(false);
-        footerText.gameObject.SetActive(false);
-
-
-        //change header text
-        headerText.gameObject.SetActive(true);
-        headerText.text = "CHOOSE A CHARACTER!";
-
-        //change the mode
-        SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
-
-        //clear the list
-        CharacterManager.Instance.scriptablePlayerList.Clear();
-
-        //disable the proceed button
-        UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
-
-        //display all characters
-        DisplayAllCharacters();
-
-        //open the correct menu
-        NavigateMenu("CHARACTER SELECTION MENU");
-    }
-
-    public void GoToCharacterSelection_DuoMode(string mode)
-    {
-        //play audio
-        //play audio
-        if (mode == "BACK")
-        {
-            AudioManager.Instance.PlaySfx("UI_goBack");
-        }
-        else
-        {
-            AudioManager.Instance.PlaySfx("UI_goNext");
-        }
-
-
-        //change visibity
-        logo.gameObject.SetActive(false);
-        footerText.gameObject.SetActive(false);
-
-
-        //change header text
-        headerText.gameObject.SetActive(true);
-        headerText.text = "CHOOSE 2 CHARACTERS!";
-
-        //change the mode
-        SystemManager.Instance.gameMode = SystemManager.GameMode.DuoMode;
-
-        //clear the list
-        CharacterManager.Instance.scriptablePlayerList.Clear();
-
-        //disable the proceed button
-        UIManager.Instance.DisableButton(UIManager.Instance.proceedToGame);
-
-        //display all characters
-        DisplayAllCharacters();
-
-        //open the correct menu
-        NavigateMenu("CHARACTER SELECTION MENU");
-    }
-
-    public void GoToMainMenu(string mode)
-    {
-        //play audio
-        if (mode == "BACK")
-        {
-            AudioManager.Instance.PlaySfx("UI_goBack");
-        }
-        else
-        {
-            AudioManager.Instance.PlaySfx("UI_goNext");
-        }
-
-
-        //change visibity
-        logo.gameObject.SetActive(true);
-        footerText.gameObject.SetActive(true);
-
-
-        //change header text
-        headerText.gameObject.SetActive(false);
-        headerText.text = "";
-
-        //open the correct menu
-        NavigateMenu("MAIN MENU");
-    }
-
-    public void NavigateMenu(string menuName)
-    {
-
-        //make everything inactive
-        MakeAllMenuInactive();
-
-        //make the menu we need active
-        GameObject goMenuItem = list_goMenuItem.Find(item => item.name == menuName);
-        goMenuItem.SetActive(true);
-    }
 
     public void DefaultSettings()
     {
@@ -536,7 +262,7 @@ public class UIManager : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_Confirm");
         modalWindowManager.Close(); // Close window
         DefaultSettings();
-        MainMenuBack("MAIN MENU");
+        //MainMenuBack("MAIN MENU");
     }
 
     public void ModalOpenSaveSettings()
@@ -549,7 +275,7 @@ public class UIManager : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_Confirm");
         modalWindowManager.Close(); // Close window
         SaveSettings();
-        MainMenuBack("MAIN MENU");
+       // MainMenuBack("MAIN MENU");
     }
 
     public void GoToScene(string sceneName)
@@ -587,7 +313,8 @@ public class UIManager : MonoBehaviour
         SystemManager.Instance.EnableDisable_UIManager(true);
 
         //load scene
-        SceneManager.LoadScene("scene_MainMenu");
+        //SceneManager.LoadScene("scene_MainMenu");
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
     }
 
     public void CloseUIWindow()
@@ -602,29 +329,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void UIOpenSaveMenu()
-    {
 
-        //play audio
-        AudioManager.Instance.PlaySfx("UI_goNext");
 
-        SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.SAVE;
 
-        //open the correct menu
-        NavigateMenu("SAVELOAD MENU");
-    }
-
-    public void UIOpenLoadMenu()
-    {
-
-        //play audio
-        AudioManager.Instance.PlaySfx("UI_goNext");
-
-        SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.LOAD;
-
-        //open the correct menu
-        NavigateMenu("SAVELOAD MENU");
-    }
 
     //notifications
     public void OnNotification(string message, float waitTime)
@@ -667,38 +374,8 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void DisplayAllCharacters()
-    {
-        //destroy all children objects
-        SystemManager.Instance.DestroyAllChildren(characterSelectionContent);
 
-        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.characterList)
-        {
 
-            //generate each character
-            GameObject characterPanel = Instantiate(characterPanelUIPrefab, characterSelectionContent.transform.position, Quaternion.identity);
-            characterPanel.transform.GetChild(0).GetComponent<CharacterCard>().scriptableEntity = scriptableEntity;
-
-            //set it as a child of the parent
-            characterPanel.transform.SetParent(characterSelectionContent.transform);
-
-            //make the local scale 1,1,1
-            characterPanel.transform.localScale = new Vector3(1, 1, 1);
-        }
-    }
-
-    public void GoToMainMode()
-    {
-        //change the mode
-        SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
-
-        //display all characters
-        DisplayAllCharacters();
-
-        //navigate to the menu
-        MainMenuNext("CHARACTER SELECTION MENU");
-
-    }
 
     public void DisableButton(GameObject button)
     {
@@ -794,48 +471,6 @@ public class UIManager : MonoBehaviour
 
     }
 
-    ////starts combat might need to change the name
-    //public void ProceedToGame()
-    //{
-
-    //    //destroy any previous characters
-    //    //SystemManager.Instance.DestroyAllChildren(CombatManager.Instance.combatScene.transform.Find("Characters").gameObject);
-
-    //    int positionSpawn = 0;
-    //    //generate the selected characters that will be used throught the game
-    //    foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
-    //    {
-    //        //instantiate our character or characters
-    //        GameObject characterInCombat = Combat.Instance.InstantiateCharacter(scriptableEntity, positionSpawn);
-
-    //        //assign the characters in combat
-    //        CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
-
-    //        //initialize the stats
-    //        characterInCombat.GetComponent<EntityClass>().InititializeEntity();
-
-    //        //increase to the next position
-    //        positionSpawn++;
-    //    }
-
-
-    //    //build the deck
-    //    DeckManager.Instance.BuildStartingDeck();
-
-
-    //    //hide ui
-    //    SystemManager.Instance.uiManager.SetActive(false);
-    //    SystemManager.Instance.combatManager.SetActive(false);
-    //    SystemManager.Instance.combatScene.SetActive(false);
-
-    //    //generate dungeon
-    //    SystemManager.Instance.dungeonGeneratorManager.SetActive(true);
-    //    CustomDungeonGenerator.Instance.StartDungeonGeneration();
-
-    //    //then start combat
-    //    //CombatManager.Instance.StartCombat();
-
-    //}
 
 
 
