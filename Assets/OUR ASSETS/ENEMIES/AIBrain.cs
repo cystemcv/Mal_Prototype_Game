@@ -72,38 +72,38 @@ public class AIBrain : MonoBehaviour
             Image intendImage = intendObject.transform.Find("Icon").GetComponent<Image>();
             TMP_Text intendText = intendObject.transform.Find("Text").GetComponent<TMP_Text>();
 
-            intendText.text = "";
+            intendText.text = intendClass.scriptableCard.cardName;
             //intendImage.sprite = GetIntendIcon(scriptableCardAbility);
 
             //put the icon based on the intend
-            if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.ATTACK)
-            {
-                intendImage.sprite = SystemManager.Instance.intend_Attack;
-                intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
-            }
-            else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.MAGIC)
-            {
-                intendImage.sprite = SystemManager.Instance.intend_Magic;
-                intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
-            }
-            else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.BUFF)
-            {
-                intendImage.sprite = SystemManager.Instance.intend_Buff;
-                intendText.text = "<>";
-               // intendText.gameObject.SetActive(false);
-            }
-            else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.DEBUFF)
-            {
-                intendImage.sprite = SystemManager.Instance.intend_Debuff;
-                intendText.text = "<>";
-                // intendText.gameObject.SetActive(false);
-            }
-            else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.CARDDECK)
-            {
-                intendImage.sprite = SystemManager.Instance.intend_CardDeck;
-                //intendText.text = "T";
-                intendText.gameObject.SetActive(false);
-            }
+            //if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.ATTACK)
+            //{
+            //    intendImage.sprite = SystemManager.Instance.intend_Attack;
+            //    intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
+            //}
+            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.MAGIC)
+            //{
+            //    intendImage.sprite = SystemManager.Instance.intend_Magic;
+            //    intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
+            //}
+            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.BUFF)
+            //{
+            //    intendImage.sprite = SystemManager.Instance.intend_Buff;
+            //    intendText.text = "<>";
+            //   // intendText.gameObject.SetActive(false);
+            //}
+            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.DEBUFF)
+            //{
+            //    intendImage.sprite = SystemManager.Instance.intend_Debuff;
+            //    intendText.text = "<>";
+            //    // intendText.gameObject.SetActive(false);
+            //}
+            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.CARDDECK)
+            //{
+            //    intendImage.sprite = SystemManager.Instance.intend_CardDeck;
+            //    //intendText.text = "T";
+            //    intendText.gameObject.SetActive(false);
+            //}
 
             //get the target and the color
             if (scriptableCardAbility.aITypeOfAttack == SystemManager.AITypeOfAttack.AOE)
