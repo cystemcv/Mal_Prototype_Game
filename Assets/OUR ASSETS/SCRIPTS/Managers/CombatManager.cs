@@ -9,8 +9,6 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    [Header("ENEMIES IN BATTLE")]
-    public List<ScriptableEntity> scriptableEnemyList;
 
     [Header("GLOBAL VARIABLES")]
     public int manaMaxAvailable = 3;

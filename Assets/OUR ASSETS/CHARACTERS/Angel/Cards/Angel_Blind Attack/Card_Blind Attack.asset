@@ -12,27 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
   m_Name: Card_Blind Attack
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
-  cardName: Blind Attack
-  mainClass: 9
-  primaryManaCost: 1
-  secondaryManaCost: 1
-  cardType: 0
-  ourRarity: 0
   cardArt: {fileID: 21300000, guid: 1a6b5a7c338566f40b040f74fb3be1d7, type: 3}
+  cardName: Blind Attack
+  mainClass: 1
+  cardType: 0
+  cardRarity: 0
+  primaryManaCost: 1
   cardDesc: 
   cardFlavor: 
-  ability1Var: 3
-  ability2Var: 0
-  ability3Var: 0
-  ability4Var: 0
-  ability5Var: 0
-  ability6Var: 0
-  scriptableCardAbilities:
-  - {fileID: 11400000, guid: aaa2fe9d5f95f514e92a15c17bce6355, type: 2}
-  - {fileID: 11400000, guid: aaa2fe9d5f95f514e92a15c17bce6355, type: 2}
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: aaa2fe9d5f95f514e92a15c17bce6355, type: 2}
+    waitForAbility: 0.4
+    abilityEffect: {fileID: 309019412560960090, guid: e660c3331124323449b311ca4abb85e9, type: 3}
+    abilityEffectLifetime: 0.6
+    entityAnimation: 0
+    entitySound: 3
+    abilityIntValue: 3
+    abilityIntMinValue: 0
+    abilityIntMaxValue: 0
+    abilityStringValue: 
+  - scriptableCardAbility: {fileID: 11400000, guid: aaa2fe9d5f95f514e92a15c17bce6355, type: 2}
+    waitForAbility: 0.4
+    abilityEffect: {fileID: 309019412560960090, guid: e660c3331124323449b311ca4abb85e9, type: 3}
+    abilityEffectLifetime: 0.6
+    entityAnimation: 0
+    entitySound: 3
+    abilityIntValue: 4
+    abilityIntMinValue: 0
+    abilityIntMaxValue: 0
+    abilityStringValue: 
   canTarget: 0
-  targetEnemy: 1
-  playerMode1: 1
-  playerMode2: 1
-  playerMode3: 1
+  targetEnemy: 0
   unlockable: 0
+  scriptableCardAbilitiesList: {fileID: 11400000, guid: f243bd33f60158343bc382863d8f7240, type: 2}

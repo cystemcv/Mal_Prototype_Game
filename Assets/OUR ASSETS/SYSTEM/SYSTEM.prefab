@@ -199,6 +199,83 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &1522257245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1522257246}
+  - component: {fileID: 1522257248}
+  - component: {fileID: 1522257247}
+  m_Layer: 6
+  m_Name: ENEMY MANAGER
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1522257246
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522257245}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1272546200956171697}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &1522257248
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522257245}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 32767
+  m_TargetDisplay: 0
+--- !u!114 &1522257247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522257245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48439c7af343db04b83c39edc8d517ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptableEnemyList:
+  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
+  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
+  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
+  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
 --- !u!1 &1545984970
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,8 +346,9 @@ Transform:
   - {fileID: 2130021374987795494}
   - {fileID: 2130021374067095120}
   - {fileID: 1545984971}
+  - {fileID: 1522257246}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1272546200956171702
 MonoBehaviour:
@@ -293,6 +371,7 @@ MonoBehaviour:
   adjustNumberModes: 0
   addCardTo: 0
   cardType: 0
+  cardRarity: 0
   entityAnimation: 0
   entitySound: 0
   mainClass: 0
@@ -319,11 +398,11 @@ MonoBehaviour:
   dungeonGeneratorManager: {fileID: 0}
   combatScene: {fileID: 0}
   totalTimePlayed: 0
-  intend_Attack: {fileID: 21300000, guid: 42558ac1376d1d744afc64d871374d5e, type: 3}
-  intend_Magic: {fileID: 21300000, guid: c4b222a8f635d05458dcd40710e8128d, type: 3}
-  intend_Buff: {fileID: 21300000, guid: 2bf00b551dfd0b848bd7d39ac63f5230, type: 3}
-  intend_Debuff: {fileID: 21300000, guid: 2fe1578e37f8bf44cbb5c07171cc81e7, type: 3}
-  intend_CardDeck: {fileID: 21300000, guid: 53af0852cea878b4bafccc7df7ae8aa6, type: 3}
+  intend_Attack: {fileID: 21300000, guid: 41e7dccf1b15dd6499273922f005bb30, type: 3}
+  intend_Magic: {fileID: 21300000, guid: 41e7dccf1b15dd6499273922f005bb30, type: 3}
+  intend_Buff: {fileID: 21300000, guid: 41e7dccf1b15dd6499273922f005bb30, type: 3}
+  intend_Debuff: {fileID: 21300000, guid: 41e7dccf1b15dd6499273922f005bb30, type: 3}
+  intend_CardDeck: {fileID: 21300000, guid: 41e7dccf1b15dd6499273922f005bb30, type: 3}
   intendObject: {fileID: 124364125767972754, guid: d2095c87db97a1a41b63d2e8cd300118, type: 3}
   entity_buffDebuffObject: {fileID: 5754387158870076457, guid: f837e6e03add6a84f8ed8166986602ed, type: 3}
   entity_healthBarObject: {fileID: 4744317193593757384, guid: 2a7bb90d3af590044becb82bf95a7445, type: 3}
@@ -881,11 +960,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ffbf4d773b14174b859e66bfac0bd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableEnemyList:
-  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
-  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
-  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
-  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
   manaMaxAvailable: 20
   manaAvailable: 0
 --- !u!223 &2130021374067095134

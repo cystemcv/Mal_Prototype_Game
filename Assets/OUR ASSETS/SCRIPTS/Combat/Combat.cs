@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static ScriptableCard;
 
 public class Combat : MonoBehaviour
 {
@@ -316,7 +317,7 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
 
         //do the ai logic for each enemy
-        yield return EnemyAiAct();
+        yield return EnemyManager.Instance.EnemyAiAct();
 
         yield return null;
     }
@@ -364,7 +365,7 @@ public class Combat : MonoBehaviour
     {
         int positionSpawn = 0;
         //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in CombatManager.Instance.scriptableEnemyList)
+        foreach (ScriptableEntity scriptableEntity in EnemyManager.Instance.scriptableEnemyList)
         {
             //instantiate our character or characters
             GameObject enemyInCombat = InstantiateCharacter(scriptableEntity, positionSpawn);
@@ -389,17 +390,17 @@ public class Combat : MonoBehaviour
 
         Vector3 spawn = new Vector3(0, 0, 0);
 
-        if (scriptableEntity.mainClass == SystemManager.MainClass.Enemy)
+        if (scriptableEntity.mainClass == SystemManager.MainClass.MONSTER)
         {
 
             spawn = new Vector3(enemyStartSpawn.transform.position.x - spawnCharacterDistance - spawnEnemyDistanceVariance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
-            spawnCharacterDistance += 2;
+            spawnCharacterDistance += 3;
         }
         else
         {
 
             spawn = new Vector3(characterStartSpawn.transform.position.x + spawnEnemyDistance + spawnCharacterDistanceVariance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
-            spawnEnemyDistance += 2;
+            spawnEnemyDistance += 3;
         }
 
 
@@ -412,7 +413,7 @@ public class Combat : MonoBehaviour
         entity.GetComponent<EntityClass>().originalCombatPos = spawn;
 
         //parent it to our characters object
-        if (scriptableEntity.mainClass == SystemManager.MainClass.Enemy)
+        if (scriptableEntity.mainClass == SystemManager.MainClass.MONSTER)
         {
             entity.transform.SetParent(this.gameObject.transform.Find("Enemies"));
         }
@@ -901,40 +902,6 @@ public class Combat : MonoBehaviour
 
 
 
-    public IEnumerator EnemyAiAct()
-    {
-
-        //get how many enemies will act
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject enemy in enemies)
-        {
-            AIBrain aIBrain = enemy.GetComponent<AIBrain>();
-
-            //if no ai brain the get continue to the next or deasd
-            if (aIBrain == null || enemy.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
-            {
-                continue;
-            }
-
-            ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep].scriptableCard;
-            float totalAbilitiesWaitTime = 0;
-
-            //go throught every ability and calculate the waitTime
-            foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
-            {
-                totalAbilitiesWaitTime += scriptableCardAbility.GetFullAbilityWaitingTime(enemy);
-            }
-
-            //execute ai
-            aIBrain.ExecuteCommand();
-
-            //loop between them and execute the command
-            yield return new WaitForSeconds(totalAbilitiesWaitTime);
-        }
-
-
-    }
 
 
 
@@ -942,40 +909,6 @@ public class Combat : MonoBehaviour
 
 
 
-    public GameObject GetTheCharacterThatUsesTheCard(CardScript cardScript)
-    {
 
-        GameObject character = null;
 
-        //check if the card belongs to any of our characters
-        foreach (GameObject characterInCombat in CharacterManager.Instance.charactersInAdventure)
-        {
-
-            if (characterInCombat == null)
-            {
-                break;
-            }
-
-            if (characterInCombat.GetComponent<EntityClass>().scriptableEntity.mainClass == cardScript.scriptableCard.mainClass
-                && characterInCombat.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-            {
-
-                //then it belongs to a character we have
-                character = characterInCombat;
-                break;
-            }
-
-        }
-
-        //in case the type of the card does not belong to the card then
-        if (character == null)
-        {
-            //then assign the card to the leader
-            character = leaderCharacter;
-        }
-
-        //return the appropriate character
-        return character;
-
-    }
 }

@@ -1,45 +1,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
+using System;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card/Master")]
 public class ScriptableCard : ScriptableObject // Not sure if cards will be made from here or specialized for each class. Possibly change to abstract class later
 {
 
-    [Header("COMMON")]
-    [Header("MAIN")]
-    public string cardName;
-    public SystemManager.MainClass mainClass;
-    public int primaryManaCost; // Amount of mana of the primary type to spend to play the card
-    public int secondaryManaCost; // Amount of mana of the secondary type to spend to play the card
 
-    public SystemManager.CardType cardType;
-   
-    public enum rarity { Common, Rare, Exalted, Legendary}; // Rarity of the card. Affects Strength of card, rules for cost, and likelihood of obtaining the card
-
-
-
-    public rarity ourRarity; // Make enum show in inspector
+    [HideLabel, PreviewField(80), HorizontalGroup("CardHeader", 80)]
     public Sprite cardArt; // Art to be displayed and attached to the card
+
+    [Required, VerticalGroup("CardHeader/CardHeaderDetails"),GUIColor("orange")]
+    public string cardName;
+    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.MainClass mainClass = SystemManager.MainClass.MONSTER;
+    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.CardType cardType = SystemManager.CardType.Attack;
+    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.CardRarity cardRarity = SystemManager.CardRarity.Common; 
+
+    [Title("CARD DETAILS")]
+    [Range(0, 9)]
+    public int primaryManaCost; // Amount of mana of the primary type to spend to play the card
     public string cardDesc; // Description of what the card does
     public string cardFlavor; // Flavor text- maybe not needed
 
-    [Header("ABILITIES")]
-    public int ability1Var = 0;
-    public int ability2Var = 0;
-    public int ability3Var = 0;
-    public int ability4Var = 0;
-    public int ability5Var = 0;
-    public int ability6Var = 0;
-    public List<ScriptableCardAbility> scriptableCardAbilities;
 
-    [Header("SETTINGS")]
+    [FoldoutGroup("ABILITIES")]
+    [RequiredListLength(0,3)]
+    public List<CardAbilityClass> cardAbilityClass;
+
+    [Title("SETTINGS")]
     public bool canTarget = false; //if it requires a target
     public bool targetEnemy = true; //by default is on,otherwise target character
-    public bool playerMode1 = false; //available on 1 character mode
-    public bool playerMode2 = false;//available on 2 character mode
-    public bool playerMode3 = false;//available on 3 character mode
+
+    [Title("UNLOCKABLES")]
     public bool unlockable = false;//available from start = false, unlockable = true
+
+    [Serializable]
+    public class CardAbilityClass
+    {
+        [Title("ABILITY"), GUIColor("orange")]
+        public ScriptableCardAbility scriptableCardAbility;
+        [Title("ABILITY TIME")]
+        public float waitForAbility = 0.2f;
+        [Title("ABILITY VISUALS")]
+        public GameObject abilityEffect;
+        public float abilityEffectLifetime = 0.2f;
+        public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
+        public SystemManager.EntitySound entitySound = SystemManager.EntitySound.Generic;
+        [Title("ABILITY VALUES")]
+        public int abilityIntValue;
+        public int abilityIntMinValue;
+        public int abilityIntMaxValue;
+        public string abilityStringValue;
+    }
+
+
 
 
 

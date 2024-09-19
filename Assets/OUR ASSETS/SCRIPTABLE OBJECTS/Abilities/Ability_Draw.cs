@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_Draw", menuName = "CardAbility/Ability_Draw")]
 public class Ability_Draw : ScriptableCardAbility
@@ -10,10 +11,10 @@ public class Ability_Draw : ScriptableCardAbility
     public int empty;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass,GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
-        string description = "Draw " + GetAbilityVariable(cardScript) + " cards";
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+        string description = "Draw " + cardAbilityClass.abilityIntValue + " cards";
         string final = keyword + " : " + description;
 
         return final;
@@ -21,13 +22,13 @@ public class Ability_Draw : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
        // Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 
-        int cardsToDraw = GetAbilityVariable(cardScript);
+        int cardsToDraw = cardAbilityClass.abilityIntValue;
 
         DeckManager.Instance.DrawMultipleCards(cardsToDraw);
 

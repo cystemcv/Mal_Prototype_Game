@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_ShieldSingleTarget", menuName = "CardAbility/Ability_ShieldSingleTarget")]
 public class Ability_ShieldSingleTarget : ScriptableCardAbility
@@ -12,10 +13,10 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
-        string description = "Add " + GetAbilityVariable(cardScript) + " shield to character";
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+        string description = "Add " + cardAbilityClass.abilityIntValue + " shield to character";
         string final = keyword + " : " + description;
 
         return final;
@@ -23,7 +24,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
         //assign target 
         if (target != null)
@@ -45,12 +46,14 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
             return;
         }
 
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
         //spawn prefab
-        base.SpawnEffectPrefab(realTarget);
+        base.SpawnEffectPrefab(realTarget, cardAbilityClass);
 
-        Combat.Instance.AdjustTargetHealth(realTarget, GetAbilityVariable(cardScript), false, SystemManager.AdjustNumberModes.SHIELD);
+
+
+        Combat.Instance.AdjustTargetHealth(realTarget, cardAbilityClass.abilityIntValue, false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }

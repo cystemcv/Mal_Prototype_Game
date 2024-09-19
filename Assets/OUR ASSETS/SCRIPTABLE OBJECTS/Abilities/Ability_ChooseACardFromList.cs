@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_ChooseACardFromList", menuName = "CardAbility/Ability_ChooseACardFromList")]
 public class Ability_ChooseACardFromList : ScriptableCardAbility
@@ -17,23 +18,23 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
     public int cardsToChoose = 3;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass , entity);
         string description = "Choose a " + mainClass + " " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
-            description += "(Mana Cost is set to " + GetAbilityVariable(cardScript) + " )";
+            description += "(Mana Cost is set to " + cardAbilityClass.abilityIntValue + " )";
         }
         else if (modifyManaCost)
         {
-            if (GetAbilityVariable(cardScript) > 0)
+            if (cardAbilityClass.abilityIntValue > 0)
             {
-                description += "(Increase Mana Cost by " + GetAbilityVariable(cardScript) + " )";
+                description += "(Increase Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
             }
-            else if (GetAbilityVariable(cardScript) < 0)
+            else if (cardAbilityClass.abilityIntValue < 0)
             {
-                description += "(Decrease Mana Cost by " + GetAbilityVariable(cardScript) + " )";
+                description += "(Decrease Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
             }
         }
 
@@ -45,10 +46,10 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
         try { 
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
         List<ScriptableCard> listToChoose;
 
@@ -92,14 +93,14 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
                 if (setManaCost)
                 {
-                    cardScriptTemp.primaryManaCost = GetAbilityVariable(cardScript);
+                    cardScriptTemp.primaryManaCost = cardAbilityClass.abilityIntValue;
 
                     cardScriptTemp.resetManaCost = true;
                     cardScriptTemp.changedMana = true;
                 }
                 else if (modifyManaCost)
                 {
-                    cardScriptTemp.primaryManaCost += GetAbilityVariable(cardScript);
+                    cardScriptTemp.primaryManaCost += cardAbilityClass.abilityIntValue;
                     //reset to 0 if its below
                     if (cardScriptTemp.primaryManaCost <= 0)
                     {

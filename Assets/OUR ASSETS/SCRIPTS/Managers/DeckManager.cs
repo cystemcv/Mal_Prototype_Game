@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using System;
+using static ScriptableCard;
 
 public class DeckManager : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class DeckManager : MonoBehaviour
 
         // Clear the deck before building a new one
         mainDeck.Clear();
-    
+
 
         //loop throught each character on the character list and then add those cards to our deck
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
@@ -84,24 +85,18 @@ public class DeckManager : MonoBehaviour
             foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
             {
 
-                //add the card on the deck depending on the mode
-                if (CheckModeAvailabilityForCard(scriptableCard))
-                {
+                //add cards to the deck
+                CardScript cardScript = new CardScript();
+                cardScript.scriptableCard = scriptableCard;
+                mainDeck.Add(cardScript);
 
-
-                    //add cards to the deck
-                    CardScript cardScript = new CardScript();
-                    cardScript.scriptableCard = scriptableCard;
-                    mainDeck.Add(cardScript);
-                
-                }
             }
 
         }
 
         // Shuffle the deck
         ShuffleDeck(mainDeck);
-  
+
     }
 
     public void BuildStartingDeckSO()
@@ -119,17 +114,11 @@ public class DeckManager : MonoBehaviour
             foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
             {
 
-                //add the card on the deck depending on the mode
-                if (CheckModeAvailabilityForCard(scriptableCard))
-                {
+                //add cards to the deck
+                CardScript cardScript = new CardScript();
+                cardScript.scriptableCard = scriptableCard;
+                scriptableDeck.mainDeck.Add(cardScript);
 
-
-                    //add cards to the deck
-                    CardScript cardScript = new CardScript();
-                    cardScript.scriptableCard = scriptableCard;
-                    scriptableDeck.mainDeck.Add(cardScript);
-
-                }
             }
 
         }
@@ -158,44 +147,44 @@ public class DeckManager : MonoBehaviour
         //try
         //{
 
-            if (combatDeck.Count != 0 || discardedPile.Count != 0)
+        if (combatDeck.Count != 0 || discardedPile.Count != 0)
+        {
+
+            //check if there are cards on deck/ if not put the discard pile back to deck (loop)
+            FillUpDeckFromDiscardPile();
+
+            //put the top 1 card from deck on hand
+            CardScript cardScript = combatDeck[0];
+
+            //if it passes the max hand limit the discard it, otherwise add it to the hand
+            if (handCards.Count >= HandManager.Instance.maxHandCardsLimit)
             {
 
-                //check if there are cards on deck/ if not put the discard pile back to deck (loop)
-                FillUpDeckFromDiscardPile();
+                //discard it
+                discardedPile.Add(cardScript);
 
-                //put the top 1 card from deck on hand
-                CardScript cardScript = combatDeck[0];
+                HandFullSpawnCardFunction(cardScript);
+            }
+            else
+            {
 
-                //if it passes the max hand limit the discard it, otherwise add it to the hand
-                if (handCards.Count >= HandManager.Instance.maxHandCardsLimit)
-                {
+                //add it to the hand
+                handCards.Add(cardScript);
 
-                    //discard it
-                    discardedPile.Add(cardScript);
+                //instantiate the card
+                InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
 
-                    HandFullSpawnCardFunction(cardScript);
-                }
-                else
-                {
-
-                    //add it to the hand
-                    handCards.Add(cardScript);
-
-                    //instantiate the card
-                    InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
-
-                    //rearrange hand
-                    HandManager.Instance.SetHandCards();
-
-
-                }
-
-                //remove the top 1 card from deck
-                combatDeck.RemoveAt(0);
+                //rearrange hand
+                HandManager.Instance.SetHandCards();
 
 
             }
+
+            //remove the top 1 card from deck
+            combatDeck.RemoveAt(0);
+
+
+        }
         //}
         //catch(Exception ex)
         //{
@@ -341,7 +330,7 @@ public class DeckManager : MonoBehaviour
     public void PlayCard(CardScript cardScript)
     {
         //check if the card has any abilities to be played
-        if (cardScript.scriptableCard.scriptableCardAbilities.Count == 0)
+        if (cardScript.scriptableCard.cardAbilityClass.Count == 0)
         {
             return;
         }
@@ -374,58 +363,22 @@ public class DeckManager : MonoBehaviour
 
         SystemManager.Instance.thereIsActivatedCard = true;
 
-        GameObject entity;
-
-        //get the character to be used
-        if (cardScript.whoUsedCard != null && cardScript.whoUsedCard.tag == "Enemy")
-        {
-            entity = cardScript.whoUsedCard;
-        }
-        else
-        {
-            try
-            {
-                entity = Combat.Instance.GetTheCharacterThatUsesTheCard(cardScript);
-            }
-            catch(Exception ex)
-            {
-                entity = null;
-            }
-        }
-
-        int count = 0;
+        //get the player
+        GameObject entity = CharacterManager.Instance.charactersInAdventure[0];
 
         if (entity == null)
         {
-            yield return  null;
+            yield return null;
         }
 
-        foreach (ScriptableCardAbility scriptableCardAbility in cardScript.scriptableCard.scriptableCardAbilities)
+        foreach (CardAbilityClass cardAbilityClass in cardScript.scriptableCard.cardAbilityClass)
         {
 
-            try
-            {
-
-                GameObject target = null;
-
-                //get the character to be used
-                if (cardScript.whoUsedCard != null && cardScript.whoUsedCard.tag == "Enemy")
-                {
-                    List<GameObject> intendList = SystemManager.Instance.GetAllChildren(entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject);
-
-                    //based on the ability position
-                    target = intendList[count].GetComponent<IntendClass>().target;
-                }
-                else
-                {
-                    target = null;
-                }
 
                 // Wait for 2 seconds
-                scriptableCardAbility.OnPlayCard(cardScript, entity, target);
+                cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
-                count++;
-
+     
                 //check to reset mana to the original cost if neeeded
                 if (cardScript.resetManaCost)
                 {
@@ -434,19 +387,15 @@ public class DeckManager : MonoBehaviour
                     cardScript.changedMana = false;
                 }
 
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError("Card Ability Failed : " + scriptableCardAbility.abilityName + " : ERROR : " + ex.Message);
-                Debug.LogError("entity : " + entity);
-            }
 
-            yield return new WaitForSeconds(scriptableCardAbility.GetFullAbilityWaitingTime(entity));
+
+            yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
             //yield return new WaitForSeconds(10f);
         }
 
         //go back to idle animation
-        if (entity != null) {
+        if (entity != null)
+        {
             Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
             if (animator != null)
@@ -463,7 +412,7 @@ public class DeckManager : MonoBehaviour
         SystemManager.Instance.thereIsActivatedCard = false;
 
         //if not already discarded by abilities then discard
-        if (savedPlayedCardScript != null && entity.tag != "Enemy")
+        if (savedPlayedCardScript != null)
         {
             //destroy the prefab
             DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
@@ -545,27 +494,6 @@ public class DeckManager : MonoBehaviour
         ShuffleDeck(combatDeck);
     }
 
-    public bool CheckModeAvailabilityForCard(ScriptableCard scriptableCard)
-    {
-        bool accepted = false;
-
-        //check if the card can be added based on the mode
-        if (CharacterManager.Instance.scriptablePlayerList.Count == 1 && scriptableCard.playerMode1 == true)
-        {
-            accepted = true;
-        }
-        else if (CharacterManager.Instance.scriptablePlayerList.Count == 2 && scriptableCard.playerMode2 == true)
-        {
-            accepted = true;
-        }
-        else if (CharacterManager.Instance.scriptablePlayerList.Count == 3 && scriptableCard.playerMode3 == true)
-        {
-            accepted = true;
-        }
-
-
-        return accepted;
-    }
 
     public void AddCardOnDeck(ScriptableCard scriptableCard, int character)
     {
@@ -574,7 +502,7 @@ public class DeckManager : MonoBehaviour
         GameObject cardPrefab = CardListManager.Instance.cardPrefab;
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
         mainDeck.Add(null);
-    
+
     }
 
     public void AddCardOnCombatDeck(CardScript cardScript)
@@ -645,7 +573,7 @@ public class DeckManager : MonoBehaviour
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
-        GameObject character = Combat.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+        GameObject character = CharacterManager.Instance.charactersInAdventure[0];
 
         //for example
         cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
@@ -660,9 +588,9 @@ public class DeckManager : MonoBehaviour
 
         //description is based on abilities
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
-        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(cardScript, character) + "\n";
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
         }
         //activation should not be visible
         cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
@@ -677,11 +605,11 @@ public class DeckManager : MonoBehaviour
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
-        GameObject character = Combat.Instance.GetTheCharacterThatUsesTheCard(cardScript);
+        GameObject character = CharacterManager.Instance.charactersInAdventure[0];
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
-        foreach (ScriptableCardAbility scriptableCardAbility in scriptableCard.scriptableCardAbilities)
+        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += scriptableCardAbility.AbilityDescription(cardScript, character) + "\n";
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
         }
     }
 
@@ -867,7 +795,7 @@ public class DeckManager : MonoBehaviour
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.mainDeck)
         {
             mainDeck.Add(cardScript);
-          
+
         }
 
         //close the thing 

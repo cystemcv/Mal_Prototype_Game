@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_DamageAllTargets", menuName = "CardAbility/Ability_DamageAllTargets")]
 public class Ability_DamageAllTargets : ScriptableCardAbility
@@ -9,13 +10,13 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
     [Header("UNIQUE")]
     public int empty;
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass,GameObject entity)
     {
 
-        int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
+        int cardDmg = cardAbilityClass.abilityIntValue;
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, null);
 
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to all enemies";
         string final = keyword + " : " + description;
 
@@ -24,9 +25,9 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
         GameObject[] targetsFound;
         //get all targets
         if (entity.tag == "Player")
@@ -46,9 +47,9 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
             if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD) {
 
                 //spawn prefab
-                base.SpawnEffectPrefab(targetFound);
+                base.SpawnEffectPrefab(targetFound, cardAbilityClass);
 
-                int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+                int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, targetFound);
                 Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
             }
         }

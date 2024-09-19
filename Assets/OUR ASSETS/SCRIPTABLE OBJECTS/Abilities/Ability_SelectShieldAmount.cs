@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_SelectShieldAmount", menuName = "CardAbility/Ability_SelectShieldAmount")]
 public class Ability_SelectShieldAmount : ScriptableCardAbility
@@ -13,9 +14,9 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
     public List<int> shieldAmountList;
     public GameObject cardPrefabShield;
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "";
 
         description = "Add ";
@@ -35,9 +36,9 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
 
 

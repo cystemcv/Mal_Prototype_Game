@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_DamageRandomTarget", menuName = "CardAbility/Ability_DamageRandomTarget")]
 public class Ability_DamageRandomTarget : ScriptableCardAbility
@@ -10,12 +11,12 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
     private GameObject targetFound;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        int cardDmg = GetAbilityVariable(cardScript);
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, null);
+        int cardDmg = cardAbilityClass.abilityIntValue;
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, null);
 
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to a random enemy";
         string final = keyword + " : " + description;
 
@@ -25,7 +26,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
         //get all targets
         GameObject[] targetsFound;
@@ -61,36 +62,23 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
         targetFound = targetsList[randomNmbr];
 
-        base.OnPlayCard(cardScript, entity, targetFound);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, targetFound);
  
-        if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
-           || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
-        {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
+            ProceedToAbility(cardScript, cardAbilityClass, entity);
 
-        }
-        else
-        {
-            ProceedToAbility(cardScript, entity);
-        }
 
 
 
     }
 
-    private void OnCompleteBase(CardScript cardScript, GameObject entity)
-    {
-        // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript, entity);
-    }
 
-    private void ProceedToAbility(CardScript cardScript, GameObject entity)
+    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
         //spawn prefab
-        base.SpawnEffectPrefab(targetFound);
+        base.SpawnEffectPrefab(targetFound, cardAbilityClass);
 
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(GetAbilityVariable(cardScript), entity, targetFound);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, targetFound);
         Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }

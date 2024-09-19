@@ -4,11 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using static ScriptableCard;
 
 public class AIBrain : MonoBehaviour
 {
 
-    public List<CardScript> cardScriptList;
+    public List<ScriptableCard> cardScriptList;
 
     public int aiLogicStep = 0;
 
@@ -24,12 +25,9 @@ public class AIBrain : MonoBehaviour
             return;
         }
 
-        //save what gameobject used the card
-        cardScriptList[aiLogicStep].whoUsedCard = this.gameObject;
 
-        
         //play card
-        DeckManager.Instance.PlayCardOnlyAbilities(cardScriptList[aiLogicStep]);
+        PlayCardOnlyAbilities(cardScriptList[aiLogicStep]);
 
         //go to the next step
         aiLogicStep++;
@@ -53,175 +51,110 @@ public class AIBrain : MonoBehaviour
         //get the intends gameobject which is gonna be the parent of the icons
         GameObject intends = this.gameObject.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
 
-        int countPos = 0;
+        ScriptableCard scriptableCard = cardScriptList[aiLogicStep];
 
-        //loop throught the abilities
-        foreach (ScriptableCardAbility scriptableCardAbility in cardScriptList[aiLogicStep].scriptableCard.scriptableCardAbilities)
+        targetsList.Clear();
+        //create the intend based on the ai choices
+        GameObject intendObject = Instantiate(SystemManager.Instance.intendObject, intends.transform.position, Quaternion.identity);
+        //parent it
+        intendObject.transform.SetParent(intends.transform);
+
+        TMP_Text damageText = intendObject.transform.Find("DamageText").GetComponent<TMP_Text>();
+        TMP_Text cardText = intendObject.transform.Find("CardText").GetComponent<TMP_Text>();
+
+        //get all the abilities dmg
+
+
+        damageText.text = GetCardDamageInString(scriptableCard, this.gameObject, null);
+        cardText.text = scriptableCard.cardName;
+
+    }
+
+    public void PlayCardOnlyAbilities(ScriptableCard cardScript)
+    {
+
+        StartCoroutine(PlayCardCoroutine(cardScript));
+
+    }
+
+    IEnumerator PlayCardCoroutine(ScriptableCard scriptableCard)
+    {
+
+        SystemManager.Instance.thereIsActivatedCard = true;
+
+        GameObject entity = this.gameObject;
+
+        //get the player
+        GameObject target = GameObject.FindGameObjectWithTag("Player");
+
+        if (entity == null)
         {
-            targetsList.Clear();
-            //create the intend based on the ai choices
-            GameObject intendObject = Instantiate(SystemManager.Instance.intendObject, intends.transform.position, Quaternion.identity);
-            //parent it
-            intendObject.transform.SetParent(intends.transform);
+            yield return null;
+        }
 
-            IntendClass intendClass = intendObject.GetComponent<IntendClass>();
-            intendClass.scriptableCard = cardScriptList[aiLogicStep].scriptableCard;
+        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
+        {
 
+            //create new cardscript
+            CardScript cardScript = new CardScript();
+            cardScript.scriptableCard = scriptableCard;
 
-            //put the icon based on the intend
-            Image intendImage = intendObject.transform.Find("Icon").GetComponent<Image>();
-            TMP_Text intendText = intendObject.transform.Find("Text").GetComponent<TMP_Text>();
+            //activate effect
+            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, target);
 
-            intendText.text = intendClass.scriptableCard.cardName;
-            //intendImage.sprite = GetIntendIcon(scriptableCardAbility);
+            yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
+            //yield return new WaitForSeconds(10f);
+        }
 
-            //put the icon based on the intend
-            //if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.ATTACK)
-            //{
-            //    intendImage.sprite = SystemManager.Instance.intend_Attack;
-            //    intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
-            //}
-            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.MAGIC)
-            //{
-            //    intendImage.sprite = SystemManager.Instance.intend_Magic;
-            //    intendText.text = scriptableCardAbility.GetAbilityVariable(cardScriptList[aiLogicStep]).ToString();
-            //}
-            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.BUFF)
-            //{
-            //    intendImage.sprite = SystemManager.Instance.intend_Buff;
-            //    intendText.text = "<>";
-            //   // intendText.gameObject.SetActive(false);
-            //}
-            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.DEBUFF)
-            //{
-            //    intendImage.sprite = SystemManager.Instance.intend_Debuff;
-            //    intendText.text = "<>";
-            //    // intendText.gameObject.SetActive(false);
-            //}
-            //else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.CARDDECK)
-            //{
-            //    intendImage.sprite = SystemManager.Instance.intend_CardDeck;
-            //    //intendText.text = "T";
-            //    intendText.gameObject.SetActive(false);
-            //}
+        //go back to idle animation
+        if (entity != null)
+        {
+            Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
-            //get the target and the color
-            if (scriptableCardAbility.aITypeOfAttack == SystemManager.AITypeOfAttack.AOE)
+            if (animator != null)
             {
 
-                //check for what targets its the aoe
-                if (scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.PLAYER)
-                {
-
-                    //golden
-                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGolden);
-
-                }
-                else if(scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.ENEMY)
-                {
-
-                    //dark grey
-                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkGrey);
-
-                }
-            }
-            else if (scriptableCardAbility.aITypeOfAttack == SystemManager.AITypeOfAttack.SINGLETARGET)
-            {
-                //check for what targets its the aoe
-                if (scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.PLAYER)
-                {
-
-                    //add the target
-                    GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
-
-                
-                    //remove dead
-                    foreach (GameObject target in targets)
-                    {
-                        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-                        {
-                            targetsList.Add(target);
-                        }
-                    }
-
-                    //if no more players stop
-                    if(targetsList.Count <= 0)
-                    {
-                        return;
-                    }
-
-                    //get the random target
-                    int indexTarget = Random.Range(0, targetsList.Count);
-
-          
-
-                    EntityClass entityClass = targetsList[indexTarget].GetComponent<EntityClass>();
-
-                    //add them to the list
-                    intendClass.target = targetsList[indexTarget];
-
-                    //color of the character class
-                    intendText.color = CardListManager.Instance.GetClassColor(entityClass.scriptableEntity.mainClass);
-                }
-                else if (scriptableCardAbility.aIWhoToTarget == SystemManager.AIWhoToTarget.ENEMY)
-                {
-
-                    //add the target
-                    GameObject[] targets = GameObject.FindGameObjectsWithTag("Enemy");
-
-
-                    //remove dead
-                    foreach (GameObject target in targets)
-                    {
-                        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-                        {
-                            targetsList.Add(target);
-                        }
-                    }
-
-                    //targetsList = targets.ToList();
-
-                    //get the random target
-                    int indexTarget = Random.Range(0, targetsList.Count);
-                    EntityClass entityClass = targetsList[indexTarget].GetComponent<EntityClass>();
-
-                    //add them to the list
-                    intendClass.target = targetsList[indexTarget];
-
-                    //lighter grey
-                    intendText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightGrey);
-            
-                }
+                animator.SetTrigger("Idle");
             }
 
         }
+
+
+
+        //card ended
+        SystemManager.Instance.thereIsActivatedCard = false;
+
 
 
     }
 
-    public Sprite GetIntendIcon(ScriptableCardAbility scriptableCardAbility)
+
+    public string GetCardDamageInString(ScriptableCard scriptableCard, GameObject entity, GameObject target)
     {
-        Sprite icon = null;
 
-        //put the icon based on the intend
-        if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.ATTACK)
+        string damageText = "";
+        int count = 0;
+
+        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
-            icon = SystemManager.Instance.intend_Attack;
-        }
-        else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.MAGIC)
-        {
-            icon = SystemManager.Instance.intend_Magic;
-        }
-        else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.BUFF)
-        {
-            icon = SystemManager.Instance.intend_Buff;
-        }
-        else if (scriptableCardAbility.aIIntend == SystemManager.AIIntend.DEBUFF)
-        {
-            icon = SystemManager.Instance.intend_Debuff;
+
+            if (cardAbilityClass.scriptableCardAbility.abilityType == SystemManager.AbilityType.ATTACK)
+            {
+
+                if (count != 0)
+                {
+                    damageText += "+";
+                }
+
+                count += 1;
+                damageText += "(" + Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, target) + ")";
+            }
+       
+
         }
 
-        return icon;
+
+        return damageText;
     }
 
 

@@ -35,16 +35,19 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, }
     public CardType cardType;
 
+    public enum CardRarity { Common, Rare, Epic, Legendary };
+    public CardRarity cardRarity;
+
     public enum EntityAnimation { MeleeAttack, ProjectileAttack, SpellCast }; //Actual classes to be determined
     public EntityAnimation entityAnimation;
 
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { Enemy,Knight, Rogue, Hierophant, Chaos_Mage, Ranger, Sniper, Righteous, Trickster,Angel }; //Actual classes to be determined
+    public enum MainClass { MONSTER, ANGEL }; //Actual classes to be determined
     public MainClass mainClass;
 
-    public enum TypeOfAttack { SIMPLE, MELLEE, PROJECTILE }
+    public enum AbilityType { ATTACK, OTHER }
 
     public enum AITypeOfAttack { SINGLETARGET,AOE }
 

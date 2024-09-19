@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_BanishCardFromHand", menuName = "CardAbility/Ability_BanishCardFromHand")]
 public class Ability_BanishCardFromHand : ScriptableCardAbility
@@ -10,9 +11,9 @@ public class Ability_BanishCardFromHand : ScriptableCardAbility
     public int empty;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Banish this card";
         string final = keyword + " : " + description;
 
@@ -21,9 +22,9 @@ public class Ability_BanishCardFromHand : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
         DeckManager.Instance.DestroyPlayedCard(SystemManager.CardThrow.BANISH);
 

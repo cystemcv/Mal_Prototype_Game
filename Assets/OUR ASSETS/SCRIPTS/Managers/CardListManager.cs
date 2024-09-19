@@ -6,6 +6,8 @@ public class CardListManager : MonoBehaviour
 {
     public static CardListManager Instance;
 
+
+
     public GameObject cardPrefab;
 
     public List<ScriptableCard> cardPool;
@@ -42,23 +44,11 @@ public class CardListManager : MonoBehaviour
     {
         Color color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
 
-        if (mainClass == SystemManager.MainClass.Knight)
+        if (mainClass == SystemManager.MainClass.MONSTER)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
         }
-        else if (mainClass == SystemManager.MainClass.Rogue)
-        {
-            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
-        }
-        else if (mainClass == SystemManager.MainClass.Righteous)
-        {
-            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
-        }
-        else if (mainClass == SystemManager.MainClass.Trickster)
-        {
-            color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
-        }
-        else if (mainClass == SystemManager.MainClass.Angel)
+        else if (mainClass == SystemManager.MainClass.ANGEL)
         {
             color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
         }

@@ -12,26 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
   m_Name: Card_Block
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
-  cardName: Block
-  mainClass: 9
-  primaryManaCost: 1
-  secondaryManaCost: 1
-  cardType: 2
-  ourRarity: 0
   cardArt: {fileID: 21300000, guid: 92ded8e2079d07c46974ca1d715398a5, type: 3}
+  cardName: Block
+  mainClass: 1
+  cardType: 2
+  cardRarity: 0
+  primaryManaCost: 1
   cardDesc: 
   cardFlavor: 
-  ability1Var: 4
-  ability2Var: 0
-  ability3Var: 0
-  ability4Var: 0
-  ability5Var: 0
-  ability6Var: 0
-  scriptableCardAbilities:
-  - {fileID: 11400000, guid: 5edd218e45e5bd64fbccb55570b92881, type: 2}
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: 5edd218e45e5bd64fbccb55570b92881, type: 2}
+    waitForAbility: 0.5
+    abilityEffect: {fileID: 7161673021670805805, guid: 657ad4895752e9349949f0f6365d189f, type: 3}
+    abilityEffectLifetime: 0.5
+    entityAnimation: 2
+    entitySound: 0
+    abilityIntValue: 4
+    abilityIntMinValue: 0
+    abilityIntMaxValue: 0
+    abilityStringValue: 
   canTarget: 1
   targetEnemy: 0
-  playerMode1: 1
-  playerMode2: 1
-  playerMode3: 1
   unlockable: 0

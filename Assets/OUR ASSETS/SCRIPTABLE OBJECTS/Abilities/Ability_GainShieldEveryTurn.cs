@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_GainShieldEveryTurn", menuName = "CardAbility/Ability_GainShieldEveryTurn")]
 public class Ability_GainShieldEveryTurn : ScriptableCardAbility
@@ -10,10 +11,10 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
     public int buffLifeTime = 0;
     private GameObject realTarget;
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
-        string description = "Gain " + GetAbilityVariable(cardScript) + " shield " + buffLifeTime + " turns";
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+        string description = "Gain " + cardAbilityClass.abilityIntValue + " shield " + buffLifeTime + " turns";
         string final = keyword + " : " + description;
 
         return final;
@@ -21,7 +22,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
         //assign target 
         if (target != null)
@@ -33,38 +34,26 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
             realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
-        base.OnPlayCard(cardScript, entity, realTarget);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, realTarget);
 
 
-        if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
-            || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
-        {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
-
-        }
-        else
-        {
-            ProceedToAbility(cardScript, entity);
-        }
-
+  
+            ProceedToAbility(cardScript, cardAbilityClass, entity);
+ 
 
 
     }
 
-    private void OnCompleteBase(CardScript cardScript, GameObject entity)
-    {
-        // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript, entity);
-    }
 
-    private void ProceedToAbility(CardScript cardScript, GameObject entity)
+
+    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
         BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, buffLifeTime);
 
         //get the buff or debuff to do things
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
-        buffDebuffClass.tempVariable = GetAbilityVariable(cardScript);
+        buffDebuffClass.tempVariable = cardAbilityClass.abilityIntValue;
 
 
         ////increase character attack

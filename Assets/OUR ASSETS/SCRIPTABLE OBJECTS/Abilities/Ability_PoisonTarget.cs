@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_PoisonTarget", menuName = "CardAbility/Ability_PoisonTarget")]
 public class Ability_PoisonTarget : ScriptableCardAbility
@@ -10,10 +11,10 @@ public class Ability_PoisonTarget : ScriptableCardAbility
     public int empty;
     private GameObject realTarget;
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
-        string description = "Deal " + GetAbilityVariable(cardScript) + " to an enemy";
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+        string description = "Deal " + cardAbilityClass.abilityIntValue + " to an enemy";
         string final = keyword + " : " + description;
 
         return final;
@@ -21,7 +22,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
         //assign target 
         if (target != null)
@@ -33,20 +34,11 @@ public class Ability_PoisonTarget : ScriptableCardAbility
             realTarget = CombatCardHandler.Instance.targetClicked;
         }
 
-        base.OnPlayCard(cardScript, entity, realTarget);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, realTarget);
 
 
-
-        if (base.typeOfAttack == SystemManager.TypeOfAttack.MELLEE
-            || base.typeOfAttack == SystemManager.TypeOfAttack.PROJECTILE)
-        {
-            InvokeHelper.Instance.Invoke(() => OnCompleteBase(cardScript, entity), base.timeToGetToTarget);
-
-        }
-        else
-        {
             ProceedToAbility(cardScript, entity);
-        }
+
 
 
 

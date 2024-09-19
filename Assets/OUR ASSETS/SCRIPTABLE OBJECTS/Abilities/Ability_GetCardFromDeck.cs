@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static ScriptableCard;
 
 [CreateAssetMenu(fileName = "Ability_GetCardFromDeck", menuName = "CardAbility/Ability_GetCardFromDeck")]
 public class Ability_GetCardFromDeck : ScriptableCardAbility
@@ -12,23 +13,23 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
     public bool modifyManaCost = false;
 
 
-    public override string AbilityDescription(CardScript cardScript, GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, entity);
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Find a random " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
-            description += "(Mana Cost is set to " + GetAbilityVariable(cardScript) + " )";
+            description += "(Mana Cost is set to " + cardAbilityClass.abilityIntValue + " )";
         }
         else if (modifyManaCost)
         {
-            if (GetAbilityVariable(cardScript) > 0)
+            if (cardAbilityClass.abilityIntValue > 0)
             {
-                description += "(Increase Mana Cost by " + GetAbilityVariable(cardScript) + " )";
+                description += "(Increase Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
             }
-            else if(GetAbilityVariable(cardScript) < 0)
+            else if(cardAbilityClass.abilityIntValue < 0)
             {
-                description += "(Decrease Mana Cost by " + GetAbilityVariable(cardScript) + " )";
+                description += "(Decrease Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
             }
         }
 
@@ -39,9 +40,9 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
     }
 
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
     {
-        base.OnPlayCard(cardScript, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
         //based on the type
         // Filter the combatDeck to get only the cards of the specified type
         List<CardScript> filteredDeck = DeckManager.Instance.combatDeck.Where(card => card.scriptableCard.cardType == cardType).ToList();
@@ -80,14 +81,14 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
 
         if (setManaCost)
         {
-            foundCardScript.primaryManaCost = GetAbilityVariable(cardScript);
+            foundCardScript.primaryManaCost = cardAbilityClass.abilityIntValue;
 
             foundCardScript.resetManaCost = true;
             foundCardScript.changedMana = true;
         }
         else if (modifyManaCost)
         {
-            foundCardScript.primaryManaCost += GetAbilityVariable(cardScript);
+            foundCardScript.primaryManaCost += cardAbilityClass.abilityIntValue;
             //reset to 0 if its below
             if (foundCardScript.primaryManaCost <= 0)
             {
