@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EntityClass : MonoBehaviour
+public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
 
@@ -311,5 +312,52 @@ public class EntityClass : MonoBehaviour
         GameObject deathExplostion = Instantiate(Combat.Instance.deathExplosion, this.gameObject.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
         Destroy(deathExplostion, 0.6f);
         Destroy(this.gameObject);
+    }
+
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("IN???");
+        if (this.gameObject.tag == "Enemy")
+        {
+
+            Debug.Log("IN???");
+
+            //create gameobject on scene and spawn it on the discard spawner
+            UI_Combat.Instance.CheckEnemyCard.SetActive(true);
+            GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
+            cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
+            AIBrain aIBrain = this.GetComponent<AIBrain>();
+
+    
+            ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+
+            //add the scriptable card object to the prefab class to reference
+            cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+
+
+            //make the local scale 1,1,1
+            cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
+            //update the information on the card prefab
+            DeckManager.Instance.UpdateCardUI(cardPrefab);
+
+            //deactivate events
+            cardPrefab.GetComponent<CardEvents>().enabled = false;
+
+
+        }
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+
+        if (this.gameObject.tag == "Enemy")
+        {
+            UI_Combat.Instance.CheckEnemyCard.SetActive(false);
+        }
+
     }
 }

@@ -374,18 +374,22 @@ public class DeckManager : MonoBehaviour
         foreach (CardAbilityClass cardAbilityClass in cardScript.scriptableCard.cardAbilityClass)
         {
 
+            if (cardAbilityClass == null)
+            {
+                continue;
+            }
 
-                // Wait for 2 seconds
-                cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, null);
+            // Wait for 2 seconds
+            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
-     
-                //check to reset mana to the original cost if neeeded
-                if (cardScript.resetManaCost)
-                {
-                    cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
-                    cardScript.resetManaCost = false;
-                    cardScript.changedMana = false;
-                }
+
+            //check to reset mana to the original cost if neeeded
+            if (cardScript.resetManaCost)
+            {
+                cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
+                cardScript.resetManaCost = false;
+                cardScript.changedMana = false;
+            }
 
 
 
@@ -808,7 +812,22 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public int GetIntValueFromList(int position, List<int> list)
+    {
 
+        Debug.Log("position : " + position);
+        Debug.Log("list : " + list);
+
+        int value = 0;
+
+        if (list.Count > position && position >= 0)
+        {
+            value = list[position];
+        }
+
+        return value;
+
+    }
 
 
 }

@@ -11,13 +11,13 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum GameMode { MainMode, DuoMode, AnyMode }
     public GameMode gameMode = GameMode.MainMode;
 
-    public enum SystemModes { MAINMENU, PAUSED, GAMEPLAY, COMBAT, DUNGEON}
+    public enum SystemModes { MAINMENU, PAUSED, GAMEPLAY, COMBAT, DUNGEON }
     public SystemModes systemMode = SystemModes.MAINMENU;
 
     public enum UIScreens { MainMenu, ModeSelectionMenu, CharacterSelectionMenu, SaveMenu, LoadMenu, LibraryMenu, OptionsMenu }
     public UIScreens currentUIScreen = UIScreens.MainMenu;
 
-    public enum SaveLoadModes { SAVE, LOAD}
+    public enum SaveLoadModes { SAVE, LOAD }
     public SaveLoadModes saveLoadMode = SaveLoadModes.SAVE;
 
     public enum AbilityModes { NONE, TARGET, CHOICE, SHIELDCHOICE }
@@ -44,12 +44,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { MONSTER, ANGEL }; //Actual classes to be determined
+    public enum MainClass { MONSTER, COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum AbilityType { ATTACK, OTHER }
 
-    public enum AITypeOfAttack { SINGLETARGET,AOE }
+    public enum AITypeOfAttack { SINGLETARGET, AOE }
 
     public enum AIWhoToTarget { ENEMY, PLAYER }
 
@@ -57,10 +57,14 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum CardThrow { DISCARD, BANISH, DECK }
 
-    public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD}
+    public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon }
+
+    public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD }
 
     //dungeon generator
     public enum RoomType { Start, Battle, Boss, Empty, Chest, Event, Trap, Rest }
+
+
 
     //end of enums
 
@@ -119,6 +123,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     [Header("LOADING")]
     public GameObject LoadingScreen;
 
+    [Header("MATERIALS")]
+    public Material materialDefaultEntity;
+    public Material materialDamagedEntity;
+    public Material materialTargetEntity;
+
     private void Awake()
     {
         if (Instance == null)
@@ -135,14 +144,14 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     // called first
     void OnEnable()
     {
-       
+
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     // called second
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
- 
+
         //check if the scene was from a load button
         if (DataPersistenceManager.Instance.isLoadScene)
         {
@@ -164,7 +173,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     // called when the game is terminated
     void OnDisable()
     {
-     
+
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -202,19 +211,20 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void Update()
     {
-        if (this.systemMode == SystemModes.GAMEPLAY) {
+        if (this.systemMode == SystemModes.GAMEPLAY)
+        {
             this.totalTimePlayed += Time.deltaTime;
         }
     }
 
     public void LoadData(GameData data)
     {
-        this.totalTimePlayed = data.totalTimePlayed; 
+        this.totalTimePlayed = data.totalTimePlayed;
     }
 
     public void SaveData(ref GameData data)
     {
-    
+
         data.totalTimePlayed = this.totalTimePlayed;
     }
 
@@ -232,12 +242,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void RuntimeInitializeOnLoadMethod()
     {
-   
+
     }
 
     public Color GetColorFromHex(string hex)
     {
-     
+
         Color colorFromHex = Color.white;
         bool boolColor = ColorUtility.TryParseHtmlString("#" + hex, out colorFromHex);
 
@@ -263,7 +273,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Destroy(child.gameObject);
             string objName = child.gameObject.name;
             yield return null; // Wait for a frame to ensure destruction
-         
+
         }
     }
 
@@ -286,17 +296,17 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Destroy(child.gameObject);
             string objName = child.gameObject.name;
 
-       
+
         }
     }
 
     public List<GameObject> GetAllChildren(GameObject parent)
     {
-        List<GameObject> listOfChildGameobjects = new List<GameObject>(); 
+        List<GameObject> listOfChildGameobjects = new List<GameObject>();
 
         foreach (Transform child in parent.transform)
         {
-     
+
             // Destroy each child GameObject
             listOfChildGameobjects.Add(child.gameObject);
         }
@@ -337,5 +347,16 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         yield return new WaitForSeconds(manualLoadingTime);
 
     }
+    public void ChangeTargetMaterial(Material customMaterial, GameObject target)
+    {
 
+        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+        {
+
+            //change material
+            target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>().material = customMaterial;
+
+        }
+
+    }
 }

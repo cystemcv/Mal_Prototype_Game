@@ -627,6 +627,11 @@ public class Combat : MonoBehaviour
     public void AdjustTargetHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
+        if(target == null)
+        {
+            return;
+        }
+
         EntityClass entityClass = target.GetComponent<EntityClass>();
 
         if (entityClass.entityMode == SystemManager.EntityMode.DEAD)
@@ -693,6 +698,9 @@ public class Combat : MonoBehaviour
 
                 //adjust the hp bar
                 UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
+
+                //flash enemy when directly hit
+                StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
 
             }
 
@@ -900,7 +908,12 @@ public class Combat : MonoBehaviour
 
 
 
-
+    public IEnumerator FlashEntityAfterHit(GameObject target)
+    {
+        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDamagedEntity, target);
+        yield return new WaitForSeconds(0.2f);
+        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, target);
+    }
 
 
 

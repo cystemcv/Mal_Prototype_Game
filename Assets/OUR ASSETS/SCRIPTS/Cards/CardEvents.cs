@@ -230,8 +230,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable && SystemManager.Instance.thereIsActivatedCard == false)
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
+
                 //activation should not be visible
-                if (scriptableCard.canTarget)
+                if (scriptableCard.targetEntityTagList.Count > 0)
                 {
                     OnPointerUp(null);
                 }
@@ -287,7 +288,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             // Scale down the card
             scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
-            if (scriptableCard.canTarget)
+            //if there are targetable entities
+            if (scriptableCard.targetEntityTagList.Count > 0)
             {
                 //if the card is targetable
 

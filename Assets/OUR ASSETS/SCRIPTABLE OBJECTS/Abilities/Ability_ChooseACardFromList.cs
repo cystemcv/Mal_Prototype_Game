@@ -20,21 +20,27 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
+
+      
+        
+
+        
+
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass , entity);
         string description = "Choose a " + mainClass + " " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
-            description += "(Mana Cost is set to " + cardAbilityClass.abilityIntValue + " )";
+            description += "(Mana Cost is set to " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
         }
         else if (modifyManaCost)
         {
-            if (cardAbilityClass.abilityIntValue > 0)
+            if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) > 0)
             {
-                description += "(Increase Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
+                description += "(Increase Mana Cost by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
             }
-            else if (cardAbilityClass.abilityIntValue < 0)
+            else if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) < 0)
             {
-                description += "(Decrease Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
+                description += "(Decrease Mana Cost by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
             }
         }
 
@@ -93,14 +99,14 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
                 if (setManaCost)
                 {
-                    cardScriptTemp.primaryManaCost = cardAbilityClass.abilityIntValue;
+                    cardScriptTemp.primaryManaCost = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
                     cardScriptTemp.resetManaCost = true;
                     cardScriptTemp.changedMana = true;
                 }
                 else if (modifyManaCost)
                 {
-                    cardScriptTemp.primaryManaCost += cardAbilityClass.abilityIntValue;
+                    cardScriptTemp.primaryManaCost += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
                     //reset to 0 if its below
                     if (cardScriptTemp.primaryManaCost <= 0)
                     {

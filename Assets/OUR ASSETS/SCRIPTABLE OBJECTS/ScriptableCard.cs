@@ -20,7 +20,10 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.CardType cardType = SystemManager.CardType.Attack;
     [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
-    public SystemManager.CardRarity cardRarity = SystemManager.CardRarity.Common; 
+    public SystemManager.CardRarity cardRarity = SystemManager.CardRarity.Common;
+
+    [Title("SETTINGS")]
+    public List<SystemManager.EntityTag> targetEntityTagList;
 
     [Title("CARD DETAILS")]
     [Range(0, 9)]
@@ -33,9 +36,8 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [RequiredListLength(0,3)]
     public List<CardAbilityClass> cardAbilityClass;
 
-    [Title("SETTINGS")]
-    public bool canTarget = false; //if it requires a target
-    public bool targetEnemy = true; //by default is on,otherwise target character
+
+
 
     [Title("UNLOCKABLES")]
     public bool unlockable = false;//available from start = false, unlockable = true
@@ -53,10 +55,10 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
         public SystemManager.EntitySound entitySound = SystemManager.EntitySound.Generic;
         [Title("ABILITY VALUES")]
-        public int abilityIntValue;
-        public int abilityIntMinValue;
-        public int abilityIntMaxValue;
-        public string abilityStringValue;
+        public List<int> abilityIntValueList;
+        public List<string> abilityStringValueList;
+        public List<bool> abilityBoolValueList;
+        public List<float> abilityFloatValueList;
     }
 
 

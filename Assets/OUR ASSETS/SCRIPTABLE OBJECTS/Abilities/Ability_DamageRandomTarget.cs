@@ -13,8 +13,8 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        int cardDmg = cardAbilityClass.abilityIntValue;
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, null);
+        int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
 
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to a random enemy";
@@ -78,7 +78,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
         //spawn prefab
         base.SpawnEffectPrefab(targetFound, cardAbilityClass);
 
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, targetFound);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, targetFound);
         Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }

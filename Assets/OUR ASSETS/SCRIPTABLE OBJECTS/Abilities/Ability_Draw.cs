@@ -14,8 +14,8 @@ public class Ability_Draw : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass,GameObject entity)
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Draw " + cardAbilityClass.abilityIntValue + " cards";
-        string final = keyword + " : " + description;
+        string description = "Draw " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " cards";
+        string final = keyword + description;
 
         return final;
     }
@@ -28,7 +28,7 @@ public class Ability_Draw : ScriptableCardAbility
 
        // Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 
-        int cardsToDraw = cardAbilityClass.abilityIntValue;
+        int cardsToDraw = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
         DeckManager.Instance.DrawMultipleCards(cardsToDraw);
 

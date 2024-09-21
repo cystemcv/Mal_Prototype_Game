@@ -21,6 +21,9 @@ public class UI_Combat : MonoBehaviour
     [Header("SPAWN OF DISCARD CARD")]
     public GameObject handFullSpawnCard;
 
+    [Header("SPAWN OF DISCARD CARD")]
+    public GameObject CheckEnemyCard;
+
     [Header("OTHER UI")]
     public GameObject chooseACardScreen;
 

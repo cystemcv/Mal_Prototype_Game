@@ -19,17 +19,17 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
         string description = "Find a random " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
-            description += "(Mana Cost is set to " + cardAbilityClass.abilityIntValue + " )";
+            description += "(Mana Cost is set to " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
         }
         else if (modifyManaCost)
         {
-            if (cardAbilityClass.abilityIntValue > 0)
+            if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) > 0)
             {
-                description += "(Increase Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
+                description += "(Increase Mana Cost by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
             }
-            else if(cardAbilityClass.abilityIntValue < 0)
+            else if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) < 0)
             {
-                description += "(Decrease Mana Cost by " + cardAbilityClass.abilityIntValue + " )";
+                description += "(Decrease Mana Cost by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " )";
             }
         }
 
@@ -81,14 +81,14 @@ public class Ability_GetCardFromDeck : ScriptableCardAbility
 
         if (setManaCost)
         {
-            foundCardScript.primaryManaCost = cardAbilityClass.abilityIntValue;
+            foundCardScript.primaryManaCost = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
             foundCardScript.resetManaCost = true;
             foundCardScript.changedMana = true;
         }
         else if (modifyManaCost)
         {
-            foundCardScript.primaryManaCost += cardAbilityClass.abilityIntValue;
+            foundCardScript.primaryManaCost += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
             //reset to 0 if its below
             if (foundCardScript.primaryManaCost <= 0)
             {

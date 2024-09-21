@@ -16,8 +16,8 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Add " + cardAbilityClass.abilityIntValue + " shield to character";
-        string final = keyword + " : " + description;
+        string description = "Add " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " shield to character";
+        string final = keyword  + description;
 
         return final;
     }
@@ -53,7 +53,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-        Combat.Instance.AdjustTargetHealth(realTarget, cardAbilityClass.abilityIntValue, false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }

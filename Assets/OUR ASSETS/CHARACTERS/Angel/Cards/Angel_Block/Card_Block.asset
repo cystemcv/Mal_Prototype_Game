@@ -14,23 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
   cardArt: {fileID: 21300000, guid: 92ded8e2079d07c46974ca1d715398a5, type: 3}
   cardName: Block
-  mainClass: 1
+  mainClass: 5
   cardType: 2
   cardRarity: 0
+  targetEntityTagList: 0000000002000000
   primaryManaCost: 1
   cardDesc: 
   cardFlavor: 
   cardAbilityClass:
-  - scriptableCardAbility: {fileID: 11400000, guid: 5edd218e45e5bd64fbccb55570b92881, type: 2}
-    waitForAbility: 0.5
+  - scriptableCardAbility: {fileID: 11400000, guid: 80c16caf9eded4b448b9839678851e07, type: 2}
+    waitForAbility: 0.2
     abilityEffect: {fileID: 7161673021670805805, guid: 657ad4895752e9349949f0f6365d189f, type: 3}
-    abilityEffectLifetime: 0.5
+    abilityEffectLifetime: 0.2
     entityAnimation: 2
-    entitySound: 0
-    abilityIntValue: 4
-    abilityIntMinValue: 0
-    abilityIntMaxValue: 0
-    abilityStringValue: 
-  canTarget: 1
-  targetEnemy: 0
+    entitySound: 4
+    abilityIntValueList: 04000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
   unlockable: 0

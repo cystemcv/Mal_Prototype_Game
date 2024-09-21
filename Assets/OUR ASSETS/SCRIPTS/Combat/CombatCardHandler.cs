@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CombatCardHandler : MonoBehaviour
@@ -83,6 +84,7 @@ public class CombatCardHandler : MonoBehaviour
                 //remove line renderer
                 UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(true);
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
+                ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
 
                 // Update the positions of the line renderer
                 //lineRenderer.SetPosition(0, targetPosition);
@@ -100,50 +102,15 @@ public class CombatCardHandler : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
 
-        string cardTag = "";
-        if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
-        {
-            cardTag = "Enemy";
-        }
-        else
-        {
-            cardTag = "Player";
-        }
+        ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
+
 
         // Check if the ray intersects with any colliders
-        if (hit.collider != null)
+        if (hit.collider != null && CardCanTargetEntity(hit.collider.gameObject))
         {
-            //check if the target is the required one
-            if (hit.collider.gameObject.tag == "Enemy" && cardTag == "Enemy")
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue));
 
-            }
-            else if (hit.collider.gameObject.tag == "Player" && cardTag == "Player")
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue));
+            ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
 
-            }
-            else
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
-            }
-
-        }
-        else
-        {
-            if (cardTag == "Player")
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen));
-            }
-            else if (cardTag == "Enemy")
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
-            }
-            else
-            {
-                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
-            }
         }
 
     }
@@ -181,6 +148,7 @@ public class CombatCardHandler : MonoBehaviour
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
 
             //return everything where it was
             HandManager.Instance.SetHandCards();
@@ -206,17 +174,8 @@ public class CombatCardHandler : MonoBehaviour
                 return;
             }
 
-            string cardTag = "";
-            if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEnemy == true)
-            {
-                cardTag = "Enemy";
-            }
-            else
-            {
-                cardTag = "Player";
-            }
 
-            if (hit.collider.gameObject.tag != cardTag)
+            if (!CardCanTargetEntity(hit.collider.gameObject))
             {
                 return;
             }
@@ -229,6 +188,7 @@ public class CombatCardHandler : MonoBehaviour
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
 
             //leave from target
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
@@ -240,6 +200,50 @@ public class CombatCardHandler : MonoBehaviour
 
 
 
+
+        }
+    }
+
+    public bool CardCanTargetEntity(GameObject target)
+    {
+
+        bool canTarget = false;
+
+        if (System.Enum.TryParse(target.tag, out SystemManager.EntityTag entityTag))
+        {
+            // Check if the parsed EntityTag is in the targetEntityTag list
+            if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEntityTagList.Contains(entityTag))
+            {
+
+                canTarget = true;
+
+            }
+        }
+
+        return canTarget;
+    }
+
+    public void ChangeTargetMaterial(Material customMaterial)
+    {
+
+        List<SystemManager.EntityTag> cardEntityTags = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEntityTagList;
+
+        foreach (SystemManager.EntityTag cardEntityTag in cardEntityTags)
+        {
+
+            //get all from the tag
+            GameObject[] targetsFound = GameObject.FindGameObjectsWithTag(cardEntityTag.ToString());
+
+            foreach (GameObject targetFound in targetsFound)
+            {
+                if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+                {
+
+                    //change material
+                    targetFound.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>().material = customMaterial;
+
+                }
+            }
 
         }
     }

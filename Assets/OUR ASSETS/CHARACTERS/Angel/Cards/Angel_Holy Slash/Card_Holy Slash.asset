@@ -12,26 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
   m_Name: Card_Holy Slash
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
-  cardName: Holy Slash
-  mainClass: 9
-  primaryManaCost: 2
-  secondaryManaCost: 1
-  cardType: 0
-  ourRarity: 0
   cardArt: {fileID: 21300000, guid: 78ed93ea7373931409eeb3569a60a7e4, type: 3}
+  cardName: Holy Slash
+  mainClass: 5
+  cardType: 0
+  cardRarity: 0
+  targetEntityTagList: 0100000003000000
+  primaryManaCost: 2
   cardDesc: 
   cardFlavor: 
-  ability1Var: 12
-  ability2Var: 0
-  ability3Var: 0
-  ability4Var: 0
-  ability5Var: 0
-  ability6Var: 0
-  scriptableCardAbilities:
-  - {fileID: 11400000, guid: 748b2eabb76c20c4db603ecdf730a55b, type: 2}
-  canTarget: 1
-  targetEnemy: 1
-  playerMode1: 1
-  playerMode2: 1
-  playerMode3: 1
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: 6f9eb048481fc264290973723a49903f, type: 2}
+    waitForAbility: 0.4
+    abilityEffect: {fileID: 309019412560960090, guid: 3adb3033cc8bd174581a171c8da46854, type: 3}
+    abilityEffectLifetime: 0.6
+    entityAnimation: 0
+    entitySound: 3
+    abilityIntValueList: 0a000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
   unlockable: 0

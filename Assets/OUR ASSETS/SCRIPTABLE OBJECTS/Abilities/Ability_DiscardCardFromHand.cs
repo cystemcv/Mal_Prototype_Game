@@ -28,7 +28,7 @@ public class Ability_DiscardCardFromHand : ScriptableCardAbility
 
        // Debug.Log("Draw " + GetAbilityVariable(cardScript) +  " cards");
 
-        int cardsToDraw = cardAbilityClass.abilityIntValue;
+        int cardsToDraw = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
         DeckManager.Instance.DrawMultipleCards(cardsToDraw);
 

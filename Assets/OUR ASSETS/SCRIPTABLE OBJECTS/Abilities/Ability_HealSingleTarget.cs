@@ -14,8 +14,8 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Heal " + cardAbilityClass.abilityIntValue + " to character";
-        string final = keyword + " : " + description;
+        string description = "Heal " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " to character";
+        string final = keyword + description;
 
         return final;
     }
@@ -46,7 +46,7 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
 
-        Combat.Instance.AdjustTargetHealth(realTarget, cardAbilityClass.abilityIntValue, false, SystemManager.AdjustNumberModes.HEAL);
+        Combat.Instance.AdjustTargetHealth(realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.HEAL);
 
 
     }

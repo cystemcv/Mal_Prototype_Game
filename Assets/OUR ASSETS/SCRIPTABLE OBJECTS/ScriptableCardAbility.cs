@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 using static BuffSystemManager;
 using static ScriptableCard;
 
@@ -14,6 +15,10 @@ public class ScriptableCardAbility : ScriptableObject
     [Title("MAIN")]
     public string abilityName;
 
+    [TextArea(5, 10)] // This creates a multi-line text area with a minimum height of 5 lines and a maximum height of 10 lines.
+    [LabelText("Abil.Desc")] // Custom label for the field
+    [GUIColor(0.9f, 0.9f, 1f)]
+    public string abilityDevDescription;
 
     [Title("MISC")]
     public float originalEntityPosX;
@@ -47,7 +52,7 @@ public class ScriptableCardAbility : ScriptableObject
 
     public virtual string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        return "<color=blue>" + abilityName + "</color>";
+        return  (abilityName.Trim() != "") ? "<color=blue>" + abilityName + "</color> : " : "";
     }
 
     public virtual void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
@@ -163,7 +168,7 @@ public class ScriptableCardAbility : ScriptableObject
     public void SpawnEffectPrefab(GameObject target,CardAbilityClass cardAbilityClass)
     {
         //missing prefab vfx
-        if (cardAbilityClass.abilityEffect == null)
+        if (cardAbilityClass.abilityEffect == null || target == null)
         {
             return;
         }

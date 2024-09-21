@@ -15,13 +15,13 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "";
-        if (cardAbilityClass.abilityIntValue < 0)
+        if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) < 0)
         {
-            description = "Decrease Attack by " + Mathf.Abs(cardAbilityClass.abilityIntValue) + " for " + buffLifeTime + " turns";
+            description = "Decrease Attack by " + Mathf.Abs(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList)) + " for " + buffLifeTime + " turns";
         }
         else
         {
-            description = "Increase Attack by " + cardAbilityClass.abilityIntValue + " for " + buffLifeTime + " turns";
+            description = "Increase Attack by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " for " + buffLifeTime + " turns";
         }
 
 
@@ -62,11 +62,11 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
 
         //increase the variable that will store the temp attack
-        buffDebuffClass.tempVariable += cardAbilityClass.abilityIntValue;
+        buffDebuffClass.tempVariable += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
         //increase character attack
         EntityClass entityClass = realTarget.GetComponent<EntityClass>();
-        entityClass.attack += cardAbilityClass.abilityIntValue;
+        entityClass.attack += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
 
 

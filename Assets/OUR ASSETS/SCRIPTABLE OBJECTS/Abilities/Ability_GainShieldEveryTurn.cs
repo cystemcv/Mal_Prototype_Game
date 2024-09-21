@@ -14,7 +14,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Gain " + cardAbilityClass.abilityIntValue + " shield " + buffLifeTime + " turns";
+        string description = "Gain " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " shield " + buffLifeTime + " turns";
         string final = keyword + " : " + description;
 
         return final;
@@ -53,7 +53,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
 
         //get the buff or debuff to do things
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
-        buffDebuffClass.tempVariable = cardAbilityClass.abilityIntValue;
+        buffDebuffClass.tempVariable = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
 
         ////increase character attack

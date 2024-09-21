@@ -14,7 +14,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Deal " + cardAbilityClass.abilityIntValue + " to an enemy";
+        string description = "Deal " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " to an enemy";
         string final = keyword + " : " + description;
 
         return final;

@@ -95,6 +95,11 @@ public class AIBrain : MonoBehaviour
         foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
 
+            if(cardAbilityClass == null)
+            {
+                continue;
+            }
+
             //create new cardscript
             CardScript cardScript = new CardScript();
             cardScript.scriptableCard = scriptableCard;
@@ -147,7 +152,12 @@ public class AIBrain : MonoBehaviour
                 }
 
                 count += 1;
-                damageText += "(" + Combat.Instance.CalculateEntityDmg(cardAbilityClass.abilityIntValue, entity, target) + ")";
+
+                //check multi hit attack
+                int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
+                string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
+
+                damageText += "(" + multiHitString + Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, target) + ")";
             }
        
 
