@@ -44,7 +44,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { MONSTER, SUPPORT , COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
+    public enum MainClass { MONSTER, SUPPORT, COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum AbilityType { ATTACK, OTHER }
@@ -64,7 +64,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     //dungeon generator
     public enum RoomType { Start, Battle, Boss, Empty, Chest, Event, Trap, Rest }
 
-    public enum ControlBy { PLAYER, AI}
+    public enum ControlBy { PLAYER, AI }
 
     //end of enums
 
@@ -418,7 +418,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
 
 
-    public List<GameObject> GetObjectsWithTagsFromGameobject(GameObject gameObjectParam)
+    public List<GameObject> GetObjectsWithTagsFromGameobjectOppossite(GameObject gameObjectParam)
     {
         List<GameObject> gameobjectsFound = new List<GameObject>();
         List<string> tags = new List<string>();
@@ -430,6 +430,26 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         else
         {
             tags = GetPlayerTagsList();
+        }
+
+        gameobjectsFound = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+        return gameobjectsFound;
+    }
+
+    public List<GameObject> GetObjectsWithTagsFromGameobjectSameSide(GameObject gameObjectParam)
+    {
+        List<GameObject> gameobjectsFound = new List<GameObject>();
+        List<string> tags = new List<string>();
+
+        if (gameObjectParam.tag == "Player" || gameObjectParam.tag == "PlayerSummon")
+        {
+            tags = GetPlayerTagsList();
+
+        }
+        else
+        {
+            tags = GetEnemyTagsList();
         }
 
         gameobjectsFound = SystemManager.Instance.FindGameObjectsWithTags(tags);

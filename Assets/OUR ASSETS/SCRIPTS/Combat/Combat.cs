@@ -241,6 +241,37 @@ public class Combat : MonoBehaviour
         yield return null; // Wait for a frame 
     }
 
+    public void GetSummonsIntoFormation(GameObject summon)
+    {
+
+        //assign a summon into formation
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(summon.tag))
+        {
+            int index = GetLastNonNull(characterFormation);
+            characterFormation[index + 1] = summon;
+        }
+        else
+        {
+            int index = GetLastNonNull(enemyFormation);
+            enemyFormation[index + 1] = summon;
+        }
+    
+
+
+    }
+
+    public int GetLastNonNull(GameObject[] array)
+    {
+        for (int i = array.Length - 1; i >= 0; i--)
+        {
+            if (array[i] != null)
+            {
+                return i;
+            }
+        }
+        return 0; // If no non-null elements are found
+    }
+
     public IEnumerator PlayerTurn()
     {
 
@@ -339,21 +370,18 @@ public class Combat : MonoBehaviour
 
     public IEnumerator SpawnCharacters()
     {
-        int positionSpawn = 0;
+
         //generate the selected characters that will be used throught the game
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
         {
             //instantiate our character or characters
-            GameObject characterInCombat = InstantiateCharacter(scriptableEntity, positionSpawn);
+            GameObject characterInCombat = InstantiateCharacter(scriptableEntity);
 
             //assign the characters in combat
             CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
 
             //initialize the stats
             characterInCombat.GetComponent<EntityClass>().InititializeEntity();
-
-            //increase to the next position
-            positionSpawn++;
 
             yield return null; // Wait for a frame 
         }
@@ -362,12 +390,12 @@ public class Combat : MonoBehaviour
 
     public IEnumerator SpawnEnemies()
     {
-        int positionSpawn = 0;
+
         //generate the selected characters that will be used throught the game
         foreach (ScriptableEntity scriptableEntity in AIManager.Instance.scriptableEnemyList)
         {
             //instantiate our character or characters
-            GameObject enemyInCombat = InstantiateEnemies(scriptableEntity, positionSpawn);
+            GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);
 
             //assign the characters in combat
             CharacterManager.Instance.charactersInAdventure.Add(enemyInCombat);
@@ -375,15 +403,13 @@ public class Combat : MonoBehaviour
             //initialize the stats
             enemyInCombat.GetComponent<EntityClass>().InititializeEntity();
 
-            //increase to the next position
-            positionSpawn++;
 
             yield return null; // Wait for a frame 
         }
 
     }
 
-    public GameObject InstantiateCharacter(ScriptableEntity scriptableEntity, int spawnPosition)
+    public GameObject InstantiateCharacter(ScriptableEntity scriptableEntity)
     {
 
 
@@ -405,9 +431,11 @@ public class Combat : MonoBehaviour
         entity.transform.SetParent(this.gameObject.transform.Find("Characters"));
 
         //assign the entity to formation
-        characterFormation[characterCount] = entity;
+        int index = GetLastNonNull(characterFormation);
+        characterFormation[index + 1] = entity;
 
-        characterCount++;
+        //reassign them
+        RearrangeFormation(characterFormation);
 
         return entity;
 
@@ -437,7 +465,7 @@ public class Combat : MonoBehaviour
                 //calculate the spot
                 Vector3 newPosition = new Vector3(0, 0, 0);
 
-                if (formation[i].tag == "Player")
+                if (SystemManager.Instance.GetPlayerTagsList().Contains(formation[i].tag))
                 {
                     newPosition = new Vector3(characterStartSpawn.transform.position.x + distance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
                 }
@@ -460,7 +488,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public GameObject InstantiateEnemies(ScriptableEntity scriptableEntity, int spawnPosition)
+    public GameObject InstantiateEnemies(ScriptableEntity scriptableEntity)
     {
 
         Vector3 spawn = new Vector3(0, 0, 0);
@@ -481,9 +509,11 @@ public class Combat : MonoBehaviour
         entity.transform.SetParent(this.gameObject.transform.Find("Enemies"));
 
         //assign the entity to formation
-        enemyFormation[enemyCount] = entity;
+        int index = GetLastNonNull(enemyFormation);
+        enemyFormation[index + 1] = entity;
 
-        enemyCount++;
+        //reassign them
+        RearrangeFormation(enemyFormation);
 
         return entity;
     }

@@ -50,7 +50,7 @@ public class AIBrain : MonoBehaviour
         }
 
         //get the list of gameobjects on the scene
-        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobject(this.gameObject);
+        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobjectOppossite(this.gameObject);
 
         int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
         //assign a target for card
@@ -66,20 +66,29 @@ public class AIBrain : MonoBehaviour
         //parent it
         intendObject.transform.SetParent(intends.transform);
 
+        TMP_Text targetText = intendObject.transform.Find("TargetText").GetComponent<TMP_Text>();
         TMP_Text damageText = intendObject.transform.Find("DamageText").GetComponent<TMP_Text>();
         TMP_Text cardText = intendObject.transform.Find("CardText").GetComponent<TMP_Text>();
 
         //get all the abilities dmg
 
+        if (scriptableCard.targetEntityTagList.Count == 0)
+        {
+            targetText.text = "";
+        }
+        else
+        {
+            targetText.text = targetForCard.name;
+        }
 
-        damageText.text = GetCardDamageInString(scriptableCard, this.gameObject, null);
+        damageText.text = GetCardDamageInString(scriptableCard, this.gameObject);
         cardText.text = scriptableCard.cardName;
 
     }
 
     public void ReAssignTargetForCard()
     {
-        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobject(this.gameObject);
+        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobjectOppossite(this.gameObject);
 
         int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
         //assign a target for card
@@ -148,7 +157,7 @@ public class AIBrain : MonoBehaviour
     }
 
 
-    public string GetCardDamageInString(ScriptableCard scriptableCard, GameObject entity, GameObject target)
+    public string GetCardDamageInString(ScriptableCard scriptableCard, GameObject entity)
     {
 
         string damageText = "";
@@ -170,6 +179,14 @@ public class AIBrain : MonoBehaviour
                 //check multi hit attack
                 int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
                 string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
+                AIBrain aIBrain = entity.GetComponent<AIBrain>();
+
+                GameObject target = null;
+                if(aIBrain != null)
+                {
+                    //damageText += aIBrain.targetForCard.name + " ";
+                    target = aIBrain.targetForCard;
+                }
 
                 damageText += "(" + multiHitString + Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, target) + ")";
             }

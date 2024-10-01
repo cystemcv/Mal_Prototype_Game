@@ -174,7 +174,7 @@ public class CombatCardHandler : MonoBehaviour
         if (hit.collider != null)
         {
             //check if the target is the required one or it is not dead
-            if (hit.collider.gameObject.tag != "Enemy" && hit.collider.gameObject.tag != "Player" || (hit.collider.gameObject.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD))
+            if (hit.collider.gameObject.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
             {
                 return;
             }

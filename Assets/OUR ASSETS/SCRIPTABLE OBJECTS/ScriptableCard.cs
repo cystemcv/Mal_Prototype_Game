@@ -59,6 +59,9 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         public List<string> abilityStringValueList;
         public List<bool> abilityBoolValueList;
         public List<float> abilityFloatValueList;
+        [Title("SUMMONS")]
+        public List<ScriptableEntity> summonList;
+
     }
 
 
