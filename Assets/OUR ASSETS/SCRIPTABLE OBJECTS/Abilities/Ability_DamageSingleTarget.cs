@@ -8,53 +8,63 @@ using static ScriptableCard;
 public class Ability_DamageSingleTarget : ScriptableCardAbility
 {
 
-    [Header("UNIQUE")]
-    public int empty;
-
+    private GameObject entityUsedCard;
     private GameObject realTarget;
+    private int multiHits = 0;
+    private CardScript cardScript;
+    private CardAbilityClass cardAbilityClass;
+    private SystemManager.ControlBy controlBy;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
-            int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-            int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
-            string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
+        int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+        int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
+        string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
 
 
-            int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
 
 
-            string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-            string description = "Deal " + multiHitString + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
-            
-            string final = keyword + description;
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+        string description = "Deal " + multiHitString + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
 
-            return final;
+        string final = keyword + description;
+
+        return final;
 
     }
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
-        //assign target 
-        if (target != null)
+        //assign them to have them globally
+        this.cardScript = cardScript;
+        this.cardAbilityClass = cardAbilityClass;
+        this.entityUsedCard = entityUsedCard;
+        this.controlBy = controlBy;
+
+        //get the target 
+        if (SystemManager.ControlBy.PLAYER == controlBy)
         {
-            realTarget = target;
+            realTarget = CombatCardHandler.Instance.targetClicked;
         }
         else
         {
-            if (CombatCardHandler.Instance.targetClicked == null)
+            AIBrain aIBrain = entityUsedCard.GetComponent<AIBrain>();
+
+            //get target, if target dies then assign to new target
+            if (aIBrain.targetForCard == null)
             {
-                return;
+                aIBrain. ReAssignTargetForCard();
             }
-            else
-            {
-                realTarget = CombatCardHandler.Instance.targetClicked;
-            }
+
+            realTarget = aIBrain.targetForCard;
         }
 
-        int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
+        //get how many multihits it will activate
+        multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
 
         //then loop
         if (multiHits <= 0)
@@ -62,11 +72,12 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             multiHits = 1;
         }
 
+        //allow to activate coroutine on scriptable object
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(ExecuteMultiHits(cardScript, cardAbilityClass, entity, multiHits));
+        runner.StartCoroutine(ExecuteMultiHits());
 
 
 
@@ -75,34 +86,33 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
     }
 
     // Coroutine to handle multiple hits with delay
-    private IEnumerator ExecuteMultiHits(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, int multiHits)
+    private IEnumerator ExecuteMultiHits()
     {
         for (int i = 0; i < multiHits; i++)
         {
+
+            //if target dies during multi attack then stop
+            if (realTarget == null)
+            {
+                break;
+            }
+
             // Use ability on each hit
-            UseAbility(cardScript, cardAbilityClass, entity);
+            base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
+
+            base.SpawnEffectPrefab(realTarget, cardAbilityClass);
+
+            int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entityUsedCard, realTarget);
+            Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
             // Wait between hits
             yield return new WaitForSeconds(cardAbilityClass.waitForAbility / multiHits);
         }
     }
 
-    public void UseAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
-    {
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, realTarget);
-        ProceedToAbility(cardScript, cardAbilityClass, entity);
 
-    }
 
-    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
-    {
-        //spawn prefab
-        base.SpawnEffectPrefab(realTarget, cardAbilityClass);
 
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, realTarget);
-        Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
-
-    }
 
 
 }

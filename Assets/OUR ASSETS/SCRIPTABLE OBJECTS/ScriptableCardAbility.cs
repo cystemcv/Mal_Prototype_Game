@@ -7,6 +7,7 @@ using Sirenix.OdinInspector;
 using static BuffSystemManager;
 using static ScriptableCard;
 
+
 public class ScriptableCardAbility : ScriptableObject
 {
     [Title("SETTINGS")]
@@ -52,21 +53,17 @@ public class ScriptableCardAbility : ScriptableObject
 
     public virtual string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        return  (abilityName.Trim() != "") ? "<color=blue>" + abilityName + "</color> : " : "";
+        return (abilityName.Trim() != "") ? "<color=blue>" + abilityName + "</color> : " : "";
     }
 
-    public virtual void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public virtual void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
 
 
         // Trigger the animation
-        entityAnimator = entity.transform.Find("model").GetComponent<Animator>();
+        entityAnimator = entityUsedCard.transform.Find("model").GetComponent<Animator>();
 
-        ////reset it
-        //animationTime = GetAnimationTime(entityAnimator, entityAnimation.ToString());
-
-
-            ProceedWithAnimationAndSound(entity, cardAbilityClass);
+        ProceedWithAnimationAndSound(entityUsedCard, cardAbilityClass);
 
     }
 
@@ -86,16 +83,16 @@ public class ScriptableCardAbility : ScriptableObject
             entityAnimator.SetTrigger(cardAbilityClass.entityAnimation.ToString());
         }
 
-  
+
 
         // Play the sound
         AudioManager.Instance.PlayCardSound(cardAbilityClass.entitySound.ToString());
     }
 
-    public float GetAnimationTime(Animator animator , string animation)
+    public float GetAnimationTime(Animator animator, string animation)
     {
 
-      
+
         // Get the RuntimeAnimatorController from the Animator
         RuntimeAnimatorController controller = animator.runtimeAnimatorController;
 
@@ -165,7 +162,7 @@ public class ScriptableCardAbility : ScriptableObject
         return this;
     }
 
-    public void SpawnEffectPrefab(GameObject target,CardAbilityClass cardAbilityClass)
+    public void SpawnEffectPrefab(GameObject target, CardAbilityClass cardAbilityClass)
     {
         //missing prefab vfx
         if (cardAbilityClass.abilityEffect == null || target == null)
@@ -193,6 +190,6 @@ public class ScriptableCardAbility : ScriptableObject
     //    return intend;
     //}
 
-    
+
 
 }

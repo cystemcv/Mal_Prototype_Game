@@ -22,9 +22,9 @@ public class Ability_BanishCardFromHand : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
         DeckManager.Instance.DestroyPlayedCard(SystemManager.CardThrow.BANISH);
 

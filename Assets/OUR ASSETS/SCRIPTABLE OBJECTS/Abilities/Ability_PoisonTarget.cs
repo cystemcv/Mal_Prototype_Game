@@ -22,19 +22,13 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
         //assign target 
-        if (target != null)
-        {
-            realTarget = target;
-        }
-        else
-        {
-            realTarget = CombatCardHandler.Instance.targetClicked;
-        }
 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, realTarget);
+            realTarget = CombatCardHandler.Instance.targetClicked;
+     
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
 
             ProceedToAbility(cardScript, entity);

@@ -13,6 +13,7 @@ public class CombatCardHandler : MonoBehaviour
 
     [Header("VARIABLES THAT ARE ASSIGNED DYNAMICALLY")]
     public RectTransform targetUIElement;
+    public bool targetCardActivated = false;
     public GameObject targetClicked;
 
     [Header("VISUAL PREFABS")]
@@ -84,7 +85,11 @@ public class CombatCardHandler : MonoBehaviour
                 //remove line renderer
                 UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(true);
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
+
+
                 ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
+
+
 
                 // Update the positions of the line renderer
                 //lineRenderer.SetPosition(0, targetPosition);
@@ -230,19 +235,16 @@ public class CombatCardHandler : MonoBehaviour
 
         foreach (SystemManager.EntityTag cardEntityTag in cardEntityTags)
         {
-
             //get all from the tag
             GameObject[] targetsFound = GameObject.FindGameObjectsWithTag(cardEntityTag.ToString());
 
             foreach (GameObject targetFound in targetsFound)
             {
-                if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-                {
 
-                    //change material
-                    targetFound.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>().material = customMaterial;
+                    SystemManager.Instance.ChangeTargetMaterial(customMaterial, targetFound);
+          
 
-                }
+
             }
 
         }

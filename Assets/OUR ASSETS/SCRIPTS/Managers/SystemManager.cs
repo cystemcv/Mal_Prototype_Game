@@ -44,7 +44,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { MONSTER, COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
+    public enum MainClass { MONSTER, SUPPORT , COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum AbilityType { ATTACK, OTHER }
@@ -64,7 +64,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     //dungeon generator
     public enum RoomType { Start, Battle, Boss, Empty, Chest, Event, Trap, Rest }
 
-
+    public enum ControlBy { PLAYER, AI}
 
     //end of enums
 
@@ -82,6 +82,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorRed = "FF0000";
     public string colorBlue = "003FFF";
     public string colorLightBlue = "0079FF";
+    public string colorVeryLightBlue = "5DC7FF";
     public string colorYellow = "F9FF00";
     public string colorGreen = "25FF00";
 
@@ -127,6 +128,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public Material materialDefaultEntity;
     public Material materialDamagedEntity;
     public Material materialTargetEntity;
+    public Material materialMouseOverEntity;
 
     private void Awake()
     {
@@ -359,4 +361,101 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
     }
+
+    public void ChangeTargetEntityTransparency(float alpha, GameObject target)
+    {
+
+
+        // Find the SpriteRenderer component
+        SpriteRenderer spriteRenderer = target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>();
+
+        // Get the current color of the sprite
+        Color color = spriteRenderer.color;
+
+        // Modify the alpha value
+        color.a = alpha;
+
+        // Apply the modified color back to the SpriteRenderer
+        spriteRenderer.color = color;
+
+    }
+
+    public void ChangeTargetEntityColor(string hex, GameObject target)
+    {
+        // Find the SpriteRenderer component
+        SpriteRenderer spriteRenderer = target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>();
+
+        // Apply the modified color back to the SpriteRenderer
+        spriteRenderer.color = GetColorFromHex(hex);
+
+    }
+
+    // Function to get objects that have all specified tags
+    public List<GameObject> FindGameObjectsWithTags(List<string> tags)
+    {
+        // If no tags are provided, return an empty list
+        if (tags == null || tags.Count == 0)
+        {
+            return new List<GameObject>();
+        }
+
+        List<GameObject> listOfGameobjects = new List<GameObject>();
+
+        foreach (string tag in tags)
+        {
+            //find 
+            GameObject[] gameobjectsFound = GameObject.FindGameObjectsWithTag(tag);
+
+            //add array to list
+            listOfGameobjects.AddRange(gameobjectsFound);
+
+        }
+
+
+        return listOfGameobjects;
+    }
+
+
+
+
+    public List<GameObject> GetObjectsWithTagsFromGameobject(GameObject gameObjectParam)
+    {
+        List<GameObject> gameobjectsFound = new List<GameObject>();
+        List<string> tags = new List<string>();
+
+        if (gameObjectParam.tag == "Player" || gameObjectParam.tag == "PlayerSummon")
+        {
+            tags = GetEnemyTagsList();
+        }
+        else
+        {
+            tags = GetPlayerTagsList();
+        }
+
+        gameobjectsFound = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+        return gameobjectsFound;
+    }
+
+    public List<string> GetEnemyTagsList()
+    {
+        List<string> tags = new List<string>();
+
+        tags.Add("Enemy");
+        tags.Add("EnemySummon");
+
+        return tags;
+    }
+
+    public List<string> GetPlayerTagsList()
+    {
+        List<string> tags = new List<string>();
+
+        tags.Add("Player");
+        tags.Add("PlayerSummon");
+
+        return tags;
+    }
+
 }
+

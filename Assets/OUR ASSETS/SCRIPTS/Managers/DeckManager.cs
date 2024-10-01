@@ -192,6 +192,7 @@ public class DeckManager : MonoBehaviour
         //}
     }
 
+
     public void GetCardFromCombatDeckToHand(int index)
     {
 
@@ -380,7 +381,7 @@ public class DeckManager : MonoBehaviour
             }
 
             // Wait for 2 seconds
-            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, null);
+            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.PLAYER);
 
 
             //check to reset mana to the original cost if neeeded
@@ -815,8 +816,7 @@ public class DeckManager : MonoBehaviour
     public int GetIntValueFromList(int position, List<int> list)
     {
 
-        Debug.Log("position : " + position);
-        Debug.Log("list : " + list);
+
 
         int value = 0;
 

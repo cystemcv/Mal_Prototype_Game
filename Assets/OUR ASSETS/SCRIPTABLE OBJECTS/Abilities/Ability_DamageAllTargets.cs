@@ -7,15 +7,19 @@ using static ScriptableCard;
 public class Ability_DamageAllTargets : ScriptableCardAbility
 {
 
-    [Header("UNIQUE")]
-    public int empty;
+    private GameObject entityUsedCard;
+    private GameObject realTarget;
+    private int multiHits = 0;
+    private CardScript cardScript;
+    private CardAbilityClass cardAbilityClass;
+    private SystemManager.ControlBy controlBy;
 
-    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass,GameObject entity)
+    public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
         int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
-        int multiHits =  DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
+        int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
         string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
 
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
@@ -27,12 +31,16 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
-     
 
+        //assign them to have them globally
+        this.cardScript = cardScript;
+        this.cardAbilityClass = cardAbilityClass;
+        this.entityUsedCard = entityUsedCard;
+        this.controlBy = controlBy;
 
-        int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
+        multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
 
         //then loop
         if (multiHits <= 0)
@@ -44,22 +52,47 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
                                                            //hit at least one time if its 0
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(ExecuteMultiHits(cardScript, cardAbilityClass, entity, multiHits));
+        runner.StartCoroutine(ExecuteMultiHits());
 
 
 
-      
+
 
 
     }
 
     // Coroutine to handle multiple hits with delay
-    private IEnumerator ExecuteMultiHits(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, int multiHits)
+    private IEnumerator ExecuteMultiHits()
     {
         for (int i = 0; i < multiHits; i++)
         {
             // Use ability on each hit
-            UseAbility(cardScript, cardAbilityClass, entity);
+            base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
+            List<GameObject> targetsFound = new List<GameObject>();
+
+            //get all targets
+            if (SystemManager.Instance.GetPlayerTagsList().Contains(this.entityUsedCard.tag))
+            {
+                targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+            }
+            else
+            {
+                targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+            }
+
+            //then loop
+            foreach (GameObject targetFound in targetsFound)
+            {
+                if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+                {
+
+                    //spawn prefab
+                    base.SpawnEffectPrefab(targetFound, cardAbilityClass);
+
+                    int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entityUsedCard, targetFound);
+                    Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+                }
+            }
 
             // Wait between hits
             yield return new WaitForSeconds(cardAbilityClass.waitForAbility / multiHits);
@@ -67,41 +100,7 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
     }
 
 
-    public void UseAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
-    {
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
-        ProceedToAbility(cardScript, cardAbilityClass, entity);
 
-    }
 
-    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
-    {
-
-        GameObject[] targetsFound;
-
-        //get all targets
-        if (entity.tag == "Player")
-        {
-            targetsFound = GameObject.FindGameObjectsWithTag("Enemy");
-        }
-        else
-        {
-            targetsFound = GameObject.FindGameObjectsWithTag("Player");
-        }
-
-        //then loop
-        foreach (GameObject targetFound in targetsFound)
-        {
-            if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-            {
-
-                //spawn prefab
-                base.SpawnEffectPrefab(targetFound, cardAbilityClass);
-
-                int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, targetFound);
-                Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
-            }
-        }
-    }
 
 }

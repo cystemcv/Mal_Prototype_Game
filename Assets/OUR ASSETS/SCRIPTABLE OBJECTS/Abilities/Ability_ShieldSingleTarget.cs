@@ -24,18 +24,12 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
         //assign target 
-        if (target != null)
-        {
-            realTarget = target;
-        }
-        else
-        {
-            realTarget = CombatCardHandler.Instance.targetClicked;
-        }
 
+            realTarget = CombatCardHandler.Instance.targetClicked;
+       
         if (realTarget == null && entity != null)
         {
             realTarget = entity;
@@ -46,7 +40,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
             return;
         }
 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
         //spawn prefab
         base.SpawnEffectPrefab(realTarget, cardAbilityClass);

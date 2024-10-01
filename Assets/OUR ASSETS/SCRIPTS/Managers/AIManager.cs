@@ -6,9 +6,9 @@ using TMPro;
 using System.Linq;
 using static ScriptableCard;
 
-public class EnemyManager : MonoBehaviour
+public class AIManager : MonoBehaviour
 {
-    public static EnemyManager Instance;
+    public static AIManager Instance;
 
     [Header("ENEMIES IN BATTLE")]
     public List<ScriptableEntity> scriptableEnemyList;
@@ -29,18 +29,19 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    public IEnumerator EnemyAiAct()
+    public IEnumerator AiAct(List<string> tags)
     {
 
-        //get how many enemies will act
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        foreach (GameObject enemy in enemies)
+        //get how many enemies will act
+        List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+        foreach (GameObject entity in entities)
         {
-            AIBrain aIBrain = enemy.GetComponent<AIBrain>();
+            AIBrain aIBrain = entity.GetComponent<AIBrain>();
 
             //if no ai brain the get continue to the next or deasd
-            if (aIBrain == null || enemy.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+            if (aIBrain == null || entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
             {
                 continue;
             }
@@ -61,6 +62,34 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(totalAbilitiesWaitTime);
         }
 
+
+    }
+
+
+
+
+    public void GenerateIntends(List<string> tags)
+    {
+        List<GameObject> entityList = entityList = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+
+        foreach (GameObject entity in entityList)
+        {
+
+            AIBrain aIBrain = entity.GetComponent<AIBrain>();
+
+            //if no ai brain the get continue to the next or deasd
+            if (aIBrain == null || entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+            {
+                continue;
+            }
+
+            //destroy intends
+            SystemManager.Instance.DestroyAllChildren(entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject);
+
+            //generate new intends
+            aIBrain.GenerateIntend();
+        }
 
     }
 

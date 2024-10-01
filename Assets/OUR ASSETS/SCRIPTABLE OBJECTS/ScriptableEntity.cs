@@ -10,9 +10,8 @@ public class ScriptableEntity : ScriptableObject
 
     [Header("CHARACTER SPECIFIC")]
     public SystemManager.MainClass mainClass; //Actual classes to be determined
-    public float leaderIndicatorHeight = 0f;
-
-    [Header("ENEMY SPECIFIC")]
+    public float distanceFromAnotherUnit = 0f;
+    public int unitsWorth = 1;
 
     [Header("COMMON")]
     public string entityName;

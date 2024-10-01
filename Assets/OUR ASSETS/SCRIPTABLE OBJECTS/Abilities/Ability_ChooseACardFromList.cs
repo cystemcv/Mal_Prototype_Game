@@ -52,10 +52,10 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
         try { 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, null);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
         List<ScriptableCard> listToChoose;
 

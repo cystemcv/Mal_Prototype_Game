@@ -52,7 +52,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     //spawn prefabs on entity
     [Header("PREFABS")]
     public bool spawnBuffDebuffObject;
-    public Vector3 spawnBuffDebuffObjectAdjustment = new Vector3(0,0,0);
+    public Vector3 spawnBuffDebuffObjectAdjustment = new Vector3(0, 0, 0);
     public bool spawnHealthBarObject;
     public Vector3 spawnHealthBarObjectAdjustment = new Vector3(0, 0, 0);
     public bool spawnIntendObject;
@@ -102,7 +102,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             intentO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.z);
         }
 
-    
+
 
 
     }
@@ -136,7 +136,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void SpawnUI()
     {
 
-     
+
 
         //get the entity ui spawner
         gameobjectUI = this.gameObject.transform.Find("gameobjectUI").gameObject;
@@ -318,46 +318,53 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("IN???");
-        if (this.gameObject.tag == "Enemy")
+
+        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+        SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorVeryLightBlue, this.gameObject);
+
+        AIBrain aIBrain = this.GetComponent<AIBrain>();
+
+        //if no ai brain the get continue to the next or deasd
+        if (aIBrain == null )
         {
-
-            Debug.Log("IN???");
-
-            //create gameobject on scene and spawn it on the discard spawner
-            UI_Combat.Instance.CheckEnemyCard.SetActive(true);
-            GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
-            cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
-            AIBrain aIBrain = this.GetComponent<AIBrain>();
-
-    
-            ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
-
-            //add the scriptable card object to the prefab class to reference
-            cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-
-
-            //make the local scale 1,1,1
-            cardPrefab.transform.localScale = new Vector3(1, 1, 1);
-
-            //update the information on the card prefab
-            DeckManager.Instance.UpdateCardUI(cardPrefab);
-
-            //deactivate events
-            cardPrefab.GetComponent<CardEvents>().enabled = false;
-
-
+            return;
         }
+
+        //create gameobject on scene and spawn it on the discard spawner
+        UI_Combat.Instance.CheckEnemyCard.SetActive(true);
+        GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
+        cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
+
+        ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+
+        //add the scriptable card object to the prefab class to reference
+        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+
+        //make the local scale 1,1,1
+        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
+        //update the information on the card prefab
+        DeckManager.Instance.UpdateCardUI(cardPrefab);
+
+        //deactivate events
+        cardPrefab.GetComponent<CardEvents>().enabled = false;
 
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
+        SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorWhite, this.gameObject);
 
-        if (this.gameObject.tag == "Enemy")
+        AIBrain aIBrain = this.GetComponent<AIBrain>();
+
+        //if no ai brain the get continue to the next or deasd
+        if (aIBrain == null)
         {
-            UI_Combat.Instance.CheckEnemyCard.SetActive(false);
+            return;
         }
+
+        UI_Combat.Instance.CheckEnemyCard.SetActive(false);
 
     }
 }

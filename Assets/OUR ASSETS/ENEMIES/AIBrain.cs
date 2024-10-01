@@ -13,7 +13,8 @@ public class AIBrain : MonoBehaviour
 
     public int aiLogicStep = 0;
 
-    public List<GameObject> targetsList;
+    public GameObject targetForCard;
+
 
     public void ExecuteCommand()
     {
@@ -48,12 +49,18 @@ public class AIBrain : MonoBehaviour
             return;
         }
 
+        //get the list of gameobjects on the scene
+        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobject(this.gameObject);
+
+        int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
+        //assign a target for card
+        targetForCard = gameobjectsFound[indexForTargetForCard];
+
         //get the intends gameobject which is gonna be the parent of the icons
         GameObject intends = this.gameObject.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
 
         ScriptableCard scriptableCard = cardScriptList[aiLogicStep];
 
-        targetsList.Clear();
         //create the intend based on the ai choices
         GameObject intendObject = Instantiate(SystemManager.Instance.intendObject, intends.transform.position, Quaternion.identity);
         //parent it
@@ -70,6 +77,15 @@ public class AIBrain : MonoBehaviour
 
     }
 
+    public void ReAssignTargetForCard()
+    {
+        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobject(this.gameObject);
+
+        int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
+        //assign a target for card
+        targetForCard = gameobjectsFound[indexForTargetForCard];
+    }
+
     public void PlayCardOnlyAbilities(ScriptableCard cardScript)
     {
 
@@ -84,8 +100,6 @@ public class AIBrain : MonoBehaviour
 
         GameObject entity = this.gameObject;
 
-        //get the player
-        GameObject target = GameObject.FindGameObjectWithTag("Player");
 
         if (entity == null)
         {
@@ -95,7 +109,7 @@ public class AIBrain : MonoBehaviour
         foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
 
-            if(cardAbilityClass == null)
+            if (cardAbilityClass == null)
             {
                 continue;
             }
@@ -105,7 +119,7 @@ public class AIBrain : MonoBehaviour
             cardScript.scriptableCard = scriptableCard;
 
             //activate effect
-            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, target);
+            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.AI);
 
             yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
             //yield return new WaitForSeconds(10f);
@@ -159,7 +173,7 @@ public class AIBrain : MonoBehaviour
 
                 damageText += "(" + multiHitString + Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, target) + ")";
             }
-       
+
 
         }
 

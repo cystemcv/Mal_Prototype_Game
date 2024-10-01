@@ -26,7 +26,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, GameObject target)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
         //get all targets
         GameObject[] targetsFound;
@@ -62,9 +62,9 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
         targetFound = targetsList[randomNmbr];
 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, targetFound);
- 
-            ProceedToAbility(cardScript, cardAbilityClass, entity);
+        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
+
+        ProceedToAbility(cardScript, cardAbilityClass, entity);
 
 
 
