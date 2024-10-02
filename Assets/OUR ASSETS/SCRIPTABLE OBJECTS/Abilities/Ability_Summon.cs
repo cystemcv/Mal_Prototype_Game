@@ -36,26 +36,62 @@ public class Ability_Summon : ScriptableCardAbility
 
         foreach (ScriptableEntity summonInCard in cardAbilityClass.summonList)
         {
+
+
             GameObject summon;
             //get all targets
             if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
             {
-                summon = Combat.Instance.InstantiateCharacter(summonInCard);
 
-                summon.tag = "PlayerSummon";
+                GameObject[] summons = GameObject.FindGameObjectsWithTag("PlayerSummon");
+
+                //check if it reach the limit
+                if (summons.Length >= Combat.Instance.maxPlayerSummons)
+                {
+                    return;
+                }
+                else
+                {
+                    summon = Combat.Instance.InstantiateCharacter(summonInCard);
+
+                    summon.tag = "PlayerSummon";
+
+                    //initialize the stats
+                    summon.GetComponent<EntityClass>().InititializeEntity();
+
+                    //initialize 
+                    summon.GetComponent<AIBrain>().GenerateIntend();
+                }
+
+
             }
             else
             {
-                summon = Combat.Instance.InstantiateEnemies(summonInCard);
 
-                summon.tag = "EnemySummon";
+                GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
+
+                //check if it reach the limit
+                if (summons.Length >= Combat.Instance.maxPlayerSummons)
+                {
+                    return;
+                }
+                else
+                {
+                    summon = Combat.Instance.InstantiateEnemies(summonInCard);
+
+                    summon.tag = "EnemySummon";
+
+                    //initialize the stats
+                    summon.GetComponent<EntityClass>().InititializeEntity();
+
+                    //initialize 
+                    summon.GetComponent<AIBrain>().GenerateIntend();
+                }
+
+     
             }
 
-            //initialize the stats
-            summon.GetComponent<EntityClass>().InititializeEntity();
 
-            //initialize 
-            summon.GetComponent<AIBrain>().GenerateIntend();
 
         }
 

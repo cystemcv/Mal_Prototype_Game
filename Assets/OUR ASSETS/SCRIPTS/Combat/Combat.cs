@@ -18,10 +18,12 @@ public class Combat : MonoBehaviour
 
 
     [Header("COMBAT FORMATIONS")]
-    private GameObject[] characterFormation = new GameObject[4];
-    private GameObject[] enemyFormation = new GameObject[7];
+    public List<GameObject> characterFormation;
+    public List<GameObject> enemyFormation;
     public int characterCount = 0;
     public int enemyCount = 0;
+    public int maxPlayerSummons = 3;
+    public int maxEnemySummons = 3;
 
     [Header("COMBAT COMMON VARIABLES")]
     public int turns = 0;
@@ -217,7 +219,7 @@ public class Combat : MonoBehaviour
         //increase turn;
         turns += 1;
 
-        RearrangeFormation(characterFormation);
+        yield return RearrangeFormation(characterFormation);
 
         //mana should go back to full
         RefillMana();
@@ -241,28 +243,11 @@ public class Combat : MonoBehaviour
         yield return null; // Wait for a frame 
     }
 
-    public void GetSummonsIntoFormation(GameObject summon)
+
+
+    public int GetLastNonNull(List<GameObject> array)
     {
-
-        //assign a summon into formation
-        if (SystemManager.Instance.GetPlayerTagsList().Contains(summon.tag))
-        {
-            int index = GetLastNonNull(characterFormation);
-            characterFormation[index + 1] = summon;
-        }
-        else
-        {
-            int index = GetLastNonNull(enemyFormation);
-            enemyFormation[index + 1] = summon;
-        }
-    
-
-
-    }
-
-    public int GetLastNonNull(GameObject[] array)
-    {
-        for (int i = array.Length - 1; i >= 0; i--)
+        for (int i = array.Count - 1; i >= 0; i--)
         {
             if (array[i] != null)
             {
@@ -325,7 +310,7 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
         UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
 
-        RearrangeFormation(enemyFormation);
+        yield return RearrangeFormation(enemyFormation);
 
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
@@ -416,7 +401,7 @@ public class Combat : MonoBehaviour
         Vector3 spawn = new Vector3(0, 0, 0);
 
         //get distance needed
-        float distance = GetDistanceOfFormation(characterFormation);
+        float distance = GetDistanceOfFormation(characterFormation, characterFormation.Count);
 
         spawn = new Vector3(characterStartSpawn.transform.position.x + distance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
 
@@ -430,9 +415,15 @@ public class Combat : MonoBehaviour
 
         entity.transform.SetParent(this.gameObject.transform.Find("Characters"));
 
+        if (entity.GetComponent<AIBrain>() != null)
+        {
+
+            FlipSprite(entity);
+        }
+
         //assign the entity to formation
-        int index = GetLastNonNull(characterFormation);
-        characterFormation[index + 1] = entity;
+
+        characterFormation.Add(entity);
 
         //reassign them
         RearrangeFormation(characterFormation);
@@ -441,50 +432,46 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void RearrangeFormation(GameObject[] formation)
+    public void FlipSprite(GameObject spriteObject)
+    {
+        Vector3 scale = spriteObject.transform.localScale;
+        scale.x *= -1; // Reverse the y-axis scale
+        spriteObject.transform.localScale = scale;
+    }
+
+    public IEnumerator RearrangeFormation(List<GameObject> formation)
     {
 
         bool nullPosFound = false;
 
-        for (int i = 0; i < formation.Length; i++)
+        for (int i = 0; i < formation.Count; i++)
         {
+            float distance = 0;
+            Vector3 newPosition = new Vector3(0, 0, 0);
 
-            //check if there is a gameobject to calculate distance. if there is none break the loop
-            if (formation[i] == null)
+            //then get the distance
+            if (i != 0)
             {
-                nullPosFound = true;
-                continue;
+                distance = GetDistanceOfFormation(formation, i);
             }
 
-            //then move to the null position
-            if (nullPosFound)
+
+            if (SystemManager.Instance.GetPlayerTagsList().Contains(formation[i].tag))
             {
-                //then get the distance
-                float distance = GetDistanceOfFormation(formation);
-
-                //calculate the spot
-                Vector3 newPosition = new Vector3(0, 0, 0);
-
-                if (SystemManager.Instance.GetPlayerTagsList().Contains(formation[i].tag))
-                {
-                    newPosition = new Vector3(characterStartSpawn.transform.position.x + distance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
-                }
-                else
-                {
-                    newPosition = new Vector3(enemyStartSpawn.transform.position.x - distance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
-                }
-
-                LeanTween.moveX(formation[i], newPosition.x, 0.2f);
-
-                //get the array position
-                int formationIndex = GetFormationIndex(formation);
-                formation[formationIndex] = formation[i];
-                formation[i] = null;
+                newPosition = new Vector3(characterStartSpawn.transform.position.x + distance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
             }
+            else
+            {
+                newPosition = new Vector3(enemyStartSpawn.transform.position.x - distance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
+            }
+
+            LeanTween.moveX(formation[i], newPosition.x, 0.2f);
 
 
 
         }
+
+        yield return null; // Wait for a frame 
 
     }
 
@@ -494,7 +481,7 @@ public class Combat : MonoBehaviour
         Vector3 spawn = new Vector3(0, 0, 0);
 
         //get distance needed
-        float distance = GetDistanceOfFormation(enemyFormation);
+        float distance = GetDistanceOfFormation(enemyFormation, enemyFormation.Count);
 
         spawn = new Vector3(enemyStartSpawn.transform.position.x - distance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
 
@@ -509,8 +496,7 @@ public class Combat : MonoBehaviour
         entity.transform.SetParent(this.gameObject.transform.Find("Enemies"));
 
         //assign the entity to formation
-        int index = GetLastNonNull(enemyFormation);
-        enemyFormation[index + 1] = entity;
+        enemyFormation.Add(entity);
 
         //reassign them
         RearrangeFormation(enemyFormation);
@@ -518,12 +504,12 @@ public class Combat : MonoBehaviour
         return entity;
     }
 
-    public int GetFormationIndex(GameObject[] formation)
+    public int GetFormationIndex(List<GameObject> formation)
     {
 
         int index = 0;
 
-        for (int i = 0; i < formation.Length; i++)
+        for (int i = 0; i < formation.Count; i++)
         {
 
             //check if there is a gameobject to calculate distance. if there is none break the loop
@@ -540,16 +526,16 @@ public class Combat : MonoBehaviour
 
     }
 
-    public float GetDistanceOfFormation(GameObject[] formation)
+    public float GetDistanceOfFormation(List<GameObject> formation, int currentIndex)
     {
 
         float distance = 0f;
 
-        for (int i = 0; i < formation.Length; i++)
+        for (int i = 0; i < formation.Count; i++)
         {
 
             //check if there is a gameobject to calculate distance. if there is none break the loop
-            if (formation[i] == null)
+            if (i == currentIndex)
             {
                 break;
             }
@@ -866,17 +852,19 @@ public class Combat : MonoBehaviour
             if (entityClass.gameObject.tag == "Player")
             {
                 charactersAlive -= 1;
+            }
+            else if (entityClass.gameObject.tag == "Enemy")
+            {
+                enemiesAlive -= 1;
+            }
 
-                //need to regenerate intend 
-                //generate intend for all enemies
-                AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList());
-
-                //unparent leader indicator
-                UI_Combat.Instance.leaderIndicator.transform.SetParent(null);
+            if (SystemManager.Instance.GetPlayerTagsList().Contains(entityClass.gameObject.tag))
+            {
+                characterFormation.Remove(entityClass.gameObject);
             }
             else
             {
-                enemiesAlive -= 1;
+                enemyFormation.Remove(entityClass.gameObject);
             }
 
             EntityDeadDestroy(entityClass.gameObject);
