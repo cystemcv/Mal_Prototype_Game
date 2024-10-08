@@ -20,6 +20,8 @@ public class ScriptableEntity : ScriptableObject
     public Sprite entityIcon;
     public string entityDescription;
 
+    [Header("SUMMON")]
+    public int summonTurns = 1;
 
     [Header("STATS")]
     //Character Stats - Obviously subject to alteration

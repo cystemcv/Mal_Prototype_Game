@@ -184,9 +184,9 @@ public class UI_Combat : MonoBehaviour
     void Update()
     {
 
-        deckUIObject.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
-        discardUIObject.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
-        banishedUIObject.transform.GetChild(1).GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
+        deckUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
+        discardUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
+        banishedUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
 
     }
 

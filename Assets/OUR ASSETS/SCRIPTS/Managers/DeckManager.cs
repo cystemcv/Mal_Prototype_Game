@@ -340,6 +340,18 @@ public class DeckManager : MonoBehaviour
         CardScript tempCardScript = new CardScript();
         tempCardScript = cardScript;
 
+        //check the card conditions
+        bool condition = false;
+        condition = CheckCardOnlyConditions(tempCardScript);
+
+        if (condition)
+        {
+            //show notification
+            UI_Combat.Instance.OnNotification("CARD CONDITIONS NOT MET!", 1);
+            return;
+        }
+
+
         //decrease available mana
         //UI_Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
 
@@ -350,6 +362,39 @@ public class DeckManager : MonoBehaviour
         PlayCardOnlyAbilities(tempCardScript);
 
 
+    }
+
+    public bool CheckCardOnlyConditions(CardScript cardScript)
+    {
+        bool condition = false;
+        //get the player
+        GameObject entity = CharacterManager.Instance.charactersInAdventure[0];
+
+        if (entity == null)
+        {
+            return true;
+        }
+
+        foreach (CardConditionClass cardConditionClass in cardScript.scriptableCard.cardConditionClass)
+        {
+
+            if (cardConditionClass == null)
+            {
+                condition = false;
+                break;
+            }
+
+            // Wait for 2 seconds
+            if (cardConditionClass.ScriptableCardCondition.OnPlayCard(cardScript, cardConditionClass, entity, SystemManager.ControlBy.PLAYER))
+            {
+                condition = true;
+                break;
+            }
+
+
+        }
+
+        return condition;
     }
 
     public void PlayCardOnlyAbilities(CardScript cardScript)
@@ -597,6 +642,13 @@ public class DeckManager : MonoBehaviour
         {
             cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
         }
+
+        //conditions
+        foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
+        {
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
+        }
+
         //activation should not be visible
         cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
     }
@@ -615,6 +667,12 @@ public class DeckManager : MonoBehaviour
         foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
             cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
+        }
+
+        //conditions
+        foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
+        {
+            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
         }
     }
 

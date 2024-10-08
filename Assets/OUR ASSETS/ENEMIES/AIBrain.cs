@@ -56,32 +56,28 @@ public class AIBrain : MonoBehaviour
         //assign a target for card
         targetForCard = gameobjectsFound[indexForTargetForCard];
 
-        //get the intends gameobject which is gonna be the parent of the icons
-        GameObject intends = this.gameObject.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
-
         ScriptableCard scriptableCard = cardScriptList[aiLogicStep];
 
         //create the intend based on the ai choices
-        GameObject intendObject = Instantiate(SystemManager.Instance.intendObject, intends.transform.position, Quaternion.identity);
-        //parent it
-        intendObject.transform.SetParent(intends.transform);
+        GameObject displayCardName = this.gameObject.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject;
 
-        TMP_Text targetText = intendObject.transform.Find("TargetText").GetComponent<TMP_Text>();
-        TMP_Text damageText = intendObject.transform.Find("DamageText").GetComponent<TMP_Text>();
-        TMP_Text cardText = intendObject.transform.Find("CardText").GetComponent<TMP_Text>();
+
+        TMP_Text cardText = displayCardName.transform.Find("CardText").GetComponent<TMP_Text>();
+
+   
 
         //get all the abilities dmg
 
-        if (scriptableCard.targetEntityTagList.Count == 0)
-        {
-            targetText.text = "";
-        }
-        else
-        {
-            targetText.text = targetForCard.name;
-        }
+        //if (scriptableCard.targetEntityTagList.Count == 0)
+        //{
+        //    targetText.text = "";
+        //}
+        //else
+        //{
+        //    targetText.text = targetForCard.name;
+        //}
 
-        damageText.text = GetCardDamageInString(scriptableCard, this.gameObject);
+        //damageText.text = GetCardDamageInString(scriptableCard, this.gameObject);
         cardText.text = scriptableCard.cardName;
 
     }

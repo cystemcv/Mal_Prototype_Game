@@ -64,7 +64,21 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     }
 
+    [FoldoutGroup("CONDITIONS")]
+    [RequiredListLength(0, 3)]
+    public List<CardConditionClass> cardConditionClass;
 
+    [Serializable]
+    public class CardConditionClass
+    {
+        [Title("CONDITION"), GUIColor("orange")]
+        public ScriptableCardCondition ScriptableCardCondition;
+        [Title("CONDITION VALUES")]
+        public List<int> abilityIntValueList;
+        public List<string> abilityStringValueList;
+        public List<bool> abilityBoolValueList;
+        public List<float> abilityFloatValueList;
+    }
 
 
 

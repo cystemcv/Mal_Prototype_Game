@@ -117,6 +117,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public GameObject entity_buffDebuffObject;
     public GameObject entity_healthBarObject;
     public GameObject entity_intendObject;
+    public GameObject entity_summonTurnsObject;
 
     [Header("OBJECTS ON SCENE THAT CAN BE USED")]
     public GameObject object_HighlightButton;

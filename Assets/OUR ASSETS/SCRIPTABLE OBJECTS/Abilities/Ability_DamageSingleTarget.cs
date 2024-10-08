@@ -63,6 +63,12 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             realTarget = aIBrain.targetForCard;
         }
 
+        //stop card if there is no target
+        if(realTarget == null)
+        {
+            return;
+        }
+
         //get how many multihits it will activate
         multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
 

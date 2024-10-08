@@ -240,10 +240,31 @@ public class Combat : MonoBehaviour
         AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList());
         AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList());
 
+        //do the ai logic for each enemy
+        yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
+
+        yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetPlayerTagsList()));
+
         yield return null; // Wait for a frame 
     }
 
+    public IEnumerator LowerSummonTurns(List<string> tags)
+    {
+        List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
 
+        foreach (GameObject entity in entities)
+        {
+            if (entity.tag == "PlayerSummon" || entity.tag == "EnemySummon")
+            {
+                EntityClass entityClass = entity.GetComponent<EntityClass>();
+                //lower every turn by 1
+                entityClass.AdjustSummonTurns(-1);
+            }
+
+        }
+
+        yield return null;
+    }
 
     public int GetLastNonNull(List<GameObject> array)
     {
@@ -288,8 +309,7 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
-        //do the ai logic for each enemy
-        yield return AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList());
+
 
         yield return new WaitForSeconds(1f);
 
@@ -318,6 +338,8 @@ public class Combat : MonoBehaviour
         //remove shield from all enemies
         RemoveShieldFromEntitiesBasedOnTag("Enemy");
 
+        yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
+
         yield return null;
     }
 
@@ -332,7 +354,9 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyTurn;
 
         //do the ai logic for each enemy
-        yield return AIManager.Instance.AiAct(SystemManager.Instance.GetEnemyTagsList());
+        yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetEnemyTagsList()));
+
+  
 
         yield return null;
     }
@@ -366,7 +390,7 @@ public class Combat : MonoBehaviour
             CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
 
             //initialize the stats
-            characterInCombat.GetComponent<EntityClass>().InititializeEntity();
+            StartCoroutine(characterInCombat.GetComponent<EntityClass>().InititializeEntity());
 
             yield return null; // Wait for a frame 
         }
@@ -386,7 +410,7 @@ public class Combat : MonoBehaviour
             CharacterManager.Instance.charactersInAdventure.Add(enemyInCombat);
 
             //initialize the stats
-            enemyInCombat.GetComponent<EntityClass>().InititializeEntity();
+            StartCoroutine(enemyInCombat.GetComponent<EntityClass>().InititializeEntity());
 
 
             yield return null; // Wait for a frame 
@@ -434,9 +458,9 @@ public class Combat : MonoBehaviour
 
     public void FlipSprite(GameObject spriteObject)
     {
-        Vector3 scale = spriteObject.transform.localScale;
+        Vector3 scale = spriteObject.transform.Find("model").localScale;
         scale.x *= -1; // Reverse the y-axis scale
-        spriteObject.transform.localScale = scale;
+        spriteObject.transform.Find("model").localScale= scale;
     }
 
     public IEnumerator RearrangeFormation(List<GameObject> formation)
@@ -838,7 +862,7 @@ public class Combat : MonoBehaviour
     public void CheckIfEntityIsDead(EntityClass entityClass)
     {
 
-        if (entityClass.health <= 0)
+        if (entityClass.health <= 0 || entityClass.summonTurns <= 0)
         {
 
             entityClass.entityMode = SystemManager.EntityMode.DEAD;
@@ -875,28 +899,6 @@ public class Combat : MonoBehaviour
 
     public void EntityDeadDestroy(GameObject entity)
     {
-        GameObject buffsdebuffs = entity.transform.Find("gameobjectUI").Find("BuffDebuffList").Find("Panel").gameObject;
-        GameObject intends = null;
-        if (entity.tag == "Enemy")
-        {
-            intends = entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject;
-
-
-
-
-
-
-        }
-
-        if (entity != null && intends != null)
-        {
-            SystemManager.Instance.DestroyAllChildren(intends);
-        }
-
-        if (entity != null && buffsdebuffs != null)
-        {
-            SystemManager.Instance.DestroyAllChildren(buffsdebuffs);
-        }
 
         entity.GetComponent<EntityClass>().DestroyEntityInCombat();
 

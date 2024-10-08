@@ -56,8 +56,13 @@ public class Ability_Summon : ScriptableCardAbility
 
                     summon.tag = "PlayerSummon";
 
-                    //initialize the stats
-                    summon.GetComponent<EntityClass>().InititializeEntity();
+                    //allow to activate coroutine on scriptable object
+                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                                       //hit at least one time if its 0
+
+                    // Start the coroutine for each hit
+                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
+
 
                     //initialize 
                     summon.GetComponent<AIBrain>().GenerateIntend();
@@ -71,7 +76,7 @@ public class Ability_Summon : ScriptableCardAbility
                 GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
 
                 //check if it reach the limit
-                if (summons.Length >= Combat.Instance.maxPlayerSummons)
+                if (summons.Length >= Combat.Instance.maxEnemySummons)
                 {
                     return;
                 }
@@ -82,7 +87,13 @@ public class Ability_Summon : ScriptableCardAbility
                     summon.tag = "EnemySummon";
 
                     //initialize the stats
-                    summon.GetComponent<EntityClass>().InititializeEntity();
+                    //allow to activate coroutine on scriptable object
+                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                                       //hit at least one time if its 0
+
+                    // Start the coroutine for each hit
+                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
+
 
                     //initialize 
                     summon.GetComponent<AIBrain>().GenerateIntend();

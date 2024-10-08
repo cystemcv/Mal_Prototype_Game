@@ -28,6 +28,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     float rotationSpeed = -2000f;  // Degrees per second
     public bool allowEntityRotation = false;
 
+    public int summonTurns = 1;
+
     //combat
     public GameObject sliderBar;
     public Slider slider;
@@ -35,6 +37,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public GameObject shieldText;
     public GameObject healthText;
     public GameObject fillBar;
+    public TMP_Text summonTurnsText;
 
     //ui
     public Image mainImage;
@@ -51,21 +54,11 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     //spawn prefabs on entity
     [Header("PREFABS")]
-    public bool spawnBuffDebuffObject;
-    public Vector3 spawnBuffDebuffObjectAdjustment = new Vector3(0, 0, 0);
-    public bool spawnHealthBarObject;
-    public Vector3 spawnHealthBarObjectAdjustment = new Vector3(0, 0, 0);
-    public bool spawnIntendObject;
-    public Vector3 spawnIntendObjectAdjustment = new Vector3(0, 0, 0);
-
-    [Header("PREFABS LIVE ADJUSTMENTS")]
-    public bool allowPrefabLiveAdjustments = true;
-    private GameObject bdO;
-    private GameObject hpO;
-    private GameObject intentO;
+    public Vector3 spawnGameObjectUI = new Vector3(0, 0, 0);
     private GameObject gameobjectUI;
-
     private GameObject model;
+
+    public bool spawnSummonTurnsObject = false;
 
     public EntityClass()
     {
@@ -76,34 +69,10 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void Update()
     {
-
         if (allowEntityRotation)
         {
             RotateEntity();
         }
-
-        if (allowPrefabLiveAdjustments == false)
-        {
-            return;
-        }
-
-        if (hpO != null)
-        {
-            hpO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnHealthBarObjectAdjustment.x, gameobjectUI.transform.position.y + spawnHealthBarObjectAdjustment.y, gameobjectUI.transform.position.z + spawnHealthBarObjectAdjustment.z);
-        }
-
-        if (bdO != null)
-        {
-            bdO.transform.position = new Vector3(hpO.transform.position.x + spawnBuffDebuffObjectAdjustment.x, hpO.transform.position.y + spawnBuffDebuffObjectAdjustment.y, hpO.transform.position.z + spawnBuffDebuffObjectAdjustment.z);
-        }
-
-        if (intentO != null)
-        {
-            intentO.transform.position = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.z);
-        }
-
-
-
 
     }
 
@@ -128,82 +97,20 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        InititializeEntity();
+        StartCoroutine(InititializeEntity());
 
 
     }
 
-    public void SpawnUI()
+    public IEnumerator SpawnUI()
     {
 
 
 
-        //get the entity ui spawner
-        gameobjectUI = this.gameObject.transform.Find("gameobjectUI").gameObject;
-
-        if (spawnHealthBarObject)
-        {
-            //if already exist then keep it
-            if (gameobjectUI.transform.Find("Bars") != null)
-            {
-
-            }
-            else
-            {
-                //spawn new ui
-                Vector3 spawnPos = new Vector3(gameobjectUI.transform.position.x + spawnHealthBarObjectAdjustment.x, gameobjectUI.transform.position.y + spawnHealthBarObjectAdjustment.y, gameobjectUI.transform.position.z + spawnHealthBarObjectAdjustment.z);
-                GameObject newUI = Instantiate(SystemManager.Instance.entity_healthBarObject, spawnPos, Quaternion.identity);
-                newUI.name = "Bars";
-                hpO = newUI;
-                //parent it
-                hpO.transform.SetParent(gameobjectUI.transform);
-
-
-            }
-
-
-        }
-
-        //spawn ui for entities
-        if (spawnBuffDebuffObject)
-        {
-            //if already exist then destroy it
-            if (gameobjectUI.transform.Find("BuffDebuffList") != null)
-            {
-
-            }
-            else
-            {
-                //spawn new ui
-                Vector3 spawnPos = new Vector3(hpO.transform.position.x + spawnBuffDebuffObjectAdjustment.x, hpO.transform.position.y + spawnBuffDebuffObjectAdjustment.y - 0.1f, hpO.transform.position.z + spawnBuffDebuffObjectAdjustment.z);
-                GameObject newUI = Instantiate(SystemManager.Instance.entity_buffDebuffObject, spawnPos, Quaternion.identity);
-                newUI.name = "BuffDebuffList";
-                bdO = newUI;
-                //parent it
-                bdO.transform.SetParent(gameobjectUI.transform);
-            }
-        }
 
 
 
-        if (spawnIntendObject)
-        {
-            //if already exist then destroy it
-            if (gameobjectUI.transform.Find("intendList") != null)
-            {
-
-            }
-            else
-            {
-                //spawn new ui
-                Vector3 spawnPos = new Vector3(gameobjectUI.transform.position.x + spawnIntendObjectAdjustment.x, gameobjectUI.transform.position.y + spawnIntendObjectAdjustment.y, gameobjectUI.transform.position.z + spawnIntendObjectAdjustment.y);
-                GameObject newUI = Instantiate(SystemManager.Instance.entity_intendObject, spawnPos, Quaternion.identity);
-                newUI.name = "intendList";
-                intentO = newUI;
-                //parent it
-                intentO.transform.SetParent(gameobjectUI.transform);
-            }
-        }
+        yield return null;
     }
 
     private IEnumerator InitializeHealthBar(GameObject newUI)
@@ -233,9 +140,15 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // Update is called once per frame
 
 
-    public void InititializeEntity()
+    public IEnumerator InititializeEntity()
     {
-        SpawnUI();
+
+        if (this.gameObject.tag == "PlayerSummon" || this.gameObject.tag == "EnemySummon")
+        {
+            spawnSummonTurnsObject = true;
+        }
+
+        yield return SpawnUI();
 
         //variables that can change during battle
         poisongDmg = scriptableEntity.poisonDmg;
@@ -243,7 +156,20 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         maxHealth = scriptableEntity.maxHealth;
         attack = scriptableEntity.strength;
 
+        summonTurns = scriptableEntity.summonTurns;
+
+        if (spawnSummonTurnsObject)
+        {
+            summonTurnsText = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").Find("Text").GetComponent<TMP_Text>();
+            summonTurnsText.text = summonTurns.ToString();
+        }
+        else
+        {
+            this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
+        }
+
         InitUIBar();
+
 
         //save current position , so it can go back if needed
         OriginXPos = this.gameObject.transform.position.x;
@@ -325,7 +251,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         AIBrain aIBrain = this.GetComponent<AIBrain>();
 
         //if no ai brain the get continue to the next or deasd
-        if (aIBrain == null )
+        if (aIBrain == null)
         {
             return;
         }
@@ -366,5 +292,28 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         UI_Combat.Instance.CheckEnemyCard.SetActive(false);
 
+    }
+
+    public void AdjustSummonTurns(int value)
+    {
+        if (spawnSummonTurnsObject)
+        {
+            summonTurns += value;
+            summonTurnsText.text = summonTurns.ToString();
+
+            if (summonTurns >= 99)
+            {
+                summonTurns = 99;
+            }
+
+            if (summonTurns <= 0)
+            {
+                summonTurns = 0;
+            }
+
+            //if the target reach to 0
+            Combat.Instance.CheckIfEntityIsDead(this);
+
+        }
     }
 }

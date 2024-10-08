@@ -38,6 +38,12 @@ public class AIManager : MonoBehaviour
 
         foreach (GameObject entity in entities)
         {
+
+            if(entity == null)
+            {
+                continue;
+            }
+
             AIBrain aIBrain = entity.GetComponent<AIBrain>();
 
             //if no ai brain the get continue to the next or deasd
@@ -83,9 +89,6 @@ public class AIManager : MonoBehaviour
             {
                 continue;
             }
-
-            //destroy intends
-            SystemManager.Instance.DestroyAllChildren(entity.transform.Find("gameobjectUI").Find("intendList").Find("intends").gameObject);
 
             //generate new intends
             aIBrain.GenerateIntend();

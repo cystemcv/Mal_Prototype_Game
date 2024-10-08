@@ -40,6 +40,8 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
         this.entityUsedCard = entityUsedCard;
         this.controlBy = controlBy;
 
+
+
         multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
 
         //then loop
@@ -83,6 +85,12 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
             //then loop
             foreach (GameObject targetFound in targetsFound)
             {
+                if (targetFound == null)
+                {
+                    continue;
+                }
+
+
                 if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
                 {
 
