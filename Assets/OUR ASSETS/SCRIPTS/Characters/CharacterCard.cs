@@ -56,58 +56,13 @@ public class CharacterCard : MonoBehaviour
     public void OnCharacterCardClick()
     {
 
-        //check if the character is already on the list
-        if (CharacterManager.Instance.scriptablePlayerList.Contains(scriptableEntity))
-        {
-
-            //remove it from the list
-            CharacterManager.Instance.scriptablePlayerList.Remove(scriptableEntity);
-
-            //deactivate card ui
-            activation.SetActive(false);
-
-            //disable the proceed button
-            UIManager.Instance.DisableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
-
-            return;
-
-        }
-
-        //check if we can add more characters otherwise return
-        if (CharacterManager.Instance.scriptablePlayerList.Count + 1 > CharacterManager.Instance.CheckCharacterLimitBasedOnMode())
-        {
-            //passed the limit
-
-            //then we remove the first one and add this one
-
-            //find the object that has that scriptable character
-            CharacterCard characterCardFound = null;
-            foreach(Transform card in UI_CharacterSelectionMenu.Instance.characterSelectionContent.transform)
-            {
-                characterCardFound = card.GetChild(0).GetComponent<CharacterCard>();
-
-                if (characterCardFound.scriptableEntity == CharacterManager.Instance.scriptablePlayerList[0])
-                {
-                    //get out of the loop we found what we need
-                    break;
-                }
-            }
-            characterCardFound.activation.SetActive(false);
-            CharacterManager.Instance.scriptablePlayerList.RemoveAt(0);
-
-
-
-            //return;
-        }
-
-        //add to the list
-        CharacterManager.Instance.scriptablePlayerList.Add(scriptableEntity);
+        StaticData.staticCharacter = scriptableEntity.Clone();
 
         //activate card ui
         activation.SetActive(true);
 
         //check if the limit is ok
-        if (CharacterManager.Instance.scriptablePlayerList.Count == CharacterManager.Instance.CheckCharacterLimitBasedOnMode())
+        if (StaticData.staticCharacter != null)
         {
             //disable the proceed button
             UIManager.Instance.EnableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);

@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 1522257248}
   - component: {fileID: 1522257247}
   m_Layer: 6
-  m_Name: ENEMY MANAGER
+  m_Name: AI MANAGER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,11 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48439c7af343db04b83c39edc8d517ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scriptableEnemyList:
-  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
-  - {fileID: 11400000, guid: 2a55ea61683497245863b262cc5a73e7, type: 2}
-  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
-  - {fileID: 11400000, guid: 99184808b9ab019409a04063d17ee8e0, type: 2}
 --- !u!1 &1545984970
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +379,7 @@ MonoBehaviour:
   colorRed: FF0000
   colorBlue: 003FFF
   colorLightBlue: 0079FF
+  colorVeryLightBlue: 5DC7FF
   colorYellow: F9FF00
   colorGreen: 25FF00
   colorTransparent: FFFFFF00
@@ -407,11 +403,13 @@ MonoBehaviour:
   entity_buffDebuffObject: {fileID: 5754387158870076457, guid: f837e6e03add6a84f8ed8166986602ed, type: 3}
   entity_healthBarObject: {fileID: 4744317193593757384, guid: 2a7bb90d3af590044becb82bf95a7445, type: 3}
   entity_intendObject: {fileID: 2191256933326477094, guid: 555b81a098a04dd4da6be3d56b415723, type: 3}
+  entity_summonTurnsObject: {fileID: 121178914122694895, guid: 05f3b7e940130114eb3953da1d14d7a7, type: 3}
   object_HighlightButton: {fileID: 0}
   LoadingScreen: {fileID: 1269343734}
   materialDefaultEntity: {fileID: 2100000, guid: 853266acdb8f50747ad39ffd86bb81a4, type: 2}
   materialDamagedEntity: {fileID: 2100000, guid: 67194125b43395745ab5f75415226cb9, type: 2}
   materialTargetEntity: {fileID: 2100000, guid: ebe0bd98314a954479274721f8a6cbd4, type: 2}
+  materialMouseOverEntity: {fileID: 2100000, guid: 67e9407a3c7d87b41a5fa813b7687b6f, type: 2}
 --- !u!114 &1272546200956171710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -963,8 +961,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ffbf4d773b14174b859e66bfac0bd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manaMaxAvailable: 20
-  manaAvailable: 0
+  scriptableBattle: {fileID: 11400000, guid: 8e90421ce7f89b94aaa06ae79c75cabd, type: 2}
+  scriptableBattlesList_World1:
+  - {fileID: 11400000, guid: 8e90421ce7f89b94aaa06ae79c75cabd, type: 2}
+  - {fileID: 11400000, guid: 0b1a8939e15f1e14c9c282dd4c41c86a, type: 2}
+  scriptableBattlesList_World2: []
+  scriptableBattlesList_World3: []
+  scriptableBattlesList_World4: []
+  scriptableBattlesList_World5: []
 --- !u!223 &2130021374067095134
 Canvas:
   m_ObjectHideFlags: 0
@@ -1031,9 +1035,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875534f62d560e44f87c4b7c5e99995d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainDeck: []
-  scriptableDeck: {fileID: 11400000, guid: 0aa5c7f82d71c4645aea4f8f242b48cf, type: 2}
-  combatDeck: []
+  combatDeck:
+  - {fileID: 0}
   discardedPile: []
   banishedPile: []
   handCards: []
@@ -1217,13 +1220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterList:
-  - {fileID: 11400000, guid: ff880a7e2f339f44a8f182d81b51a996, type: 2}
-  - {fileID: 11400000, guid: 28218b9bdf38b7d46b971aeca7523186, type: 2}
-  - {fileID: 11400000, guid: f70c7ae2e112b08428d624e77fdff3b0, type: 2}
   - {fileID: 11400000, guid: 2fa82dbcc0347074083a63497d97d230, type: 2}
-  scriptablePlayerList:
-  - {fileID: 11400000, guid: 2fa82dbcc0347074083a63497d97d230, type: 2}
-  charactersInAdventure: []
 --- !u!1 &2130021375733832338
 GameObject:
   m_ObjectHideFlags: 0

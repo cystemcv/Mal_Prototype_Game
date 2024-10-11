@@ -57,4 +57,12 @@ public class ScriptableEntity : ScriptableObject
     //other stats
     public int poisonDmg = 1;
 
+    // Deep clone method for a complex object
+    public ScriptableEntity Clone()
+    {
+        ScriptableEntity clone = ScriptableObject.Instantiate(this);
+        //clone.abilities = new List<string>(this.abilities); // Deep copy of the list
+        return clone;
+    }
+
 }

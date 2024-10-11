@@ -8,8 +8,7 @@ public class UI_Combat : MonoBehaviour
 {
     public static UI_Combat Instance;
 
-    public delegate void OnManaChange();
-    public event OnManaChange onManaChange;
+
 
     //variables
 
@@ -54,17 +53,7 @@ public class UI_Combat : MonoBehaviour
     public GameObject HAND;
     public GameObject CARDPLAYED;
 
-    public int ManaAvailable
-    {
-        get { return CombatManager.Instance.manaAvailable; }
-        set
-        {
-            if (CombatManager.Instance.manaAvailable == value) return;
-            CombatManager.Instance.manaAvailable = value;
-            if (onManaChange != null)
-                onManaChange();
-        }
-    }
+
 
     private void Awake()
     {
@@ -80,49 +69,9 @@ public class UI_Combat : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        onManaChange += ManaDetectEvent;
-    }
-
-    private void OnDisable()
-    {
-        onManaChange -= ManaDetectEvent;
-    }
-
-    public void ManaDetectEvent()
-    {
-
-        //show the mana on UI
-        manaText.GetComponent<TMP_Text>().text = CombatManager.Instance.manaAvailable.ToString();
-
-        //go throught each card in the hand and update them
-        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
-        {
-            UpdateCardAfterManaChange(cardPrefab);
-        }
-
-    }
-
-    public void UpdateCardAfterManaChange(GameObject cardPrefab)
-    {
-        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
-        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
 
 
-        //check the mana cost of each
-        if (CombatManager.Instance.manaAvailable < cardScript.primaryManaCost)
-        {
-            //cannot be played
-            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-        }
-        else
-        {
-            //can be played
-            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-        }
-    }
+
 
     public void OnNotification(string message, float waitTime)
     {
@@ -204,5 +153,17 @@ public class UI_Combat : MonoBehaviour
             yield return null; // Wait for the next frame
         }
         slider.value = targetValue; // Ensure it's set to the target value at the end
+    }
+
+    public void BackToAdventure()
+    {
+        //SceneManager.LoadScene("scene_Adventure");
+        SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
+    }
+
+    public void BackToMainMenu()
+    {
+        //SceneManager.LoadScene("scene_Adventure");
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
     }
 }

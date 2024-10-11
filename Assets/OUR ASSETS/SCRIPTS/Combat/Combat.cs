@@ -47,6 +47,36 @@ public class Combat : MonoBehaviour
 
     public LTDescr moveEntityTween;
 
+    GameObject battleground;
+
+    [Header("GLOBAL VARIABLES")]
+    public int manaMaxAvailable = 3;
+    public int manaAvailable = 0;
+
+    public delegate void OnManaChange();
+    public event OnManaChange onManaChange;
+
+    public int ManaAvailable
+    {
+        get { return manaAvailable; }
+        set
+        {
+            if (manaAvailable == value) return;
+            manaAvailable = value;
+            if (onManaChange != null)
+                onManaChange();
+        }
+    }
+
+    private void OnEnable()
+    {
+        onManaChange += ManaDetectEvent;
+    }
+
+    private void OnDisable()
+    {
+        onManaChange -= ManaDetectEvent;
+    }
 
     private void Awake()
     {
@@ -83,7 +113,39 @@ public class Combat : MonoBehaviour
 
     }
 
+    public void ManaDetectEvent()
+    {
 
+        //show the mana on UI
+        UI_Combat.Instance.manaText.GetComponent<TMP_Text>().text = manaAvailable.ToString();
+
+        //go throught each card in the hand and update them
+        foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
+        {
+            UpdateCardAfterManaChange(cardPrefab);
+        }
+
+    }
+
+    public void UpdateCardAfterManaChange(GameObject cardPrefab)
+    {
+        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
+
+
+        //check the mana cost of each
+        if (manaAvailable < cardScript.primaryManaCost)
+        {
+            //cannot be played
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+        }
+        else
+        {
+            //can be played
+            cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+        }
+    }
 
     public void CombatOver()
     {
@@ -96,6 +158,15 @@ public class Combat : MonoBehaviour
         }
         else if (enemiesAlive <= 0)
         {
+
+            //get the player
+            GameObject playerCharacter = GameObject.FindGameObjectWithTag("Player");
+            EntityClass entityClass = playerCharacter.GetComponent<EntityClass>();
+
+            //save character
+            StaticData.staticCharacter.maxHealth = entityClass.maxHealth;
+            StaticData.staticCharacter.currHealth = entityClass.health;
+
             //win
             UI_Combat.Instance.victory.SetActive(true);
         }
@@ -105,6 +176,8 @@ public class Combat : MonoBehaviour
 
     public IEnumerator InitializeCombat()
     {
+
+
 
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
@@ -117,24 +190,29 @@ public class Combat : MonoBehaviour
         //play music
         AudioManager.Instance.PlayMusic("Combat_1");
 
-
+        //clear all lists
+        yield return StartCoroutine(ClearLists());
 
         //destroy any previous characters
-        yield return SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject);
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject));
 
         //destroy any previous enemies
-        yield return SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Enemies").gameObject);
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Enemies").gameObject));
+
+        //destroy battleground
+        battleground = GameObject.FindGameObjectWithTag("BattleGround");
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.GetChild(0).gameObject));
 
         //spawn the characters
-        yield return SpawnCharacters();
+        yield return StartCoroutine(SpawnCharacters());
 
         //spawn the enemies
-        yield return SpawnEnemies();
+        yield return StartCoroutine(SpawnEnemies());
+
+        //spawn battleground
+        yield return StartCoroutine(SpawnBattleground());
 
         yield return new WaitForSeconds(0.5f);
-
-        //build the deck from Scriptable Object deck
-        yield return CopyDeckFromSO();
 
         //initialize all things card related, deck, combat deck, discard pile, etc
         yield return InitializeCardsAndDecks();
@@ -203,6 +281,15 @@ public class Combat : MonoBehaviour
         {
             yield return null; //stops function
         }
+    }
+
+    public IEnumerator ClearLists()
+    {
+        characterFormation.Clear();
+        enemyFormation.Clear();
+
+
+        yield return null;
     }
 
     public IEnumerator PlayerTurnStart()
@@ -356,7 +443,7 @@ public class Combat : MonoBehaviour
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetEnemyTagsList()));
 
-  
+
 
         yield return null;
     }
@@ -380,20 +467,24 @@ public class Combat : MonoBehaviour
     public IEnumerator SpawnCharacters()
     {
 
-        //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
+        //check character
+        if (StaticData.staticCharacter == null)
         {
-            //instantiate our character or characters
-            GameObject characterInCombat = InstantiateCharacter(scriptableEntity);
-
-            //assign the characters in combat
-            CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
-
-            //initialize the stats
-            StartCoroutine(characterInCombat.GetComponent<EntityClass>().InititializeEntity());
-
-            yield return null; // Wait for a frame 
+            //assign a temporary character (this is mostly to test battle)
+            StaticData.staticCharacter = CharacterManager.Instance.characterList[0].Clone();
         }
+
+        //instantiate our character or characters
+        GameObject characterInCombat = InstantiateCharacter(StaticData.staticCharacter);
+
+        //assign the characters in combat
+        //CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
+
+        //initialize the stats
+        StartCoroutine(characterInCombat.GetComponent<EntityClass>().InititializeEntity());
+
+        yield return null; // Wait for a frame 
+
 
     }
 
@@ -401,13 +492,13 @@ public class Combat : MonoBehaviour
     {
 
         //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in AIManager.Instance.scriptableEnemyList)
+        foreach (ScriptableEntity scriptableEntity in CombatManager.Instance.scriptableBattle.scriptableEntities)
         {
             //instantiate our character or characters
             GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);
 
             //assign the characters in combat
-            CharacterManager.Instance.charactersInAdventure.Add(enemyInCombat);
+            //CharacterManager.Instance.charactersInAdventure.Add(enemyInCombat);
 
             //initialize the stats
             StartCoroutine(enemyInCombat.GetComponent<EntityClass>().InititializeEntity());
@@ -415,6 +506,16 @@ public class Combat : MonoBehaviour
 
             yield return null; // Wait for a frame 
         }
+
+    }
+
+    public IEnumerator SpawnBattleground()
+    {
+
+        GameObject bg = Instantiate(CombatManager.Instance.scriptableBattle.battlegroundPrefab, battleground.transform.position, Quaternion.identity);
+        bg.transform.SetParent(battleground.transform);
+
+        yield return null; // Wait for a frame 
 
     }
 
@@ -444,6 +545,10 @@ public class Combat : MonoBehaviour
 
             FlipSprite(entity);
         }
+        else
+        {
+            entity.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject.SetActive(false);
+        }
 
         //assign the entity to formation
 
@@ -460,7 +565,7 @@ public class Combat : MonoBehaviour
     {
         Vector3 scale = spriteObject.transform.Find("model").localScale;
         scale.x *= -1; // Reverse the y-axis scale
-        spriteObject.transform.Find("model").localScale= scale;
+        spriteObject.transform.Find("model").localScale = scale;
     }
 
     public IEnumerator RearrangeFormation(List<GameObject> formation)
@@ -617,12 +722,10 @@ public class Combat : MonoBehaviour
     public IEnumerator InitializeCardsAndDecks()
     {
 
-
-
-        //initialize the combat deck
-        DeckManager.Instance.combatDeck.Clear();
-        DeckManager.Instance.combatDeck = new List<CardScript>(DeckManager.Instance.mainDeck);
-        DeckManager.Instance.ShuffleDeck(DeckManager.Instance.combatDeck);
+        if (StaticData.staticMainDeck.Count == 0)
+        {
+            DeckManager.Instance.BuildStartingDeck();
+        }
 
         //clean up discard pile
         DeckManager.Instance.discardedPile.Clear();
@@ -630,32 +733,25 @@ public class Combat : MonoBehaviour
         //clean up banished pile
         DeckManager.Instance.banishedPile.Clear();
 
-        yield return null; // Wait for a frame 
-    }
+        //clean up hand
+        DeckManager.Instance.handCards.Clear();
 
-    public IEnumerator CopyDeckFromSO()
-    {
+        //initialize the combat deck
+        DeckManager.Instance.combatDeck.Clear();
+        DeckManager.Instance.combatDeck = new List<CardScript>(StaticData.staticMainDeck);
+        DeckManager.Instance.ShuffleDeck(DeckManager.Instance.combatDeck);
 
-        //if deck is not created then create it / this should only be available when not having deck
-        //if (DeckManager.Instance.mainDeck.Count == 0)
-        //{
-        DeckManager.Instance.BuildStartingDeckSO();
-        //}
 
-        //clear local deck
-        DeckManager.Instance.mainDeck.Clear();
-
-        //copy the deck
-        DeckManager.Instance.mainDeck = new List<CardScript>(DeckManager.Instance.scriptableDeck.mainDeck);
-        //mainDeck = scriptableDeck.mainDeck;
 
         yield return null; // Wait for a frame 
     }
+
+
 
     public void RefillMana()
     {
         //initialize mana and UI
-        UI_Combat.Instance.ManaAvailable = CombatManager.Instance.manaMaxAvailable;
+        ManaAvailable = manaMaxAvailable;
     }
 
 

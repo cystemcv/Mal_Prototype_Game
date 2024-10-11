@@ -8,15 +8,6 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptableEntity> characterList;
 
-    public List<ScriptableEntity> scriptablePlayerList;
-
-    //characters
-    public List<GameObject> charactersInAdventure;
-
-
-
-    //used by scriptable objects
-
 
     private void Awake()
     {
@@ -34,26 +25,7 @@ public class CharacterManager : MonoBehaviour
     }
 
 
-    public int CheckCharacterLimitBasedOnMode()
-    {
 
-        int limit = 0;
-
-        if (SystemManager.Instance.gameMode == SystemManager.GameMode.MainMode) {
-            limit = 1;
-        }
-        else if (SystemManager.Instance.gameMode == SystemManager.GameMode.DuoMode)
-        {
-            limit = 2;
-        }
-        else
-        {
-            limit = 1;
-        }
-
-        return limit;
-
-    }
    
 
 }

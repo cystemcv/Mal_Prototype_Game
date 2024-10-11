@@ -15,9 +15,12 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //get the neighbor rooms
         CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
-        if (roomType == SystemManager.RoomType.Battle) {
-            //Debug.Log("TEST COMBAT");
-            //SceneManager.LoadScene("scene_Combat");
+        if (roomType == SystemManager.RoomType.Battle)
+        {
+
+            ScriptableBattles scriptableBattle = CombatManager.Instance.GetRandomScriptableBattle(1);
+            CombatManager.Instance.scriptableBattle = scriptableBattle;
+
             SystemManager.Instance.LoadScene("scene_Combat", 0.4f);
         }
 

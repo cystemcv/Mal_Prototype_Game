@@ -227,7 +227,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             //check activation
             canActivate = HandManager.Instance.CheckActivation(rectTransform);
 
-            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable && SystemManager.Instance.thereIsActivatedCard == false)
+            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= Combat.Instance.manaAvailable && SystemManager.Instance.thereIsActivatedCard == false)
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 
@@ -282,7 +282,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 
-        if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= CombatManager.Instance.manaAvailable)
+        if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= Combat.Instance.manaAvailable)
         {
 
             // Scale down the card

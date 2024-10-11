@@ -11,13 +11,6 @@ public class DeckManager : MonoBehaviour
 {
     public static DeckManager Instance;
 
-
-
-    //Deck
-    public List<CardScript> mainDeck;
-
-    public ScriptableDeck scriptableDeck;
-
     //combat deck
     public List<CardScript> combatDeck;
 
@@ -74,59 +67,24 @@ public class DeckManager : MonoBehaviour
     {
 
         // Clear the deck before building a new one
-        mainDeck.Clear();
+        StaticData.staticMainDeck.Clear();
 
-
-        //loop throught each character on the character list and then add those cards to our deck
-        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
+        //loop for each starting card list and add it to our deck
+        foreach (ScriptableCard scriptableCard in StaticData.staticCharacter.startingCards)
         {
 
-            //loop for each starting card list and add it to our deck
-            foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
-            {
-
-                //add cards to the deck
-                CardScript cardScript = new CardScript();
-                cardScript.scriptableCard = scriptableCard;
-                mainDeck.Add(cardScript);
-
-            }
+            //add cards to the deck
+            CardScript cardScript = new CardScript();
+            cardScript.scriptableCard = scriptableCard;
+            StaticData.staticMainDeck.Add(cardScript);
 
         }
 
         // Shuffle the deck
-        ShuffleDeck(mainDeck);
+        ShuffleDeck(StaticData.staticMainDeck);
 
     }
 
-    public void BuildStartingDeckSO()
-    {
-
-        // Clear the deck before building a new one
-        scriptableDeck.mainDeck.Clear();
-
-
-        //loop throught each character on the character list and then add those cards to our deck
-        foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.scriptablePlayerList)
-        {
-
-            //loop for each starting card list and add it to our deck
-            foreach (ScriptableCard scriptableCard in scriptableEntity.startingCards)
-            {
-
-                //add cards to the deck
-                CardScript cardScript = new CardScript();
-                cardScript.scriptableCard = scriptableCard;
-                scriptableDeck.mainDeck.Add(cardScript);
-
-            }
-
-        }
-
-        // Shuffle the deck
-        ShuffleDeck(scriptableDeck.mainDeck);
-
-    }
 
     public void ShuffleDeck(List<CardScript> list)
     {
@@ -353,7 +311,7 @@ public class DeckManager : MonoBehaviour
 
 
         //decrease available mana
-        //UI_Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
+        Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
 
         //remove from hand and add it to the played card
         RemovePlayedCardFromHand(tempCardScript);
@@ -368,7 +326,7 @@ public class DeckManager : MonoBehaviour
     {
         bool condition = false;
         //get the player
-        GameObject entity = CharacterManager.Instance.charactersInAdventure[0];
+        GameObject entity = GameObject.FindGameObjectWithTag("Player");
 
         if (entity == null)
         {
@@ -410,7 +368,7 @@ public class DeckManager : MonoBehaviour
         SystemManager.Instance.thereIsActivatedCard = true;
 
         //get the player
-        GameObject entity = CharacterManager.Instance.charactersInAdventure[0];
+        GameObject entity = GameObject.FindGameObjectWithTag("Player");
 
         if (entity == null)
         {
@@ -551,7 +509,7 @@ public class DeckManager : MonoBehaviour
         //add a card ti deck
         GameObject cardPrefab = CardListManager.Instance.cardPrefab;
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-        mainDeck.Add(null);
+        StaticData.staticMainDeck.Add(null);
 
     }
 
@@ -612,7 +570,7 @@ public class DeckManager : MonoBehaviour
         }
 
         //check mana
-        UI_Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
+        Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
 
     }
 
@@ -623,7 +581,7 @@ public class DeckManager : MonoBehaviour
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
-        GameObject character = CharacterManager.Instance.charactersInAdventure[0];
+        GameObject character = GameObject.FindGameObjectWithTag("Player");
 
         //for example
         cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
@@ -662,7 +620,7 @@ public class DeckManager : MonoBehaviour
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
-        GameObject character = CharacterManager.Instance.charactersInAdventure[0];
+        GameObject character = GameObject.FindGameObjectWithTag("Player");
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
         foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         {
@@ -857,7 +815,7 @@ public class DeckManager : MonoBehaviour
         }
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.mainDeck)
         {
-            mainDeck.Add(cardScript);
+            StaticData.staticMainDeck.Add(cardScript);
 
         }
 

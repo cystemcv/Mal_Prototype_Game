@@ -10,8 +10,7 @@ public class AIManager : MonoBehaviour
 {
     public static AIManager Instance;
 
-    [Header("ENEMIES IN BATTLE")]
-    public List<ScriptableEntity> scriptableEnemyList;
+
 
 
     private void Awake()

@@ -30,8 +30,6 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //clear the list
-        CharacterManager.Instance.scriptablePlayerList.Clear();
 
         //disable the proceed button
         UIManager.Instance.DisableButton(proceedToGame);
@@ -86,7 +84,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     {
 
         //build the deck for the scriptable deck
-        DeckManager.Instance.BuildStartingDeckSO();
+        DeckManager.Instance.BuildStartingDeck();
 
         //SceneManager.LoadScene("scene_Adventure");
         SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);

@@ -86,6 +86,11 @@ public class AIBrain : MonoBehaviour
     {
         List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobjectOppossite(this.gameObject);
 
+        if (gameobjectsFound.Count == 0)
+        {
+            return;
+        }
+
         int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
         //assign a target for card
         targetForCard = gameobjectsFound[indexForTargetForCard];

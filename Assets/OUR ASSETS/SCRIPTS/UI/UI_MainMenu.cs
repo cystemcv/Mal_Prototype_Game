@@ -94,7 +94,7 @@ public class UI_MainMenu : MonoBehaviour
 
 
         //if deck is not created then create it / this should only be available when not having deck
-        DeckManager.Instance.BuildStartingDeckSO();
+        DeckManager.Instance.BuildStartingDeck();
        
 
         //open the correct menu
