@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CustomDungeonGenerator : MonoBehaviour
@@ -61,25 +62,107 @@ public class CustomDungeonGenerator : MonoBehaviour
     public bool dungeonIsGenerating = false;
     public bool isBossRoomCreated = false;
 
+
+    //ui
+    public GameObject displayCharacterCard;
+
+
     private void Awake()
     {
 
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
-        //if (Instance == null)
-        //{
-        //    Instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
     }
     void Start()
     {
+        
 
-        StartDungeonGeneration();
+
+
+    }
+
+
+    void OnEnable()
+    {
+        // Register the callback when the object is enabled
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // Unregister the callback when the object is disabled
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // This function will be called whenever a new scene is loaded
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Scene loaded: " + scene.name);
+        // Call your function here
+        if (scene.name == "scene_Adventure")
+        {
+            CustomSceneLoaded();
+        }
+
+    }
+
+    void CustomSceneLoaded()
+    {
+
+        Scene scene = SceneManager.GetActiveScene();
+
+        if (scene.name != "scene_Adventure")
+        {
+            return;
+        }
+        else
+        {
+            UpdateAdventureUI();
+        }
+
+        //first check if dungeonParent is null or not
+        if (StaticData.staticDungeonParent != null)
+        {
+
+            StaticData.staticDungeonParent.SetActive(true);
+        }
+        else
+        {
+            StartDungeonGeneration();
+        }
+
+ 
+
+    }
+
+    public void UpdateAdventureUI()
+    {
+
+        if (StaticData.staticCharacter == null)
+        {
+            StaticData.staticCharacter = CharacterManager.Instance.characterList[0].Clone();
+        }
+
+
+        displayCharacterCard = GameObject.Find("ROOT").transform.Find("STAYONCAMERA").transform.Find("DisplayCharacterCard").gameObject;
+
+        float targetValue = (float)StaticData.staticCharacter.currHealth / (float)StaticData.staticCharacter.maxHealth;
+        displayCharacterCard.transform.Find("Health").GetComponent<Slider>().value = targetValue;
+
+        displayCharacterCard.transform.Find("CardText").GetComponent<TMP_Text>().text = StaticData.staticCharacter.mainClass.ToString();
+
+        displayCharacterCard.transform.Find("Health").Find("TEXT").GetComponent<TMP_Text>().text = StaticData.staticCharacter.currHealth + " / " + StaticData.staticCharacter.maxHealth;
+
+        displayCharacterCard.transform.Find("EntityImage").GetComponent<Image>().sprite = StaticData.staticCharacter.entityImage;
+
     }
 
     public void StartDungeonGeneration()
@@ -120,11 +203,12 @@ public class CustomDungeonGenerator : MonoBehaviour
             return;
         }
 
-        if (uiCamera == null)
-        {
-            Debug.LogError("UI Camera not assigned.");
-            return;
-        }
+        //if (uiCamera == null)
+        //{
+        //    uiCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        //    Debug.LogError("UI Camera not assigned.");
+        //    return;
+        //}
 
         if (eventSystem == null)
             eventSystem = FindObjectOfType<EventSystem>();
@@ -159,7 +243,8 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
 
         //get the dungeon parent transform where every room will be child of
-        Transform dungeonParentTransform = canvas.transform.Find("DungeonParent").transform;
+        StaticData.staticDungeonParent = canvas.transform.Find("DungeonParent").gameObject;
+        Transform dungeonParentTransform = StaticData.staticDungeonParent.transform;
 
         //initialize dungeon by clearing all remaining rooms from the parent
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(dungeonParentTransform.gameObject));
@@ -322,7 +407,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             yield break;
         }
 
-        newRoom.transform.SetParent(canvas.transform.Find("DungeonParent").transform);
+        newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
         
         //hide everything except the start room
@@ -459,7 +544,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         // We create a new line GameObject
         GameObject newLine = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
         // We make it a child of the DungeonParent which holds also our rooms
-        newLine.transform.SetParent(canvas.transform.Find("DungeonParent").transform, false);
+        newLine.transform.SetParent(StaticData.staticDungeonParent.transform, false);
 
         // Access the LineRenderer from the GameObject
         LineRenderer lineRenderer = newLine.GetComponent<LineRenderer>();

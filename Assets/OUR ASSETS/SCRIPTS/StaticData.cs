@@ -9,4 +9,6 @@ public class StaticData : MonoBehaviour
 
     public static ScriptableEntity staticCharacter;
 
+    public static GameObject staticDungeonParent;
+
 }

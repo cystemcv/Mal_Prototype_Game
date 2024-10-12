@@ -153,6 +153,10 @@ public class Combat : MonoBehaviour
         //always check characters first, if both lost = game over
         if (charactersAlive <= 0)
         {
+
+            //remove the dungeon
+            StaticData.staticDungeonParent = null;
+
             //lose
             UI_Combat.Instance.gameover.SetActive(true);
         }
@@ -176,8 +180,10 @@ public class Combat : MonoBehaviour
 
     public IEnumerator InitializeCombat()
     {
-
-
+        //hide the dungeon generato
+        if (StaticData.staticDungeonParent != null) {
+            StaticData.staticDungeonParent.SetActive(false);
+        }
 
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
