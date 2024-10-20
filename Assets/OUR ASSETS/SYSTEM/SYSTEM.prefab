@@ -220,6 +220,7 @@ MonoBehaviour:
   dungeonGeneratorPos: 0
   dungeonIsGenerating: 0
   isBossRoomCreated: 0
+  displayCharacterCard: {fileID: 0}
 --- !u!1 &1188555174
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1188555175
 RectTransform:
   m_ObjectHideFlags: 0
@@ -528,7 +529,7 @@ Transform:
   - {fileID: 1522257246}
   - {fileID: 653860929}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1272546200956171702
 MonoBehaviour:
@@ -1406,6 +1407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterList:
   - {fileID: 11400000, guid: 2fa82dbcc0347074083a63497d97d230, type: 2}
+  - {fileID: 11400000, guid: de585f208d54c574284ffe0cbcfb38e3, type: 2}
 --- !u!1 &2130021375733832338
 GameObject:
   m_ObjectHideFlags: 0

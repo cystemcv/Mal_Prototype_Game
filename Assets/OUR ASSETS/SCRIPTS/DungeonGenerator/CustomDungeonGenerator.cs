@@ -15,29 +15,29 @@ public class CustomDungeonGenerator : MonoBehaviour
     [Header("ASSIGN VARIABLES")]
     //public GameObject[] roomPrefabs; // Assign different room prefabs in the Inspector
 
-    public GameObject StartRoomPrefab;
-    public GameObject BattleRoomPrefab;
-    public GameObject BossRoomPrefab;
-    public GameObject EmptyRoomPrefab;
-    public GameObject ChestRoomPrefab;
-    public GameObject EventRoomPrefab;
-    public GameObject TrapRoomPrefab;
-    public GameObject RestRoomPrefab;
+    public int galaxyLevel = 1;
 
-    public float bossRoomChance = 0;
-    public float emptyRoomChance = 0;
-    public float chestRoomChance = 0;
-    public float eventRoomChance = 0;
-    public float trapRoomChance = 0;
-    public float restRoomChance = 0;
+    public List<ScriptableGalaxies> scriptableGalaxies_1;
+    public List<ScriptableGalaxies> scriptableGalaxies_2;
+    public List<ScriptableGalaxies> scriptableGalaxies_3;
+    public List<ScriptableGalaxies> scriptableGalaxies_4; //end game
+    public List<ScriptableGalaxies> scriptableGalaxies_5; //secret
+
+    public ScriptableGalaxies galaxyGenerating;
+
+    public GameObject StartPlanetPrefab;
+    public GameObject BattlePlanetPrefab;
+    public GameObject BossPlanetPrefab;
+    public GameObject RewardPlanetPrefab;
+    public GameObject EventPlanetPrefab;
+    public GameObject RestPlanetPrefab;
+
 
     public GameObject linePrefab; // Assign in Inspector
     public Camera uiCamera; // Assign the camera used by the Canvas
 
     [Header("VALUE VARIABLES")]
-    public int maxRoomLevels = 5; // Maximum number of room levels
-    public int allowedPercentage = 30;
-    public int distanceBetweenRooms = 2; // Distance you want to put between rooms
+
     //public int maxAttempts = 100; // Maximum attempts to create a room before stopping
     public bool hideRooms = true;
     public bool drawLines = false;
@@ -57,7 +57,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
 
     public int dungeonGeneratorPos = 0;
-  
+
 
     public bool dungeonIsGenerating = false;
     public bool isBossRoomCreated = false;
@@ -83,7 +83,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     }
     void Start()
     {
-        
+
 
 
 
@@ -107,14 +107,13 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
         Debug.Log("Scene loaded: " + scene.name);
         // Call your function here
-        if (scene.name == "scene_Adventure")
-        {
-            CustomSceneLoaded();
-        }
+
+        CustomSceneLoaded();
+
 
     }
 
-    void CustomSceneLoaded()
+    public void CustomSceneLoaded()
     {
 
         Scene scene = SceneManager.GetActiveScene();
@@ -129,17 +128,18 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
         //first check if dungeonParent is null or not
-        if (StaticData.staticDungeonParent != null)
+        if (StaticData.staticDungeonParent != null && StaticData.staticDungeonParentGenerated == true)
         {
-
             StaticData.staticDungeonParent.SetActive(true);
         }
         else
         {
+            StaticData.staticDungeonParent = canvas.transform.GetChild(0).gameObject;
+            StaticData.staticDungeonParent.SetActive(true);
             StartDungeonGeneration();
         }
 
- 
+
 
     }
 
@@ -179,9 +179,10 @@ public class CustomDungeonGenerator : MonoBehaviour
         ValidateAssignments();
         try
         {
+            StaticData.staticDungeonParentGenerated = true;
             StartCoroutine(GenerateDungeon());
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogWarning("ERROR : " + ex.Message);
         }
@@ -233,17 +234,62 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
         //check the dungeon so it can not create another one until the current one is finished
         dungeonIsGenerating = true;
+
+        yield return StartCoroutine(GetAppropriateGalaxy());
+
         //start generating
         yield return StartCoroutine(GenerateDungeonRoutine());
         //the dungeon is finished
         dungeonIsGenerating = false;
     }
 
+    public IEnumerator GetAppropriateGalaxy()
+    {
+
+        int randomIndex = 0;
+
+        if (galaxyLevel == 1)
+        {
+            randomIndex = UnityEngine.Random.Range(0, scriptableGalaxies_1.Count);
+            galaxyGenerating = scriptableGalaxies_1[randomIndex];
+        }
+        else if (galaxyLevel == 2)
+        {
+            randomIndex = UnityEngine.Random.Range(0, scriptableGalaxies_2.Count);
+            galaxyGenerating = scriptableGalaxies_2[randomIndex];
+        }
+        else if (galaxyLevel == 3)
+        {
+            randomIndex = UnityEngine.Random.Range(0, scriptableGalaxies_3.Count);
+            galaxyGenerating = scriptableGalaxies_3[randomIndex];
+        }
+        else if (galaxyLevel == 4)
+        {
+            randomIndex = UnityEngine.Random.Range(0, scriptableGalaxies_4.Count);
+            galaxyGenerating = scriptableGalaxies_4[randomIndex];
+        }
+        else if (galaxyLevel == 5)
+        {
+            randomIndex = UnityEngine.Random.Range(0, scriptableGalaxies_5.Count);
+            galaxyGenerating = scriptableGalaxies_5[randomIndex];
+        }
+
+
+        yield return null;
+    }
+
     private IEnumerator GenerateDungeonRoutine()
     {
 
+
+        if (galaxyGenerating == null)
+        {
+            dungeonIsGenerating = false;
+            yield return null;
+        }
+
         //get the dungeon parent transform where every room will be child of
-        StaticData.staticDungeonParent = canvas.transform.Find("DungeonParent").gameObject;
+
         Transform dungeonParentTransform = StaticData.staticDungeonParent.transform;
 
         //initialize dungeon by clearing all remaining rooms from the parent
@@ -264,13 +310,13 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         //reset rooms
         isBossRoomCreated = false;
-   
-        yield return StartCoroutine(CreateRoom(startRoomPosition, SystemManager.RoomType.Start));
+
+        yield return StartCoroutine(CreateRoom(startRoomPosition, SystemManager.PlanetTypes.START));
 
         //start generating the dungeon by creating rooms
-        while (rooms.Count < maxRoomLevels)
+        while (rooms.Count < galaxyGenerating.maxRoomLevels)
         {
-     
+
             //generate rooms
             yield return StartCoroutine(GenerateLevel());
             //yield return null; // Wait for next frame to ensure all updates are applied
@@ -297,51 +343,45 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     }
 
-    public SystemManager.RoomType GetRoomType()
+    public SystemManager.PlanetTypes GetPlanetType()
     {
         //default is the battle
-        SystemManager.RoomType roomType = SystemManager.RoomType.Battle;
+        SystemManager.PlanetTypes planetType = SystemManager.PlanetTypes.BATTLE;
         float randomRoomChance = 0;
 
         //probability of the other rooms
         randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if ((randomRoomChance >= 0 && randomRoomChance <= bossRoomChance && isBossRoomCreated == false)
-            || (isBossRoomCreated == false && rooms.Count == maxRoomLevels - 1))
+        if ((randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.bossRoomChance && isBossRoomCreated == false)
+            || (isBossRoomCreated == false && rooms.Count == galaxyGenerating.maxRoomLevels - 1))
         {
-            roomType = SystemManager.RoomType.Boss;
+            planetType = SystemManager.PlanetTypes.BOSS;
             isBossRoomCreated = true;
-            return roomType;
+            return planetType;
         }
 
         randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= chestRoomChance)
+        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.rewardRoomChance)
         {
-            roomType = SystemManager.RoomType.Chest;
-            return roomType;
+            planetType = SystemManager.PlanetTypes.REWARD;
+            return planetType;
         }
 
         randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= eventRoomChance)
+        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.eventRoomChance)
         {
-            roomType = SystemManager.RoomType.Event;
-            return roomType;
-        }
-        
-        if (randomRoomChance >= 0 && randomRoomChance <= trapRoomChance)
-        {
-            roomType = SystemManager.RoomType.Trap;
-            return roomType;
+            planetType = SystemManager.PlanetTypes.EVENT;
+            return planetType;
         }
 
         randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= restRoomChance)
+        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.restRoomChance)
         {
-            roomType = SystemManager.RoomType.Rest;
-            return roomType;
+            planetType = SystemManager.PlanetTypes.REST;
+            return planetType;
         }
 
 
-        return roomType;
+        return planetType;
 
 
     }
@@ -355,50 +395,42 @@ public class CustomDungeonGenerator : MonoBehaviour
         yield return StartCoroutine(CreateNeighborRooms(currentRoom));
     }
 
-    public GameObject GetRoomTypeGameObject(SystemManager.RoomType roomType)
+    public GameObject GetRoomTypeGameObject(SystemManager.PlanetTypes planetType)
     {
 
-        if (roomType == SystemManager.RoomType.Start)
+        if (planetType == SystemManager.PlanetTypes.START)
         {
-            return StartRoomPrefab;
+            return StartPlanetPrefab;
         }
-        else if (roomType == SystemManager.RoomType.Battle)
+        else if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
-            return BattleRoomPrefab;
+            return BattlePlanetPrefab;
         }
-        else if (roomType == SystemManager.RoomType.Boss)
+        else if (planetType == SystemManager.PlanetTypes.BOSS)
         {
-            return BossRoomPrefab;
+            return BossPlanetPrefab;
         }
-        else if (roomType == SystemManager.RoomType.Empty)
+        else if (planetType == SystemManager.PlanetTypes.REWARD)
         {
-            return EmptyRoomPrefab;
+            return RewardPlanetPrefab;
         }
-        else if (roomType == SystemManager.RoomType.Chest)
+        else if (planetType == SystemManager.PlanetTypes.EVENT)
         {
-            return ChestRoomPrefab;
+            return EventPlanetPrefab;
         }
-        else if (roomType == SystemManager.RoomType.Event)
+        else if (planetType == SystemManager.PlanetTypes.REST)
         {
-            return EventRoomPrefab;
-        }
-        else if (roomType == SystemManager.RoomType.Trap)
-        {
-            return TrapRoomPrefab;
-        }
-        else if (roomType == SystemManager.RoomType.Rest)
-        {
-            return RestRoomPrefab;
+            return RestPlanetPrefab;
         }
 
-        return BattleRoomPrefab;
+        return BattlePlanetPrefab;
 
     }
 
-    private IEnumerator CreateRoom(Vector2Int gridPosition, SystemManager.RoomType roomType)
+    private IEnumerator CreateRoom(Vector2Int gridPosition, SystemManager.PlanetTypes planetType)
     {
-        Vector2 position = new Vector2(gridPosition.x * distanceBetweenRooms, gridPosition.y * distanceBetweenRooms);
-        GameObject roomPrefab = GetRoomTypeGameObject(roomType);
+        Vector2 position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
+        GameObject roomPrefab = GetRoomTypeGameObject(planetType);
         GameObject newRoom = Instantiate(roomPrefab, position, Quaternion.identity);
         RectTransform rt = newRoom.GetComponent<RectTransform>();
         if (rt == null)
@@ -409,9 +441,22 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
-        
+
+        if (planetType == SystemManager.PlanetTypes.BATTLE)
+        {
+
+            //get the planet
+            int randomPlanetIndex = UnityEngine.Random.Range(0,galaxyGenerating.scriptablePlanets.Count);
+            ScriptablePlanets scriptablePlanet = galaxyGenerating.scriptablePlanets[randomPlanetIndex];
+            newRoom.GetComponent<RoomScript>().scriptablePlanet = scriptablePlanet;
+
+            newRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = scriptablePlanet.planetArt;
+
+        }
+
         //hide everything except the start room
-        if (roomType != SystemManager.RoomType.Start && hideRooms == true) {
+        if (planetType != SystemManager.PlanetTypes.START && hideRooms == true)
+        {
             newRoom.SetActive(false); // Set the room to be inactive initially
         }
 
@@ -424,7 +469,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
         //add the room type
-        newRoom.GetComponent<RoomScript>().roomType = roomType;
+        newRoom.GetComponent<RoomScript>().planetType = planetType;
 
         //add the room to the list
         rooms.Add(newRoom);
@@ -448,10 +493,10 @@ public class CustomDungeonGenerator : MonoBehaviour
         //loop through all the directions (up,down,left,right)
         foreach (Vector2Int dir in directions)
         {
-           
+
 
             //if we reach the room limit then we stop
-            if (rooms.Count >= maxRoomLevels)
+            if (rooms.Count >= galaxyGenerating.maxRoomLevels)
             {
                 Debug.Log("BREAK");
                 break;
@@ -473,10 +518,10 @@ public class CustomDungeonGenerator : MonoBehaviour
 
                 // Random chance to connect the rooms
                 randomPercentage = UnityEngine.Random.Range(0, 100);
-                if (randomPercentage <= allowedPercentage)
+                if (randomPercentage <= galaxyGenerating.allowedPercentage)
                 {
                     // Connect the rooms
-              
+
                     ConnectRooms(room, adjacentRoom);
                 }
 
@@ -487,25 +532,26 @@ public class CustomDungeonGenerator : MonoBehaviour
             randomPercentage = UnityEngine.Random.Range(0, 100);
 
             //if it is allowed based on our custom parameter
-            if (randomPercentage <= allowedPercentage)
+            if (randomPercentage <= galaxyGenerating.allowedPercentage)
             {
-       
+
                 //then create room
                 //get random room type
-                SystemManager.RoomType roomType = GetRoomType();
-                yield return StartCoroutine(CreateRoomAndConnect(room, adjacentGridPos, roomType));
+                SystemManager.PlanetTypes planetType = GetPlanetType();
+                yield return StartCoroutine(CreateRoomAndConnect(room, adjacentGridPos, planetType));
             }
         }
     }
 
-    private IEnumerator CreateRoomAndConnect(GameObject currentRoom, Vector2Int position, SystemManager.RoomType roomType)
+    private IEnumerator CreateRoomAndConnect(GameObject currentRoom, Vector2Int position, SystemManager.PlanetTypes planetType)
     {
         //first we create the room
-        yield return StartCoroutine(CreateRoom(position, roomType));
+        yield return StartCoroutine(CreateRoom(position, planetType));
         //Get the room from the grid by using the position we would have spawn it
         GameObject newRoom = roomGrid[position];
 
-        if (drawLines) {
+        if (drawLines)
+        {
             //then we draw a line between the current room and the neighbor created
             DrawLineBetweenRooms(currentRoom, newRoom);
         }
@@ -567,7 +613,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
         //gets the room distance for the neighbours which will be used with direction
         Vector2 position = room.transform.position;
-        return new Vector2Int(Mathf.RoundToInt(position.x / distanceBetweenRooms), Mathf.RoundToInt(position.y / distanceBetweenRooms));
+        return new Vector2Int(Mathf.RoundToInt(position.x / galaxyGenerating.distanceBetweenRooms), Mathf.RoundToInt(position.y / galaxyGenerating.distanceBetweenRooms));
     }
 
     //private void HideAllRoomsExceptStart()
@@ -586,11 +632,11 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (roomConnections.ContainsKey(clickedRoom))
         {
             List<GameObject> connectedRooms = roomConnections[clickedRoom];
- 
+
             foreach (GameObject room in connectedRooms)
             {
                 // Here you can add code to highlight or show the connected rooms
-       
+
 
                 //make the room appear
                 room.SetActive(true);

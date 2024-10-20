@@ -184,6 +184,11 @@ public class Combat : MonoBehaviour
         if (StaticData.staticDungeonParent != null) {
             StaticData.staticDungeonParent.SetActive(false);
         }
+        else
+        {
+            StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
+            StaticData.staticDungeonParent.SetActive(false);
+        }
 
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
@@ -221,14 +226,14 @@ public class Combat : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         //initialize all things card related, deck, combat deck, discard pile, etc
-        yield return InitializeCardsAndDecks();
+        yield return StartCoroutine(InitializeCardsAndDecks());
 
 
         //check the characters that are alive
-        CheckCharactersAlive();
+        yield return StartCoroutine(CheckCharactersAlive());
 
         //check the enemies that are alive
-        CheckEnemiesAlive();
+        yield return StartCoroutine(CheckEnemiesAlive());
 
         //start win conditions
         conditionsEnabled = true;
@@ -246,42 +251,42 @@ public class Combat : MonoBehaviour
             yield return null; //stops function
         }
 
-        yield return PlayerTurnEnd();
+        yield return StartCoroutine(PlayerTurnEnd());
 
         if (combatEnded)
         {
             yield return null; //stops function
         }
 
-        yield return EnemyTurnStart();
+        yield return StartCoroutine(EnemyTurnStart());
 
         if (combatEnded)
         {
             yield return null; //stops function
         }
 
-        yield return EnemyTurn();
+        yield return StartCoroutine(EnemyTurn());
 
         if (combatEnded)
         {
             yield return null; //stops function
         }
 
-        yield return EnemyTurnEnd();
+        yield return StartCoroutine(EnemyTurnEnd());
 
         if (combatEnded)
         {
             yield return null; //stops function
         }
 
-        yield return PlayerTurnStart();
+        yield return StartCoroutine(PlayerTurnStart());
 
         if (combatEnded)
         {
             yield return null; //stops function
         }
 
-        yield return PlayerTurn();
+        yield return StartCoroutine(PlayerTurn());
 
         if (combatEnded)
         {
@@ -306,6 +311,8 @@ public class Combat : MonoBehaviour
             yield return null; //stops function
         }
 
+
+
         //start player turn
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
@@ -315,28 +322,25 @@ public class Combat : MonoBehaviour
         yield return RearrangeFormation(characterFormation);
 
         //mana should go back to full
-        RefillMana();
+        yield return StartCoroutine(RefillMana());
 
         //remove mana
-        RemoveShieldFromEntitiesBasedOnTag("Player");
-
-        //draw cards
-        Debug.Log("HandManager.Instance.turnHandCardsLimit : " + HandManager.Instance.turnHandCardsLimit);
-        DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit);
-
-        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
-
-        //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+        yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("Player"));
 
         //generate intend for all players
-        AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList());
-        AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList());
+        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList()));
+        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList()));
 
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
 
         yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetPlayerTagsList()));
+
+        //loop for all buffs and debuffs
+        yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
+
+        //draw cards
+        yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit));
 
         yield return null; // Wait for a frame 
     }
@@ -373,6 +377,8 @@ public class Combat : MonoBehaviour
 
     public IEnumerator PlayerTurn()
     {
+
+        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
 
         if (combatEnded)
         {
@@ -498,7 +504,7 @@ public class Combat : MonoBehaviour
     {
 
         //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in CombatManager.Instance.scriptableBattle.scriptableEntities)
+        foreach (ScriptableEntity scriptableEntity in CombatManager.Instance.scriptablePlanet.scriptableEntities)
         {
             //instantiate our character or characters
             GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);
@@ -518,7 +524,7 @@ public class Combat : MonoBehaviour
     public IEnumerator SpawnBattleground()
     {
 
-        GameObject bg = Instantiate(CombatManager.Instance.scriptableBattle.battlegroundPrefab, battleground.transform.position, Quaternion.identity);
+        GameObject bg = Instantiate(CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGround, battleground.transform.position, Quaternion.identity);
         bg.transform.SetParent(battleground.transform);
 
         yield return null; // Wait for a frame 
@@ -690,7 +696,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void CheckCharactersAlive()
+    public IEnumerator CheckCharactersAlive()
     {
 
         //initialize dead count
@@ -706,10 +712,11 @@ public class Combat : MonoBehaviour
             }
         }
 
+        yield return null;
 
     }
 
-    public void CheckEnemiesAlive()
+    public IEnumerator CheckEnemiesAlive()
     {
         //initialize dead count
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -723,6 +730,8 @@ public class Combat : MonoBehaviour
                 enemiesAlive += 1;
             }
         }
+
+        yield return null;
     }
 
     public IEnumerator InitializeCardsAndDecks()
@@ -754,10 +763,13 @@ public class Combat : MonoBehaviour
 
 
 
-    public void RefillMana()
+    public IEnumerator RefillMana()
     {
         //initialize mana and UI
         ManaAvailable = manaMaxAvailable;
+
+        yield return null;
+
     }
 
 
@@ -775,7 +787,7 @@ public class Combat : MonoBehaviour
 
 
 
-    public void RemoveShieldFromEntitiesBasedOnTag(string tag)
+    public IEnumerator RemoveShieldFromEntitiesBasedOnTag(string tag)
     {
 
         GameObject[] characters = GameObject.FindGameObjectsWithTag(tag);
@@ -784,6 +796,8 @@ public class Combat : MonoBehaviour
         {
             RemoveShieldFromEntity(character);
         }
+
+        yield return null;
 
     }
 
@@ -1082,7 +1096,7 @@ public class Combat : MonoBehaviour
     public IEnumerator FlashEntityAfterHit(GameObject target)
     {
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDamagedEntity, target);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, target);
     }
 

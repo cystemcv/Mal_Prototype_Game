@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public SystemManager.RoomType roomType;
+    public SystemManager.PlanetTypes planetType;
     public bool roomCleared = false;
+
+    public ScriptablePlanets scriptablePlanet;
 
     public void ClickedRoom()
     {
@@ -15,11 +17,10 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //get the neighbor rooms
         CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
-        if (roomType == SystemManager.RoomType.Battle)
+        if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
 
-            ScriptableBattles scriptableBattle = CombatManager.Instance.GetRandomScriptableBattle(1);
-            CombatManager.Instance.scriptableBattle = scriptableBattle;
+            CombatManager.Instance.scriptablePlanet = scriptablePlanet;
 
             SystemManager.Instance.LoadScene("scene_Combat", 0.4f);
         }

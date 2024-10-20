@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
+  m_Name: Card_Dark Slash
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
+  cardArt: {fileID: 21300000, guid: 5faf5da8a3f8fba4483021e3c39b9b28, type: 3}
+  cardName: Dark Slash
+  mainClass: 7
+  cardType: 0
+  cardRarity: 0
+  targetEntityTagList: 0100000003000000
+  primaryManaCost: 1
+  cardDesc: 
+  cardFlavor: 
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: 6f9eb048481fc264290973723a49903f, type: 2}
+    waitForAbility: 0.4
+    abilityEffect: {fileID: 8507442439978400150, guid: 94522294d0d41a54faff74cf73962c19, type: 3}
+    abilityEffectLifetime: 0.6
+    entityAnimation: 0
+    entitySound: 3
+    abilityIntValueList: 05000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
+    summonList: []
+  unlockable: 0
+  cardConditionClass: []

@@ -146,7 +146,7 @@ public class BuffSystemManager : MonoBehaviour
         return gridSystemItemList;
     }
 
-    public void ActivateAllBuffsDebuffs()
+    public IEnumerator ActivateAllBuffsDebuffs()
     {
 
         //get all characters
@@ -213,6 +213,8 @@ public class BuffSystemManager : MonoBehaviour
                 buffDebuffClass.CheckIfExpired();
 
             }
+
+            yield return null;
         }
 
         //get all enemies

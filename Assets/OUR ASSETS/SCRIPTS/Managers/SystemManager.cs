@@ -44,7 +44,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { MONSTER, SUPPORT, COMMON, CURSE, UNKOWN, SUMMON, ANGEL }; //Actual classes to be determined
+    public enum MainClass { MONSTER, SUPPORT, COMMON, CURSE, UNKOWN, SUMMON, ANGEL, SUMMONER }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum AbilityType { ATTACK, OTHER }
@@ -61,10 +61,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD }
 
-    //dungeon generator
-    public enum RoomType { Start, Battle, Boss, Empty, Chest, Event, Trap, Rest }
 
     public enum ControlBy { PLAYER, AI }
+
+    public enum PlanetTypes { BATTLE, EVENT, SHOP, RESOURCES, REWARD, BOSS, REST, START }
 
     //end of enums
 
@@ -352,13 +352,28 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     }
     public void ChangeTargetMaterial(Material customMaterial, GameObject target)
     {
+        if(target == null)
+        {
+            return;
+        }
 
-        if (target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+        if ( target.GetComponent<EntityClass>() != null)
         {
 
             //change material
             target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>().material = customMaterial;
 
+        }
+        else if (target.transform.Find("Icon") != null)
+        {
+            //change material
+            target.transform.Find("Icon").GetComponent<SpriteRenderer>().material = customMaterial;
+
+        }
+        else
+        {
+                target.GetComponent<SpriteRenderer>().material = customMaterial;
+          
         }
 
     }
@@ -383,8 +398,22 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public void ChangeTargetEntityColor(string hex, GameObject target)
     {
-        // Find the SpriteRenderer component
-        SpriteRenderer spriteRenderer = target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer;
+        if (target.GetComponent<EntityClass>() != null && target.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+        {
+            // Find the SpriteRenderer component
+            spriteRenderer = target.transform.Find("model").Find("Sprite").GetComponent<SpriteRenderer>();
+        }
+        else if (target.transform.Find("Icon") != null)
+        {
+            //change material
+            spriteRenderer = target.transform.Find("Icon").GetComponent<SpriteRenderer>();
+
+        }
+        else
+        {
+            spriteRenderer = target.GetComponent<SpriteRenderer>();
+        }
 
         // Apply the modified color back to the SpriteRenderer
         spriteRenderer.color = GetColorFromHex(hex);

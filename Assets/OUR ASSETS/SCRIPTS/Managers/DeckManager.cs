@@ -452,11 +452,11 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void DrawMultipleCards(int numberOfCards)
+    public IEnumerator DrawMultipleCards(int numberOfCards)
     {
 
         //draw cards
-        StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));
+       yield return StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));
     }
 
     IEnumerator DrawMultipleCardsCoroutine(int numberOfCards)

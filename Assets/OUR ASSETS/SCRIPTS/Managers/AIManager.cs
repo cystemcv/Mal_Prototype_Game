@@ -73,7 +73,7 @@ public class AIManager : MonoBehaviour
 
 
 
-    public void GenerateIntends(List<string> tags)
+    public IEnumerator GenerateIntends(List<string> tags)
     {
         List<GameObject> entityList = entityList = SystemManager.Instance.FindGameObjectsWithTags(tags);
 
@@ -92,6 +92,8 @@ public class AIManager : MonoBehaviour
             //generate new intends
             aIBrain.GenerateIntend();
         }
+
+        yield return null;
 
     }
 

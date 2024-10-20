@@ -157,13 +157,14 @@ public class UI_Combat : MonoBehaviour
 
     public void BackToAdventure()
     {
-        //SceneManager.LoadScene("scene_Adventure");
+        
         SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
     }
 
     public void BackToMainMenu()
     {
-        //SceneManager.LoadScene("scene_Adventure");
+        //allo dungeon generation again
+        StaticData.staticDungeonParentGenerated = false;
         SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
     }
 }
