@@ -182,6 +182,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit_TargetMode()
     {
 
+        if (isDragging)
+        {
+            isDragging = false;
+        }
+
         currentEvent = stateOfEvent.exithover;
         //index = -1; // Reset the index when the pointer exits the card
 
@@ -220,9 +225,21 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (isDragging)
         {
+
+            Vector2 screenPoint = eventData.position;
+
+            // Clamp the mouse position to stay within screen bounds
+            screenPoint.x = Mathf.Clamp(screenPoint.x, 0, Screen.width);
+            screenPoint.y = Mathf.Clamp(screenPoint.y, 0, Screen.height);
+
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                canvas.transform as RectTransform, eventData.position, canvas.worldCamera, out Vector2 localPoint);
+                canvas.transform as RectTransform, screenPoint, canvas.worldCamera, out Vector2 localPoint);
+
             rectTransform.position = canvas.transform.TransformPoint(localPoint);
+
+            //RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            //    canvas.transform as RectTransform, eventData.position, canvas.worldCamera, out Vector2 localPoint);
+            //rectTransform.position = canvas.transform.TransformPoint(localPoint);
 
             //check activation
             canActivate = HandManager.Instance.CheckActivation(rectTransform);

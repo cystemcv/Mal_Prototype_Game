@@ -30,7 +30,11 @@ public class Ability_Draw : ScriptableCardAbility
 
         int cardsToDraw = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
-        DeckManager.Instance.DrawMultipleCards(cardsToDraw);
+
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+        runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(cardsToDraw));
 
     }
 

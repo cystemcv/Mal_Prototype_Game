@@ -223,7 +223,7 @@ public class HandManager : MonoBehaviour
 
         // Set the position relative to the bottom center of the screen
         //Vector3 targetPosition = new Vector3(centerObject.transform.position.x + x, (centerObject.transform.position.y + y) - radius, 0);
-        LeanTween.move(cardsInHandList[index], targetPosition, drawSpeed);
+
         //LeanTween.move(cardsInHandList[index], new Vector3(centerObject.transform.position.x + x, centerObject.transform.position.y + y, 0), drawSpeed);
 
         //save the original position
@@ -233,7 +233,16 @@ public class HandManager : MonoBehaviour
         //save the sort order
         cardsInHandList[index].GetComponent<CardEvents>().sortOrder = index;
         cardsInHandList[index].GetComponent<Canvas>().sortingOrder = index;
+
+
+        cardsInHandList[index].GetComponent<CardEvents>().enabled = false;
+        LeanTween.move(cardsInHandList[index], targetPosition, drawSpeed).setOnComplete(() => {
+            // Code to execute when the card reaches the destination
+            cardsInHandList[index].GetComponent<CardEvents>().enabled = true;
+        });
     }
+
+    
 
     //public int FindCardIndex(CardScript cardScript)
     //{
