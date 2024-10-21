@@ -25,6 +25,8 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public ScriptableGalaxies galaxyGenerating;
 
+    public Sprite clearIcon;
+
     public GameObject StartPlanetPrefab;
     public GameObject BattlePlanetPrefab;
     public GameObject BossPlanetPrefab;
@@ -87,11 +89,15 @@ public class CustomDungeonGenerator : MonoBehaviour
 
 
 
+
     }
 
 
     void OnEnable()
     {
+
+  
+
         // Register the callback when the object is enabled
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -139,6 +145,15 @@ public class CustomDungeonGenerator : MonoBehaviour
             StartDungeonGeneration();
         }
 
+        //if came back from battle
+        if (CombatManager.Instance.planetClicked != null)
+        {
+            //activate the neighbours
+            CustomDungeonGenerator.Instance.OnRoomClick(CombatManager.Instance.planetClicked);
+            CombatManager.Instance.planetClicked.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
+            CombatManager.Instance.planetClicked.GetComponent<RoomScript>().roomCleared = true;
+            //CombatManager.Instance.planetClicked = null;
+        }
 
 
     }
@@ -431,7 +446,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
         Vector2 position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
         GameObject roomPrefab = GetRoomTypeGameObject(planetType);
-        GameObject newRoom = Instantiate(roomPrefab, position, Quaternion.identity);
+        GameObject newRoom = Instantiate(roomPrefab,new Vector3(position.x,position.y,0), Quaternion.identity);
         RectTransform rt = newRoom.GetComponent<RectTransform>();
         if (rt == null)
         {
@@ -441,6 +456,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
+        newRoom.transform.position = new Vector3(newRoom.transform.position.x, newRoom.transform.position.y,0);
 
         if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
@@ -646,6 +662,14 @@ public class CustomDungeonGenerator : MonoBehaviour
 
             }
         }
+
+        if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.START)
+        {
+            clickedRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = CustomDungeonGenerator.Instance.clearIcon;
+        }
+
+        clickedRoom.GetComponent<RoomScript>().roomCleared = true;
+
     }
 
 }

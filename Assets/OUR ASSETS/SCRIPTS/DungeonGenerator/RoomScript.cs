@@ -15,14 +15,26 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //SystemManager.Instance.object_HighlightButton.SetActive(false);
 
         //get the neighbor rooms
-        CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
+        //CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
+
+        if (roomCleared)
+        {
+            return;
+        }
 
         if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
 
             CombatManager.Instance.scriptablePlanet = scriptablePlanet;
+            CombatManager.Instance.planetClicked = this.gameObject;
 
             SystemManager.Instance.LoadScene("scene_Combat", 0.4f);
+        }
+        else
+        {
+            CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
+
+
         }
 
 

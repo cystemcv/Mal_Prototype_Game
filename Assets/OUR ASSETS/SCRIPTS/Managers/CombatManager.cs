@@ -11,6 +11,8 @@ public class CombatManager : MonoBehaviour
 
     public ScriptablePlanets scriptablePlanet;
 
+    public GameObject planetClicked;
+
     private void Awake()
     {
 

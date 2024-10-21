@@ -158,6 +158,8 @@ public class UI_Combat : MonoBehaviour
     public void BackToAdventure()
     {
         
+
+
         SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
     }
 
