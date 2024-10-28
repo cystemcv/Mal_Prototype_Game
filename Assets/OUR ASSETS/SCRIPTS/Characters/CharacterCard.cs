@@ -53,24 +53,24 @@ public class CharacterCard : MonoBehaviour
 
     }
 
-    public void OnCharacterCardClick()
-    {
+    //public void OnCharacterCardClick()
+    //{
 
-        StaticData.staticCharacter = scriptableEntity.Clone();
+    //    StaticData.staticCharacter = scriptableEntity.Clone();
 
-        //activate card ui
-        activation.SetActive(true);
+    //    activate card ui
+    //    activation.SetActive(true);
 
-        //check if the limit is ok
-        if (StaticData.staticCharacter != null)
-        {
-            //disable the proceed button
-            UIManager.Instance.EnableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
-        }
-        else
-        {
-            UIManager.Instance.DisableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
-        }
+    //    check if the limit is ok
+    //    if (StaticData.staticCharacter != null)
+    //    {
+    //        disable the proceed button
+    //        UIManager.Instance.EnableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
+    //    }
+    //    else
+    //    {
+    //        UIManager.Instance.DisableButton(UI_CharacterSelectionMenu.Instance.proceedToGame);
+    //    }
 
-    }
+    //}
 }

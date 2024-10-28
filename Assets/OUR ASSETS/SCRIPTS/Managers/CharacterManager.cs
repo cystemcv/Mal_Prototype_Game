@@ -8,6 +8,7 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptableEntity> characterList;
 
+    public List<ScriptableCompanion> companionList;
 
     private void Awake()
     {

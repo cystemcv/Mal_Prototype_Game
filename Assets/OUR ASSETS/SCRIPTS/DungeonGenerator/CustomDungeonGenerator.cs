@@ -166,6 +166,11 @@ public class CustomDungeonGenerator : MonoBehaviour
             StaticData.staticCharacter = CharacterManager.Instance.characterList[0].Clone();
         }
 
+        if (StaticData.staticScriptableCompanion == null)
+        {
+            StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
+        }
+
 
         displayCharacterCard = GameObject.Find("ROOT").transform.Find("STAYONCAMERA").transform.Find("DisplayCharacterCard").gameObject;
 

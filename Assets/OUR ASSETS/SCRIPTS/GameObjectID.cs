@@ -24,7 +24,7 @@ public class GameObjectID: MonoBehaviour
             GameObjectID gameObjectID = this.gameObject.GetComponent<GameObjectID>();
             DataPersistenceManager.Instance.savefileID = gameObjectID.objectID;
             DataPersistenceManager.Instance.isLoadScene = true;
-            UIManager.Instance.GoToScene("SampleScene");
+            //UIManager.Instance.GoToScene("SampleScene");
 
 
 

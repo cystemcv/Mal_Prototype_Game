@@ -456,7 +456,7 @@ public class DeckManager : MonoBehaviour
     {
 
         //draw cards
-       yield return StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));
+        yield return StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));
     }
 
     IEnumerator DrawMultipleCardsCoroutine(int numberOfCards)
@@ -791,11 +791,28 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public void AddScriptableCardToHand(ScriptableCard scriptableCard)
+    {
+        SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
+
+        CardScript tempCardScript = new CardScript();
+        tempCardScript.scriptableCard = scriptableCard;
+
+        AddCardToList(tempCardScript);
+
+    }
+
     public void AddCardToList(CardScript cardScript)
     {
 
         if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.Hand)
         {
+
+            if (handCards.Count >= HandManager.Instance.maxHandCardsLimit)
+            {
+                return;
+            }
+
             //add to deck then draw it
             combatDeck.Add(cardScript);
 

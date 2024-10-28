@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SystemManager : MonoBehaviour, IDataPersistence
 {
@@ -65,6 +66,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum ControlBy { PLAYER, AI }
 
     public enum PlanetTypes { BATTLE, EVENT, SHOP, RESOURCES, REWARD, BOSS, REST, START }
+
+    public enum SelectionScreenPrefabType { CHARACTER, COMPANION }; //Actual classes to be determined
 
     //end of enums
 
@@ -372,7 +375,17 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
         else
         {
+
+            //ui or not ui
+            if (target.GetComponent<SpriteRenderer>() != null)
+            {
                 target.GetComponent<SpriteRenderer>().material = customMaterial;
+            }
+            else if (target.GetComponent<Image>() != null)
+            {
+                target.GetComponent<Image>().material = customMaterial;
+            }
+             
           
         }
 

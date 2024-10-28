@@ -53,7 +53,7 @@ public class UI_Combat : MonoBehaviour
     public GameObject HAND;
     public GameObject CARDPLAYED;
 
-
+    public GameObject endTurnButton;
 
     private void Awake()
     {
@@ -168,5 +168,14 @@ public class UI_Combat : MonoBehaviour
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;
         SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
+    }
+
+    public void ActivateCompanionAbility()
+    {
+
+
+
+        StaticData.staticScriptableCompanion.OnabilityActivate();
+
     }
 }

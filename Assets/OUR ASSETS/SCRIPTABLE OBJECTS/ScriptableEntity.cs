@@ -18,7 +18,8 @@ public class ScriptableEntity : ScriptableObject
     public GameObject entityPrefab;
     public Sprite entityImage;
     public Sprite entityIcon;
-    public string entityDescription;
+    [TextArea] public string entityDescription;
+    public GameObject entityChoose;
 
     [Header("SUMMON")]
     public int summonTurns = 1;

@@ -246,6 +246,8 @@ public class Combat : MonoBehaviour
     public IEnumerator WaitEnemyTurns()
     {
 
+        UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("PlayerEnd");
+
         if (combatEnded)
         {
             yield return null; //stops function
@@ -305,6 +307,8 @@ public class Combat : MonoBehaviour
 
     public IEnumerator PlayerTurnStart()
     {
+
+
 
         if (combatEnded)
         {
@@ -378,7 +382,14 @@ public class Combat : MonoBehaviour
     public IEnumerator PlayerTurn()
     {
 
-        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+        //if (turns != 1)
+        //{
+            UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
+            UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+        //}
+   
+
+
 
         if (combatEnded)
         {
@@ -484,6 +495,11 @@ public class Combat : MonoBehaviour
         {
             //assign a temporary character (this is mostly to test battle)
             StaticData.staticCharacter = CharacterManager.Instance.characterList[0].Clone();
+        }
+
+        if (StaticData.staticScriptableCompanion == null)
+        {
+            StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
         }
 
         //instantiate our character or characters
