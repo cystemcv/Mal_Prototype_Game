@@ -89,8 +89,10 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
             //first
             if (count == 0)
             {
-                selectionScreenPrefab.isSelected = true;
-                StaticData.staticCharacter = scriptableEntity.Clone(); ;
+                StaticData.staticCharacter = scriptableEntity.Clone();
+
+                UI_CharacterSelectionMenu.Instance.characterTitle.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityName;
+                UI_CharacterSelectionMenu.Instance.characterDescription.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityDescription;
             }
 
             count++;
@@ -129,8 +131,10 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
             //first
             if (count == 0)
             {
-                selectionScreenPrefab.isSelected = true;
-                StaticData.staticScriptableCompanion = scriptableCompanion.Clone(); ;
+                StaticData.staticScriptableCompanion = scriptableCompanion.Clone();
+
+                UI_CharacterSelectionMenu.Instance.companionTitle.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionName;
+                UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionDescription;
             }
 
             count++;

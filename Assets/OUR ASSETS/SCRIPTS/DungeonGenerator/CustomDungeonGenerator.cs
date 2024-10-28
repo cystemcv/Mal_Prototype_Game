@@ -449,9 +449,21 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     private IEnumerator CreateRoom(Vector2Int gridPosition, SystemManager.PlanetTypes planetType)
     {
-        Vector2 position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
+        Vector2 position;
         GameObject roomPrefab = GetRoomTypeGameObject(planetType);
+
+        if (planetType != SystemManager.PlanetTypes.START)
+        {
+             position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
+        }
+        else
+        {
+            position = new Vector2(0, 0);
+        }
+
+
         GameObject newRoom = Instantiate(roomPrefab,new Vector3(position.x,position.y,0), Quaternion.identity);
+        
         RectTransform rt = newRoom.GetComponent<RectTransform>();
         if (rt == null)
         {
@@ -461,6 +473,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
+        //newRoom.transform.position = new Vector3(0, 0, 0);
         newRoom.transform.position = new Vector3(newRoom.transform.position.x, newRoom.transform.position.y,0);
 
         if (planetType == SystemManager.PlanetTypes.BATTLE)

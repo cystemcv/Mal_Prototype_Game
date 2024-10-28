@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 
     public ScriptableEntity scriptableEntity;
@@ -12,7 +12,7 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public SystemManager.SelectionScreenPrefabType typeOfPrefab = SystemManager.SelectionScreenPrefabType.CHARACTER;
 
-    public bool isSelected = false;
+    public bool onHover = false;
 
     // Start is called before the first frame update
     void Start()
@@ -23,12 +23,43 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
     // Update is called once per frame
     void Update()
     {
-        
+
+        if (onHover)
+        {
+            return;
+        }
+
+        if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
+        {
+
+            if (scriptableEntity.entityName == StaticData.staticCharacter.entityName)
+            {
+                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+            }
+            else
+            {
+                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
+            }
+
+        }
+        else
+        {
+            if (scriptableCompanion.companionName == StaticData.staticScriptableCompanion.companionName)
+            {
+                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+            }
+            else
+            {
+                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
+            }
+        }
+
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
 
+        onHover = true;
 
         if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
         {
@@ -41,7 +72,7 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
             UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = scriptableCompanion.companionDescription;
         }
 
-        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialMouseOverEntity, this.gameObject);
         //SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorVeryLightBlue, this.gameObject);
 
 
@@ -50,6 +81,8 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
+        onHover = false;
 
         if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
         {
@@ -64,6 +97,18 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
 
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
         //SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorWhite, this.gameObject);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
+        {
+              StaticData.staticCharacter = scriptableEntity.Clone();
+        }
+        else
+        {
+            StaticData.staticScriptableCompanion = scriptableCompanion.Clone();
+        }
     }
 
 }
