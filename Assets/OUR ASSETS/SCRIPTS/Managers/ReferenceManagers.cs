@@ -24,4 +24,14 @@ public class ReferenceManagers : MonoBehaviour
         SystemManager.Instance.EnableDisable_UIManager(false);
     }
 
+    public void ShowInventoryReference()
+    {
+        ItemManager.Instance.ShowInventory();
+    }
+
+    public void HideInventoryReference()
+    {
+        ItemManager.Instance.HideInventory();
+    }
+
 }

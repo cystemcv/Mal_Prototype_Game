@@ -17,6 +17,12 @@ public class UIManager : MonoBehaviour
 
     private RectTransform panelRectTransform;
 
+    //inventory
+    public GameObject inventoryGO;
+    public GameObject inventoryItemText;
+
+    public GameObject itemPrefab;
+
 
 
     [Header("SETTINGS")]

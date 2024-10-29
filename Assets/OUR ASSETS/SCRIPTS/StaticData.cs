@@ -12,4 +12,7 @@ public class StaticData : MonoBehaviour
 
     public static GameObject staticDungeonParent;
     public static bool staticDungeonParentGenerated = false;
+
+    public static List<ClassItem> inventory = new List<ClassItem>();
+    public static List<ClassItem> loot = new List<ClassItem>();
 }
