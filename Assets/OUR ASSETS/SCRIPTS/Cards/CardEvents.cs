@@ -405,7 +405,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else
         {
             //close the thing 
-            UI_Combat.Instance.chooseACardScreen.SetActive(false);
+            UIManager.Instance.chooseACardScreen.SetActive(false);
 
             //resume
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
@@ -414,7 +414,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             Combat.Instance.AdjustTargetHealth(CombatCardHandler.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
 
             //destroy children of the choice parent
-            SystemManager.Instance.DestroyAllChildren(UI_Combat.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+            SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
 
         }
     }

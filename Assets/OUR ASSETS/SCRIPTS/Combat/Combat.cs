@@ -149,6 +149,12 @@ public class Combat : MonoBehaviour
 
     public void CombatOver()
     {
+        if (combatEnded)
+        {
+            return;
+        }
+
+        combatEnded = true;
 
         //always check characters first, if both lost = game over
         if (charactersAlive <= 0)
@@ -171,12 +177,66 @@ public class Combat : MonoBehaviour
             StaticData.staticCharacter.maxHealth = entityClass.maxHealth;
             StaticData.staticCharacter.currHealth = entityClass.health;
 
+            CalculateLootRewards();
+
             //win
             UI_Combat.Instance.victory.SetActive(true);
+            ItemManager.Instance.ShowLootParent();
+            ItemManager.Instance.ShowInventoryParent();
         }
 
     }
 
+    public void CalculateLootRewards()
+    {
+
+        foreach (ScriptablePlanets.ItemClassPlanet  itemClassPlanet in CombatManager.Instance.scriptablePlanet.itemClassPlanet)
+        {
+
+            //based on min and max value
+            int quantity = UnityEngine.Random.Range(itemClassPlanet.minQuantity,itemClassPlanet.maxQuantity);
+
+            int percQuantity = 0;
+
+            if (itemClassPlanet.percentage != 0)
+            {
+
+       
+                //then give value based on range
+                for (int i=0;i < quantity; i++ )
+                {
+
+                    int randomChance = UnityEngine.Random.Range(0, 100);
+
+                    if (randomChance <= itemClassPlanet.percentage)
+                    {
+                        percQuantity++; //add quantity by 1
+                    }
+
+                }
+
+                quantity = percQuantity;
+
+            }
+
+    
+
+            //if 0 then nothing should be added on loot
+            if (quantity == 0)
+            {
+                continue;
+            }
+
+            //create the classItem
+            ClassItem classItem = new ClassItem(itemClassPlanet.scriptableItem, quantity);
+
+            //then add item to loot
+            ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+
+        }
+
+
+    }
 
     public IEnumerator InitializeCombat()
     {

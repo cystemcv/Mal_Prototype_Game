@@ -69,6 +69,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum SelectionScreenPrefabType { CHARACTER, COMPANION }; //Actual classes to be determined
 
+    public enum ItemIn { INVENTORY, LOOT }
+
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT }
+
     //end of enums
 
     public bool thereIsActivatedCard = false;

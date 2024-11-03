@@ -5,6 +5,7 @@ using UnityEngine;
 public class ReferenceManagers : MonoBehaviour
 {
 
+    private bool inventoryToggle = false;
 
 
     //all methods that should reference managers should go here!
@@ -24,14 +25,35 @@ public class ReferenceManagers : MonoBehaviour
         SystemManager.Instance.EnableDisable_UIManager(false);
     }
 
+    public void ToggleInventoryParent()
+    {
+
+        inventoryToggle = !inventoryToggle; // Toggle the value between true and false
+        Debug.Log("Inventory Toggle State: " + inventoryToggle); // Log the state for debugging
+
+
+        if (inventoryToggle)
+        {
+            //show
+            ShowInventoryReference();
+        }
+        else
+        {
+            //hide
+            HideInventoryReference();
+        }
+
+
+    }
+
     public void ShowInventoryReference()
     {
-        ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowInventoryParent();
     }
 
     public void HideInventoryReference()
     {
-        ItemManager.Instance.HideInventory();
+        ItemManager.Instance.HideInventoryParent();
     }
 
 }

@@ -130,7 +130,7 @@ public class DeckManager : MonoBehaviour
                 handCards.Add(cardScript);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
+                InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true, false);
 
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
@@ -165,7 +165,7 @@ public class DeckManager : MonoBehaviour
             handCards.Add(cardScript);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true);
+            InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true, false);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -525,7 +525,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand)
+    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand, bool normalUI)
     {
 
         //instantiate the prefab 
@@ -551,17 +551,31 @@ public class DeckManager : MonoBehaviour
         //set it as a child of the parent
         cardPrefab.transform.SetParent(parent.transform);
 
-        //make the local scale 1,1,1
-        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
 
         //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
         //for text USE TEXT MESH PRO
 
+        if (normalUI)
+        {
+            cardPrefab.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            //make the local scale 1,1,1
+            cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
+            //add sorting 
+            cardPrefab.GetComponent<CardEvents>().sortOrder = 1200;
+            cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
+        }
+
+
         UpdateCardUI(cardPrefab);
 
-        //add sorting 
-        cardPrefab.GetComponent<CardEvents>().sortOrder = 1200;
-        cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
+
+
+
 
         //add it to the hand list
         if (addToHand)
@@ -837,12 +851,12 @@ public class DeckManager : MonoBehaviour
         }
 
         //close the thing 
-        UI_Combat.Instance.chooseACardScreen.SetActive(false);
+        UIManager.Instance.chooseACardScreen.SetActive(false);
 
         //resume
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
-        SystemManager.Instance.DestroyAllChildren(UI_Combat.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
 
     }
 

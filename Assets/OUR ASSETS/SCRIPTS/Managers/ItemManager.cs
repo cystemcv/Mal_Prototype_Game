@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Michsky.MUIP;
 
 public class ItemManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class ItemManager : MonoBehaviour
 
     public List<ScriptableItem> scriptableItemList;
 
-    
+
 
     private void Awake()
     {
@@ -28,129 +29,167 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void AddItemToInventory(ClassItem classItem)
+    public void Start()
     {
-        // Check if the item already exists in the inventory
-        ClassItem existingItem = StaticData.inventory.Find(item => item.scriptableItem == classItem.scriptableItem);
-
-        if (existingItem != null)
-        {
-            // If the item exists, increase its quantity
-            existingItem.quantity += classItem.quantity;
-        }
-        else
-        {
-            // If the item doesn't exist, add it to the inventory
-            StaticData.inventory.Add(classItem);
-        }
-    }
-
-    public void RemoveItemFromInventory(ClassItem classItem, int amountToRemove)
-    {
-        // Find the item in the inventory
-        ClassItem existingItem = StaticData.inventory.Find(item => item.scriptableItem == classItem.scriptableItem);
-
-        if (existingItem != null)
-        {
-            // Decrease the quantity
-            existingItem.quantity -= amountToRemove;
-
-            // If the quantity is zero or less, remove the item from the inventory
-            if (existingItem.quantity <= 0)
-            {
-                StaticData.inventory.Remove(existingItem);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Item not found in inventory.");
-        }
-    }
-    public void AddItemToLoot(ClassItem classItem)
-    {
-        // Check if the item already exists in the inventory
-        ClassItem existingItem = StaticData.loot.Find(item => item.scriptableItem == classItem.scriptableItem);
-
-        if (existingItem != null)
-        {
-            // If the item exists, increase its quantity
-            existingItem.quantity += classItem.quantity;
-        }
-        else
-        {
-            // If the item doesn't exist, add it to the inventory
-            StaticData.loot.Add(classItem);
-        }
-    }
-
-    public void RemoveItemFromLoot(ClassItem classItem, int amountToRemove)
-    {
-        // Find the item in the inventory
-        ClassItem existingItem = StaticData.loot.Find(item => item.scriptableItem == classItem.scriptableItem);
-
-        if (existingItem != null)
-        {
-            // Decrease the quantity
-            existingItem.quantity -= amountToRemove;
-
-            // If the quantity is zero or less, remove the item from the inventory
-            if (existingItem.quantity <= 0)
-            {
-                StaticData.loot.Remove(existingItem);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Item not found in inventory.");
-        }
-    }
-
-    public void ShowInventory()
-    {
-
-        //temporary for testing
-
-        foreach (ScriptableItem scriptableItem in scriptableItemList)
-        {
-
-            ClassItem classItem = new ClassItem();
-            classItem.scriptableItem = scriptableItem;
-            classItem.quantity = Random.Range(0, 20);
-
-            StaticData.inventory.Add(classItem);
-
-        }
-
-
-        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.inventoryGO);
-
-        UIManager.Instance.inventoryGO.transform.parent.gameObject.SetActive(true);
-
-        //if (StaticData.inventory.Count == 0)
+        //foreach (ScriptableItem scriptableItem in scriptableItemList)
         //{
-        //    return;
+
+        //    ClassItem classItem = new ClassItem(scriptableItem, Random.Range(0, 100));
+        //    classItem.scriptableItem = scriptableItem;
+        //    classItem.quantity = Random.Range(0, 20);
+
+        //    //AddItemToParent(classItem, UIManager.Instance.inventoryGO, SystemManager.ItemIn.INVENTORY);
+        //    AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+        //    //StaticData.inventory.Add(classItem);
+
         //}
 
-        foreach (ClassItem classItem in StaticData.inventory)
+        UIManager.Instance.lootGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
+        UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
+    }
+
+    public void AddItemToParent(ClassItem classItem, GameObject itemParent, SystemManager.ItemIn itemIn)
+    {
+
+        bool founditem = false;
+
+        //if the item is found then increase its quantity
+        foreach (Transform child in itemParent.transform)
         {
+            ClassItem uiClassItem = child.GetComponent<ClassItem>();
 
-            GameObject classItemGO = Instantiate(UIManager.Instance.itemPrefab, UIManager.Instance.inventoryGO.transform.position, Quaternion.identity);
-            classItemGO.transform.SetParent(UIManager.Instance.inventoryGO.transform);
-            classItemGO.AddComponent<ClassItem>().SetData(classItem);
+            if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
+            {
 
-            classItemGO.GetComponent<Image>().sprite = classItem.scriptableItem.Icon;
-            classItemGO.transform.GetChild(0).GetComponent<TMP_Text>().text = classItem.quantity.ToString();
-            UIManager.Instance.inventoryItemText.GetComponent<TMP_Text>().text = classItem.scriptableItem.itemName;
+                // If the item exists, increase its quantity
+                uiClassItem.quantity += classItem.quantity;
 
+                if (uiClassItem.quantity >= 999)
+                {
+                    uiClassItem.quantity = 999;
+                }
+
+
+                UpdateItemUI(child.gameObject, uiClassItem);
+                founditem = true;
+                break;
+            }
         }
 
+        //if the item is not found then add it
+        if (founditem == false)
+        {
+            // Find the first empty space
+            foreach (Transform child in itemParent.transform)
+            {
+                ClassItem uiClassItem = child.GetComponent<ClassItem>();
+
+                //find the first empty space
+                if (uiClassItem == null)
+                {
+                    // Update the UI component if needed, e.g., by updating a quantity text
+                    ClassItem classItemGO = new ClassItem(classItem.scriptableItem, classItem.quantity);
+
+                    //attach the script
+                    child.gameObject.AddComponent<ClassItem>();
+
+                    child.gameObject.GetComponent<ClassItem>().SetData(classItemGO);
+
+                    child.gameObject.GetComponent<ClassItem>().itemIn = itemIn;
+
+                    //update the ui
+                    UpdateItemUI(child.gameObject, classItemGO);
+                    break;
+                }
+
+            }
+        }
 
 
     }
 
-    public void HideInventory()
+    public void UpdateItemUI(GameObject gameObject, ClassItem uiClassItem)
     {
 
-        UIManager.Instance.inventoryGO.transform.parent.gameObject.SetActive(false);
+        //update the icon
+        gameObject.transform.Find("Image").gameObject.SetActive(true);
+        gameObject.transform.Find("Image").GetComponent<Image>().sprite = uiClassItem.scriptableItem.Icon;
+
+        //updare the quantity
+        gameObject.transform.Find("TextParent").gameObject.SetActive(true);
+        gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = uiClassItem.quantity.ToString();
+
+        //tooltip
+        gameObject.GetComponent<TooltipContent>().description = uiClassItem.scriptableItem.itemDescription;
+    }
+
+    public void UpdateRemovedItemUI(GameObject gameObject)
+    {
+        //update the icon
+        gameObject.transform.Find("Image").gameObject.SetActive(false);
+        gameObject.transform.Find("Image").GetComponent<Image>().sprite = null;
+
+        //updare the quantity
+        gameObject.transform.Find("TextParent").gameObject.SetActive(false);
+        gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = "";
+
+        //tooltip
+        gameObject.GetComponent<TooltipContent>().description = "";
+    }
+
+    public bool RemoveItemToParent(ClassItem classItem, GameObject itemParent)
+    {
+
+        bool founditem = false;
+
+        //if the item is found then increase its quantity
+        foreach (Transform child in itemParent.transform)
+        {
+            ClassItem uiClassItem = child.GetComponent<ClassItem>();
+
+            if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
+            {
+
+                Destroy(child.GetComponent<ClassItem>());
+
+                UpdateRemovedItemUI(child.gameObject);
+                founditem = true;
+                break;
+            }
+        }
+
+        return founditem;
+
+
+    }
+
+    public void ShowLootParent()
+    {
+        ShowItemParent(UIManager.Instance.lootGO);
+    }
+
+    public void HideLootParent()
+    {
+        HideItemParent(UIManager.Instance.lootGO);
+    }
+
+    public void ShowInventoryParent()
+    {
+        ShowItemParent(UIManager.Instance.inventoryGO);
+    }
+
+    public void HideInventoryParent()
+    {
+        HideItemParent(UIManager.Instance.inventoryGO);
+    }
+
+    public void ShowItemParent(GameObject itemParent)
+    {
+        itemParent.transform.parent.gameObject.SetActive(true);
+    }
+
+    public void HideItemParent(GameObject itemParent)
+    {
+        itemParent.transform.parent.gameObject.SetActive(false);
     }
 }

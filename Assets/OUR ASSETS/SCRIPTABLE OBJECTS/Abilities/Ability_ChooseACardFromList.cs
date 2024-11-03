@@ -59,8 +59,18 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
         List<ScriptableCard> listToChoose;
 
-        //go throught the list and filter it based on our criteria
-        List<ScriptableCard> filteredCardList = CardListManager.Instance.cardPool.Where(card =>
+            //get the pool
+            List<CardListManager.CardPoolList> filteredCardListPool = CardListManager.Instance.cardPoolLists.Where(pool =>
+            pool.mainClass == mainClass
+            ).ToList();
+
+            if(filteredCardListPool.Count <= 0)
+            {
+                return;
+            }
+
+            //go throught the list and filter it based on our criteria
+            List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards.Where(card =>
         card.cardType == cardType
         && card.mainClass == mainClass
         ).ToList();
@@ -71,7 +81,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         }
 
         //display screen
-        UI_Combat.Instance.chooseACardScreen.SetActive(true);
+        UIManager.Instance.chooseACardScreen.SetActive(true);
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
@@ -119,7 +129,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
 
                 //generate the card and parent it
-                DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UI_Combat.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false);
+                DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false, true);
             }
          
 

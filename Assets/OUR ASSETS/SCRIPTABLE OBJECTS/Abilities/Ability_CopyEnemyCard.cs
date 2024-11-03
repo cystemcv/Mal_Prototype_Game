@@ -49,7 +49,7 @@ public class Ability_CopyEnemyCard : ScriptableCardAbility
         DeckManager.Instance.handCards.Add(cardScriptTemp);
 
         //instantiate the card
-        DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UI_Combat.Instance.HAND, true);
+        DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UI_Combat.Instance.HAND, true, false);
 
         //rearrange hand
         HandManager.Instance.SetHandCards();

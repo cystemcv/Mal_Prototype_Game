@@ -9,10 +9,10 @@ public class ScriptableItem : ScriptableObject
     [HideLabel, PreviewField(80), HorizontalGroup("CardHeader", 80)]
     public Sprite Icon;
 
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public string itemName;
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
-    public string itemCategory;
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.ItemCategory itemCategory = SystemManager.ItemCategory.RESOURCE;
 
     [TextArea] public string itemDescription;
 

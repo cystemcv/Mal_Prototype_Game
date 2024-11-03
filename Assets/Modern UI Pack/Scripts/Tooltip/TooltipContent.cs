@@ -49,7 +49,7 @@ namespace Michsky.MUIP
 
         public void ProcessEnter()
         {
-            if (tooltipRect == null)
+            if (tooltipRect == null || description == "")
                 return;
 
             descriptionText.text = description;

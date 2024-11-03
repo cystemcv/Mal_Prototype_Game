@@ -1,3 +1,5 @@
+using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +12,19 @@ public class CardListManager : MonoBehaviour
 
     public GameObject cardPrefab;
 
-    public List<ScriptableCard> cardPool;
 
     //classes card pool
-    public List<ScriptableCard> Colorless_CardPool;
-    public List<ScriptableCard> Knight_CardPool;
-    public List<ScriptableCard> Rogue_CardPool;
-    public List<ScriptableCard> Hierophant_CardPool;
-    public List<ScriptableCard> Chaos_Mage_CardPool;
-    public List<ScriptableCard> Ranger_CardPool;
+    [FoldoutGroup("CARD POOLS")]
+    public List<CardPoolList> cardPoolLists;
+
+    [Serializable]
+    public class CardPoolList
+    {
+        [Title("CONDITION"), GUIColor("orange")]
+        public List<ScriptableCard> scriptableCards;
+        [Title("CLASS")]
+        public SystemManager.MainClass mainClass = SystemManager.MainClass.COMMON;
+    }
 
 
     //card abilities prefabs

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,5 +24,18 @@ public class ScriptablePlanets : ScriptableObject
     public ScriptableBattleGrounds planetBattleGround;
 
 
+    [FoldoutGroup("CONDITIONS")]
+    public List<ItemClassPlanet> itemClassPlanet;
+
+    [Serializable]
+    public class ItemClassPlanet
+    {
+        [Title("CONDITION"), GUIColor("orange")]
+        public ScriptableItem scriptableItem;
+        [Title("CONDITION VALUES")]
+        public int minQuantity = 0;
+        public int maxQuantity = 0;
+        public int percentage = 0;
+    }
 
 }

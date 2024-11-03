@@ -23,8 +23,6 @@ public class UI_Combat : MonoBehaviour
     [Header("SPAWN OF DISCARD CARD")]
     public GameObject CheckEnemyCard;
 
-    [Header("OTHER UI")]
-    public GameObject chooseACardScreen;
 
     [Header("NOTIFICATIONS")]
     public GameObject notificationParent;
@@ -157,7 +155,8 @@ public class UI_Combat : MonoBehaviour
 
     public void BackToAdventure()
     {
-        
+        ItemManager.Instance.HideLootParent();
+        ItemManager.Instance.HideInventoryParent();
 
 
         SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
@@ -165,6 +164,9 @@ public class UI_Combat : MonoBehaviour
 
     public void BackToMainMenu()
     {
+        ItemManager.Instance.HideLootParent();
+        ItemManager.Instance.HideInventoryParent();
+
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;
         SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);

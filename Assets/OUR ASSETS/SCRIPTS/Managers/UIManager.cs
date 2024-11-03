@@ -19,10 +19,9 @@ public class UIManager : MonoBehaviour
 
     //inventory
     public GameObject inventoryGO;
-    public GameObject inventoryItemText;
+    public GameObject lootGO;
 
-    public GameObject itemPrefab;
-
+    public GameObject chooseACardScreen;
 
 
     [Header("SETTINGS")]
