@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Michsky.MUIP;
+using System.Linq;
 
 public class ItemManager : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class ItemManager : MonoBehaviour
 
     public List<ScriptableItem> scriptableItemList;
 
-
+    public List<ScriptableItem> companionItemList;
+    public List<ScriptableItem> relics;
 
     private void Awake()
     {
@@ -48,31 +50,41 @@ public class ItemManager : MonoBehaviour
         UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
     }
 
+
+    public string GenerateNewID()
+    {
+        return System.Guid.NewGuid().ToString();
+    }
+
     public void AddItemToParent(ClassItem classItem, GameObject itemParent, SystemManager.ItemIn itemIn)
     {
 
         bool founditem = false;
 
-        //if the item is found then increase its quantity
-        foreach (Transform child in itemParent.transform)
-        {
-            ClassItem uiClassItem = child.GetComponent<ClassItem>();
+        //on loot we dont want items to combine
+        if (itemIn != SystemManager.ItemIn.LOOT) {
 
-            if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
+            //if the item is found then increase its quantity
+            foreach (Transform child in itemParent.transform)
             {
+                ClassItem uiClassItem = child.GetComponent<ClassItem>();
 
-                // If the item exists, increase its quantity
-                uiClassItem.quantity += classItem.quantity;
-
-                if (uiClassItem.quantity >= 999)
+                if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
                 {
-                    uiClassItem.quantity = 999;
+
+                    // If the item exists, increase its quantity
+                    uiClassItem.quantity += classItem.quantity;
+
+                    if (uiClassItem.quantity >= 999)
+                    {
+                        uiClassItem.quantity = 999;
+                    }
+
+
+                    UpdateItemUI(child.gameObject, uiClassItem);
+                    founditem = true;
+                    break;
                 }
-
-
-                UpdateItemUI(child.gameObject, uiClassItem);
-                founditem = true;
-                break;
             }
         }
 
@@ -90,12 +102,15 @@ public class ItemManager : MonoBehaviour
                     // Update the UI component if needed, e.g., by updating a quantity text
                     ClassItem classItemGO = new ClassItem(classItem.scriptableItem, classItem.quantity);
 
+
                     //attach the script
                     child.gameObject.AddComponent<ClassItem>();
 
                     child.gameObject.GetComponent<ClassItem>().SetData(classItemGO);
 
                     child.gameObject.GetComponent<ClassItem>().itemIn = itemIn;
+                    child.gameObject.GetComponent<ClassItem>().customToolTip = classItem.customToolTip;
+                    child.gameObject.GetComponent<ClassItem>().itemID = GenerateNewID();
 
                     //update the ui
                     UpdateItemUI(child.gameObject, classItemGO);
@@ -120,7 +135,7 @@ public class ItemManager : MonoBehaviour
         gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = uiClassItem.quantity.ToString();
 
         //tooltip
-        gameObject.GetComponent<TooltipContent>().description = uiClassItem.scriptableItem.itemDescription;
+        //gameObject.GetComponent<TooltipContent>().description = uiClassItem.scriptableItem.itemDescription;
     }
 
     public void UpdateRemovedItemUI(GameObject gameObject)
@@ -134,11 +149,14 @@ public class ItemManager : MonoBehaviour
         gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = "";
 
         //tooltip
-        gameObject.GetComponent<TooltipContent>().description = "";
+        //gameObject.GetComponent<TooltipContent>().description = "";
     }
 
-    public bool RemoveItemToParent(ClassItem classItem, GameObject itemParent)
+    public bool RemoveItemToParent(GameObject item, GameObject itemParent)
     {
+
+        ClassItem classItem = item.GetComponent<ClassItem>();
+
 
         bool founditem = false;
 
@@ -147,7 +165,7 @@ public class ItemManager : MonoBehaviour
         {
             ClassItem uiClassItem = child.GetComponent<ClassItem>();
 
-            if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
+            if (uiClassItem != null && uiClassItem.itemID == classItem.itemID)
             {
 
                 Destroy(child.GetComponent<ClassItem>());
@@ -192,4 +210,54 @@ public class ItemManager : MonoBehaviour
     {
         itemParent.transform.parent.gameObject.SetActive(false);
     }
+
+
+    public void ActivateItemList(SystemManager.ActivationType activationType)
+    {
+        //use all lists of items
+        ActivateItems(activationType, StaticData.companionItemList);
+        ActivateItems(activationType, StaticData.relics);
+    }
+
+    public void ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems)
+    {
+        foreach (var item in classItems)
+        {
+            if (item.scriptableItem.activationType == activationType)
+            {
+                item.scriptableItem.Activate(item);
+            }
+        }
+    }
+
+    public ClassItem SOItemToClass(ScriptableItem scriptableItem)
+    {
+
+        ClassItem classItemTemp = new ClassItem(scriptableItem, 0);
+        return classItemTemp;
+
+    }
+
+    public void AddCompanionItemInList(ClassItem classItem)
+    {
+        // Check if an item with the same scriptableItem name exists in the list
+        bool itemExists = StaticData.companionItemList.Any(
+            item => item?.scriptableItem?.itemName == classItem.scriptableItem.itemName
+        );
+
+        if (itemExists)
+        {
+            // If the item exists, find it and increase its level by 1
+            StaticData.companionItemList.First(
+                item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
+            ).level += 1;
+        }
+        else
+        {
+            // If the item doesn't exist, add it to the list
+            StaticData.companionItemList.Add(classItem);
+        }
+    }
+
+
 }

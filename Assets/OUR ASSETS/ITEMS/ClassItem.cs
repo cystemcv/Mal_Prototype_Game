@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Michsky.MUIP;
 
 public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -16,6 +17,11 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public bool stopEvents = false;
 
+    public int level = 1;
+
+    public int tempValue = 0;
+
+    public string customToolTip = "";
 
     public ClassItem(ScriptableItem scriptableItem, int quantity)
     {
@@ -38,12 +44,27 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
     }
 
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
 
         if (stopEvents)
         {
             return;
+        }
+
+        if (customToolTip != "" && customToolTip != null)
+        {
+            this.gameObject.GetComponent<TooltipContent>().description = customToolTip;
+        }
+        else if (scriptableItem.itemDescription != "")
+        {
+            this.gameObject.GetComponent<TooltipContent>().description = scriptableItem.itemDescription;
+        }
+        else
+        {
+            this.gameObject.GetComponent<TooltipContent>().description = "";
         }
 
         if (itemIn == SystemManager.ItemIn.INVENTORY)
@@ -126,10 +147,14 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 ChooseCardToDeck();
             }
+            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
+            {
+                AddCompanionItem();
+            }
             else
             {
                 //Remove from loot
-                ItemManager.Instance.RemoveItemToParent(this, UIManager.Instance.lootGO);
+                ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
 
                 //add to inventory
                 ItemManager.Instance.AddItemToParent(this, UIManager.Instance.inventoryGO, SystemManager.ItemIn.INVENTORY);
@@ -139,6 +164,25 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
 
         }
+
+    }
+
+    public void AddCompanionItem()
+    {
+
+        //add to companion list
+        ItemManager.Instance.AddCompanionItemInList(this);
+
+        if (quantity > 1)
+        {
+            quantity--;
+            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
+        }
+        else
+        {
+            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
+        }
+
 
     }
 
@@ -163,7 +207,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
         else
         {
-            ItemManager.Instance.RemoveItemToParent(this, UIManager.Instance.lootGO);
+            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
         }
 
 

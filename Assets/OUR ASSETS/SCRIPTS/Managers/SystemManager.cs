@@ -71,7 +71,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemIn { INVENTORY, LOOT }
 
-    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT }
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM }
+
+    public enum ActivationType { None, OnDraw, OnLoot}
 
     //end of enums
 

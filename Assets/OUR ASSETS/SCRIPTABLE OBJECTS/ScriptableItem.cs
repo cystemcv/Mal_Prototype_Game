@@ -13,9 +13,15 @@ public class ScriptableItem : ScriptableObject
     public string itemName;
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.ItemCategory itemCategory = SystemManager.ItemCategory.RESOURCE;
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.ActivationType activationType;
 
     [TextArea] public string itemDescription;
 
+    // Abstract method for activation, implemented by derived classes
+    public virtual void Activate(ClassItem classItem)
+    {
 
+    }
 
 }

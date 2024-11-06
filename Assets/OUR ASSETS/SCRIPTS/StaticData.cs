@@ -13,4 +13,6 @@ public class StaticData : MonoBehaviour
     public static GameObject staticDungeonParent;
     public static bool staticDungeonParentGenerated = false;
 
+    public static List<ClassItem> companionItemList = new List<ClassItem>();
+    public static List<ClassItem> relics = new List<ClassItem>();
 }
