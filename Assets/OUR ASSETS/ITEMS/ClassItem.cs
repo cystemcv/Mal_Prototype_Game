@@ -38,6 +38,8 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         scriptableItem = item.scriptableItem;
         quantity = item.quantity;
+        level = item.level;
+        customToolTip = item.customToolTip;
 
         if (itemID == "")
         {
@@ -158,11 +160,14 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             }
             else
             {
-                //Remove from loot
-                ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
-
                 //add to inventory
-                ItemManager.Instance.AddItemToParent(this, UIManager.Instance.inventoryGO, SystemManager.ItemIn.INVENTORY);
+                ItemManager.Instance.AddInventoryItemInList(this);
+
+                //Remove from loot
+                ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+
+                ItemManager.Instance.ShowLootParent();
+                ItemManager.Instance.ShowInventoryParent();
             }
 
             UIManager.Instance.lootGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
@@ -172,21 +177,18 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     }
 
+
     public void AddCompanionItem()
     {
 
         //add to companion list
         ItemManager.Instance.AddCompanionItemInList(this);
 
-        if (quantity > 1)
-        {
-            quantity--;
-            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
-        }
-        else
-        {
-            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
-        }
+        //Remove from loot
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+
+        ItemManager.Instance.ShowLootParent();
+        ItemManager.Instance.ShowInventoryParent();
 
 
     }
@@ -195,17 +197,13 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void AddRandomCompanionItem()
     {
-        if (quantity > 1)
-        {
-            quantity--;
-            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
-        }
-        else
-        {
-            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
-        }
 
 
+        //Remove from loot
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+
+        ItemManager.Instance.ShowLootParent();
+        ItemManager.Instance.ShowInventoryParent();
 
         int itemsToChoose = 3;
 
@@ -281,17 +279,13 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
 
 
-        if (quantity > 1)
-        {
-            quantity--;
-            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
-        }
-        else
-        {
-            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
-        }
+        //Remove from loot
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
+        ItemManager.Instance.ShowLootParent();
+        ItemManager.Instance.ShowInventoryParent();
 
+    
         List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;
 
 

@@ -26,8 +26,10 @@ public class PickPocket : ScriptableItem
         ClassItem classItemTemp = new ClassItem(goldSO, classItem.tempValue);
         classItemTemp.customToolTip = "EXTRA GOLD! (Received from Pick Pocket!)";
 
+        StaticData.lootItemList.Add(classItemTemp);
+
         //then add item to loot
-        ItemManager.Instance.AddItemToParent(classItemTemp, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+        //ItemManager.Instance.AddItemToParent(classItemTemp, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
 
     }
 }

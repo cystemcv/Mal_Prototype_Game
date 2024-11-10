@@ -13,7 +13,7 @@ public class ItemManager : MonoBehaviour
 
     public List<ScriptableItem> scriptableItemList;
 
- 
+
     public List<ScriptableItem> relics;
 
     public GameObject itemChoosePrefab;
@@ -58,133 +58,119 @@ public class ItemManager : MonoBehaviour
         return System.Guid.NewGuid().ToString();
     }
 
-    public void AddItemToParent(ClassItem classItem, GameObject itemParent, SystemManager.ItemIn itemIn)
+    //public void AddItemToParent(ClassItem classItem, GameObject itemParent, SystemManager.ItemIn itemIn)
+    //{
+
+    //    bool founditem = false;
+
+    //    //on loot we dont want items to combine
+    //    if (itemIn != SystemManager.ItemIn.LOOT) {
+
+    //        //if the item is found then increase its quantity
+    //        foreach (Transform child in itemParent.transform)
+    //        {
+    //            ClassItem uiClassItem = child.GetComponent<ClassItem>();
+
+    //            if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
+    //            {
+
+    //                // If the item exists, increase its quantity
+    //                uiClassItem.quantity += classItem.quantity;
+
+    //                if (uiClassItem.quantity >= 999)
+    //                {
+    //                    uiClassItem.quantity = 999;
+    //                }
+
+
+    //                UpdateItemUI(child.gameObject, uiClassItem);
+    //                founditem = true;
+    //                break;
+    //            }
+    //        }
+    //    }
+
+    //    //if the item is not found then add it
+    //    if (founditem == false)
+    //    {
+    //        // Find the first empty space
+    //        foreach (Transform child in itemParent.transform)
+    //        {
+    //            ClassItem uiClassItem = child.GetComponent<ClassItem>();
+
+    //            //find the first empty space
+    //            if (uiClassItem == null)
+    //            {
+    //                // Update the UI component if needed, e.g., by updating a quantity text
+    //                ClassItem classItemGO = new ClassItem(classItem.scriptableItem, classItem.quantity);
+
+
+    //                //attach the script
+    //                child.gameObject.AddComponent<ClassItem>();
+
+    //                child.gameObject.GetComponent<ClassItem>().SetData(classItemGO);
+
+    //                child.gameObject.GetComponent<ClassItem>().itemIn = itemIn;
+    //                child.gameObject.GetComponent<ClassItem>().customToolTip = classItem.customToolTip;
+    //                child.gameObject.GetComponent<ClassItem>().itemID = GenerateNewID();
+
+    //                //update the ui
+    //                UpdateItemUI(child.gameObject, classItemGO);
+    //                break;
+    //            }
+
+    //        }
+    //    }
+
+
+    //}
+
+    //public void UpdateItemUI(GameObject gameObject, ClassItem uiClassItem)
+    //{
+
+    //    //update the icon
+    //    gameObject.transform.Find("Image").gameObject.SetActive(true);
+    //    gameObject.transform.Find("Image").GetComponent<Image>().sprite = uiClassItem.scriptableItem.Icon;
+
+    //    //updare the quantity
+    //    gameObject.transform.Find("TextParent").gameObject.SetActive(true);
+    //    gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = uiClassItem.quantity.ToString();
+
+    //    //tooltip
+    //    //gameObject.GetComponent<TooltipContent>().description = uiClassItem.scriptableItem.itemDescription;
+    //}
+
+    //public void UpdateRemovedItemUI(GameObject gameObject)
+    //{
+    //    //update the icon
+    //    gameObject.transform.Find("Image").gameObject.SetActive(false);
+    //    gameObject.transform.Find("Image").GetComponent<Image>().sprite = null;
+
+    //    //updare the quantity
+    //    gameObject.transform.Find("TextParent").gameObject.SetActive(false);
+    //    gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = "";
+
+    //    //tooltip
+    //    //gameObject.GetComponent<TooltipContent>().description = "";
+    //}
+
+    public void RemoveItemFromListGOFromLoot(ClassItem classItemToRemove, List<ClassItem> classItemList)
     {
+        // Find the index of the item with the same itemID
+        int indexToRemove = classItemList.FindIndex(item => item.itemID == classItemToRemove.itemID);
 
-        bool founditem = false;
-
-        //on loot we dont want items to combine
-        if (itemIn != SystemManager.ItemIn.LOOT) {
-
-            //if the item is found then increase its quantity
-            foreach (Transform child in itemParent.transform)
-            {
-                ClassItem uiClassItem = child.GetComponent<ClassItem>();
-
-                if (uiClassItem != null && uiClassItem.scriptableItem.itemName == classItem.scriptableItem.itemName)
-                {
-
-                    // If the item exists, increase its quantity
-                    uiClassItem.quantity += classItem.quantity;
-
-                    if (uiClassItem.quantity >= 999)
-                    {
-                        uiClassItem.quantity = 999;
-                    }
-
-
-                    UpdateItemUI(child.gameObject, uiClassItem);
-                    founditem = true;
-                    break;
-                }
-            }
-        }
-
-        //if the item is not found then add it
-        if (founditem == false)
+        // If the item is found, remove it at the specified index
+        if (indexToRemove != -1)
         {
-            // Find the first empty space
-            foreach (Transform child in itemParent.transform)
-            {
-                ClassItem uiClassItem = child.GetComponent<ClassItem>();
-
-                //find the first empty space
-                if (uiClassItem == null)
-                {
-                    // Update the UI component if needed, e.g., by updating a quantity text
-                    ClassItem classItemGO = new ClassItem(classItem.scriptableItem, classItem.quantity);
-
-
-                    //attach the script
-                    child.gameObject.AddComponent<ClassItem>();
-
-                    child.gameObject.GetComponent<ClassItem>().SetData(classItemGO);
-
-                    child.gameObject.GetComponent<ClassItem>().itemIn = itemIn;
-                    child.gameObject.GetComponent<ClassItem>().customToolTip = classItem.customToolTip;
-                    child.gameObject.GetComponent<ClassItem>().itemID = GenerateNewID();
-
-                    //update the ui
-                    UpdateItemUI(child.gameObject, classItemGO);
-                    break;
-                }
-
-            }
+            classItemList.RemoveAt(indexToRemove);
         }
-
-
-    }
-
-    public void UpdateItemUI(GameObject gameObject, ClassItem uiClassItem)
-    {
-
-        //update the icon
-        gameObject.transform.Find("Image").gameObject.SetActive(true);
-        gameObject.transform.Find("Image").GetComponent<Image>().sprite = uiClassItem.scriptableItem.Icon;
-
-        //updare the quantity
-        gameObject.transform.Find("TextParent").gameObject.SetActive(true);
-        gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = uiClassItem.quantity.ToString();
-
-        //tooltip
-        //gameObject.GetComponent<TooltipContent>().description = uiClassItem.scriptableItem.itemDescription;
-    }
-
-    public void UpdateRemovedItemUI(GameObject gameObject)
-    {
-        //update the icon
-        gameObject.transform.Find("Image").gameObject.SetActive(false);
-        gameObject.transform.Find("Image").GetComponent<Image>().sprite = null;
-
-        //updare the quantity
-        gameObject.transform.Find("TextParent").gameObject.SetActive(false);
-        gameObject.transform.Find("TextParent").Find("Text").GetComponent<TMP_Text>().text = "";
-
-        //tooltip
-        //gameObject.GetComponent<TooltipContent>().description = "";
-    }
-
-    public bool RemoveItemToParent(GameObject item, GameObject itemParent)
-    {
-
-        ClassItem classItem = item.GetComponent<ClassItem>();
-
-
-        bool founditem = false;
-
-        //if the item is found then increase its quantity
-        foreach (Transform child in itemParent.transform)
-        {
-            ClassItem uiClassItem = child.GetComponent<ClassItem>();
-
-            if (uiClassItem != null && uiClassItem.itemID == classItem.itemID)
-            {
-
-                Destroy(child.GetComponent<ClassItem>());
-
-                UpdateRemovedItemUI(child.gameObject);
-                founditem = true;
-                break;
-            }
-        }
-
-        return founditem;
-
 
     }
 
     public void ShowLootParent()
     {
+        ResetGOObject(UIManager.Instance.lootGO);
+        PopulateGOObject(UIManager.Instance.lootGO, StaticData.lootItemList);
         ShowItemParent(UIManager.Instance.lootGO);
     }
 
@@ -195,6 +181,8 @@ public class ItemManager : MonoBehaviour
 
     public void ShowInventoryParent()
     {
+        ResetGOObject(UIManager.Instance.inventoryGO);
+        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
         ShowItemParent(UIManager.Instance.inventoryGO);
     }
 
@@ -240,6 +228,31 @@ public class ItemManager : MonoBehaviour
 
     }
 
+    public void AddInventoryItemInList(ClassItem classItem)
+    {
+        // Check if an item with the same scriptableItem name exists in the list
+        bool itemExists = StaticData.inventoryItemList.Any(
+            item => item?.scriptableItem?.itemName == classItem.scriptableItem.itemName
+        );
+
+        if (itemExists)
+        {
+            // If the item exists, find it and increase its quantity based on the item quantity
+            StaticData.inventoryItemList.First(
+                item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
+            ).level += classItem.quantity;
+        }
+        else
+        {
+
+            //create new class
+            ClassItem classItemTemp = new ClassItem(classItem.scriptableItem,classItem.quantity);
+            classItemTemp.SetData(classItem);
+
+            StaticData.inventoryItemList.Add(classItemTemp);
+        }
+    }
+
     public void AddCompanionItemInList(ClassItem classItem)
     {
         // Check if an item with the same scriptableItem name exists in the list
@@ -277,7 +290,7 @@ public class ItemManager : MonoBehaviour
             // If the item exists, find it and increase its level by 1
             ClassItem item = StaticData.companionItemList.First(
                 item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
-            ) ;
+            );
 
             //stop because its max level
             if (item.level == item.scriptableItem.maxLevel)
@@ -316,12 +329,13 @@ public class ItemManager : MonoBehaviour
     {
 
         // Get the companion item list
-      
+
 
         // Loop through companion items and assign each to a child GameObject in goObject
         for (int i = 0; i < classItems.Count && i < goObject.transform.childCount; i++)
         {
             // Get the current item and child
+            //classItems[i].gameObject.GetComponent<ClassItem>().enabled = true;
             ClassItem classItem = classItems[i];
             Transform itemPrefab = goObject.transform.GetChild(i);
 
@@ -330,13 +344,16 @@ public class ItemManager : MonoBehaviour
 
             // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
             ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
+            itemDisplay.enabled = true;
             if (itemDisplay != null)
             {
 
                 itemPrefab.GetChild(0).gameObject.SetActive(true);
                 itemPrefab.GetChild(1).gameObject.SetActive(true);
 
-                itemDisplay = classItem;
+                itemDisplay.SetData(classItem);
+                itemDisplay.itemID = classItem.itemID;
+
 
                 itemPrefab.GetChild(0).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
 
@@ -344,6 +361,12 @@ public class ItemManager : MonoBehaviour
                 if (goObject == UIManager.Instance.inventoryGO)
                 {
                     itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemDisplay.itemIn = SystemManager.ItemIn.INVENTORY;
+                }
+                else if (goObject == UIManager.Instance.lootGO)
+                {
+                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemDisplay.itemIn = SystemManager.ItemIn.LOOT;
                 }
                 else
                 {
@@ -362,6 +385,9 @@ public class ItemManager : MonoBehaviour
         //reset them back to blank state
         foreach (Transform itemPrefab in goObject.transform)
         {
+
+            itemPrefab.GetComponent<ClassItem>().enabled = false;
+
             foreach (Transform itemPrefabChild in itemPrefab)
             {
                 itemPrefabChild.gameObject.SetActive(false);
@@ -375,7 +401,6 @@ public class ItemManager : MonoBehaviour
 
         //populate companionGO
         ResetGOObject(UIManager.Instance.companionGO);
-
         PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
 
         UIManager.Instance.companionGO.SetActive(true);

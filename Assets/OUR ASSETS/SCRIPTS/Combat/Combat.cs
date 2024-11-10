@@ -231,7 +231,9 @@ public class Combat : MonoBehaviour
             ClassItem classItem = new ClassItem(itemClassPlanet.scriptableItem, quantity);
 
             //then add item to loot
-            ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+            StaticData.lootItemList.Add(classItem);
+
+            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
 
         }
 
