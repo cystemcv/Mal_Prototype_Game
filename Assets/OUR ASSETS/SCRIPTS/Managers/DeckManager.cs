@@ -558,7 +558,7 @@ public class DeckManager : MonoBehaviour
 
         if (normalUI)
         {
-            cardPrefab.transform.localScale = Vector3.one;
+            cardPrefab.transform.localScale = new Vector3(1.2f, 1.2f, 1);
         }
         else
         {
@@ -851,12 +851,12 @@ public class DeckManager : MonoBehaviour
         }
 
         //close the thing 
-        UIManager.Instance.chooseACardScreen.SetActive(false);
+        UIManager.Instance.ChooseGroupUI.SetActive(false);
 
         //resume
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
-        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject);
+        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject);
 
     }
 

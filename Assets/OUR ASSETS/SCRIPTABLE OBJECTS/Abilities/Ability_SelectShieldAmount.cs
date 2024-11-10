@@ -43,7 +43,7 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
 
 
         //display screen
-        UIManager.Instance.chooseACardScreen.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.SHIELDCHOICE;
@@ -56,7 +56,7 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
                 break;
             }
 
-            GameObject tempCardPrefab = GameObject.Instantiate(cardPrefabShield, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject.transform.position, Quaternion.identity);
+            GameObject tempCardPrefab = GameObject.Instantiate(cardPrefabShield, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject.transform.position, Quaternion.identity);
             tempCardPrefab.transform.Find("Panel").Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "Add " + shieldAmount.ToString() + " shield";
             tempCardPrefab.transform.Find("Panel").Find("CardImageText").GetComponent<TMP_Text>().text = shieldAmount.ToString();
             tempCardPrefab.transform.Find("Panel").Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = "Shield Adjust";
@@ -65,7 +65,7 @@ public class Ability_SelectShieldAmount : ScriptableCardAbility
             tempCardPrefab.GetComponent<CardScript>().tempValue = shieldAmount;
 
             //set it as a child of the parent
-            tempCardPrefab.transform.SetParent(UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject.transform);
+            tempCardPrefab.transform.SetParent(UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject.transform);
 
             //make the local scale 1,1,1
             tempCardPrefab.transform.localScale = new Vector3(1, 1, 1);

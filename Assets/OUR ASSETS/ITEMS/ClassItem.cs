@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Michsky.MUIP;
+using System.Linq;
 
 public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -17,7 +18,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public bool stopEvents = false;
 
-    public int level = 1;
+    public int level = 0;
 
     public int tempValue = 0;
 
@@ -125,9 +126,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             //change inventory text
             mainItemText.GetComponent<TMP_Text>().text = "";
 
-   
 
-    
+
+
 
         }
 
@@ -150,6 +151,10 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             else if (scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
             {
                 AddCompanionItem();
+            }
+            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMCOMPANIONITEM)
+            {
+                AddRandomCompanionItem();
             }
             else
             {
@@ -186,8 +191,84 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     }
 
+
+
+    public void AddRandomCompanionItem()
+    {
+        if (quantity > 1)
+        {
+            quantity--;
+            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
+        }
+        else
+        {
+            ItemManager.Instance.RemoveItemToParent(this.gameObject, UIManager.Instance.lootGO);
+        }
+
+
+
+        int itemsToChoose = 3;
+
+        // Get the companion item list and filter out items at max level
+        List<ScriptableItem> companionSOItems = StaticData.staticScriptableCompanion.companionItemList
+            .Where(item => !ItemManager.Instance.CheckIfItemMaxLevel(new ClassItem(item, 1)))
+            .ToList();
+
+        // Check if there are any items left after filtering
+        if (companionSOItems.Count == 0)
+        {
+            Debug.LogWarning("All companion items are at max level. No items to choose from.");
+            return;
+        }
+
+        GameObject parent = UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject;
+
+        //destroy previous choices
+        SystemManager.Instance.DestroyAllChildren(parent);
+
+        // Select random items from the filtered list
+        for (int i = 0; i < itemsToChoose; i++)
+        {
+            // Generate a random index from the filtered list
+            int randomIndex = UnityEngine.Random.Range(0, companionSOItems.Count);
+
+            // Create a ClassItem for the randomly selected item
+            ClassItem itemClassTemp = new ClassItem(companionSOItems[randomIndex], 1);
+
+            // Instantiate the item prefab
+            GameObject itemPrefab = Instantiate(
+                ItemManager.Instance.itemChoosePrefab,
+                parent.transform.position,
+                Quaternion.identity);
+
+            //set it as a child of the parent
+            itemPrefab.transform.SetParent(parent.transform);
+
+            itemPrefab.transform.localScale = Vector3.one;
+
+
+            //ui
+            itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
+            itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
+            itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+            itemPrefab.transform.Find("ItemLevel").GetComponent<TMP_Text>().text = "LV: " + ItemManager.Instance.GetItemLevelFromList(itemClassTemp);
+
+            // Assign the item to the ItemChoiceClass component
+            ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
+            itemChoiceClass.classItem = itemClassTemp;
+        }
+
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
+    }
+
+
     public void ChooseCardToDeck()
     {
+
+        GameObject parent = UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject;
+
+        //destroy previous choices
+        SystemManager.Instance.DestroyAllChildren(parent);
 
         //get the pool
         List<CardListManager.CardPoolList> filteredCardListPool = CardListManager.Instance.cardPoolLists.Where(pool =>
@@ -203,7 +284,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (quantity > 1)
         {
             quantity--;
-            ItemManager.Instance.UpdateItemUI(this.gameObject,this);
+            ItemManager.Instance.UpdateItemUI(this.gameObject, this);
         }
         else
         {
@@ -215,7 +296,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
         //display screen
-        UIManager.Instance.chooseACardScreen.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
@@ -243,7 +324,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
             //generate the card and parent it
-            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false, true);
+            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject, false, true);
         }
 
     }

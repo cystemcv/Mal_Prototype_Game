@@ -18,6 +18,8 @@ public class ScriptableItem : ScriptableObject
 
     [TextArea] public string itemDescription;
 
+    public int maxLevel = 1;
+
     // Abstract method for activation, implemented by derived classes
     public virtual void Activate(ClassItem classItem)
     {

@@ -97,7 +97,7 @@ public class Combat : MonoBehaviour
     void Start()
     {
 
-        StaticData.companionItemList.Add(ItemManager.Instance.SOItemToClass(ItemManager.Instance.companionItemList[0]));
+        //StaticData.companionItemList.Add(ItemManager.Instance.SOItemToClass(StaticData.staticScriptableCompanion.companionItemList[0]));
 
     }
 

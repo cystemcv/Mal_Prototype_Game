@@ -81,7 +81,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         }
 
         //display screen
-        UIManager.Instance.chooseACardScreen.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
@@ -129,7 +129,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
 
                 //generate the card and parent it
-                DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.chooseACardScreen.transform.Find("CardContainer").gameObject, false, true);
+                DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject, false, true);
             }
          
 

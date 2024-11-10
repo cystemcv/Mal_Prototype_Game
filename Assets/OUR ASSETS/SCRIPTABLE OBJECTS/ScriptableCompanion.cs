@@ -19,6 +19,8 @@ public class ScriptableCompanion : ScriptableObject
     public Sprite companionImage;
     public GameObject companionChoose;
 
+    public List<ScriptableItem> companionItemList;
+
 
     public virtual void OnPlayCard()
     {

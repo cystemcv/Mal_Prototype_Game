@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 7679347382627867533}
   - component: {fileID: 637341938847895219}
   - component: {fileID: 9149007630560365478}
+  - component: {fileID: 6333988930263960876}
   m_Layer: 6
   m_Name: ItemPrefab
   m_TagString: Untagged
@@ -470,6 +471,26 @@ MonoBehaviour:
   forceToUpdate: 0
   useIn3D: 0
   tooltipAnimator: {fileID: 0}
+--- !u!114 &6333988930263960876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7679347382627867632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 380f99e966ded1d4ea6bf02573e1cb9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scriptableItem: {fileID: 0}
+  quantity: 0
+  itemID: 
+  itemIn: 0
+  stopEvents: 0
+  level: 0
+  tempValue: 0
+  customToolTip: 
 --- !u!1 &7823642195731100087
 GameObject:
   m_ObjectHideFlags: 0

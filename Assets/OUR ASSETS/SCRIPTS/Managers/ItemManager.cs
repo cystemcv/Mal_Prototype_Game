@@ -13,8 +13,10 @@ public class ItemManager : MonoBehaviour
 
     public List<ScriptableItem> scriptableItemList;
 
-    public List<ScriptableItem> companionItemList;
+ 
     public List<ScriptableItem> relics;
+
+    public GameObject itemChoosePrefab;
 
     private void Awake()
     {
@@ -216,7 +218,7 @@ public class ItemManager : MonoBehaviour
     {
         //use all lists of items
         ActivateItems(activationType, StaticData.companionItemList);
-        ActivateItems(activationType, StaticData.relics);
+        ActivateItems(activationType, StaticData.artifactItemList);
     }
 
     public void ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems)
@@ -255,9 +257,152 @@ public class ItemManager : MonoBehaviour
         else
         {
             // If the item doesn't exist, add it to the list
+            classItem.level += 1; //from 0 to 1
             StaticData.companionItemList.Add(classItem);
         }
     }
 
+    public bool CheckIfItemMaxLevel(ClassItem classItem)
+    {
+
+        bool isMaxLevel = false;
+
+        // Check if an item with the same scriptableItem name exists in the list
+        bool itemExists = StaticData.companionItemList.Any(
+            item => item?.scriptableItem?.itemName == classItem.scriptableItem.itemName
+        );
+
+        if (itemExists)
+        {
+            // If the item exists, find it and increase its level by 1
+            ClassItem item = StaticData.companionItemList.First(
+                item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
+            ) ;
+
+            //stop because its max level
+            if (item.level == item.scriptableItem.maxLevel)
+            {
+                isMaxLevel = true;
+            }
+        }
+
+        return isMaxLevel;
+    }
+
+    public int GetItemLevelFromList(ClassItem classItem)
+    {
+
+        int itemLevel = 0;
+
+        // Check if an item with the same scriptableItem name exists in the list
+        bool itemExists = StaticData.companionItemList.Any(
+            item => item?.scriptableItem?.itemName == classItem.scriptableItem.itemName
+        );
+
+        if (itemExists)
+        {
+            // If the item exists, find it and increase its level by 1
+            ClassItem item = StaticData.companionItemList.First(
+                item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
+            );
+
+            itemLevel = item.level;
+        }
+
+        return itemLevel;
+    }
+
+    public void PopulateGOObject(GameObject goObject, List<ClassItem> classItems)
+    {
+
+        // Get the companion item list
+      
+
+        // Loop through companion items and assign each to a child GameObject in goObject
+        for (int i = 0; i < classItems.Count && i < goObject.transform.childCount; i++)
+        {
+            // Get the current item and child
+            ClassItem classItem = classItems[i];
+            Transform itemPrefab = goObject.transform.GetChild(i);
+
+            // Activate the child GameObject and populate it with the item
+            itemPrefab.gameObject.SetActive(true);
+
+            // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
+            ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
+            if (itemDisplay != null)
+            {
+
+                itemPrefab.GetChild(0).gameObject.SetActive(true);
+                itemPrefab.GetChild(1).gameObject.SetActive(true);
+
+                itemDisplay = classItem;
+
+                itemPrefab.GetChild(0).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
+
+                //level or quantity
+                if (goObject == UIManager.Instance.inventoryGO)
+                {
+                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                }
+                else
+                {
+                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "Lv:" + itemDisplay.level.ToString();
+                }
+
+
+                //itemDisplay.SetItem(classItem);  // This is a custom method you would create to display item details
+            }
+        }
+
+    }
+
+    public void ResetGOObject(GameObject goObject)
+    {
+        //reset them back to blank state
+        foreach (Transform itemPrefab in goObject.transform)
+        {
+            foreach (Transform itemPrefabChild in itemPrefab)
+            {
+                itemPrefabChild.gameObject.SetActive(false);
+            }
+        }
+
+    }
+
+    public void OpenCompanionGO()
+    {
+
+        //populate companionGO
+        ResetGOObject(UIManager.Instance.companionGO);
+
+        PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
+
+        UIManager.Instance.companionGO.SetActive(true);
+        UIManager.Instance.inventoryGO.SetActive(false);
+        UIManager.Instance.artifactGO.SetActive(false);
+    }
+
+    public void OpenInventoryGO()
+    {
+
+        UIManager.Instance.inventoryGO.SetActive(true);
+        UIManager.Instance.companionGO.SetActive(false);
+        UIManager.Instance.artifactGO.SetActive(false);
+
+    }
+
+    public void OpenArtifactGO()
+    {
+
+        //populate companionGO
+        ResetGOObject(UIManager.Instance.artifactGO);
+
+        PopulateGOObject(UIManager.Instance.companionGO, StaticData.artifactItemList);
+
+        UIManager.Instance.artifactGO.SetActive(true);
+        UIManager.Instance.companionGO.SetActive(false);
+        UIManager.Instance.inventoryGO.SetActive(false);
+    }
 
 }
