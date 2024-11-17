@@ -352,6 +352,10 @@ public class DeckManager : MonoBehaviour
 
         }
 
+        //variables needed for this activasion
+        StaticData.artifact_CardScript = cardScript;
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard);
+
         return condition;
     }
 
@@ -452,8 +456,10 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public IEnumerator DrawMultipleCards(int numberOfCards)
+    public IEnumerator DrawMultipleCards(int numberOfCards, float waitBeforeDrawing)
     {
+
+        yield return new WaitForSeconds(waitBeforeDrawing);
 
         //draw cards
         yield return StartCoroutine(DrawMultipleCardsCoroutine(numberOfCards));

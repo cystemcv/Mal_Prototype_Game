@@ -302,6 +302,8 @@ public class Combat : MonoBehaviour
         //start win conditions
         conditionsEnabled = true;
 
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart);
+
         //start the player
         yield return WaitPlayerTurns();
     }
@@ -408,7 +410,9 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
         //draw cards
-        yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit));
+        yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit,0));
+
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart);
 
         yield return null; // Wait for a frame 
     }
@@ -483,7 +487,7 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
-
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd);
 
         yield return new WaitForSeconds(1f);
 
@@ -909,7 +913,7 @@ public class Combat : MonoBehaviour
 
 
 
-    public void AdjustTargetHealth(GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
+    public void AdjustTargetHealth(GameObject attacker, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
         if (target == null)
@@ -988,6 +992,80 @@ public class Combat : MonoBehaviour
                 StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
 
             }
+
+            //then calculate counter attack
+            if (target.GetComponent<EntityClass>().counterDamage > 0)
+            {
+                AdjustTargetHealth(target, attacker, target.GetComponent<EntityClass>().counterDamage, false, SystemManager.AdjustNumberModes.COUNTER);
+            }
+
+
+        }
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.COUNTER)
+        {
+
+            int remainingShield = 0;
+            //check if there is a shield
+            if (entityClass.shield > 0 && bypassShield == false)
+            {
+
+                //then do dmg to shield
+                remainingShield = entityClass.shield - adjustNumber;
+
+                //update the ui
+                if (remainingShield > 0)
+                {
+                    //update enemy script
+                    entityClass.shield = remainingShield;
+
+                    //update text on shield
+                    entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
+
+                    //make the bar blue
+                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+
+                }
+                else
+                {
+                    //then the enemy has no shield left
+                    entityClass.shield = 0;
+
+                    //make the bar red
+                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+
+                    //hide the icon
+                    entityClass.shieldIcon.SetActive(false);
+                }
+
+            }
+            else
+            {
+                //if there is no shield go straight to the health hp
+                remainingShield = adjustNumber * -1;
+            }
+
+            if (remainingShield < 0)
+            {
+
+                //then we subtract from the health the remaining amount
+                entityClass.health += remainingShield;
+
+                if (entityClass.health < 0)
+                {
+                    entityClass.health = 0;
+                }
+
+                //update text on hp
+                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
+
+                //adjust the hp bar
+                UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
+
+                //flash enemy when directly hit
+                StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
+
+            }
+
 
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)

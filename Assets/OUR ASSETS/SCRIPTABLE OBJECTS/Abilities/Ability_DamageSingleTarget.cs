@@ -109,7 +109,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             base.SpawnEffectPrefab(realTarget, cardAbilityClass);
 
             int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entityUsedCard, realTarget);
-            Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
             // Wait between hits
             yield return new WaitForSeconds(cardAbilityClass.waitForAbility / multiHits);

@@ -10,6 +10,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
     [Header("UNIQUE")]
     public int buffLifeTime = 0;
     private GameObject realTarget;
+    private GameObject entityUsedCard;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
@@ -24,23 +25,23 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
-  
-            realTarget = CombatCardHandler.Instance.targetClicked;
-     
 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
+        realTarget = CombatCardHandler.Instance.targetClicked;
+        entityUsedCard = entity;
+
+        base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
 
 
-  
-            ProceedToAbility(cardScript, cardAbilityClass, entity);
- 
+
+        ProceedToAbility(cardAbilityClass);
+
 
 
     }
 
 
 
-    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
+    private void ProceedToAbility(CardAbilityClass cardAbilityClass)
     {
 
         BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, buffLifeTime);
@@ -48,20 +49,6 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
         //get the buff or debuff to do things
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
         buffDebuffClass.tempVariable = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-
-
-        ////increase character attack
-        //if (CombatManager.Instance.targetClicked.tag == "Player")
-        //{
-
-        //}
-        //else if(CombatManager.Instance.targetClicked.tag == "Enemy")
-        //{
-
-        //}
-
-
-
 
     }
 
@@ -73,11 +60,11 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
 
         //give shield to target
 
-            //get buff temp variable
-            //get the buff or debuff to do things
-            BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.scriptableBuffDebuff.nameID);
+        //get buff temp variable
+        //get the buff or debuff to do things
+        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.scriptableBuffDebuff.nameID);
 
-        Combat.Instance.AdjustTargetHealth(target, buffDebuffClass.tempVariable, false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, target, buffDebuffClass.tempVariable, false, SystemManager.AdjustNumberModes.SHIELD);
 
 
         return true;

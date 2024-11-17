@@ -209,7 +209,7 @@
     <Compile Include="Assets\LeanTween\Testing\Testing240.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\UISaveLoad.cs" />
-    <Compile Include="Assets\OUR ASSETS\ITEMS\PickPocket.cs" />
+    <Compile Include="Assets\OUR ASSETS\COMPANION\Thief\Upgrades\PickPocket.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuContent.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Rendering\WaterRenderingCameraFrustum.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\Margin.cs" />
@@ -239,7 +239,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerTooltip.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CollectionScripts\SpriteCollection.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\UnscaledTimeSSU.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\CardConditions\CardCondition_CheckHowManySummons.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Conditions\CardCondition_CheckHowManySummons.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathBezier2d.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Tooltip\TooltipManagerEditor.cs" />
@@ -304,6 +304,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\SliderManager.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Combat\Combat.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Interfaces\IBetterHorizontalOrVerticalLayoutGroup.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\itemAbility_GainExtraLoot.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\48 Particle Effect Pack\Script\csShowAllEffect.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingIssue.cs" />
@@ -343,7 +344,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\CardListManager.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\GameObjectActivator.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Demo\InputSystemChecker.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\CardConditions\ScriptableCardCondition.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Conditions\ScriptableCardCondition.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanAudio.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\Internal\InstancerSSU.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -515,6 +516,11 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\BuffDebuffClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\Salamander\Artifacts_Salamander.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\CounterGloves\Artifacts_CounterGloves.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\AngelicShield\Artifacts_AngelicShield.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\ManaOrb\Artifacts_ManaOrb.cs" />
+    <Compile Include="Assets\OUR ASSETS\ARTIFACTS\GreedyStoneTablet\Artifacts_GreedyStoneTablet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />

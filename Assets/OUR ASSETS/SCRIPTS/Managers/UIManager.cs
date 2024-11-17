@@ -508,6 +508,13 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void SkipChooseGroupUI()
+    {
+
+        UIManager.Instance.ChooseGroupUI.SetActive(false);
+
+    }
+
 
 
 

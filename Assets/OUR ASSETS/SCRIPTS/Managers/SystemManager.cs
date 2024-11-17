@@ -27,7 +27,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CombatTurns { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
     public CombatTurns combatTurn;
 
-    public enum AdjustNumberModes { ATTACK, HEAL, SHIELD }
+    public enum AdjustNumberModes { ATTACK, HEAL, SHIELD, COUNTER }
     public AdjustNumberModes adjustNumberModes;
 
     public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
@@ -71,9 +71,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemIn { INVENTORY, LOOT }
 
-    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM,RANDOMCOMPANIONITEM }
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM,RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
 
-    public enum ActivationType { None, OnDraw, OnLoot}
+    public enum ActivationType { None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd}
 
     //end of enums
 
@@ -524,6 +524,27 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         tags.Add("PlayerSummon");
 
         return tags;
+    }
+
+    public void SpawnEffectPrefab( GameObject spawnPrefab ,GameObject target, float spawnTimer)
+    {
+        //missing prefab vfx
+        if (spawnPrefab == null || target == null)
+        {
+            return;
+        }
+
+        //spawn prefab
+        GameObject spawnPrefabTrue = Instantiate(spawnPrefab, target.transform.position, Quaternion.identity);
+        spawnPrefabTrue.transform.SetParent(target.transform);
+
+        //if the target is player then we wanna rotate 
+        if (target.tag == "Player")
+        {
+            spawnPrefabTrue.transform.Rotate(new Vector3(0, 180, 0));
+        }
+
+        Destroy(spawnPrefabTrue, spawnTimer);
     }
 
 }

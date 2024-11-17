@@ -17,6 +17,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     [Header("COMMON")]
     public List<GameObject> listBuffDebuffClass;
+    
+    //stats
     public int poisongDmg;
     public int attack = 0;
     public float attackDebuffPerc = 0;
@@ -25,6 +27,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public int maxHealth;
     public int shield;
     public int maxShield;
+    public int counterDamage = 0;
+
     float rotationSpeed = -2000f;  // Degrees per second
     public bool allowEntityRotation = false;
 

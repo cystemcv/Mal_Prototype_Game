@@ -13,9 +13,13 @@ public class ScriptableItem : ScriptableObject
     public string itemName;
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.ItemCategory itemCategory = SystemManager.ItemCategory.RESOURCE;
-    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
-    public SystemManager.ActivationType activationType;
 
+    [Title("Activation Type")]
+    public SystemManager.ActivationType activationType;
+    public SystemManager.ActivationType initializationType;
+    public SystemManager.ActivationType expiredType;
+
+    [Title("Details")]
     [TextArea] public string itemDescription;
 
     public int maxLevel = 1;
@@ -25,5 +29,16 @@ public class ScriptableItem : ScriptableObject
     {
 
     }
+
+    public virtual void Initialiaze(ClassItem classItem)
+    {
+
+    }
+
+    public virtual void Expired(ClassItem classItem)
+    {
+
+    }
+
 
 }

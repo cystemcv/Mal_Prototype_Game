@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using static ScriptableCard;
 
@@ -21,12 +22,12 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
-      
-        
 
-        
 
-        string keyword = base.AbilityDescription(cardScript, cardAbilityClass , entity);
+
+
+
+        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
         string description = "Choose a " + mainClass + " " + cardType + " card and add it to your hand";
         if (setManaCost)
         {
@@ -54,17 +55,18 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
 
     public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
-        try { 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
+        try
+        {
+            base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
-        List<ScriptableCard> listToChoose;
+            List<ScriptableCard> listToChoose;
 
             //get the pool
             List<CardListManager.CardPoolList> filteredCardListPool = CardListManager.Instance.cardPoolLists.Where(pool =>
             pool.mainClass == mainClass
             ).ToList();
 
-            if(filteredCardListPool.Count <= 0)
+            if (filteredCardListPool.Count <= 0)
             {
                 return;
             }
@@ -75,19 +77,20 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
         && card.mainClass == mainClass
         ).ToList();
 
-        if (filteredCardList.Count == 0)
-        {
-            return;
-        }
+            if (filteredCardList.Count == 0)
+            {
+                return;
+            }
 
-        //display screen
-        UIManager.Instance.ChooseGroupUI.SetActive(true);
+            //display screen
+            UIManager.Instance.ChooseGroupUI.SetActive(true);
+            UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
 
-        //change the mode
-        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
+            //change the mode
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
 
-        //where to add card
-        SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
+            //where to add card
+            SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
 
             //get the cards to display
             for (int i = 0; i < cardsToChoose; i++)
@@ -131,7 +134,7 @@ public class Ability_ChooseACardFromList : ScriptableCardAbility
                 //generate the card and parent it
                 DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject, false, true);
             }
-         
+
 
 
         }

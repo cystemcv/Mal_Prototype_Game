@@ -14,7 +14,7 @@ public class ItemManager : MonoBehaviour
     public List<ScriptableItem> scriptableItemList;
 
 
-    public List<ScriptableItem> relics;
+    public List<ScriptableItem> artifactPoolList;
 
     public GameObject itemChoosePrefab;
 
@@ -213,9 +213,25 @@ public class ItemManager : MonoBehaviour
     {
         foreach (var item in classItems)
         {
+            if (item.scriptableItem.initializationType == activationType)
+            {
+                item.scriptableItem.Initialiaze(item);
+            }
+        }
+
+        foreach (var item in classItems)
+        {
             if (item.scriptableItem.activationType == activationType)
             {
                 item.scriptableItem.Activate(item);
+            }
+        }
+
+        foreach (var item in classItems)
+        {
+            if (item.scriptableItem.expiredType == activationType)
+            {
+                item.scriptableItem.Expired(item);
             }
         }
     }
@@ -240,7 +256,7 @@ public class ItemManager : MonoBehaviour
             // If the item exists, find it and increase its quantity based on the item quantity
             StaticData.inventoryItemList.First(
                 item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
-            ).level += classItem.quantity;
+            ).quantity += classItem.quantity;
         }
         else
         {
@@ -272,6 +288,19 @@ public class ItemManager : MonoBehaviour
             // If the item doesn't exist, add it to the list
             classItem.level += 1; //from 0 to 1
             StaticData.companionItemList.Add(classItem);
+        }
+    }
+
+    public void AddArtifactItemInList(ClassItem classItem)
+    {
+        // Check if an item with the same scriptableItem name exists in the list
+        bool itemExists = StaticData.artifactItemList.Any(
+            item => item?.scriptableItem?.itemName == classItem.scriptableItem.itemName
+        );
+
+        if (!itemExists)
+        {
+            StaticData.artifactItemList.Add(classItem);
         }
     }
 
@@ -368,9 +397,13 @@ public class ItemManager : MonoBehaviour
                     itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
                     itemDisplay.itemIn = SystemManager.ItemIn.LOOT;
                 }
+                else if (goObject == UIManager.Instance.artifactGO)
+                {
+                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "XXX";
+                }
                 else
                 {
-                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "Lv:" + itemDisplay.level.ToString();
+                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
                 }
 
 
@@ -411,6 +444,11 @@ public class ItemManager : MonoBehaviour
     public void OpenInventoryGO()
     {
 
+        //populate companionGO
+        ResetGOObject(UIManager.Instance.inventoryGO);
+
+        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
+
         UIManager.Instance.inventoryGO.SetActive(true);
         UIManager.Instance.companionGO.SetActive(false);
         UIManager.Instance.artifactGO.SetActive(false);
@@ -423,7 +461,7 @@ public class ItemManager : MonoBehaviour
         //populate companionGO
         ResetGOObject(UIManager.Instance.artifactGO);
 
-        PopulateGOObject(UIManager.Instance.companionGO, StaticData.artifactItemList);
+        PopulateGOObject(UIManager.Instance.artifactGO, StaticData.artifactItemList);
 
         UIManager.Instance.artifactGO.SetActive(true);
         UIManager.Instance.companionGO.SetActive(false);

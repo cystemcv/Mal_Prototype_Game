@@ -35,8 +35,21 @@ public class ItemChoiceClass : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //add to companion list
-        ItemManager.Instance.AddCompanionItemInList(classItem);
+
+        if (classItem.scriptableItem.itemCategory == SystemManager.ItemCategory.ARTIFACT)
+        {
+            ItemManager.Instance.AddArtifactItemInList(classItem);
+
+            ItemManager.Instance.OpenArtifactGO();
+        }
+        else
+        {
+            //add to companion list
+            ItemManager.Instance.AddCompanionItemInList(classItem);
+
+            ItemManager.Instance.OpenCompanionGO();
+        }
+
 
         UIManager.Instance.ChooseGroupUI.SetActive(false);
 

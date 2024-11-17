@@ -17,4 +17,8 @@ public class StaticData : MonoBehaviour
     public static List<ClassItem> inventoryItemList = new List<ClassItem>();
     public static List<ClassItem> companionItemList = new List<ClassItem>();
     public static List<ClassItem> artifactItemList = new List<ClassItem>();
+
+
+    //variables needed for artifacts]
+    public static CardScript artifact_CardScript;
 }

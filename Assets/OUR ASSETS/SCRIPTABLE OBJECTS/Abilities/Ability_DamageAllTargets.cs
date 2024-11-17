@@ -98,7 +98,7 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
                     base.SpawnEffectPrefab(targetFound, cardAbilityClass);
 
                     int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entityUsedCard, targetFound);
-                    Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+                    Combat.Instance.AdjustTargetHealth(entityUsedCard, targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
                 }
             }
 

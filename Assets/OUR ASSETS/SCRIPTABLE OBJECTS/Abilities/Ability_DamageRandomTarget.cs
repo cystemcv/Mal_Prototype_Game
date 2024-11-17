@@ -9,7 +9,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
     [Header("UNIQUE")]
     private GameObject targetFound;
-
+    private GameObject entityUsedCard;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
@@ -30,7 +30,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
     {
         //get all targets
         GameObject[] targetsFound;
-
+        entityUsedCard = entity;
 
         if (entity.tag == "Player")
         {
@@ -64,7 +64,7 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
-        ProceedToAbility(cardScript, cardAbilityClass, entity);
+        ProceedToAbility(cardAbilityClass, entity);
 
 
 
@@ -72,14 +72,14 @@ public class Ability_DamageRandomTarget : ScriptableCardAbility
     }
 
 
-    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
+    private void ProceedToAbility(CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
         //spawn prefab
         base.SpawnEffectPrefab(targetFound, cardAbilityClass);
 
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, targetFound);
-        Combat.Instance.AdjustTargetHealth(targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, targetFound, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

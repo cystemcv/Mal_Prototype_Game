@@ -55,6 +55,9 @@ public class ScriptableEntity : ScriptableObject
     public int currLevel = 1;
 
 
+    //counter dmg
+    public int counterDamage = 0;
+
     //other stats
     public int poisonDmg = 1;
 

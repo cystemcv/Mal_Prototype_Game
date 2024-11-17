@@ -10,7 +10,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
     public int empty;
 
     private GameObject realTarget;
-
+    private GameObject entityUsedCard;
 
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
@@ -24,7 +24,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
+    public override void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity, SystemManager.ControlBy controlBy)
     {
         //assign target 
         if (SystemManager.ControlBy.PLAYER == controlBy)
@@ -40,7 +40,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
             realTarget = list[indexForTargetForCard];
         }
 
-
+        entityUsedCard = entity;
 
         base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
 
@@ -49,7 +49,7 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
 
 
-        Combat.Instance.AdjustTargetHealth(realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }

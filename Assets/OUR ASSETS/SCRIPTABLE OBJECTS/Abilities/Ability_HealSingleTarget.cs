@@ -10,6 +10,7 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
     [Header("UNIQUE")]
     public int empty;
     private GameObject realTarget;
+    private GameObject entityUsedCard;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
@@ -26,8 +27,9 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
     {
         //assign target 
 
-            realTarget = CombatCardHandler.Instance.targetClicked;
-        
+        realTarget = CombatCardHandler.Instance.targetClicked;
+        entityUsedCard = entity;
+
 
         if (realTarget == null && entity != null)
         {
@@ -39,9 +41,9 @@ public class Ability_HealSingleTarget : ScriptableCardAbility
             return;
         }
 
-        base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
+        base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
 
-        Combat.Instance.AdjustTargetHealth(realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.HEAL);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.HEAL);
 
 
     }

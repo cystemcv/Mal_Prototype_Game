@@ -46,7 +46,7 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, realTarget);
-        Combat.Instance.AdjustTargetHealth(realTarget, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
+        Combat.Instance.AdjustTargetHealth(entity,realTarget, calculatedDmg, true, SystemManager.AdjustNumberModes.ATTACK);
 
     }
 

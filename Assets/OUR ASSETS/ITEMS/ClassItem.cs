@@ -158,6 +158,10 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 AddRandomCompanionItem();
             }
+            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMARTIFACTITEM)
+            {
+                AddRandomArtifactItem();
+            }
             else
             {
                 //add to inventory
@@ -194,6 +198,74 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     }
 
 
+    public void AddRandomArtifactItem()
+    {
+
+
+        //Remove from loot
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+
+        ItemManager.Instance.ShowLootParent();
+        ItemManager.Instance.ShowInventoryParent();
+
+        int itemsToChoose = 3;
+
+        // Filter the artifact pool to exclude items already in StaticData.artifactItemList
+        var filteredArtifactPool = ItemManager.Instance.artifactPoolList
+            .Where(scriptableItem => !StaticData.artifactItemList
+                .Any(classItem => classItem.scriptableItem == scriptableItem))
+            .ToList();
+
+        // Check if there are any items left after filtering
+        if (filteredArtifactPool.Count == 0)
+        {
+            Debug.LogWarning("No artifact on the pool list");
+            return;
+        }
+
+        GameObject parent = UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject;
+
+        //destroy previous choices
+        SystemManager.Instance.DestroyAllChildren(parent);
+
+        // Select random items from the filtered list
+        for (int i = 0; i < itemsToChoose; i++)
+        {
+            // Generate a random index from the filtered list
+            int randomIndex = UnityEngine.Random.Range(0, filteredArtifactPool.Count);
+
+            // Create a ClassItem for the randomly selected item
+            ClassItem itemClassTemp = new ClassItem(filteredArtifactPool[randomIndex], 1);
+
+            // Instantiate the item prefab
+            GameObject itemPrefab = Instantiate(
+                ItemManager.Instance.itemChoosePrefab,
+                parent.transform.position,
+                Quaternion.identity);
+
+            //set it as a child of the parent
+            itemPrefab.transform.SetParent(parent.transform);
+
+            itemPrefab.transform.localScale = Vector3.one;
+
+
+            //ui
+            itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
+            itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
+            itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+            itemPrefab.transform.Find("ItemLevel").gameObject.SetActive(false);
+
+            // Assign the item to the ItemChoiceClass component
+            ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
+            itemChoiceClass.classItem = itemClassTemp;
+    
+        }
+
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
+
+
+    }
 
     public void AddRandomCompanionItem()
     {
@@ -249,7 +321,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
             itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
             itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
-            itemPrefab.transform.Find("ItemLevel").GetComponent<TMP_Text>().text = "LV: " + ItemManager.Instance.GetItemLevelFromList(itemClassTemp);
+            itemPrefab.transform.Find("ItemLevel").GetComponent<TMP_Text>().text = "LV" + ItemManager.Instance.GetItemLevelFromList(itemClassTemp);
 
             // Assign the item to the ItemChoiceClass component
             ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
@@ -257,6 +329,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         }
 
         UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE COMPANION UPGRADE!";
+
+
     }
 
 
@@ -291,6 +366,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //display screen
         UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;

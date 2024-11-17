@@ -10,6 +10,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
     [Header("UNIQUE")]
     public int empty;
     private GameObject realTarget;
+    private GameObject entityUsedCard;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
@@ -26,36 +27,24 @@ public class Ability_PoisonTarget : ScriptableCardAbility
     {
         //assign target 
 
-            realTarget = CombatCardHandler.Instance.targetClicked;
-     
+        realTarget = CombatCardHandler.Instance.targetClicked;
+        entityUsedCard = entity;
+
+
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
-
-
-            ProceedToAbility(cardScript, entity);
-
-
-
-
-    }
-
-    private void OnCompleteBase(CardScript cardScript, GameObject entity)
-    {
-        // Proceed with animation and sound after the movement
-        ProceedToAbility(cardScript, entity);
-    }
-
-    private void ProceedToAbility(CardScript cardScript, GameObject character)
-    {
 
         BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
 
+
     }
+
+
 
     //debuff
 
-    public override bool OnEnemyTurnStart( GameObject target)
+    public override bool OnEnemyTurnStart(GameObject target)
     {
-        Combat.Instance.AdjustTargetHealth(target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, target, 1, false, SystemManager.AdjustNumberModes.ATTACK);
 
         //activated
         return true;
