@@ -15,10 +15,11 @@ public class Ability_DamagePierceSingleTarget : ScriptableCardAbility
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+
+        int calculatedDmg = (entity == null) ? DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) : Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
 
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Deal " + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy (Ignore Block)";
+        string description = "Deal " + DeckManager.Instance.GetCalculatedValueString(cardDmg, calculatedDmg) + " to an enemy (Ignore Block)";
         string final = keyword + " : " + description;
 
         return final;

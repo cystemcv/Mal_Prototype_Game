@@ -11,16 +11,26 @@ public class BuffDebuffClass : MonoBehaviour
     public ScriptableCardAbility scriptableCardAbility;
 
     public int turnsAvailable;
-
     public int tempVariable = 0;
+
+    public bool infiniteDuration = false;
 
     public void CreateBuffOnTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailabeP)
     {
         //create the debuff
         //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
         this.scriptableCardAbility = scriptableCardAbility;
+        infiniteDuration = scriptableCardAbility.infiniteDuration;
 
-        IncreaseTurnsAvailable(turnsAvailabeP);
+        if (infiniteDuration)
+        {
+            ModifyValueAvailable(tempVariable);
+        }
+        else
+        {
+            ModifyTurnsAvailable(turnsAvailabeP);
+        }
+     
 
         //add the target with the debuff
         targetWithDebuff = target;
@@ -38,16 +48,27 @@ public class BuffDebuffClass : MonoBehaviour
 
     }
 
-    public void DecreaseTurnsAvailable(int turnsAvailable)
+
+    public void ModifyTurnsAvailable(int turnsAvailable)
     {
-        this.turnsAvailable -= turnsAvailable;
+        if (infiniteDuration)
+        {
+            return;
+        }
+
+        this.turnsAvailable += turnsAvailable;
         UpdateBuffDebuffUI();
     }
 
-    public void IncreaseTurnsAvailable(int turnsAvailable)
+    public void ModifyValueAvailable(int valueAvailable)
     {
-        this.turnsAvailable += turnsAvailable;
-        UpdateBuffDebuffUI();
+        if (!infiniteDuration)
+        {
+            return;
+        }
+
+        tempVariable += valueAvailable;
+        UpdateBuffDebuffUI_InfiniteDuration();
     }
 
     public void UpdateBuffDebuffUI()
@@ -55,8 +76,19 @@ public class BuffDebuffClass : MonoBehaviour
         gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = turnsAvailable.ToString();
     }
 
+    public void UpdateBuffDebuffUI_InfiniteDuration()
+    {
+        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = tempVariable.ToString();
+    }
+
     public void CheckIfExpired()
     {
+
+        if (infiniteDuration)
+        {
+            return;
+        }
+
         if (turnsAvailable <= 0)
         {
             scriptableCardAbility.OnExpireBuffDebuff(targetWithDebuff);

@@ -3,29 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ScriptableCard;
 
-[CreateAssetMenu(fileName = "Ability_IncreaseAttack", menuName = "CardAbility/Ability_IncreaseAttack")]
-public class Ability_IncreaseAttack : ScriptableCardAbility
+[CreateAssetMenu(fileName = "Ability_IncreaseAttackTimer", menuName = "CardAbility/Ability_IncreaseAttackTimer")]
+public class Ability_IncreaseAttackTimer : ScriptableCardAbility
 {
 
     [Header("UNIQUE")]
-    public int buffLifeTime = 0;
     private GameObject realTarget;
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
-        string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
+
         string description = "";
-        if (DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) < 0)
-        {
-            description = "Decrease Attack by " + Mathf.Abs(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList)) + " for " + buffLifeTime + " turns";
-        }
-        else
-        {
-            description = "Increase Attack by " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " for " + buffLifeTime + " turns";
-        }
 
+        description = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " <color=yellow>Strength</color> ";
+        description += (infiniteDuration) ? "" : " for " + DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList) + " turns";
 
-        string final = keyword + " : " + description;
+        string final =  description;
 
         return final;
     }
@@ -36,12 +29,12 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
     {
         //assign target 
 
-            realTarget = CombatCardHandler.Instance.targetClicked;
+        realTarget = CombatCardHandler.Instance.targetClicked;
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
 
-         ProceedToAbility(cardScript, cardAbilityClass, entity);
+        ProceedToAbility(cardScript, cardAbilityClass, entity);
 
 
 
@@ -50,13 +43,14 @@ public class Ability_IncreaseAttack : ScriptableCardAbility
     private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
+        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList));
 
         //get the buff or debuff to do things
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
 
         //increase the variable that will store the temp attack
         buffDebuffClass.tempVariable += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+
 
         //increase character attack
         EntityClass entityClass = realTarget.GetComponent<EntityClass>();

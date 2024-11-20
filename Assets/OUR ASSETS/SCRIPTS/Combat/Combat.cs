@@ -154,6 +154,10 @@ public class Combat : MonoBehaviour
             return;
         }
 
+        //make mana back to full
+        StartCoroutine(RefillMana());
+
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatEnd);
         combatEnded = true;
 
         //always check characters first, if both lost = game over
@@ -1149,10 +1153,12 @@ public class Combat : MonoBehaviour
 
             if (entityClass.gameObject.tag == "Player")
             {
+                ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath);
                 charactersAlive -= 1;
             }
             else if (entityClass.gameObject.tag == "Enemy")
             {
+                ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath);
                 enemiesAlive -= 1;
             }
 
@@ -1199,13 +1205,63 @@ public class Combat : MonoBehaviour
         return colorToChange;
     }
 
+    public int CalculateEntityShield(int startingShield, GameObject entity, GameObject target)
+    {
+
+        if (entity == null)
+        {
+            return 0; //stops function
+        }
+
+        if (combatEnded)
+        {
+            return startingShield;
+        }
+
+        try
+        {
+            // Get character attack, debuff, and buff percentages
+            int entity_Defence = entity.GetComponent<EntityClass>().defence;
+            float entity_defenceDebuffPerc = entity.GetComponent<EntityClass>().defenceDebuffPerc;
+            float entity_defenceBuffPerc = entity.GetComponent<EntityClass>().defenceBuffPerc;
+
+            // Calculate combined attack
+            int combinedDefence = startingShield + entity_Defence;
+
+            // Apply debuff and buff multiplicatively
+            float finalDefenceMultiplier = 1 + (entity_defenceBuffPerc / 100) - (entity_defenceDebuffPerc / 100);
+
+            // Check if the enemy is vulnerable and apply additional damage multiplier
+            //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
+            //if (isVulnerable)
+            //{
+            //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
+            //}
+
+            // Calculate final damage and clamp to a minimum of zero
+            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedDefence + tempBoostAttack) * finalDefenceMultiplier));
+
+            return finalDmg;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error Calculating Entity Shield : " + " : ERROR MSG : " + ex.Message);
+
+            return 0;
+        }
+    }
 
     public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target)
     {
 
-        if (combatEnded || entity == null)
+        if (  entity == null)
         {
             return 0; //stops function
+        }
+
+        if (combatEnded)
+        {
+            return startingDmg;
         }
 
         try

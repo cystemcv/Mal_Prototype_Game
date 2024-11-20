@@ -75,7 +75,11 @@ public class BuffSystemManager : MonoBehaviour
         //there is already a buff with this id, then add more turns into it
         if (buffDebuffClass != null)
         {
-            buffDebuffClass.IncreaseTurnsAvailable(turnsAvailable);
+            if (!buffDebuffClass.infiniteDuration)
+            {
+                buffDebuffClass.ModifyTurnsAvailable(turnsAvailable);
+            }
+       
         }
         else
         {
@@ -172,7 +176,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
@@ -182,7 +186,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
@@ -192,7 +196,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
@@ -202,7 +206,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
 
@@ -240,7 +244,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
@@ -250,7 +254,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
@@ -260,7 +264,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
@@ -270,7 +274,7 @@ public class BuffSystemManager : MonoBehaviour
                     //if activated then we decrease the turns
                     if (activated)
                     {
-                        buffDebuffClass.DecreaseTurnsAvailable(1);
+                        buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
 
@@ -278,7 +282,7 @@ public class BuffSystemManager : MonoBehaviour
                 //if activated then we decrease the turns
                 if (activated)
                 {
-                    buffDebuffClass.DecreaseTurnsAvailable(1);
+                    buffDebuffClass.ModifyTurnsAvailable(-1);
                 }
 
                 //check if destroyed

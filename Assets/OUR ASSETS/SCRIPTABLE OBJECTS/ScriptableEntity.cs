@@ -26,26 +26,8 @@ public class ScriptableEntity : ScriptableObject
 
     [Header("STATS")]
     //Character Stats - Obviously subject to alteration
-    public int strength = 1;
-    //affects damage with most weapons, weapons and armor that can be used, and possibly... carry weight (does not affect damage for things like crossbows)
-
-    public int awareness = 1;
-    // Could affect initiative checks, spotting tracps, detecting lies etc
-
-    public int fortitude = 1;
-    //Constitution/general health and well being. affects max life, suspectability to poisons and physical hardships, possibly a modifier to damage received
-
-    public int charisma = 1;
-    // General likeability. Affects prices at merchants and every non fighting npc encounter to some degree
-
-    public int inteligence = 1;
-    // Affects magic ability, possible skill and card gains, possibly magic items or cards will have a minimum int attached to them
-
-    public int deftness = 1;
-    // Dexterity. Possibly affects ability to hit. finesse weapon damage including missile weapons. Ability to dodge attacks. Ability to avoid traps
-
-    public int luck = 1;
-    // Affects anything that is not completely skill based. Almost everything to some extent. 
+    public int strength = 0;
+    public int defence = 0;
 
     public int maxHealth;
     public int currHealth; // current health

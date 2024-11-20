@@ -18,12 +18,14 @@ public class Ability_DamageAllTargets : ScriptableCardAbility
     {
 
         int cardDmg = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+
+        int calculatedDmg = (entity == null) ? DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) : Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+        
         int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
         string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
 
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Deal " + multiHitString + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to all enemies";
+        string description = "Deal " + multiHitString + DeckManager.Instance.GetCalculatedValueString(cardDmg, calculatedDmg) + " to all enemies";
         string final = keyword + description;
 
         return final;

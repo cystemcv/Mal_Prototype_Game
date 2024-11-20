@@ -23,6 +23,10 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public int attack = 0;
     public float attackDebuffPerc = 0;
     public float attackBuffPerc = 0;
+    public int defence = 0;
+    public float defenceDebuffPerc = 0;
+    public float defenceBuffPerc = 0;
+
     public int health;
     public int maxHealth;
     public int shield;
@@ -159,6 +163,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         health = scriptableEntity.currHealth;
         maxHealth = scriptableEntity.maxHealth;
         attack = scriptableEntity.strength;
+        defence = scriptableEntity.defence;
 
         summonTurns = scriptableEntity.summonTurns;
 

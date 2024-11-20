@@ -24,6 +24,9 @@ public class ScriptableCardAbility : ScriptableObject
     [Title("MISC")]
     public float originalEntityPosX;
     public ScriptableBuffDebuff scriptableBuffDebuff;
+    public bool infiniteDuration = false;
+
+
     public LTDescr localMoveTween;
 
 

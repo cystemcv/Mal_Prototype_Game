@@ -23,11 +23,11 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
         string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
 
 
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+        int calculatedDmg = (entity == null) ? DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) : Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
 
 
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Deal " + multiHitString + cardDmg + DeckManager.Instance.GetBonusAttackAsDescription(cardDmg, calculatedDmg) + " to an enemy";
+        string description = "Deal " + multiHitString + DeckManager.Instance.GetCalculatedValueString(cardDmg, calculatedDmg) + " to an enemy";
 
         string final = keyword + description;
 
@@ -57,7 +57,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             //get target, if target dies then assign to new target
             if (aIBrain.targetForCard == null)
             {
-                aIBrain. ReAssignTargetForCard();
+                aIBrain.ReAssignTargetForCard();
             }
 
             realTarget = aIBrain.targetForCard;

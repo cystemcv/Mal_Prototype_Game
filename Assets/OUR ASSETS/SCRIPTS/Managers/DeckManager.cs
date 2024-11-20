@@ -673,6 +673,31 @@ public class DeckManager : MonoBehaviour
         }
     }
 
+    public string GetCalculatedValueString(int originalValue, int calculatedValue)
+    {
+
+        int result = calculatedValue - originalValue;
+  
+
+        if (calculatedValue < 0)
+        {
+            calculatedValue = 0;
+        }
+
+        if (result > 0)
+        {
+            return "<color=green>" + calculatedValue + "</color>";
+        }
+        else if (result < 0)
+        {
+            return "<color=red>" + Mathf.Abs(calculatedValue) + "</color>";
+        }
+        else
+        {
+            return calculatedValue.ToString();
+        }
+    }
+
     //public Color32 AssignCardColor()
     //{
     //    Color32 colorToChange;

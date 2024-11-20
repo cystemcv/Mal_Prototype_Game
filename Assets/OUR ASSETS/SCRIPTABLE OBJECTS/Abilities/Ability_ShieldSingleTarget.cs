@@ -15,8 +15,12 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
 
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
+
+        int cardShield = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+        int calculatedShield = (entity == null) ? DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) : Combat.Instance.CalculateEntityShield(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+
         string keyword = base.AbilityDescription(cardScript, cardAbilityClass, entity);
-        string description = "Add " + DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " shield to character";
+        string description = "Add " + DeckManager.Instance.GetCalculatedValueString(cardShield, calculatedShield) + " shield to character";
         string final = keyword + description;
 
         return final;
@@ -48,8 +52,8 @@ public class Ability_ShieldSingleTarget : ScriptableCardAbility
         base.SpawnEffectPrefab(realTarget, cardAbilityClass);
 
 
-
-        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), false, SystemManager.AdjustNumberModes.SHIELD);
+        int calculatedShield = (entity == null) ? DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) : Combat.Instance.CalculateEntityShield(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, null);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD);
 
 
     }
