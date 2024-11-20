@@ -28,6 +28,8 @@ public class Artifacts_AngelicShield : ScriptableItem
         //decrease it
         shieldAdded -= shieldDescrease;
 
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ") Next turn shield +" + shieldAdded, false);
+
     }
 
     public override void Initialiaze(ClassItem classItem)

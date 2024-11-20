@@ -181,6 +181,8 @@ public class Combat : MonoBehaviour
             StaticData.staticCharacter.maxHealth = entityClass.maxHealth;
             StaticData.staticCharacter.currHealth = entityClass.health;
 
+            StaticData.lootItemList.Clear();
+
             CalculateLootRewards();
 
             //win
@@ -508,7 +510,7 @@ public class Combat : MonoBehaviour
         }
 
 
-
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
         UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
 

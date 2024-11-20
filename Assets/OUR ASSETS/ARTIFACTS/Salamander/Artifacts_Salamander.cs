@@ -34,6 +34,8 @@ public class Artifacts_Salamander : ScriptableItem
             multiHits = 1;
         }
 
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
@@ -45,6 +47,9 @@ public class Artifacts_Salamander : ScriptableItem
     // Coroutine to handle multiple hits with delay
     private IEnumerator ExecuteMultiHits()
     {
+
+
+
         for (int i = 0; i < multiHits; i++)
         {
             // Use ability on each hit

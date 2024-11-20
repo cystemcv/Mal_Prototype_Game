@@ -34,33 +34,12 @@ public class Ability_IncreaseDefenceInfinite : ScriptableCardAbility
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
 
-         ProceedToAbility(cardScript, cardAbilityClass, entity);
 
-
-
-    }
-
-    private void ProceedToAbility(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
-    {
-
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3 );
-
-        //get the buff or debuff to do things
-        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
-
-        //increase the variable that will store the temp attack
-        buffDebuffClass.tempVariable += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-        buffDebuffClass.ModifyValueAvailable(0); //updates the ui
-
-        //increase character attack
-        EntityClass entityClass = realTarget.GetComponent<EntityClass>();
+        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList));
         entityClass.defence += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
-
-
-
-
-
     }
+
+
 
     //debuff
 

@@ -47,7 +47,7 @@ public class BuffSystemManager : MonoBehaviour
     //    else {
 
     //        //instantiate the gameobject prefab
-        
+
     //        GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
 
     //        buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
@@ -66,6 +66,29 @@ public class BuffSystemManager : MonoBehaviour
     //    }
 
     //}
+
+    public EntityClass AddBuffDebuff(GameObject target, ScriptableCardAbility scriptableCardAbility, int buffDebuffValue)
+    {
+
+        BuffSystemManager.Instance.AddBuffDebuffToTarget(scriptableCardAbility, target, buffDebuffValue);
+
+        //get the buff or debuff to do things
+        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
+
+        //increase the variable that will store
+        buffDebuffClass.tempVariable += buffDebuffValue;
+
+        if (scriptableCardAbility.infiniteDuration)
+        {
+            buffDebuffClass.ModifyValueAvailable(0); //updates the ui
+        }
+
+        //get the buffed class
+        EntityClass entityClass = target.GetComponent<EntityClass>();
+
+        return entityClass;
+
+    }
 
     public void AddBuffDebuffToTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailable)
     {

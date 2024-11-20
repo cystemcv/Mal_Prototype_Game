@@ -24,6 +24,8 @@ public class Artifacts_QuickSnack : ScriptableItem
 
         triggered = true;
 
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
         Combat.Instance.AdjustTargetHealth(null, character, hpToHeal, false, SystemManager.AdjustNumberModes.HEAL);
@@ -33,6 +35,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
     public override void Expired(ClassItem classItem)
     {
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired! (" + this.itemDescription + ")", true);
         triggered = false;
     }
 

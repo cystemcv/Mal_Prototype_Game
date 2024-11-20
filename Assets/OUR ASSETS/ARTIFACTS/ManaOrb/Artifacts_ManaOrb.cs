@@ -13,6 +13,9 @@ public class Artifacts_ManaOrb : ScriptableItem
 
     public override void Activate(ClassItem classItem)
     {
+
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+
         Combat.Instance.manaMaxAvailable += 1;
     }
 
@@ -26,6 +29,7 @@ public class Artifacts_ManaOrb : ScriptableItem
 
         if (Combat.Instance.turns == expireOnTurn)
         {
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired! (" + this.itemDescription + ")", true);
             Combat.Instance.manaMaxAvailable -= 1;
             Combat.Instance.ManaAvailable = 0;
         }

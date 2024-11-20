@@ -19,6 +19,7 @@ public class PickPocket : ScriptableItem
         if (chance <= 100)
         {
             gold = 10 * classItem.level;
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ") Extra +" + gold, false);
         }
         classItem.tempValue = gold;
 

@@ -15,6 +15,8 @@ public class Artifacts_CounterGloves : ScriptableItem
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
         character.GetComponent<EntityClass>().counterDamage += dmgDone;
+
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
     }
 
 

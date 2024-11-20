@@ -468,4 +468,41 @@ public class ItemManager : MonoBehaviour
         UIManager.Instance.inventoryGO.SetActive(false);
     }
 
+    public void AddItemOnActivateOrder(ScriptableItem scriptableItem, string toolTip, bool failed)
+    {
+        GameObject parentObj = UIManager.Instance.itemActivateOrderPanel;
+
+        // Safeguard: Ensure the parent is not null
+        if (parentObj == null)
+        {
+            Debug.LogWarning("Parent object is null!");
+            return;
+        }
+
+        // Destroy excess children first
+        while (parentObj.transform.childCount > 22)
+        {
+            // Destroy the oldest child
+            DestroyImmediate(parentObj.transform.GetChild(0).gameObject);
+        }
+
+        // Instantiate the new item
+        GameObject newItem = Instantiate(UIManager.Instance.ItemActivateOrderPrefab, parentObj.transform);
+        newItem.transform.localScale = Vector3.one;
+
+        // Configure the item
+        newItem.transform.GetChild(0).gameObject.SetActive(true);
+        newItem.transform.GetChild(0).GetComponent<Image>().sprite = scriptableItem.Icon;
+
+        // Add the tooltip
+        newItem.GetComponent<TooltipContent>().description = toolTip;
+
+        // Set color based on success or failure
+        Color itemColor = failed
+            ? SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed)
+            : SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
+        newItem.GetComponent<Image>().color = itemColor;
+    }
+
+
 }

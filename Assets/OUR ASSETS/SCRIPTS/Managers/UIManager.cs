@@ -25,6 +25,10 @@ public class UIManager : MonoBehaviour
 
     public GameObject ChooseGroupUI;
 
+    //item activation ordr
+    public GameObject itemActivateOrderPanel;
+    public GameObject ItemActivateOrderPrefab;
+
 
     [Header("SETTINGS")]
     //modal stuff
@@ -35,6 +39,22 @@ public class UIManager : MonoBehaviour
     public GameObject notificationParent;
     public GameObject notificationPb;
 
+
+
+    public void ToggleActivateOrderVisibility()
+    {
+        // Toggle the active state of the parent of itemActivateOrderPanel
+        Transform parent = itemActivateOrderPanel.transform.parent;
+        if (parent != null)
+        {
+            bool isActive = parent.gameObject.activeSelf;
+            parent.gameObject.SetActive(!isActive);
+        }
+        else
+        {
+            Debug.LogWarning("ItemActivateOrderPanel has no parent!");
+        }
+    }
 
 
     //public delegate void OnCurrentModeChange();
