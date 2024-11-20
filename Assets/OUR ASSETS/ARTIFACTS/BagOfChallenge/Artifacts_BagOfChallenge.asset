@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15abf3cd64e931d46842d286deeee9ed, type: 3}
+  m_Name: Artifacts_BagOfChallenge
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: e739fb51a90f93b44bf3481be1db996a, type: 3}
+  itemName: Bag Of Challenge
+  itemCategory: 3
+  activationType: 2
+  initializationType: 4
+  expiredType: 3
+  itemDescription: If no card is played on the first turn, there is a 25% chance
+    to either get an extra loot of either a Card,Companion Upgrade or Artifact
+  maxLevel: 1
+  scriptableItems:
+  - {fileID: 11400000, guid: 07613f5b85e38ff48a1d2df9e01c9fcc, type: 2}
+  - {fileID: 11400000, guid: c21ad052952b18149ba1d0badd7a17ec, type: 2}
+  - {fileID: 11400000, guid: 377ccf79b6fbef648aeee614be79d40f, type: 2}

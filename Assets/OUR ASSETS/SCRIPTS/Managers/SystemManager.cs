@@ -73,7 +73,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM,RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
 
-    public enum ActivationType { None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd}
+    public enum ActivationType { None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd,
+        OnNonCombatRoom
+    }
 
     //end of enums
 

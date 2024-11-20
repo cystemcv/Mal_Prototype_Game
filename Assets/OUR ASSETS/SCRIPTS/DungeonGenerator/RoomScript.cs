@@ -35,6 +35,9 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else
         {
+
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom);
+
             CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
 
