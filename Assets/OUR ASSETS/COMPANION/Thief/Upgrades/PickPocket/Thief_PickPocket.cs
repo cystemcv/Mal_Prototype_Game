@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PickPocket", menuName = "Item/CompanionPassives/PickPocket")]
-public class PickPocket : ScriptableItem
+[CreateAssetMenu(fileName = "Thief_PickPocket", menuName = "Item/CompanionPassives/Thief_PickPocket")]
+public class Thief_PickPocket : ScriptableItem
 {
 
     public ScriptableItem goldSO;
+    public int chancePerc = 100;
+    public int goldGained = 5;
 
     public override void Activate(ClassItem classItem)
     {
@@ -16,9 +18,9 @@ public class PickPocket : ScriptableItem
 
         int gold = 0;
 
-        if (chance <= 100)
+        if (chance <= chancePerc)
         {
-            gold = 10 * classItem.level;
+            gold = goldGained * classItem.level;
             ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ") Extra +" + gold, false);
         }
         classItem.tempValue = gold;

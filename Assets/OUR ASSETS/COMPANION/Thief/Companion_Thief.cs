@@ -23,12 +23,21 @@ public class Companion_Thief : ScriptableCompanion
     public override void OnabilityActivate()
     {
 
-        //get the copy card
+        base.OnabilityActivate();
 
+        GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
+        if (!companionBtn.GetComponent<UI_CombatButton>().activatedButton)
+        {
+            return;
+        }
+
+        
+        companionBtn.GetComponent<UI_CombatButton>().activatedButton = false;
 
         //add card on hand
-
         DeckManager.Instance.AddScriptableCardToHand(scriptableCard);
+
+
 
 
     }

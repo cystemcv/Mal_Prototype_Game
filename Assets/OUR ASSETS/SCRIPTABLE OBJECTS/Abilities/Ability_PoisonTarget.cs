@@ -33,7 +33,7 @@ public class Ability_PoisonTarget : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
+        //BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, 3);
 
 
     }

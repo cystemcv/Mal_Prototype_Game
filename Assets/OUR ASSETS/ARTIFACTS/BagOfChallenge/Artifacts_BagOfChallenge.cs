@@ -30,7 +30,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
             //get random item
             int randomItem = Random.Range(0, scriptableItems.Count);
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ") Extra " + scriptableItems[randomItem].itemName, false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Extra " + scriptableItems[randomItem].itemName, false);
 
             // Default behavior if needed
             ClassItem classItemTemp = new ClassItem(scriptableItems[randomItem], classItem.tempValue);
@@ -55,7 +55,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
         if(Combat.Instance.turns == 1)
         {
             playedCard = true;
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed! (" + this.itemDescription + ") No Extra Items!" , false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed! No Extra Items!" , true);
         }
       
     }

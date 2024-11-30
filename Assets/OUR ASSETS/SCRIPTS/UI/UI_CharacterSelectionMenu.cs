@@ -167,6 +167,9 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         //build the deck for the scriptable deck
         DeckManager.Instance.BuildStartingDeck();
 
+        //initialize other important things
+        ItemManager.Instance.GameStartItems();
+
         //SceneManager.LoadScene("scene_Adventure");
         SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
 

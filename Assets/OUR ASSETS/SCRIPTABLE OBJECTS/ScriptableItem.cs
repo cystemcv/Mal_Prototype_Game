@@ -40,5 +40,11 @@ public class ScriptableItem : ScriptableObject
 
     }
 
+    public virtual void GameStart()
+    {
+
+    }
+
+
 
 }

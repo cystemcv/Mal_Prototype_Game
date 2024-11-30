@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
+  m_Name: Card_ThunderCloud
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
+  cardArt: {fileID: 21300000, guid: 200f9a9e762301047ab22000fc3d3692, type: 3}
+  cardName: Thunder Cloud
+  mainClass: 6
+  cardType: 1
+  cardRarity: 2
+  targetEntityTagList: 0100000003000000
+  primaryManaCost: 1
+  cardDesc: 
+  cardFlavor: 
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: 35cb2cfbb5056f34f85be29b30ac38e3, type: 2}
+    waitForAbility: 0.6
+    abilityEffect: {fileID: 7590789933968546338, guid: 134cd100b7271044189bfc7b3fe29e24, type: 3}
+    abilityEffectLifetime: 0.6
+    abilityEffectYaxis: 1
+    entityAnimation: 2
+    entitySound: 5
+    abilityIntValueList: 04000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
+    summonList: []
+  unlockable: 0
+  cardConditionClass: []

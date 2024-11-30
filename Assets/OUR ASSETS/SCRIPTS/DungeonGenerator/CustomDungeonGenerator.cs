@@ -179,7 +179,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         displayCharacterCard.transform.Find("CardText").GetComponent<TMP_Text>().text = StaticData.staticCharacter.mainClass.ToString();
 
-        displayCharacterCard.transform.Find("Health").Find("TEXT").GetComponent<TMP_Text>().text = StaticData.staticCharacter.currHealth + " / " + StaticData.staticCharacter.maxHealth;
+        displayCharacterCard.transform.Find("Health").Find("TEXT").GetComponent<TMP_Text>().text = StaticData.staticCharacter.currHealth + "/" + StaticData.staticCharacter.maxHealth;
 
         displayCharacterCard.transform.Find("EntityImage").GetComponent<Image>().sprite = StaticData.staticCharacter.entityImage;
 

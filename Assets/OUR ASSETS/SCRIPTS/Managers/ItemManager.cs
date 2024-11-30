@@ -236,6 +236,21 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    public void GameStartItems()
+    {
+        foreach (var scriptableItem in ItemManager.Instance.artifactPoolList)
+        {
+                scriptableItem.GameStart();
+            
+        }
+
+        foreach (var scriptableItem in StaticData.staticScriptableCompanion.companionItemList)
+        {
+            scriptableItem.GameStart();
+
+        }
+    }
+
     public ClassItem SOItemToClass(ScriptableItem scriptableItem)
     {
 

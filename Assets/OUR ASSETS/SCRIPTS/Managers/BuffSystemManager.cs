@@ -70,18 +70,34 @@ public class BuffSystemManager : MonoBehaviour
     public EntityClass AddBuffDebuff(GameObject target, ScriptableCardAbility scriptableCardAbility, int buffDebuffValue)
     {
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(scriptableCardAbility, target, buffDebuffValue);
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
 
-        //get the buff or debuff to do things
-        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
-
-        //increase the variable that will store
-        buffDebuffClass.tempVariable += buffDebuffValue;
-
-        if (scriptableCardAbility.infiniteDuration)
+        //if there is no buff then create it to the target
+        if (buffDebuffClass == null)
         {
-            buffDebuffClass.ModifyValueAvailable(0); //updates the ui
+            //if not then add this buff
+            //create the gameobject and add it
+            GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
+            buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+            buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+
+            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility, target, buffDebuffValue);
+
         }
+
+        //increase the value of the buff
+        if (!buffDebuffClass.infiniteDuration)
+        {
+            buffDebuffClass.ModifyTurnsAvailable(buffDebuffValue);
+        }
+        else if (buffDebuffClass.infiniteDuration)
+        {
+            buffDebuffClass.ModifyValueAvailable(buffDebuffValue);
+        }
+
+
+        //buffDebuffClass.tempVariable += buffDebuffValue;
 
         //get the buffed class
         EntityClass entityClass = target.GetComponent<EntityClass>();
@@ -90,57 +106,49 @@ public class BuffSystemManager : MonoBehaviour
 
     }
 
-    public void AddBuffDebuffToTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailable)
-    {
-        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
-        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
+    //public void AddBuffDebuffToTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int variableValue)
+    //{
+    //    GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+    //    BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
 
-        //there is already a buff with this id, then add more turns into it
-        if (buffDebuffClass != null)
-        {
-            if (!buffDebuffClass.infiniteDuration)
-            {
-                buffDebuffClass.ModifyTurnsAvailable(turnsAvailable);
-            }
+    //    //there is already a buff with this id, then add more turns into it
+    //    if (buffDebuffClass != null)
+    //    {
+    //        if (!buffDebuffClass.infiniteDuration)
+    //        {
+    //            buffDebuffClass.ModifyTurnsAvailable(variableValue);
+    //        }
+    //        else if (buffDebuffClass.infiniteDuration)
+    //        {
+    //            buffDebuffClass.ModifyValueAvailable(variableValue);
+    //        }
        
-        }
-        else
-        {
-            //if not then add this buff
-            //create the gameobject and add it
-            GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
-            buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
-            buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+    //    }
+    //    else
+    //    {
+    //        //if not then add this buff
+    //        //create the gameobject and add it
+    //        GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
+    //        buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+    //        buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
-            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility,target, turnsAvailable);
+    //        buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility,target, variableValue);
 
-            ////create the debuff
-            //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
-            //buffDebuffClass.scriptableCardAbility = scriptableCardAbility;
-
-            //buffDebuffClass.IncreaseTurnsAvailable(turnsAvailable);
-
-            ////add the target with the debuff
-            //buffDebuffClass.targetWithDebuff = target;
-
-            ////add icon
-            //buffdebuffPrefabLocal.GetComponent<Image>().sprite = buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.icon;
-            //if (buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.isBuff)
-            //{
-
-            //}
-            //else
-            //{
-
-            //}
-            //buffdebuffPrefabLocal.GetComponent<Image>().color = buffDebuffClass.scriptableCardAbility.scriptableBuffDebuff.isBuff;
+    //        if (!buffDebuffClass.infiniteDuration)
+    //        {
+    //            buffDebuffClass.ModifyTurnsAvailable(variableValue);
+    //        }
+    //        else if (buffDebuffClass.infiniteDuration)
+    //        {
+    //            buffDebuffClass.ModifyValueAvailable(variableValue);
+    //        }
 
 
-        }
+    //    }
 
 
 
-    }
+    //}
 
     public BuffDebuffClass GetBuffDebuffClassFromTarget(GameObject target, string buffDebuffNameID)
     {
@@ -159,6 +167,21 @@ public class BuffSystemManager : MonoBehaviour
         }
 
         return buffDebuffClass;
+    }
+
+    public void DecreaseValueTargetBuffDebuff(GameObject target, string buffDebuffNameID, int valueToDecrease)
+    {
+
+        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, buffDebuffNameID);
+
+        buffDebuffClass.ModifyValueAvailable(valueToDecrease);
+
+        //then destroy
+        if (buffDebuffClass.tempVariable <= 0)
+        {
+            Destroy(buffDebuffClass.gameObject);
+        }
+
     }
 
     public List<BuffDebuffClass> GetAllBuffDebuffFromTarget(GameObject target)

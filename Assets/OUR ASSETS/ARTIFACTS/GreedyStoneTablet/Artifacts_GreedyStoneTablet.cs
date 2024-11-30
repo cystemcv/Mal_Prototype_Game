@@ -25,7 +25,7 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
         if (cardsPlayed >= maxCardsToPlay)
         {
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
 
             float waitAbilitiesTime = 0f;
 

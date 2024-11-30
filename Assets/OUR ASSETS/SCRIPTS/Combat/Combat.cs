@@ -49,6 +49,9 @@ public class Combat : MonoBehaviour
 
     GameObject battleground;
 
+    public int reduceCompanionStartingCd = 0;
+    public int reduceCompanionAbilityCd = 0;
+
     [Header("GLOBAL VARIABLES")]
     public int manaMaxAvailable = 3;
     public int manaAvailable = 0;
@@ -67,6 +70,22 @@ public class Combat : MonoBehaviour
                 onManaChange();
         }
     }
+
+
+    public int Turns
+    {
+        get => turns;
+        set
+        {
+            if (turns != value)
+            {
+                turns = value;
+                TurnsChanged?.Invoke(turns); // Trigger the event
+            }
+        }
+    }
+
+    public event System.Action<int> TurnsChanged;
 
     private void OnEnable()
     {
@@ -266,7 +285,7 @@ public class Combat : MonoBehaviour
         //Debug.Log("Test dsck"  + DeckManager.Instance.scriptableDeck.mainDeck[0].scriptableCard.cardName);
 
         //reset turns
-        turns = 0;
+        Turns = 0;
 
         //play music
         AudioManager.Instance.PlayMusic("Combat_1");
@@ -309,6 +328,8 @@ public class Combat : MonoBehaviour
         conditionsEnabled = true;
 
         ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart);
+
+        StaticData.staticScriptableCompanion.InitializeButton();
 
         //start the player
         yield return WaitPlayerTurns();
@@ -393,7 +414,7 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
         //increase turn;
-        turns += 1;
+        Turns += 1;
 
         yield return RearrangeFormation(characterFormation);
 
@@ -649,7 +670,7 @@ public class Combat : MonoBehaviour
         }
         else
         {
-            entity.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject.SetActive(false);
+            //entity.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject.SetActive(false);
         }
 
         //assign the entity to formation
@@ -989,7 +1010,7 @@ public class Combat : MonoBehaviour
                 }
 
                 //update text on hp
-                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
+                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
 
                 //adjust the hp bar
                 UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
@@ -1062,7 +1083,7 @@ public class Combat : MonoBehaviour
                 }
 
                 //update text on hp
-                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
+                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
 
                 //adjust the hp bar
                 UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
@@ -1087,7 +1108,7 @@ public class Combat : MonoBehaviour
             }
 
             //update text on hp
-            entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + " / " + entityClass.maxHealth;
+            entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
 
             //adjust the hp bar
             UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
@@ -1130,6 +1151,9 @@ public class Combat : MonoBehaviour
         numberOnScreenPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = adjustNumber.ToString();
 
         Destroy(numberOnScreenPrefab, 1f);
+
+
+        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit);
 
         //if the target reach to 0
         CheckIfEntityIsDead(entityClass);

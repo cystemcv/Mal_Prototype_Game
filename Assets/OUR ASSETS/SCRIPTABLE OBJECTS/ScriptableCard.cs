@@ -52,6 +52,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         [Title("ABILITY VISUALS")]
         public GameObject abilityEffect;
         public float abilityEffectLifetime = 0.2f;
+        public float abilityEffectYaxis = 0f;
         public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
         public SystemManager.EntitySound entitySound = SystemManager.EntitySound.Generic;
         [Title("ABILITY VALUES")]
@@ -61,6 +62,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         public List<float> abilityFloatValueList;
         [Title("SUMMONS")]
         public List<ScriptableEntity> summonList;
+        
 
     }
 

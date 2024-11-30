@@ -34,7 +34,7 @@ public class Artifacts_Salamander : ScriptableItem
             multiHits = 1;
         }
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
 
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0

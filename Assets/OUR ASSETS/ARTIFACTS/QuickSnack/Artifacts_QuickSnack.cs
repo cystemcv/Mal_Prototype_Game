@@ -24,7 +24,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
         triggered = true;
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
@@ -35,7 +35,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
     public override void Expired(ClassItem classItem)
     {
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired! (" + this.itemDescription + ")", true);
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired!", true);
         triggered = false;
     }
 

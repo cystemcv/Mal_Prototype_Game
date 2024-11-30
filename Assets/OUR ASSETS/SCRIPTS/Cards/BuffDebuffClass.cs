@@ -22,29 +22,13 @@ public class BuffDebuffClass : MonoBehaviour
         this.scriptableCardAbility = scriptableCardAbility;
         infiniteDuration = scriptableCardAbility.infiniteDuration;
 
-        if (infiniteDuration)
-        {
-            ModifyValueAvailable(tempVariable);
-        }
-        else
-        {
-            ModifyTurnsAvailable(turnsAvailabeP);
-        }
-     
 
         //add the target with the debuff
         targetWithDebuff = target;
 
         //add icon
-        this.gameObject.GetComponent<Image>().sprite = scriptableCardAbility.scriptableBuffDebuff.icon;
-        if (scriptableCardAbility.scriptableBuffDebuff.isBuff == true)
-        {
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-        }
-        else
-        {
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-        }
+        this.gameObject.transform.Find("Icon").GetComponent<Image>().sprite = scriptableCardAbility.scriptableBuffDebuff.icon;
+
 
     }
 

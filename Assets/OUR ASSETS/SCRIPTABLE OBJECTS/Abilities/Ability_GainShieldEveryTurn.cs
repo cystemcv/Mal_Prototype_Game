@@ -44,11 +44,11 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
     private void ProceedToAbility(CardAbilityClass cardAbilityClass)
     {
 
-        BuffSystemManager.Instance.AddBuffDebuffToTarget(this, realTarget, buffLifeTime);
+        //BuffSystemManager.Instance.AddBuffDebuff(this, realTarget, buffLifeTime);
 
-        //get the buff or debuff to do things
-        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
-        buffDebuffClass.tempVariable = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+        ////get the buff or debuff to do things
+        //BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, this.scriptableBuffDebuff.nameID);
+        //buffDebuffClass.tempVariable = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
     }
 

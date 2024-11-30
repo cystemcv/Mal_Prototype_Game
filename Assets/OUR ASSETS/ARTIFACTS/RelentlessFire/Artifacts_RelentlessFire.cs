@@ -29,12 +29,17 @@ public class Artifacts_RelentlessFire : ScriptableItem
 
     public override void Initialiaze(ClassItem classItem)
     {
-        if (relentless >= maxRelentless)
+        if (relentless == 0)
         {
             return;
         }
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ") Relentless : " + relentless , false);
+        if (relentless > maxRelentless)
+        {
+            relentless = maxRelentless;
+        }
+
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Relentless : " + relentless , false);
 
         GameObject target = GameObject.FindGameObjectWithTag("Player");
 
@@ -51,8 +56,12 @@ public class Artifacts_RelentlessFire : ScriptableItem
 
     public override void Expired(ClassItem classItem)
     {
-        relentless = 0;
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " All stacks lost! (" + this.itemDescription + ") Relentless : " + relentless, true);
+        if (relentless > 0)
+        {
+            relentless = 0;
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " All stacks lost! Relentless : " + relentless, true);
+        }
+   
 
     }
 

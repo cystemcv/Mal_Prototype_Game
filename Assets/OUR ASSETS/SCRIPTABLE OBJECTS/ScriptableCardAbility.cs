@@ -177,6 +177,10 @@ public class ScriptableCardAbility : ScriptableObject
         GameObject abilityEffect = Instantiate(cardAbilityClass.abilityEffect, target.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
         abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
 
+        abilityEffect.transform.position = new Vector3(abilityEffect.transform.position.x, 
+            abilityEffect.transform.position.y + cardAbilityClass.abilityEffectYaxis,
+            abilityEffect.transform.position.z);
+
         //if the target is player then we wanna rotate 
         if (target.tag == "Player")
         {

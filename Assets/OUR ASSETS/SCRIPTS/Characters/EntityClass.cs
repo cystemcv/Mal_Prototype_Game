@@ -150,6 +150,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public IEnumerator InititializeEntity()
     {
+     
+
 
         if (this.gameObject.tag == "PlayerSummon" || this.gameObject.tag == "EnemySummon")
         {
@@ -199,7 +201,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
         //update based on enemy hp and max hp
-        healthText.GetComponent<TMP_Text>().text = health + " / " + maxHealth;
+        healthText.GetComponent<TMP_Text>().text = health + "/" + maxHealth;
 
         //adjust the hp bar
         slider.value = (float)health / (float)maxHealth;

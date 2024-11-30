@@ -28,7 +28,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
 
             if (combo > 0)
             {
-                ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed Combo! (" + this.itemDescription + ")", true);
+                ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed Combo!", true);
             }
 
             //reset combo
@@ -40,7 +40,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
         {
 
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")",false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!",false);
 
             GameObject target = GameObject.FindGameObjectWithTag("Player");
 

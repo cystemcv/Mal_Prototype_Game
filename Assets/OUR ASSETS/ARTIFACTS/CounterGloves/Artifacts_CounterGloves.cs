@@ -16,7 +16,7 @@ public class Artifacts_CounterGloves : ScriptableItem
 
         character.GetComponent<EntityClass>().counterDamage += dmgDone;
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! (" + this.itemDescription + ")", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
     }
 
 

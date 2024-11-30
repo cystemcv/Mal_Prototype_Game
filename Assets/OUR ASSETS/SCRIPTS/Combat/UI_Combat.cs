@@ -52,6 +52,7 @@ public class UI_Combat : MonoBehaviour
     public GameObject CARDPLAYED;
 
     public GameObject endTurnButton;
+    public GameObject companionAbilityButton;
 
     private void Awake()
     {
