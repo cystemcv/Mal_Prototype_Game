@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6911f5d660af18f4fb4d5a4c581f0eff, type: 3}
+  m_Name: Card_Righteous Energy
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableCard
+  cardArt: {fileID: 21300000, guid: c11b6310dcf13b94182b7717f58a7649, type: 3}
+  cardName: Righteous Energy
+  mainClass: 6
+  cardType: 2
+  cardRarity: 2
+  targetEntityTagList: 00000000
+  primaryManaCost: 1
+  cardDesc: 
+  cardFlavor: 
+  cardAbilityClass:
+  - scriptableCardAbility: {fileID: 11400000, guid: 38a00010653874e46a1296e26752137a, type: 2}
+    waitForAbility: 0.2
+    abilityEffect: {fileID: 0}
+    abilityEffectLifetime: 0.2
+    abilityEffectYaxis: 0
+    entityAnimation: 2
+    entitySound: 4
+    abilityIntValueList: 02000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
+    summonList: []
+  - scriptableCardAbility: {fileID: 11400000, guid: 4a78c802b13e7d64bb5a6e48912402c1, type: 2}
+    waitForAbility: 0.2
+    abilityEffect: {fileID: 0}
+    abilityEffectLifetime: 0.2
+    abilityEffectYaxis: 0
+    entityAnimation: 2
+    entitySound: 4
+    abilityIntValueList: 02000000
+    abilityStringValueList: []
+    abilityBoolValueList: 
+    abilityFloatValueList: []
+    summonList: []
+  unlockable: 0
+  cardConditionClass: []

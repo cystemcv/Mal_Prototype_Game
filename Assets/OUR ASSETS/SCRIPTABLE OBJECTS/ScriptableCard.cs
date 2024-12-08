@@ -13,7 +13,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [HideLabel, PreviewField(80), HorizontalGroup("CardHeader", 80)]
     public Sprite cardArt; // Art to be displayed and attached to the card
 
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"),GUIColor("orange")]
+    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public string cardName;
     [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.MainClass mainClass = SystemManager.MainClass.MONSTER;
@@ -29,11 +29,20 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [Range(0, 9)]
     public int primaryManaCost; // Amount of mana of the primary type to spend to play the card
     public string cardDesc; // Description of what the card does
+
+    [Title("VFX")]
+    public GameObject abilityEffect;
+    public float abilityEffectLifetime = 0.6f;
+    public float abilityEffectYaxis = 0f;
+
+    [Title("CARD FLAVOR")]
+    public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
+    public AudioClip cardSoundEffect;
     public string cardFlavor; // Flavor text- maybe not needed
 
 
     [FoldoutGroup("ABILITIES")]
-    [RequiredListLength(0,3)]
+    [RequiredListLength(0, 3)]
     public List<CardAbilityClass> cardAbilityClass;
 
 
@@ -62,7 +71,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         public List<float> abilityFloatValueList;
         [Title("SUMMONS")]
         public List<ScriptableEntity> summonList;
-        
+
 
     }
 
@@ -82,6 +91,26 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         public List<float> abilityFloatValueList;
     }
 
+
+    public virtual string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    {
+        return cardDesc;
+    }
+
+    public virtual void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    {
+        CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
+    }
+
+    public virtual void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    {
+        CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
+    }
+
+    public virtual void OnCardCondition(CardScript cardScript, GameObject entityUsedCard)
+    {
+
+    }
 
 
 }

@@ -26,7 +26,27 @@ public class CharacterManager : MonoBehaviour
     }
 
 
+    public void ProceedWithAnimationAndSound(GameObject entityPlayAnimation, ScriptableCard scriptableCard)
+    {
 
-   
+        float m_CurrentClipLength = 0;
+        string m_ClipName = "";
+
+        Animator entityAnimator = entityPlayAnimation.transform.Find("model").GetComponent<Animator>();
+
+        if (entityAnimator != null)
+        {
+            entityAnimator.SetTrigger(scriptableCard.entityAnimation.ToString());
+        }
+
+
+        // Play the sound
+        if (scriptableCard.cardSoundEffect != null)
+        {
+            AudioManager.Instance.cardSource.PlayOneShot(scriptableCard.cardSoundEffect);
+        }
+       
+    }
+
 
 }

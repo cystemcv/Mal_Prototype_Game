@@ -97,4 +97,88 @@ public class AIManager : MonoBehaviour
 
     }
 
+    public GameObject GetRandomTarget(GameObject entityUsedCard)
+    {
+
+        List<GameObject> targetsFound = new List<GameObject>();
+
+        //get all targets
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+        }
+        else
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+        }
+
+        int randomTarget = UnityEngine.Random.Range(0, targetsFound.Count);
+
+        //then loop
+        GameObject realTarget = targetsFound[randomTarget];
+        return realTarget;
+
+    }
+
+    public GameObject GetRandomAlly(GameObject entityUsedCard)
+    {
+
+        List<GameObject> targetsFound = new List<GameObject>();
+
+        //get all targets
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+        }
+        else
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+        }
+
+        int randomTarget = UnityEngine.Random.Range(0, targetsFound.Count);
+
+        //then loop
+        GameObject realTarget = targetsFound[randomTarget];
+        return realTarget;
+
+    }
+
+    public List<GameObject> GetAllTargets(GameObject entityUsedCard)
+    {
+
+        List<GameObject> targetsFound = new List<GameObject>();
+
+        //get all targets
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+        }
+        else
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+        }
+
+        return targetsFound;
+
+    }
+
+    public List<GameObject> GetAllAllies(GameObject entityUsedCard)
+    {
+
+        List<GameObject> targetsFound = new List<GameObject>();
+
+        //get all targets
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+        }
+        else
+        {
+            targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+        }
+
+        return targetsFound;
+
+    }
+
 }

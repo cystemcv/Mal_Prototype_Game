@@ -67,7 +67,7 @@ public class BuffSystemManager : MonoBehaviour
 
     //}
 
-    public EntityClass AddBuffDebuff(GameObject target, ScriptableCardAbility scriptableCardAbility, int buffDebuffValue)
+    public EntityClass AddBuffDebuff(GameObject target, ScriptableCardAbility scriptableCardAbility, int buffDebuffValue, int turnsValue)
     {
 
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
@@ -82,14 +82,19 @@ public class BuffSystemManager : MonoBehaviour
             buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
             buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
-            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility, target, buffDebuffValue);
+            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility, target, buffDebuffValue, turnsValue);
 
+            //first time it gets created it should not increase the stacks just the turns
+            if (!buffDebuffClass.infiniteDuration)
+            {
+                buffDebuffClass.tempVariable = buffDebuffValue;
+            }
         }
 
         //increase the value of the buff
         if (!buffDebuffClass.infiniteDuration)
         {
-            buffDebuffClass.ModifyTurnsAvailable(buffDebuffValue);
+            buffDebuffClass.ModifyTurnsAvailable(turnsValue);
         }
         else if (buffDebuffClass.infiniteDuration)
         {

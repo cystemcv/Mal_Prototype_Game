@@ -105,6 +105,7 @@
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\Interactive\InteractiveSquishSSU.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamagePierceSingleTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableEntity.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_Shock.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\ResolutionMonitor.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_CopyEnemyCard.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\Transitions\Transitions.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Utility\WaterUtility.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowManagerButton.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\Materials.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddDebuffToTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_ChooseACardFromList.cs" />
     <Compile Include="Assets\OUR ASSETS\ENEMIES\AIBrain.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Modal Window\ModalWindowManager.cs" />
@@ -481,6 +483,7 @@
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathSplinePerformance.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\DungeonGenerator\RoomScript.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\TileRule.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddBuffDebuff.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Tooltip\TooltipContent.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Combat\CombatCardHandler.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerCustom.cs" />
@@ -532,9 +535,16 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\BuffDebuffClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddDebuffToTarget.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddWet.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_Shock.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableEvent.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableButtonEvent.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddBuffDebuffIfEmpty.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget_BasedOnBuff.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Angelic Block\Angel_Card_AngelicBlock.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Multi Slash\Angel_Card_MultiSlash.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Blind Attack\Angel_Card_BlindAttack.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Holy Slash\Angel_Card_HolySlash.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Hit\Monster_Card_Hit.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Flame\Angel_Card_RighteousFlame.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />

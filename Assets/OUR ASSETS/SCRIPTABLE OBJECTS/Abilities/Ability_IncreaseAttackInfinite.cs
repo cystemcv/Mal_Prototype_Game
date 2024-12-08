@@ -34,7 +34,7 @@ public class Ability_IncreaseAttackInfinite : ScriptableCardAbility
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
 
-        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList));
+        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList),0);
         entityClass.attack += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
 

@@ -286,6 +286,24 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public void PlayerPlayedCard(CardScript cardScript)
+    {
+        //save the cardScript temp
+        CardScript tempCardScript = new CardScript();
+        tempCardScript = cardScript;
+
+        //decrease available mana
+        Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
+
+        //remove from hand and add it to the played card
+        RemovePlayedCardFromHand(tempCardScript);
+
+        //activate all card abilities
+        PlayerPlayCardActivate(tempCardScript);
+
+    }
+
+
     public void PlayCard(CardScript cardScript)
     {
         //check if the card has any abilities to be played
@@ -358,6 +376,30 @@ public class DeckManager : MonoBehaviour
 
         return condition;
     }
+
+
+    public void PlayerPlayCardActivate(CardScript cardScript)
+    {
+
+        StartCoroutine(PlayerPlayCardActivateCoroutine(cardScript));
+
+    }
+
+    IEnumerator PlayerPlayCardActivateCoroutine(CardScript cardScript)
+    {
+        //get the player
+        GameObject entity = GameObject.FindGameObjectWithTag("Player");
+        cardScript.scriptableCard.OnPlayCard(cardScript, entity);
+
+        if (savedPlayedCardScript != null)
+        {
+            //destroy the prefab
+            DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
+        }
+
+        yield return null;
+    }
+
 
     public void PlayCardOnlyAbilities(CardScript cardScript)
     {
@@ -615,44 +657,44 @@ public class DeckManager : MonoBehaviour
         //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
         //description is based on abilities
-        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
-        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
-        }
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = cardScript.scriptableCard.OnCardDescription(cardScript, character);
+        //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
+        //{
+        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
+        //}
 
-        //conditions
-        foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
-        {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
-        }
+        ////conditions
+        //foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
+        //{
+        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
+        //}
 
         //activation should not be visible
         cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
     }
 
 
-    public void UpdateCardDescription(GameObject cardPrefab)
-    {
+    //public void UpdateCardDescription(GameObject cardPrefab)
+    //{
 
-        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
-        Transform cardChild = cardPrefab.transform.GetChild(0);
+    //    ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+    //    CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+    //    Transform cardChild = cardPrefab.transform.GetChild(0);
 
-        //get the character to be used
-        GameObject character = GameObject.FindGameObjectWithTag("Player");
-        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
-        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
-        }
+    //    //get the character to be used
+    //    GameObject character = GameObject.FindGameObjectWithTag("Player");
+    //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
+    //    foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
+    //    {
+    //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
+    //    }
 
-        //conditions
-        foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
-        {
-            cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
-        }
-    }
+    //    //conditions
+    //    foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
+    //    {
+    //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
+    //    }
+    //}
 
     public string GetBonusAttackAsDescription(int cardDmg, int calculatedDmg)
     {

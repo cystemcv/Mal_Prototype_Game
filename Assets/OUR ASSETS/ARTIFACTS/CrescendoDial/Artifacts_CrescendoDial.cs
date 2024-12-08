@@ -45,11 +45,11 @@ public class Artifacts_CrescendoDial : ScriptableItem
             GameObject target = GameObject.FindGameObjectWithTag("Player");
 
             //increase strength
-            EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, strengthValue);
+            EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, strengthValue,0);
             entityClass.attack += strengthValue;
 
             //increase defence
-            entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, defenceAbility, defenceValue);
+            entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, defenceAbility, defenceValue,0);
             entityClass.defence += defenceValue;
 
             //increase hp

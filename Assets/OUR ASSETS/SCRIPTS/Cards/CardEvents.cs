@@ -326,7 +326,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 //if the card is not targetable
 
                 //do the effects 
-                DeckManager.Instance.PlayCard(gameObject.GetComponent<CardScript>());
+                DeckManager.Instance.PlayerPlayedCard(gameObject.GetComponent<CardScript>());
                 //return everything where it was
                 HandManager.Instance.SetHandCards();
             }

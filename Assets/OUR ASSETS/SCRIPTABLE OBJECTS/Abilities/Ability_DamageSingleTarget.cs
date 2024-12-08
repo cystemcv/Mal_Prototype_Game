@@ -15,6 +15,8 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
     private CardAbilityClass cardAbilityClass;
     private SystemManager.ControlBy controlBy;
 
+
+
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
@@ -112,7 +114,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
 
             // Wait between hits
-            yield return new WaitForSeconds(cardAbilityClass.waitForAbility / multiHits);
+            yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
         }
     }
 

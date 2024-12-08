@@ -82,7 +82,7 @@ public class CombatCardHandler : MonoBehaviour
                 UI_Combat.Instance.cardLineRendererArrow.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
 
-                //remove line renderer
+                //line renderer
                 UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(true);
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
 
@@ -199,7 +199,7 @@ public class CombatCardHandler : MonoBehaviour
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
             //do the effects 
-            DeckManager.Instance.PlayCard(targetUIElement.gameObject.GetComponent<CardScript>());
+            DeckManager.Instance.PlayerPlayedCard(targetUIElement.gameObject.GetComponent<CardScript>());
             //return everything where it was
             HandManager.Instance.SetHandCards();
 
@@ -241,7 +241,12 @@ public class CombatCardHandler : MonoBehaviour
             foreach (GameObject targetFound in targetsFound)
             {
 
+                if (targetFound.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+                {
                     SystemManager.Instance.ChangeTargetMaterial(customMaterial, targetFound);
+                }
+
+                  
           
 
 

@@ -35,7 +35,7 @@ public class Ability_IncreaseDefenceInfinite : ScriptableCardAbility
 
 
 
-        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList));
+        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList),0);
         entityClass.defence += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
     }
 

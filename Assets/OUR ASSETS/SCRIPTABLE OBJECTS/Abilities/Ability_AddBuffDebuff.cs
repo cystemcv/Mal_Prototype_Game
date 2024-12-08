@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using static ScriptableCard;
 
-[CreateAssetMenu(fileName = "Ability_AddWet", menuName = "CardAbility/Ability_AddWet")]
-public class Ability_AddWet : ScriptableCardAbility
+[CreateAssetMenu(fileName = "Ability_AddBuffDebuff", menuName = "CardAbility/Ability_AddBuffDebuff")]
+public class Ability_AddBuffDebuff : ScriptableCardAbility
 {
 
     [Header("UNIQUE")]
@@ -16,7 +16,7 @@ public class Ability_AddWet : ScriptableCardAbility
     {
         string description = "";
 
-        description = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " <color=yellow>Wet</color> ";
+        description = DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList) + " <color=yellow>" + this.scriptableBuffDebuff.nameID + "</color> ";
         description += (infiniteDuration) ? "" : " for " + DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList) + " turns";
 
         string final = description;
@@ -36,7 +36,7 @@ public class Ability_AddWet : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList));
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList));
 
 
     }

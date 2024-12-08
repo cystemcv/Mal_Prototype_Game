@@ -35,7 +35,7 @@ public class Ability_IncreaseAttackTimer : ScriptableCardAbility
 
 
 
-        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList));
+        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList));
         entityClass.attack += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
     }

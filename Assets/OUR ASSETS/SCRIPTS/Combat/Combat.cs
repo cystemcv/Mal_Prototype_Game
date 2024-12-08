@@ -215,20 +215,20 @@ public class Combat : MonoBehaviour
     public void CalculateLootRewards()
     {
 
-        foreach (ScriptablePlanets.ItemClassPlanet  itemClassPlanet in CombatManager.Instance.scriptablePlanet.itemClassPlanet)
+        foreach (ScriptablePlanets.ItemClassPlanet itemClassPlanet in CombatManager.Instance.scriptablePlanet.itemClassPlanet)
         {
 
             //based on min and max value
-            int quantity = UnityEngine.Random.Range(itemClassPlanet.minQuantity,itemClassPlanet.maxQuantity);
+            int quantity = UnityEngine.Random.Range(itemClassPlanet.minQuantity, itemClassPlanet.maxQuantity);
 
             int percQuantity = 0;
 
             if (itemClassPlanet.percentage != 0)
             {
 
-       
+
                 //then give value based on range
-                for (int i=0;i < quantity; i++ )
+                for (int i = 0; i < quantity; i++)
                 {
 
                     int randomChance = UnityEngine.Random.Range(0, 100);
@@ -244,7 +244,7 @@ public class Combat : MonoBehaviour
 
             }
 
-    
+
 
             //if 0 then nothing should be added on loot
             if (quantity == 0)
@@ -270,7 +270,8 @@ public class Combat : MonoBehaviour
     public IEnumerator InitializeCombat()
     {
         //hide the dungeon generato
-        if (StaticData.staticDungeonParent != null) {
+        if (StaticData.staticDungeonParent != null)
+        {
             StaticData.staticDungeonParent.SetActive(false);
         }
         else
@@ -437,7 +438,7 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
         //draw cards
-        yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit,0));
+        yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
         ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart);
 
@@ -479,10 +480,10 @@ public class Combat : MonoBehaviour
 
         //if (turns != 1)
         //{
-            UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
-            UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+        UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
+        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
         //}
-   
+
 
 
 
@@ -1280,7 +1281,7 @@ public class Combat : MonoBehaviour
     public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target)
     {
 
-        if (  entity == null)
+        if (entity == null)
         {
             return 0; //stops function
         }
@@ -1341,12 +1342,155 @@ public class Combat : MonoBehaviour
     }
 
 
+    public bool CheckIfEntityIsDeadAfterCard(GameObject target, int damage)
+    {
+
+        EntityClass entityClass = target.GetComponent<EntityClass>();
 
 
+        int entityTotalHP = 0;
+
+        //then do dmg to shield
+        entityTotalHP = (entityClass.health + entityClass.shield) - damage;
+
+        if (entityTotalHP <= 0)
+        {
+            entityClass.entityMode = SystemManager.EntityMode.DEAD;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 
 
+    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard,int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2)
+    {
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+
+        //if dead mark is as dead
+        //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
+
+        Animator entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
+
+        if (entityAnimator != null)
+        {
+            entityAnimator.SetTrigger(scriptableCard.entityAnimation.ToString());
+        }
+
+        for (int i = 0; i < multiHits; i++)
+        {
+
+            //if target dies during multi attack then stop
+            if (realTarget == null)
+            {
+                break;
+            }
 
 
+            CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
+
+
+            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+
+            if (scriptableCard.cardSoundEffect != null)
+            {
+                AudioManager.Instance.cardSource.PlayOneShot(scriptableCard.cardSoundEffect);
+            }
+
+            // Wait between hits
+            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+        }
+    }
+
+    public IEnumerator AttackBlindlyEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2)
+    {
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+
+        //if dead mark is as dead
+        //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
+
+        Animator entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
+
+        if (entityAnimator != null)
+        {
+            entityAnimator.SetTrigger(scriptableCard.entityAnimation.ToString());
+        }
+
+        for (int i = 0; i < multiHits; i++)
+        {
+
+            realTarget = AIManager.Instance.GetRandomTarget(entityUsedCardGlobal);
+
+
+            //if target dies during multi attack then stop
+            if (realTarget == null)
+            {
+                break;
+            }
+
+
+            CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
+
+
+            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+
+            if (scriptableCard.cardSoundEffect != null)
+            {
+                AudioManager.Instance.cardSource.PlayOneShot(scriptableCard.cardSoundEffect);
+            }
+
+            // Wait between hits
+            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+        }
+    }
+
+
+    public IEnumerator AttackAllEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, List<GameObject> realTargets, int multiHits, float multiHitDuration = 2)
+    {
+     
+
+        //if dead mark is as dead
+        //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
+
+        Animator entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
+
+        if (entityAnimator != null)
+        {
+            entityAnimator.SetTrigger(scriptableCard.entityAnimation.ToString());
+        }
+
+        for (int i = 0; i < multiHits; i++)
+        {
+
+
+            foreach (GameObject realTarget in realTargets)
+            {
+                //if target dies during multi attack then stop
+                if (realTarget == null)
+                {
+                    break;
+                }
+
+                int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+
+                CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
+
+
+                Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+
+                if (scriptableCard.cardSoundEffect != null)
+                {
+                    AudioManager.Instance.cardSource.PlayOneShot(scriptableCard.cardSoundEffect);
+                }
+            }
+
+            // Wait between hits
+            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+        }
+    }
 
 
 }

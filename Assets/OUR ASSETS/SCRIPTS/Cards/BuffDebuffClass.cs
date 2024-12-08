@@ -15,7 +15,7 @@ public class BuffDebuffClass : MonoBehaviour
 
     public bool infiniteDuration = false;
 
-    public void CreateBuffOnTarget(ScriptableCardAbility scriptableCardAbility, GameObject target, int turnsAvailabeP)
+    public void CreateBuffOnTarget(ScriptableCardAbility scriptableCardAbility, GameObject target,int buffDebuffValue, int turnsAvailabeP)
     {
         //create the debuff
         //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
