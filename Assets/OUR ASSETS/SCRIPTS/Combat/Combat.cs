@@ -1366,7 +1366,7 @@ public class Combat : MonoBehaviour
     }
 
 
-    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard,int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2)
+    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard,int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
 
@@ -1393,7 +1393,7 @@ public class Combat : MonoBehaviour
             CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
 
 
-            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, pierce, SystemManager.AdjustNumberModes.ATTACK);
 
             if (scriptableCard.cardSoundEffect != null)
             {
@@ -1405,7 +1405,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public IEnumerator AttackBlindlyEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2)
+    public IEnumerator AttackBlindlyEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
 
@@ -1448,7 +1448,7 @@ public class Combat : MonoBehaviour
     }
 
 
-    public IEnumerator AttackAllEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, List<GameObject> realTargets, int multiHits, float multiHitDuration = 2)
+    public IEnumerator AttackAllEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, List<GameObject> realTargets, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
      
 

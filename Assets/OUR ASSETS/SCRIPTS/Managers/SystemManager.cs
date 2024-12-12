@@ -65,7 +65,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ControlBy { PLAYER, AI }
 
-    public enum PlanetTypes { BATTLE, EVENT, SHOP, RESOURCES, REWARD, BOSS, REST, START }
+    public enum PlanetTypes { BATTLE, EVENT, SHOP, RESOURCES, REWARD, BOSS, REST, START, STARTINGBATTLE, ELITEBATTLE, HIDDEN }
 
     public enum SelectionScreenPrefabType { CHARACTER, COMPANION }; //Actual classes to be determined
 

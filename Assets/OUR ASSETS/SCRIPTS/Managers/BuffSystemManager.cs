@@ -67,11 +67,11 @@ public class BuffSystemManager : MonoBehaviour
 
     //}
 
-    public EntityClass AddBuffDebuff(GameObject target, ScriptableCardAbility scriptableCardAbility, int buffDebuffValue, int turnsValue)
+    public EntityClass AddBuffDebuff(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int buffDebuffValue, int turnsValue)
     {
 
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
-        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableCardAbility.scriptableBuffDebuff.nameID);
+        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableBuffDebuff.nameID);
 
         //if there is no buff then create it to the target
         if (buffDebuffClass == null)
@@ -82,7 +82,7 @@ public class BuffSystemManager : MonoBehaviour
             buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
             buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
-            buffDebuffClass.CreateBuffOnTarget(scriptableCardAbility, target, buffDebuffValue, turnsValue);
+            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, buffDebuffValue, turnsValue);
 
             //first time it gets created it should not increase the stacks just the turns
             if (!buffDebuffClass.infiniteDuration)
@@ -101,11 +101,11 @@ public class BuffSystemManager : MonoBehaviour
             buffDebuffClass.ModifyValueAvailable(buffDebuffValue);
         }
 
+        //activate the buff
+        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, buffDebuffValue, turnsValue);
 
-        //buffDebuffClass.tempVariable += buffDebuffValue;
-
-        //get the buffed class
-        EntityClass entityClass = target.GetComponent<EntityClass>();
+         //get the buffed class
+         EntityClass entityClass = target.GetComponent<EntityClass>();
 
         return entityClass;
 
@@ -164,7 +164,7 @@ public class BuffSystemManager : MonoBehaviour
         List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
 
 
-        int index = gridSystemItemList.FindIndex(item => item.scriptableCardAbility.scriptableBuffDebuff.nameID == buffDebuffNameID);
+        int index = gridSystemItemList.FindIndex(item => item.scriptableBuffDebuff.nameID == buffDebuffNameID);
 
         if (index != -1)
         {
@@ -222,7 +222,7 @@ public class BuffSystemManager : MonoBehaviour
                 if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
               
-                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnStart(character);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(character);
                  
                     //if activated then we decrease the turns
                     if (activated)
@@ -232,7 +232,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(character);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(character);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -242,7 +242,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnEnd(character);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(character);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -252,7 +252,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnEnd(character);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(character);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -290,7 +290,7 @@ public class BuffSystemManager : MonoBehaviour
                 //activate buffs/debuffs
                 if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnStart(enemy);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(enemy);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -300,7 +300,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnStart(enemy);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(enemy);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -310,7 +310,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnCharacterTurnEnd(enemy);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(enemy);
 
                     //if activated then we decrease the turns
                     if (activated)
@@ -320,7 +320,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableCardAbility.OnEnemyTurnEnd(enemy);
+                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(enemy);
 
                     //if activated then we decrease the turns
                     if (activated)

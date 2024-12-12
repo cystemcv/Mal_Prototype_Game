@@ -29,11 +29,13 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public GameObject StartPlanetPrefab;
     public GameObject BattlePlanetPrefab;
+    public GameObject EliteBattlePlanetPrefab;
     public GameObject BossPlanetPrefab;
     public GameObject RewardPlanetPrefab;
     public GameObject EventPlanetPrefab;
     public GameObject RestPlanetPrefab;
-
+    public GameObject ShopPlanetPrefab;
+    public GameObject HiddenPlanetPrefab;
 
     public GameObject linePrefab; // Assign in Inspector
     public Camera uiCamera; // Assign the camera used by the Canvas
@@ -68,6 +70,20 @@ public class CustomDungeonGenerator : MonoBehaviour
     //ui
     public GameObject displayCharacterCard;
 
+    private int howManyCombatRoom = 10;
+    private int howManyEliteCombatRoom = 0;
+    private int howManyBossRoom = 1;
+    private int howManyRewardRoom = 1;
+    private int howManyEventRoom = 6;
+    private int howManyRestRoom = 1;
+    private int howManyHiddenRoom = 0;
+    private int howManyShopRoom = 0;
+
+    private int maxRooms;
+    private int maxRoomsPlus;
+
+    private GameObject lastCreatedPlanet;
+    List<GameObject> usedBossRooms = new List<GameObject>();
 
     private void Awake()
     {
@@ -96,7 +112,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     void OnEnable()
     {
 
-  
+
 
         // Register the callback when the object is enabled
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -308,6 +324,20 @@ public class CustomDungeonGenerator : MonoBehaviour
             yield return null;
         }
 
+        //assign the number of rooms to be generated
+        howManyCombatRoom = UnityEngine.Random.Range(galaxyGenerating.minCombatRoom, galaxyGenerating.maxCombatRoom + 1);
+        howManyEliteCombatRoom = UnityEngine.Random.Range(galaxyGenerating.minEliteCombatRoom, galaxyGenerating.maxEliteCombatRoom + 1);
+        howManyBossRoom = UnityEngine.Random.Range(galaxyGenerating.minBossRoom, galaxyGenerating.maxBossRoom + 1);
+        howManyRewardRoom = UnityEngine.Random.Range(galaxyGenerating.minRewardRoom, galaxyGenerating.maxRewardRoom + 1);
+        howManyEventRoom = UnityEngine.Random.Range(galaxyGenerating.minEventRoom, galaxyGenerating.maxEventRoom + 1);
+        howManyRestRoom = UnityEngine.Random.Range(galaxyGenerating.minRestRoom, galaxyGenerating.maxRestRoom + 1);
+        howManyHiddenRoom = UnityEngine.Random.Range(galaxyGenerating.minHiddenRoom, galaxyGenerating.maxHiddenRoom + 1);
+        howManyShopRoom = UnityEngine.Random.Range(galaxyGenerating.minShopRoom, galaxyGenerating.maxShopRoom + 1);
+
+        //get the sum of all rooms as the max (wont count boss or hidden rooms as i want them to be on the edge of the galaxy
+        maxRooms = howManyCombatRoom + howManyEliteCombatRoom + howManyRewardRoom + howManyEventRoom + howManyRestRoom + howManyShopRoom;
+        maxRoomsPlus = maxRooms + howManyHiddenRoom + (howManyBossRoom * 2);
+
         //get the dungeon parent transform where every room will be child of
 
         Transform dungeonParentTransform = StaticData.staticDungeonParent.transform;
@@ -333,8 +363,10 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         yield return StartCoroutine(CreateRoom(startRoomPosition, SystemManager.PlanetTypes.START));
 
+
+
         //start generating the dungeon by creating rooms
-        while (rooms.Count < galaxyGenerating.maxRoomLevels)
+        while (rooms.Count <= maxRooms || howManyBossRoom != 0 || howManyHiddenRoom != 0)
         {
 
             //generate rooms
@@ -369,37 +401,127 @@ public class CustomDungeonGenerator : MonoBehaviour
         SystemManager.PlanetTypes planetType = SystemManager.PlanetTypes.BATTLE;
         float randomRoomChance = 0;
 
-        //probability of the other rooms
-        randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if ((randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.bossRoomChance && isBossRoomCreated == false)
-            || (isBossRoomCreated == false && rooms.Count == galaxyGenerating.maxRoomLevels - 1))
+        //RULES OF DUNGEON
+
+        //1ST RULE , THE FIRST ROOMS WILL BE STARTING / NOOBY FRIENDLY. AND WILL CONTAIN STARTING BATTLES/EVENTS ONLY
+        if (rooms.Count < galaxyGenerating.startingRooms)
         {
-            planetType = SystemManager.PlanetTypes.BOSS;
-            isBossRoomCreated = true;
-            return planetType;
+            //if both rooms are available then choose randomly between them
+            if (howManyCombatRoom != 0 && howManyEventRoom != 0)
+            {
+                int randomChance = UnityEngine.Random.Range(0, 1);
+
+                if (randomChance == 0)
+                {
+                    howManyCombatRoom--;
+                    planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
+                    return planetType;
+                }
+                else
+                {
+                    howManyEventRoom--;
+                    planetType = SystemManager.PlanetTypes.EVENT;
+                    return planetType;
+                }
+            }
+            else if (howManyCombatRoom != 0)
+            {
+                howManyCombatRoom--;
+                planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
+                return planetType;
+            }
+            else if (howManyEventRoom != 0)
+            {
+                howManyEventRoom--;
+                planetType = SystemManager.PlanetTypes.EVENT;
+                return planetType;
+            }
+
+
+
         }
 
-        randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.rewardRoomChance)
+        //2ND RULE THE HALF ROOM WILL ALWAYS BE A REWARD ROOM
+        if (rooms.Count == maxRooms / 2)
         {
-            planetType = SystemManager.PlanetTypes.REWARD;
-            return planetType;
+
+            //if we have reward room available
+            if (howManyRewardRoom != 0)
+            {
+                howManyRewardRoom--;
+                planetType = SystemManager.PlanetTypes.REWARD;
+                return planetType;
+            }
+
         }
 
-        randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.eventRoomChance)
+
+        List<SystemManager.PlanetTypes> planetTypes = new List<SystemManager.PlanetTypes>();
+        planetTypes.Clear();
+
+        //fill all other rooms
+        if (howManyCombatRoom != 0)
         {
-            planetType = SystemManager.PlanetTypes.EVENT;
-            return planetType;
+            planetTypes.Add(SystemManager.PlanetTypes.BATTLE);
         }
 
-        randomRoomChance = UnityEngine.Random.Range(0, 100);
-        if (randomRoomChance >= 0 && randomRoomChance <= galaxyGenerating.restRoomChance)
+        if (howManyEliteCombatRoom != 0)
         {
-            planetType = SystemManager.PlanetTypes.REST;
-            return planetType;
+            planetTypes.Add(SystemManager.PlanetTypes.ELITEBATTLE);
         }
 
+        if (howManyEventRoom != 0)
+        {
+            planetTypes.Add(SystemManager.PlanetTypes.EVENT);
+        }
+
+        if (howManyRestRoom != 0)
+        {
+            planetTypes.Add(SystemManager.PlanetTypes.REST);
+        }
+
+        if (howManyRewardRoom != 0)
+        {
+            planetTypes.Add(SystemManager.PlanetTypes.REWARD);
+        }
+
+        if (howManyShopRoom != 0)
+        {
+            planetTypes.Add(SystemManager.PlanetTypes.SHOP);
+        }
+
+        if (planetTypes.Count > 0) {
+
+            int randomIndex = UnityEngine.Random.Range(0,planetTypes.Count);
+            SystemManager.PlanetTypes randomPlanetType = planetTypes[randomIndex];
+
+            if (randomPlanetType == SystemManager.PlanetTypes.BATTLE)
+            {
+                howManyCombatRoom--;
+            }
+            else if (randomPlanetType == SystemManager.PlanetTypes.ELITEBATTLE)
+            {
+                howManyEliteCombatRoom--;
+            }
+            else if (randomPlanetType == SystemManager.PlanetTypes.EVENT)
+            {
+                howManyEventRoom--;
+            }
+            else if (randomPlanetType == SystemManager.PlanetTypes.REST)
+            {
+                howManyRestRoom--; 
+            }
+            else if (randomPlanetType == SystemManager.PlanetTypes.REWARD)
+            {
+                howManyRewardRoom--;
+            }
+            else if (randomPlanetType == SystemManager.PlanetTypes.SHOP)
+            {
+                howManyShopRoom--;
+            }
+
+            planetType = randomPlanetType;
+        }
 
         return planetType;
 
@@ -409,10 +531,40 @@ public class CustomDungeonGenerator : MonoBehaviour
     public IEnumerator GenerateLevel()
     {
 
-        //then we get the latest room from the queue list so we can expand on it
-        GameObject currentRoom = rooms[dungeonGeneratorPos];
-        //then we start calculating the neigbor rooms
-        yield return StartCoroutine(CreateNeighborRooms(currentRoom));
+        //if we are done with the basic generated level then move to bosses and hidden room
+        if (rooms.Count <= maxRooms)
+        {
+            //then we get the latest room from the queue list so we can expand on it
+            GameObject currentRoom = rooms[dungeonGeneratorPos];
+            //then we start calculating the neigbor rooms
+            yield return StartCoroutine(CreateNeighborRooms(currentRoom));
+        }
+        else if (howManyBossRoom != 0)
+        {
+            howManyBossRoom--;
+            //then generate boss logic
+
+            //generate the rest point
+            //GameObject furthestPlanet = GetFurthestRoomFromStartExcludeRestAndBoss();
+
+            GameObject furthestPlanet = GetRandomRoomWithEmptyConection();
+
+            usedBossRooms.Add(furthestPlanet);
+            yield return StartCoroutine(CreateRoomsAfterGeneration(furthestPlanet, SystemManager.PlanetTypes.REST));
+
+            //generate the boss on the rest point
+            yield return StartCoroutine(CreateRoomsAfterGeneration(lastCreatedPlanet, SystemManager.PlanetTypes.BOSS));
+
+        }
+        else if (howManyHiddenRoom != 0)
+        {
+            howManyHiddenRoom--;
+            //then generate hidden room logic
+
+            GameObject furthestPlanet = GetRandomRoomWithOnlyOneConection();
+            yield return StartCoroutine(CreateRoomsAfterGeneration(furthestPlanet, SystemManager.PlanetTypes.HIDDEN));
+        }
+
     }
 
     public GameObject GetRoomTypeGameObject(SystemManager.PlanetTypes planetType)
@@ -422,9 +574,17 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             return StartPlanetPrefab;
         }
+        else if (planetType == SystemManager.PlanetTypes.STARTINGBATTLE)
+        {
+            return BattlePlanetPrefab;
+        }
         else if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
             return BattlePlanetPrefab;
+        }
+        else if (planetType == SystemManager.PlanetTypes.ELITEBATTLE)
+        {
+            return EliteBattlePlanetPrefab;
         }
         else if (planetType == SystemManager.PlanetTypes.BOSS)
         {
@@ -442,6 +602,14 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             return RestPlanetPrefab;
         }
+        else if (planetType == SystemManager.PlanetTypes.SHOP)
+        {
+            return ShopPlanetPrefab;
+        }
+        else if (planetType == SystemManager.PlanetTypes.HIDDEN)
+        {
+            return HiddenPlanetPrefab;
+        }
 
         return BattlePlanetPrefab;
 
@@ -454,7 +622,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         if (planetType != SystemManager.PlanetTypes.START)
         {
-             position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
+            position = new Vector2(gridPosition.x * galaxyGenerating.distanceBetweenRooms, gridPosition.y * galaxyGenerating.distanceBetweenRooms);
         }
         else
         {
@@ -462,8 +630,8 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
 
-        GameObject newRoom = Instantiate(roomPrefab,new Vector3(position.x,position.y,0), Quaternion.identity);
-        
+        GameObject newRoom = Instantiate(roomPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
+
         RectTransform rt = newRoom.GetComponent<RectTransform>();
         if (rt == null)
         {
@@ -474,13 +642,13 @@ public class CustomDungeonGenerator : MonoBehaviour
         newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
         //newRoom.transform.position = new Vector3(0, 0, 0);
-        newRoom.transform.position = new Vector3(newRoom.transform.position.x, newRoom.transform.position.y,0);
+        newRoom.transform.position = new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, 0);
 
         if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
 
             //get the planet
-            int randomPlanetIndex = UnityEngine.Random.Range(0,galaxyGenerating.scriptablePlanets.Count);
+            int randomPlanetIndex = UnityEngine.Random.Range(0, galaxyGenerating.scriptablePlanets.Count);
             ScriptablePlanets scriptablePlanet = galaxyGenerating.scriptablePlanets[randomPlanetIndex];
             newRoom.GetComponent<RoomScript>().scriptablePlanet = scriptablePlanet;
 
@@ -515,6 +683,52 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     }
 
+    public IEnumerator CreateRoomsAfterGeneration(GameObject room, SystemManager.PlanetTypes planetType)
+    {
+        int randomPercentage = 0;
+
+        //rooms can only spawn up,down,left and right from the current room
+        Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+        //we get the position of the current room as it will be used to calculate the neibour rooms
+        Vector2Int roomGridPosition = GetRoomGridPosition(room);
+
+        //loop through all the directions (up,down,left,right)
+        foreach (Vector2Int dir in directions)
+        {
+
+            //calculate the position of the neighbor by using the direction
+            Vector2Int adjacentGridPos = roomGridPosition + dir;
+
+            // If there is already a room on that grid then we check for connection
+            if (roomGrid.ContainsKey(adjacentGridPos))
+            {
+                GameObject adjacentRoom = roomGrid[adjacentGridPos];
+
+                // Check if they are already connected
+                if (roomConnections[room].Contains(adjacentRoom))
+                {
+                    continue; // If already connected, move to the next neighbor
+                }
+
+                randomPercentage = UnityEngine.Random.Range(0, 100);
+                if (randomPercentage <= galaxyGenerating.allowedPercentageConnectBoss && planetType == SystemManager.PlanetTypes.REST)
+                {
+                    // Connect the rooms
+
+                    ConnectRooms(room, adjacentRoom);
+                }
+
+                continue;
+            }
+
+
+            //get random room type=
+            yield return StartCoroutine(CreateRoomAndConnect(room, adjacentGridPos, planetType));
+            break;
+
+        }
+    }
+
     public IEnumerator CreateNeighborRooms(GameObject room)
     {
         int randomPercentage = 0;
@@ -530,7 +744,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
 
             //if we reach the room limit then we stop
-            if (rooms.Count >= galaxyGenerating.maxRoomLevels)
+            if (rooms.Count > maxRooms)
             {
                 Debug.Log("BREAK");
                 break;
@@ -583,7 +797,13 @@ public class CustomDungeonGenerator : MonoBehaviour
         yield return StartCoroutine(CreateRoom(position, planetType));
         //Get the room from the grid by using the position we would have spawn it
         GameObject newRoom = roomGrid[position];
+        lastCreatedPlanet = newRoom;
 
+        if (planetType == SystemManager.PlanetTypes.BOSS || planetType == SystemManager.PlanetTypes.REST)
+        {
+            usedBossRooms.Add(newRoom);
+        }
+      
         if (drawLines)
         {
             //then we draw a line between the current room and the neighbor created
@@ -688,6 +908,273 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         clickedRoom.GetComponent<RoomScript>().roomCleared = true;
 
+    }
+
+    public bool RoomConnectedTo(GameObject clickedRoom, SystemManager.PlanetTypes planetType)
+    {
+        bool connected = false;
+        //check if the room is connected to the type specified
+
+        if (roomConnections.ContainsKey(clickedRoom))
+        {
+            List<GameObject> connectedRooms = roomConnections[clickedRoom];
+
+            foreach (GameObject room in connectedRooms)
+            {
+
+                if (room.GetComponent<RoomScript>().planetType == planetType)
+                {
+                    connected = true;
+                    break;
+                }
+
+            }
+        }
+
+        return connected;
+    }
+
+
+    public GameObject GetFurthestRoomFromStart()
+    {
+        GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
+        Queue<GameObject> queue = new Queue<GameObject>();
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        GameObject furthestRoom = startRoom;
+        int maxDistance = 0;
+
+        // Initialize BFS
+        queue.Enqueue(startRoom);
+        distances[startRoom] = 0; // Start room has a distance of 0
+
+        while (queue.Count > 0)
+        {
+            GameObject currentRoom = queue.Dequeue();
+            int currentDistance = distances[currentRoom];
+
+            // Loop through all connected rooms
+            foreach (GameObject neighbor in roomConnections[currentRoom])
+            {
+                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
+                {
+                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
+                    queue.Enqueue(neighbor);
+
+                    // Check if this is the furthest room found so far
+                    if (distances[neighbor] > maxDistance)
+                    {
+                        maxDistance = distances[neighbor];
+                        furthestRoom = neighbor;
+                    }
+                }
+            }
+        }
+
+        return furthestRoom; // Return the furthest room
+    }
+
+    public GameObject GetFurthestRoomFromStartExcludeRest()
+    {
+        GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
+        Queue<GameObject> queue = new Queue<GameObject>();
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        GameObject furthestRoom = startRoom;
+        int maxDistance = 0;
+
+        // Initialize BFS
+        queue.Enqueue(startRoom);
+        distances[startRoom] = 0; // Start room has a distance of 0
+
+        while (queue.Count > 0)
+        {
+            GameObject currentRoom = queue.Dequeue();
+            int currentDistance = distances[currentRoom];
+
+            // Skip rooms with the planetType of REST or BOSS
+            RoomScript roomScript = currentRoom.GetComponent<RoomScript>();
+            if (roomScript != null && roomScript.planetType == SystemManager.PlanetTypes.REST
+                && roomScript.planetType == SystemManager.PlanetTypes.BOSS)
+            {
+                continue; // Skip this room if its planetType is REST or BOSS
+            }
+
+            // Loop through all connected rooms
+            foreach (GameObject neighbor in roomConnections[currentRoom])
+            {
+                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
+                {
+                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
+                    queue.Enqueue(neighbor);
+
+                    // Skip rooms with the planetType of REST
+                    RoomScript neighborRoomScript = neighbor.GetComponent<RoomScript>();
+                    if (roomScript != null && roomScript.planetType == SystemManager.PlanetTypes.REST
+              && roomScript.planetType == SystemManager.PlanetTypes.BOSS)
+                    {
+                        continue; // Skip this room if its planetType is REST or BOSS
+                    }
+
+                    // Check if this is the furthest room found so far
+                    if (distances[neighbor] > maxDistance)
+                    {
+                        maxDistance = distances[neighbor];
+                        furthestRoom = neighbor;
+                    }
+                }
+            }
+        }
+
+        return furthestRoom; // Return the furthest room that is not of planetType REST
+    }
+
+    public GameObject GetFurthestRoomFromStartExcludeRestAndBoss()
+    {
+        GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
+        Queue<GameObject> queue = new Queue<GameObject>();
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        GameObject furthestRoom = startRoom;
+        int maxDistance = 0;
+
+        // Initialize BFS
+        queue.Enqueue(startRoom);
+        distances[startRoom] = 0; // Start room has a distance of 0
+
+        while (queue.Count > 0)
+        {
+            GameObject currentRoom = queue.Dequeue();
+            int currentDistance = distances[currentRoom];
+
+            // Skip rooms with the planetType of REST or BOSS
+            RoomScript roomScript = currentRoom.GetComponent<RoomScript>();
+            if (roomScript != null && (roomScript.planetType == SystemManager.PlanetTypes.REST ||
+                roomScript.planetType == SystemManager.PlanetTypes.BOSS))
+            {
+                continue; // Skip this room if its planetType is REST or BOSS
+            }
+
+            // Skip if the room has already been used as a boss room
+            if (usedBossRooms.Contains(currentRoom))
+            {
+                continue;
+            }
+
+            // Loop through all connected rooms
+            foreach (GameObject neighbor in roomConnections[currentRoom])
+            {
+                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
+                {
+                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
+                    queue.Enqueue(neighbor);
+
+                    // Skip rooms with the planetType of REST or BOSS
+                    RoomScript neighborRoomScript = neighbor.GetComponent<RoomScript>();
+                    if (neighborRoomScript != null && (neighborRoomScript.planetType == SystemManager.PlanetTypes.REST ||
+                        neighborRoomScript.planetType == SystemManager.PlanetTypes.BOSS))
+                    {
+                        continue; // Skip this neighbor if its planetType is REST or BOSS
+                    }
+
+                    // Skip if the neighbor room has already been used as a boss room
+                    if (usedBossRooms.Contains(neighbor))
+                    {
+                        continue;
+                    }
+
+                    // Check if this is the furthest room found so far
+                    if (distances[neighbor] > maxDistance)
+                    {
+                        maxDistance = distances[neighbor];
+                        furthestRoom = neighbor;
+                    }
+                }
+            }
+        }
+
+        return furthestRoom; // Return the furthest room that is not of planetType REST or BOSS
+    }
+
+    public GameObject GetRandomRoomWithEmptyConection()
+    {
+        // Create a list to hold rooms that are only connected to one other room
+        List<GameObject> roomsWithOneConnection = new List<GameObject>();
+
+        // Loop through all rooms
+        foreach (GameObject room in rooms)
+        {
+
+            if (usedBossRooms.Contains(room))
+            {
+                continue;
+            }
+
+            RoomScript roomFound = room.GetComponent<RoomScript>();
+
+            if (roomFound.planetType == SystemManager.PlanetTypes.REST ||
+                        roomFound.planetType == SystemManager.PlanetTypes.BOSS)
+            {
+                continue;
+            }
+
+            // Check how many neighbors (connections) this room has
+            if (roomConnections.ContainsKey(room) && roomConnections[room].Count < 4)
+            {
+                // Add this room to the list if it is connected to exactly one other room
+                roomsWithOneConnection.Add(room);
+            }
+        }
+
+        // If there are no rooms with exactly one connection, return null
+        if (roomsWithOneConnection.Count == 0)
+        {
+            return null;
+        }
+
+        // Randomly select a room from the list of rooms with one connection
+        int randomIndex = UnityEngine.Random.Range(0, roomsWithOneConnection.Count);
+        return roomsWithOneConnection[randomIndex];
+    }
+
+
+    public GameObject GetRandomRoomWithOnlyOneConection()
+    {
+        // Create a list to hold rooms that are only connected to one other room
+        List<GameObject> roomsWithOneConnection = new List<GameObject>();
+
+        // Loop through all rooms
+        foreach (GameObject room in rooms)
+        {
+
+            if (usedBossRooms.Contains(room))
+            {
+                continue;
+            }
+
+            RoomScript roomFound = room.GetComponent<RoomScript>();
+
+            if (roomFound.planetType == SystemManager.PlanetTypes.REST ||
+                        roomFound.planetType == SystemManager.PlanetTypes.BOSS
+                        || roomFound.planetType == SystemManager.PlanetTypes.HIDDEN)
+            {
+                continue;
+            }
+
+            // Check how many neighbors (connections) this room has
+            if (roomConnections.ContainsKey(room) && roomConnections[room].Count == 1)
+            {
+                // Add this room to the list if it is connected to exactly one other room
+                roomsWithOneConnection.Add(room);
+            }
+        }
+
+        // If there are no rooms with exactly one connection, return null
+        if (roomsWithOneConnection.Count == 0)
+        {
+            return null;
+        }
+
+        // Randomly select a room from the list of rooms with one connection
+        int randomIndex = UnityEngine.Random.Range(0, roomsWithOneConnection.Count);
+        return roomsWithOneConnection[randomIndex];
     }
 
 }

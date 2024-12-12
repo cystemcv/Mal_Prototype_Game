@@ -54,17 +54,17 @@ public class AIManager : MonoBehaviour
             ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
             float totalAbilitiesWaitTime = 0;
 
-            //go throught every ability and calculate the waitTime
-            foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-            {
-                totalAbilitiesWaitTime += cardAbilityClass.waitForAbility;
-            }
+            ////go throught every ability and calculate the waitTime
+            //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
+            //{
+            //    totalAbilitiesWaitTime += cardAbilityClass.waitForAbility;
+            //}
 
             //execute ai
             aIBrain.ExecuteCommand();
 
             //loop between them and execute the command
-            yield return new WaitForSeconds(totalAbilitiesWaitTime);
+            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
         }
 
 

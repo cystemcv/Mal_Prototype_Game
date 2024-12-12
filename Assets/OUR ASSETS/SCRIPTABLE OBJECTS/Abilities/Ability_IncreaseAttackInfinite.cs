@@ -9,7 +9,7 @@ public class Ability_IncreaseAttackInfinite : ScriptableCardAbility
 
     [Header("UNIQUE")]
     private GameObject realTarget;
-
+    
     public override string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
     {
 
@@ -34,8 +34,8 @@ public class Ability_IncreaseAttackInfinite : ScriptableCardAbility
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
 
-        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList),0);
-        entityClass.attack += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
+        //EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(entity, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList),0);
+        //entityClass.attack += DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList);
 
 
 

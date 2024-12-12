@@ -9,8 +9,8 @@ using static ScriptableCard;
 public class Artifacts_CrescendoDial : ScriptableItem
 {
     [Title("UNIQUE ITEM ABILITY")]
-    public ScriptableCardAbility strengthAbility;
-    public ScriptableCardAbility defenceAbility;
+    public ScriptableBuffDebuff strengthAbility;
+    public ScriptableBuffDebuff defenceAbility;
 
     public int strengthValue = 1;
     public int defenceValue = 1;

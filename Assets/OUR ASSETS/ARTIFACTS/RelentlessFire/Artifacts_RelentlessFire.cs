@@ -9,8 +9,8 @@ using static ScriptableCard;
 public class Artifacts_RelentlessFire : ScriptableItem
 {
     [Title("UNIQUE ITEM ABILITY")]
-    public ScriptableCardAbility strengthAbility;
-    public ScriptableCardAbility defenceAbility;
+    public ScriptableBuffDebuff strengthAbility;
+    public ScriptableBuffDebuff defenceAbility;
 
     private int relentless = 0;
     public int maxRelentless = 2;

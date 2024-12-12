@@ -1023,18 +1023,21 @@ MonoBehaviour:
   scriptableGalaxies_3: []
   scriptableGalaxies_4: []
   scriptableGalaxies_5: []
-  galaxyGenerating: {fileID: 0}
+  galaxyGenerating: {fileID: 11400000, guid: e40714ee67201ae4589840c6acc81c54, type: 2}
   clearIcon: {fileID: 21300000, guid: 989866232cddf6b4c91907b192890c52, type: 3}
   StartPlanetPrefab: {fileID: 6689757511220281412, guid: 8e24f43aa28ab1e4dbefbbc723a0fa70, type: 3}
   BattlePlanetPrefab: {fileID: 6689757511220281412, guid: fc1f83bdcc1c1b2408ac2f0e77b23518, type: 3}
+  EliteBattlePlanetPrefab: {fileID: 5802705023857525631, guid: b87736a62a2d5b44f93eb587a561bdfa, type: 3}
   BossPlanetPrefab: {fileID: 6689757511220281412, guid: 3c79c297c6470f741a01b0d3ab4363bb, type: 3}
   RewardPlanetPrefab: {fileID: 6689757511220281412, guid: 0c74c9eeef4cb6a4cae6a3cd34b897b7, type: 3}
   EventPlanetPrefab: {fileID: 6689757511220281412, guid: af0dcc4800465e943a676335ed9feea1, type: 3}
   RestPlanetPrefab: {fileID: 6689757511220281412, guid: fe2e60a3563fda540bc7e40494837db1, type: 3}
+  ShopPlanetPrefab: {fileID: 8703782410938680615, guid: 5e376db066a90e54c9f139de0d2af649, type: 3}
+  HiddenPlanetPrefab: {fileID: 1984427312492403428, guid: 9a6a8678b23c16048b10c68714a88f94, type: 3}
   linePrefab: {fileID: 6170212776501509683, guid: 13a88310fbe9d324eae417582f225e31, type: 3}
   uiCamera: {fileID: 0}
-  hideRooms: 1
-  drawLines: 0
+  hideRooms: 0
+  drawLines: 1
   clickedStart: 1
   rooms: []
   canvas: {fileID: 653860928}
@@ -1109,7 +1112,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 20000
+  m_SortingOrder: 32767
   m_TargetDisplay: 0
 --- !u!114 &818977212
 MonoBehaviour:

@@ -36,7 +36,7 @@ public class Ability_AddBuffDebuff : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entity, controlBy);
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList));
+        //BuffSystemManager.Instance.AddBuffDebuff(realTarget, this, DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList));
 
 
     }

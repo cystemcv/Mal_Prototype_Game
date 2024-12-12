@@ -64,7 +64,7 @@ public class AIBrain : MonoBehaviour
 
         TMP_Text cardText = displayCardName.transform.Find("CardText").GetComponent<TMP_Text>();
 
-   
+
 
         //get all the abilities dmg
 
@@ -116,37 +116,31 @@ public class AIBrain : MonoBehaviour
             yield return null;
         }
 
-        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        {
 
-            if (cardAbilityClass == null)
-            {
-                continue;
-            }
 
-            //create new cardscript
-            CardScript cardScript = new CardScript();
-            cardScript.scriptableCard = scriptableCard;
+        //create new cardscript
+        CardScript cardScript = new CardScript();
+        cardScript.scriptableCard = scriptableCard;
 
-            //activate effect
-            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.AI);
+        //activate effect
+        cardScript.scriptableCard.OnAiPlayCard(cardScript, entity);
 
-            yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
-            //yield return new WaitForSeconds(10f);
-        }
+        yield return new WaitForSeconds(cardScript.scriptableCard.abilityEffectLifetime);
+        //yield return new WaitForSeconds(10f);
 
-        //go back to idle animation
-        if (entity != null)
-        {
-            Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
-            if (animator != null)
-            {
+        ////go back to idle animation
+        //if (entity != null)
+        //{
+        //    Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
-                animator.SetTrigger("Idle");
-            }
+        //    if (animator != null)
+        //    {
 
-        }
+        //        animator.SetTrigger("Idle");
+        //    }
+
+        //}
 
 
 
@@ -183,7 +177,7 @@ public class AIBrain : MonoBehaviour
                 AIBrain aIBrain = entity.GetComponent<AIBrain>();
 
                 GameObject target = null;
-                if(aIBrain != null)
+                if (aIBrain != null)
                 {
                     //damageText += aIBrain.targetForCard.name + " ";
                     target = aIBrain.targetForCard;

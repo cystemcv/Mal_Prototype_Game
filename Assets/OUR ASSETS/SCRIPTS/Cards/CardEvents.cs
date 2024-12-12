@@ -57,7 +57,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Update()
     {
-        //update the description of the card
+
+        DeckManager.Instance.UpdateCardUI(this.gameObject);
         //DeckManager.Instance.UpdateCardDescription(this.gameObject);
     }
 
@@ -323,7 +324,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             else
             {
 
-                //if the card is not targetable
+                // Scale down the card
+                scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
                 //do the effects 
                 DeckManager.Instance.PlayerPlayedCard(gameObject.GetComponent<CardScript>());
@@ -333,6 +335,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
         else
         {
+            // Scale down the card
+            scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+
             //return everything where it was
             HandManager.Instance.SetHandCards();
         }

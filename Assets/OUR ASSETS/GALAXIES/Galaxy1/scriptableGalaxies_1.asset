@@ -16,11 +16,24 @@ MonoBehaviour:
   scriptablePlanets:
   - {fileID: 11400000, guid: 9835f203ccf15124c9d4c2a624a575ec, type: 2}
   - {fileID: 11400000, guid: d9a9441711c541f4c9b7a5dd1873853c, type: 2}
-  bossRoomChance: 0
-  emptyRoomChance: 0
-  rewardRoomChance: 10
-  eventRoomChance: 20
-  restRoomChance: 10
-  maxRoomLevels: 20
-  allowedPercentage: 30
+  scriptableStartingPlanets: []
+  minCombatRoom: 6
+  maxCombatRoom: 10
+  minEliteCombatRoom: 2
+  maxEliteCombatRoom: 3
+  minBossRoom: 1
+  maxBossRoom: 2
+  minRewardRoom: 2
+  maxRewardRoom: 3
+  minEventRoom: 6
+  maxEventRoom: 8
+  minRestRoom: 1
+  maxRestRoom: 2
+  minHiddenRoom: 0
+  maxHiddenRoom: 2
+  minShopRoom: 1
+  maxShopRoom: 2
+  startingRooms: 6
+  allowedPercentage: 10
+  allowedPercentageConnectBoss: 100
   distanceBetweenRooms: 2

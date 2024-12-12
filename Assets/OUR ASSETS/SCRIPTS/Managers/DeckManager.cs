@@ -304,78 +304,78 @@ public class DeckManager : MonoBehaviour
     }
 
 
-    public void PlayCard(CardScript cardScript)
-    {
-        //check if the card has any abilities to be played
-        if (cardScript.scriptableCard.cardAbilityClass.Count == 0)
-        {
-            return;
-        }
+    //public void PlayCard(CardScript cardScript)
+    //{
+    //    //check if the card has any abilities to be played
+    //    if (cardScript.scriptableCard.cardAbilityClass.Count == 0)
+    //    {
+    //        return;
+    //    }
 
-        //save the cardScript temp
-        CardScript tempCardScript = new CardScript();
-        tempCardScript = cardScript;
+    //    //save the cardScript temp
+    //    CardScript tempCardScript = new CardScript();
+    //    tempCardScript = cardScript;
 
-        //check the card conditions
-        bool condition = false;
-        condition = CheckCardOnlyConditions(tempCardScript);
+    //    ////check the card conditions
+    //    //bool condition = false;
+    //    //condition = CheckCardOnlyConditions(tempCardScript);
 
-        if (condition)
-        {
-            //show notification
-            UI_Combat.Instance.OnNotification("CARD CONDITIONS NOT MET!", 1);
-            return;
-        }
-
-
-        //decrease available mana
-        Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
-
-        //remove from hand and add it to the played card
-        RemovePlayedCardFromHand(tempCardScript);
-
-        //activate all card abilities
-        PlayCardOnlyAbilities(tempCardScript);
+    //    //if (condition)
+    //    //{
+    //    //    //show notification
+    //    //    UI_Combat.Instance.OnNotification("CARD CONDITIONS NOT MET!", 1);
+    //    //    return;
+    //    //}
 
 
-    }
+    //    //decrease available mana
+    //    Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
 
-    public bool CheckCardOnlyConditions(CardScript cardScript)
-    {
-        bool condition = false;
-        //get the player
-        GameObject entity = GameObject.FindGameObjectWithTag("Player");
+    //    //remove from hand and add it to the played card
+    //    RemovePlayedCardFromHand(tempCardScript);
 
-        if (entity == null)
-        {
-            return true;
-        }
-
-        foreach (CardConditionClass cardConditionClass in cardScript.scriptableCard.cardConditionClass)
-        {
-
-            if (cardConditionClass == null)
-            {
-                condition = false;
-                break;
-            }
-
-            // Wait for 2 seconds
-            if (cardConditionClass.ScriptableCardCondition.OnPlayCard(cardScript, cardConditionClass, entity, SystemManager.ControlBy.PLAYER))
-            {
-                condition = true;
-                break;
-            }
+    //    //activate all card abilities
+    //    PlayCardOnlyAbilities(tempCardScript);
 
 
-        }
+    //}
 
-        //variables needed for this activasion
-        StaticData.artifact_CardScript = cardScript;
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard);
+    //public bool CheckCardOnlyConditions(CardScript cardScript)
+    //{
+    //    bool condition = false;
+    //    //get the player
+    //    GameObject entity = GameObject.FindGameObjectWithTag("Player");
 
-        return condition;
-    }
+    //    if (entity == null)
+    //    {
+    //        return true;
+    //    }
+
+    //    foreach (CardConditionClass cardConditionClass in cardScript.scriptableCard.cardConditionClass)
+    //    {
+
+    //        if (cardConditionClass == null)
+    //        {
+    //            condition = false;
+    //            break;
+    //        }
+
+    //        // Wait for 2 seconds
+    //        if (cardConditionClass.ScriptableCardCondition.OnPlayCard(cardScript, cardConditionClass, entity, SystemManager.ControlBy.PLAYER))
+    //        {
+    //            condition = true;
+    //            break;
+    //        }
+
+
+    //    }
+
+    //    //variables needed for this activasion
+    //    StaticData.artifact_CardScript = cardScript;
+    //    ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard);
+
+    //    return condition;
+    //}
 
 
     public void PlayerPlayCardActivate(CardScript cardScript)
@@ -394,86 +394,94 @@ public class DeckManager : MonoBehaviour
         if (savedPlayedCardScript != null)
         {
             //destroy the prefab
-            DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
+            if (savedPlayedCardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+            {
+                DestroyPlayedCard(SystemManager.CardThrow.BANISH);
+            }
+            else
+            {
+                DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
+            }
+     
         }
 
         yield return null;
     }
 
 
-    public void PlayCardOnlyAbilities(CardScript cardScript)
-    {
+    //public void PlayCardOnlyAbilities(CardScript cardScript)
+    //{
 
-        StartCoroutine(PlayCardCoroutine(cardScript));
+    //    StartCoroutine(PlayCardCoroutine(cardScript));
 
-    }
+    //}
 
-    IEnumerator PlayCardCoroutine(CardScript cardScript)
-    {
+    //IEnumerator PlayCardCoroutine(CardScript cardScript)
+    //{
 
-        SystemManager.Instance.thereIsActivatedCard = true;
+    //    SystemManager.Instance.thereIsActivatedCard = true;
 
-        //get the player
-        GameObject entity = GameObject.FindGameObjectWithTag("Player");
+    //    //get the player
+    //    GameObject entity = GameObject.FindGameObjectWithTag("Player");
 
-        if (entity == null)
-        {
-            yield return null;
-        }
+    //    if (entity == null)
+    //    {
+    //        yield return null;
+    //    }
 
-        foreach (CardAbilityClass cardAbilityClass in cardScript.scriptableCard.cardAbilityClass)
-        {
+    //    foreach (CardAbilityClass cardAbilityClass in cardScript.scriptableCard.cardAbilityClass)
+    //    {
 
-            if (cardAbilityClass == null)
-            {
-                continue;
-            }
+    //        if (cardAbilityClass == null)
+    //        {
+    //            continue;
+    //        }
 
-            // Wait for 2 seconds
-            cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.PLAYER);
-
-
-            //check to reset mana to the original cost if neeeded
-            if (cardScript.resetManaCost)
-            {
-                cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
-                cardScript.resetManaCost = false;
-                cardScript.changedMana = false;
-            }
+    //        // Wait for 2 seconds
+    //        cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.PLAYER);
 
 
-
-            yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
-            //yield return new WaitForSeconds(10f);
-        }
-
-        //go back to idle animation
-        if (entity != null)
-        {
-            Animator animator = entity.transform.Find("model").GetComponent<Animator>();
-
-            if (animator != null)
-            {
-
-                animator.SetTrigger("Idle");
-            }
-
-        }
+    //        //check to reset mana to the original cost if neeeded
+    //        if (cardScript.resetManaCost)
+    //        {
+    //            cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
+    //            cardScript.resetManaCost = false;
+    //            cardScript.changedMana = false;
+    //        }
 
 
 
-        //card ended
-        SystemManager.Instance.thereIsActivatedCard = false;
+    //        yield return new WaitForSeconds(cardAbilityClass.waitForAbility);
+    //        //yield return new WaitForSeconds(10f);
+    //    }
 
-        //if not already discarded by abilities then discard
-        if (savedPlayedCardScript != null)
-        {
-            //destroy the prefab
-            DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
-            //DiscardCardFromHand(cardScript);
-        }
+    //    //go back to idle animation
+    //    if (entity != null)
+    //    {
+    //        Animator animator = entity.transform.Find("model").GetComponent<Animator>();
 
-    }
+    //        if (animator != null)
+    //        {
+
+    //            animator.SetTrigger("Idle");
+    //        }
+
+    //    }
+
+
+
+    //    //card ended
+    //    SystemManager.Instance.thereIsActivatedCard = false;
+
+    //    //if not already discarded by abilities then discard
+    //    if (savedPlayedCardScript != null)
+    //    {
+    //        //destroy the prefab
+    //        DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
+    //        //DiscardCardFromHand(cardScript);
+    //    }
+
+    //}
 
 
     public void PlayCardFromHandRandom()
@@ -639,6 +647,7 @@ public class DeckManager : MonoBehaviour
     public void UpdateCardUI(GameObject cardPrefab)
     {
         ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+
         CardScript cardScript = cardPrefab.GetComponent<CardScript>();
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
@@ -657,7 +666,7 @@ public class DeckManager : MonoBehaviour
         //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
         //description is based on abilities
-        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = cardScript.scriptableCard.OnCardDescription(cardScript, character);
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character);
         //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         //{
         //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
@@ -674,27 +683,27 @@ public class DeckManager : MonoBehaviour
     }
 
 
-    //public void UpdateCardDescription(GameObject cardPrefab)
-    //{
+    public void UpdateCardDescription(GameObject cardPrefab)
+    {
 
-    //    ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-    //    CardScript cardScript = cardPrefab.GetComponent<CardScript>();
-    //    Transform cardChild = cardPrefab.transform.GetChild(0);
+        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        Transform cardChild = cardPrefab.transform.GetChild(0);
 
-    //    //get the character to be used
-    //    GameObject character = GameObject.FindGameObjectWithTag("Player");
-    //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = "";
-    //    foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-    //    {
-    //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
-    //    }
+        //get the character to be used
+        GameObject character = GameObject.FindGameObjectWithTag("Player");
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character); ;
+        //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
+        //{
+        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
+        //}
 
-    //    //conditions
-    //    foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
-    //    {
-    //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
-    //    }
-    //}
+        ////conditions
+        //foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
+        //{
+        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
+        //}
+    }
 
     public string GetBonusAttackAsDescription(int cardDmg, int calculatedDmg)
     {

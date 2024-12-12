@@ -133,6 +133,7 @@
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\ValueDragger.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Ripples\Effects\WaterRipplesParticleEffect.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Helpers\InvokeHelper.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddBuffDebuffIfEmpty.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralSimpleUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListView.cs" />
@@ -150,6 +151,8 @@
     <Compile Include="Assets\LeanTween\Testing\TestingOptionalCancel.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\CounterGloves\Artifacts_CounterGloves.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\AIManager.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Flame\Angel_Card_RighteousFlame.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Holy Slash\Angel_Card_HolySlash.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\Popup.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\BetterRawImage.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\BetterAxisAlignedLayoutGroup.cs" />
@@ -203,6 +206,8 @@
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\ScreenType\AspectRatio.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\ResolutionSizer.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_PoisonTarget.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Blind Attack\Angel_Card_BlindAttack.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Monster_Hit\Monster_Card_Hit.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\DpiManager.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\UI\LayerControls.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingIssue2.cs" />
@@ -220,12 +225,14 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuContent.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Rendering\WaterRenderingCameraFrustum.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\Margin.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget_BasedOnBuff.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\TestingZLegacy.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingDescr.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\HighlightGameObjectsOnMouse.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\ScreenType\IsCertainScreenOrientation.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableEvent.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Charts\PieChart.cs" />
     <Compile Include="Assets\OUR ASSETS\ENEMIES\AIAbilityHolder.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget.cs" />
@@ -261,6 +268,7 @@
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\Salamander\Artifacts_Salamander.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\Interactive\WindParallaxSSU.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Demo\Scripts\Demo_SpriteFader.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Multi Slash\Angel_Card_MultiSlash.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\LocationAnimations.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Animation\AnimationModule.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\IconLibraryEditor.cs" />
@@ -346,6 +354,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Progress Bar\ProgressBar.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableCard.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Characters\EntityClass.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Angelic Block\Angel_Card_AngelicBlock.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Main\WaterfallMainModule.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\Transitions\ColorTransitions.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\ScreenType\ScreenTypeConditions.cs" />
@@ -463,6 +472,7 @@
     <Compile Include="Assets\PixelFantasy\Common\Scripts\EffectManager.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\LevelBuilder.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableButtonEvent.cs" />
     <Compile Include="Assets\PixelFantasy\PixelMonsters\Common\Scripts\InanimateControls.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuManager.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathSpline2d.cs" />
@@ -535,16 +545,20 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\BuffDebuffClass.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableEvent.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableButtonEvent.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddBuffDebuffIfEmpty.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageSingleTarget_BasedOnBuff.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Angelic Block\Angel_Card_AngelicBlock.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Multi Slash\Angel_Card_MultiSlash.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Blind Attack\Angel_Card_BlindAttack.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Holy Slash\Angel_Card_HolySlash.cs" />
-    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Hit\Monster_Card_Hit.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Flame\Angel_Card_RighteousFlame.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Strength.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Determination\Angel_Card_Determination.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_TemporaryStrength.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_AngelicBarrier\Angel_Card_AngelicBarrier.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Defence.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_TemporaryDefence.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Berserk\Angel_Card_Berserk.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_RighteousLight\Angel_Card_RighteousLight.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_PiercingArrow\Angel_Card_PiercingArrow.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_RainCloud\Angel_Card_RainCloud.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Debuffs\Debuff_Wet.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Righteous.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Energy\Angel_Card_RighteousEnergy.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_ThunderCloud\Angel_Card_ThunderCloud.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />

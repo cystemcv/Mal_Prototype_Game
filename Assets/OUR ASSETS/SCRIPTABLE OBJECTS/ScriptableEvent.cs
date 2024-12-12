@@ -13,15 +13,9 @@ public class ScriptableEvent : ScriptableObject
     public string title;
     public string description;
 
+    public List<ScriptableButtonEvent> scriptableButtonEventList;
 
-    [Serializable]
-    public class EventButtonClass
-    {
 
-        public string buttonName;
-        public ScriptableButtonEvent scriptableButtonEvent;
-
-    }
 
 
 }

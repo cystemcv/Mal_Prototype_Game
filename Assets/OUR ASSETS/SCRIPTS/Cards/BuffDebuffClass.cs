@@ -8,26 +8,26 @@ public class BuffDebuffClass : MonoBehaviour
 {
 
     public GameObject targetWithDebuff;
-    public ScriptableCardAbility scriptableCardAbility;
+    public ScriptableBuffDebuff scriptableBuffDebuff;
 
     public int turnsAvailable;
     public int tempVariable = 0;
 
     public bool infiniteDuration = false;
 
-    public void CreateBuffOnTarget(ScriptableCardAbility scriptableCardAbility, GameObject target,int buffDebuffValue, int turnsAvailabeP)
+    public void CreateBuffOnTarget(ScriptableBuffDebuff scriptableBuffDebuff, GameObject target,int buffDebuffValue, int turnsAvailabeP)
     {
         //create the debuff
         //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
-        this.scriptableCardAbility = scriptableCardAbility;
-        infiniteDuration = scriptableCardAbility.infiniteDuration;
+        this.scriptableBuffDebuff = scriptableBuffDebuff;
+        infiniteDuration = scriptableBuffDebuff.infiniteDuration;
 
 
         //add the target with the debuff
         targetWithDebuff = target;
 
         //add icon
-        this.gameObject.transform.Find("Icon").GetComponent<Image>().sprite = scriptableCardAbility.scriptableBuffDebuff.icon;
+        this.gameObject.transform.Find("Icon").GetComponent<Image>().sprite = scriptableBuffDebuff.icon;
 
 
     }
@@ -75,7 +75,7 @@ public class BuffDebuffClass : MonoBehaviour
 
         if (turnsAvailable <= 0)
         {
-            scriptableCardAbility.OnExpireBuffDebuff(targetWithDebuff);
+            scriptableBuffDebuff.OnExpireBuffDebuff(targetWithDebuff);
             Destroy(this.gameObject);
         }
     }
