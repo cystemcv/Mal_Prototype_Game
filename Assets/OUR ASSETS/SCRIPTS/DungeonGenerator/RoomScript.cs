@@ -31,7 +31,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             CombatManager.Instance.scriptablePlanet = scriptablePlanet;
             CombatManager.Instance.planetClicked = this.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.4f);
+            SystemManager.Instance.LoadScene("scene_Combat", 0f);
         }
         else
         {

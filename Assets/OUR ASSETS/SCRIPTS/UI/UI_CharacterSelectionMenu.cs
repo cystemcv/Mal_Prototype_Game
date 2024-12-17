@@ -22,6 +22,8 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     public GameObject companionTitle;
     public GameObject companionDescription;
 
+    public GameObject characterPanelPrefab;
+
 
     private void Awake()
     {
@@ -60,23 +62,23 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
 
         //destroy all children objects
-        SystemManager.Instance.DestroyAllChildren(listOfCharactersGO);
+        foreach (Transform characterPanel in listOfCharactersGO.transform)
+        {
+            characterPanel.Find("Image").gameObject.SetActive(false);
+           
+        }
 
         int count = 0;
 
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.characterList)
         {
 
-            //generate each character
-            GameObject characterPanel = Instantiate(scriptableEntity.entityChoose, listOfCharactersGO.transform.position, Quaternion.identity);
 
-            characterPanel.GetComponent<Image>().sprite = scriptableEntity.entityImage;
+            //get ui object
+            GameObject characterPanel = listOfCharactersGO.transform.GetChild(count).gameObject;
 
-            //set it as a child of the parent
-            characterPanel.transform.SetParent(listOfCharactersGO.transform);
-
-            //make the local scale 1,1,1
-            characterPanel.transform.localScale = new Vector3(1, 1, 1);
+            characterPanel.transform.Find("Image").GetComponent<Image>().sprite = scriptableEntity.entityImage;
+            characterPanel.transform.Find("Image").gameObject.SetActive(true);
 
             //add script
             characterPanel.AddComponent<SelectionScreenPrefab>();
@@ -102,23 +104,22 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     public void DisplayAllCompanions()
     {
 
-        //destroy all children objects
-        SystemManager.Instance.DestroyAllChildren(listOfCompanionsGO);
+        foreach (Transform characterPanel in listOfCompanionsGO.transform)
+        {
+            characterPanel.Find("Image").gameObject.SetActive(false);
+       
+        }
 
         int count = 0;
+
 
         foreach (ScriptableCompanion scriptableCompanion in CharacterManager.Instance.companionList)
         {
             //generate each character
-            GameObject characterPanel = Instantiate(scriptableCompanion.companionChoose, listOfCompanionsGO.transform.position, Quaternion.identity);
+            GameObject characterPanel = listOfCompanionsGO.transform.GetChild(count).gameObject;
 
-            characterPanel.GetComponent<Image>().sprite = scriptableCompanion.companionImage;
-
-            //set it as a child of the parent
-            characterPanel.transform.SetParent(listOfCompanionsGO.transform);
-
-            //make the local scale 1,1,1
-            characterPanel.transform.localScale = new Vector3(1, 1, 1);
+            characterPanel.transform.Find("Image").GetComponent<Image>().sprite = scriptableCompanion.companionImage;
+            characterPanel.transform.Find("Image").gameObject.SetActive(true);
 
             //add script
             characterPanel.AddComponent<SelectionScreenPrefab>();
@@ -148,7 +149,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0.2f);
+        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0f);
     }
 
     public void BackToMainMenu()
@@ -158,7 +159,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f);
     }
 
     public void ProceedToGame()
@@ -171,7 +172,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         ItemManager.Instance.GameStartItems();
 
         //SceneManager.LoadScene("scene_Adventure");
-        SystemManager.Instance.LoadScene("scene_Adventure", 0.2f);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f);
 
 
     }

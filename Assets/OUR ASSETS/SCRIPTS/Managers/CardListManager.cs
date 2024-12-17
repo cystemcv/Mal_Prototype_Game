@@ -3,12 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardListManager : MonoBehaviour
 {
     public static CardListManager Instance;
 
-
+    public Sprite commonBg;
+    public Sprite rareBg;
+    public Sprite epicBg;
+    public Sprite legendaryBg;
 
     public GameObject cardPrefab;
 

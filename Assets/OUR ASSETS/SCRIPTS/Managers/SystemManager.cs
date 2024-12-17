@@ -74,7 +74,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM,RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
 
     public enum ActivationType { None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd,
-        OnNonCombatRoom, OnEntityGetHit
+        OnNonCombatRoom, OnEntityGetHit, OnAdventureSceneLoaded, OnNextGalaxyGeneration
     }
 
     //end of enums
@@ -96,6 +96,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorVeryLightBlue = "5DC7FF";
     public string colorYellow = "F9FF00";
     public string colorGreen = "25FF00";
+    public string colorGrey = "363636";
 
     //completely transparent
     public string colorTransparent = "FFFFFF00";
@@ -340,8 +341,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     {
 
         //wait for the transition
-        Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
-        loadingAnimator.SetTrigger("LoadingStart");
+        //Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+        //loadingAnimator.SetTrigger("LoadingStart");
         yield return new WaitForSeconds(manualLoadingTime);
 
         //do the async operation
@@ -357,7 +358,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
         //now the scene is loaded
-        loadingAnimator.SetTrigger("LoadingEnd");
+        //loadingAnimator.SetTrigger("LoadingEnd");
         yield return new WaitForSeconds(manualLoadingTime);
 
     }

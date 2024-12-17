@@ -267,24 +267,24 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        //create gameobject on scene and spawn it on the discard spawner
-        UI_Combat.Instance.CheckEnemyCard.SetActive(true);
-        GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
-        cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
+        ////create gameobject on scene and spawn it on the discard spawner
+        //UI_Combat.Instance.CheckEnemyCard.SetActive(true);
+        //GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
+        //cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
 
-        ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+        //ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
 
-        //add the scriptable card object to the prefab class to reference
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+        ////add the scriptable card object to the prefab class to reference
+        //cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
 
-        //make the local scale 1,1,1
-        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+        ////make the local scale 1,1,1
+        //cardPrefab.transform.localScale = new Vector3(1, 1, 1);
 
-        //update the information on the card prefab
-        DeckManager.Instance.UpdateCardUI(cardPrefab);
+        ////update the information on the card prefab
+        //DeckManager.Instance.UpdateCardUI(cardPrefab);
 
-        //deactivate events
-        cardPrefab.GetComponent<CardEvents>().enabled = false;
+        ////deactivate events
+        //cardPrefab.GetComponent<CardEvents>().enabled = false;
 
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
@@ -24,21 +25,17 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
     void Update()
     {
 
-        if (onHover)
-        {
-            return;
-        }
 
         if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
         {
 
             if (scriptableEntity.entityName == StaticData.staticCharacter.entityName)
             {
-                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
             }
             else
             {
-                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
+                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }
 
         }
@@ -46,11 +43,11 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
         {
             if (scriptableCompanion.companionName == StaticData.staticScriptableCompanion.companionName)
             {
-                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
+                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
             }
             else
             {
-                SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
+                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }
         }
 
@@ -60,6 +57,8 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
     {
 
         onHover = true;
+
+
 
         if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
         {
@@ -72,11 +71,10 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
             UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = scriptableCompanion.companionDescription;
         }
 
-        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialMouseOverEntity, this.gameObject);
-        //SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorVeryLightBlue, this.gameObject);
 
 
-
+        AudioManager.Instance.PlaySfx("UI_Confirm");
+        this.gameObject.transform.Find("Highlight").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -95,8 +93,7 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
             UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionDescription;
         }
 
-        SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity, this.gameObject);
-        //SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorWhite, this.gameObject);
+        this.gameObject.transform.Find("Highlight").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -109,6 +106,9 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
         {
             StaticData.staticScriptableCompanion = scriptableCompanion.Clone();
         }
+
+
+        AudioManager.Instance.PlaySfx("UI_goNext");
     }
 
 }

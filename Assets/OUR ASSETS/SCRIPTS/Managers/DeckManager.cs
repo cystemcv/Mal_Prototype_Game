@@ -654,6 +654,23 @@ public class DeckManager : MonoBehaviour
         //get the character to be used
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
+        if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
+        {
+            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+        }
+        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
+        {
+            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+        }
+        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
+        {
+            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+        }
+        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
+        {
+            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+        }
+
         //for example
         cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
         cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;

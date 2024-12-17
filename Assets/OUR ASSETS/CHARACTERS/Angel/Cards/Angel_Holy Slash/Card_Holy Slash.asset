@@ -18,18 +18,26 @@ MonoBehaviour:
   cardType: 0
   cardRarity: 0
   targetEntityTagList: 0100000003000000
-  primaryManaCost: 2
+  primaryManaCost: 3
   cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 0
+  cardSoundEffect: {fileID: 0}
   cardFlavor: 
   cardAbilityClass:
   - scriptableCardAbility: {fileID: 11400000, guid: 6f9eb048481fc264290973723a49903f, type: 2}
     waitForAbility: 0.4
     abilityEffect: {fileID: 309019412560960090, guid: 3adb3033cc8bd174581a171c8da46854, type: 3}
     abilityEffectLifetime: 0.6
+    abilityEffectYaxis: 0
     entityAnimation: 0
     entitySound: 3
-    abilityIntValueList: 0a000000
+    abilityIntValueList: 12000000
     abilityStringValueList: []
     abilityBoolValueList: 
     abilityFloatValueList: []
+    summonList: []
   unlockable: 0
+  cardConditionClass: []

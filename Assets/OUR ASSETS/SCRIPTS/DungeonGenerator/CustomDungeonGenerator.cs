@@ -80,7 +80,6 @@ public class CustomDungeonGenerator : MonoBehaviour
     private int howManyShopRoom = 0;
 
     private int maxRooms;
-    private int maxRoomsPlus;
 
     private GameObject lastCreatedPlanet;
     List<GameObject> usedBossRooms = new List<GameObject>();
@@ -146,6 +145,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded);
             UpdateAdventureUI();
         }
 
@@ -336,8 +336,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         //get the sum of all rooms as the max (wont count boss or hidden rooms as i want them to be on the edge of the galaxy
         maxRooms = howManyCombatRoom + howManyEliteCombatRoom + howManyRewardRoom + howManyEventRoom + howManyRestRoom + howManyShopRoom;
-        maxRoomsPlus = maxRooms + howManyHiddenRoom + (howManyBossRoom * 2);
-
+    
         //get the dungeon parent transform where every room will be child of
 
         Transform dungeonParentTransform = StaticData.staticDungeonParent.transform;
