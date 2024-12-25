@@ -586,7 +586,7 @@ public class DeckManager : MonoBehaviour
 
         //instantiate the prefab 
         // Instantiate at position (0, 0, 0) and zero rotation.
-        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UI_Combat.Instance.deckUIObject.transform.position, Quaternion.identity);
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UI_Combat.Instance.deckInfo.transform.position, Quaternion.identity);
         //get the scriptable object
         ScriptableCard scriptableCard = cardScript.scriptableCard;
 
@@ -810,7 +810,7 @@ public class DeckManager : MonoBehaviour
         Destroy(cardPrefab);
         GameObject cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, UI_Combat.Instance.handFullSpawnCard.transform.position, Quaternion.identity);
         //and assign the target
-        cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
+        cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardInfo;
 
 
     }
@@ -828,7 +828,7 @@ public class DeckManager : MonoBehaviour
 
             cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
             //and assign the target
-            cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
+            cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardInfo;
         }
         else if (cardThrow == SystemManager.CardThrow.BANISH)
         {
@@ -837,7 +837,7 @@ public class DeckManager : MonoBehaviour
 
             cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
             //and assign the target
-            cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedUIObject;
+            cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedInfo;
         }
 
         //destroy it as we do not need it anymore
@@ -885,13 +885,13 @@ public class DeckManager : MonoBehaviour
             {
                 cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, cardToDelete.transform.position, Quaternion.identity);
                 //and assign the target
-                cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardUIObject;
+                cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardInfo;
             }
             else if (cardThrow == SystemManager.CardThrow.BANISH)
             {
                 cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, cardToDelete.transform.position, Quaternion.identity);
                 //and assign the target
-                cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedUIObject;
+                cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedInfo;
             }
 
             //destroy it as we do not need it anymore

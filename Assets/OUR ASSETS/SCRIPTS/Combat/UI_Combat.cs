@@ -12,10 +12,10 @@ public class UI_Combat : MonoBehaviour
 
     //variables
 
-    public GameObject manaText;
-    public GameObject deckUIObject;
-    public GameObject discardUIObject;
-    public GameObject banishedUIObject;
+    public GameObject manaInfo;
+    public GameObject deckInfo;
+    public GameObject discardInfo;
+    public GameObject banishedInfo;
 
     [Header("SPAWN OF DISCARD CARD")]
     public GameObject handFullSpawnCard;
@@ -132,9 +132,9 @@ public class UI_Combat : MonoBehaviour
     void Update()
     {
 
-        deckUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
-        discardUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
-        banishedUIObject.transform.Find("TextHolder").Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
+        deckInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
+        discardInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
+        banishedInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
 
     }
 

@@ -3,10 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using static BuffSystemManager;
 using static ScriptableCard;
-
+using Michsky.MUIP;
 
 public class ScriptableCompanion : ScriptableObject
 {
@@ -21,8 +22,10 @@ public class ScriptableCompanion : ScriptableObject
     public string companionAbilityName = "";
     public int companionAbilityCD = 0;
     public int startingAbilityCd = 0;
+    public Sprite companionAbilityIcon;
     [Title("UPGRADES")]
     public List<ScriptableItem> companionItemList;
+
 
 
     public virtual void OnPlayCard()
@@ -60,10 +63,15 @@ public class ScriptableCompanion : ScriptableObject
     public virtual void InitializeButton()
     {
         GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
-        companionBtn.GetComponent<UI_CombatButton>().textSaved = companionAbilityName;
+
+        companionBtn.transform.Find("Icon").GetComponent<Image>().sprite = companionAbilityIcon;
+        companionBtn.GetComponent<TooltipContent>().description = companionAbilityName + " CD:" + companionAbilityCD;
+
+        companionBtn.GetComponent<UI_CombatButton>().EnableButton();
 
         if (startingAbilityCd > 0)
         {
+            companionBtn.GetComponent<UI_CombatButton>().DisableButton();
             //put the button on cd
             companionBtn.GetComponent<UI_CombatButton>().cdButton = startingAbilityCd;
         }

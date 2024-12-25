@@ -11,9 +11,8 @@ public class UI_CombatButton : MonoBehaviour
     public int cdButton = 0;
     public Color primarySavedColor;
     public Color secondarySavedColor;
-    public string textSaved = "";
 
-    public BetterImage backgroundGO;
+    public Image buttonIcon;
     public TMP_Text buttonText;
 
 
@@ -26,11 +25,10 @@ public class UI_CombatButton : MonoBehaviour
     void Start()
     {
 
-        backgroundGO = this.gameObject.transform.Find("bg").GetComponent<BetterImage>();
+        buttonIcon = this.gameObject.transform.Find("Icon").GetComponent<Image>();
         buttonText = this.gameObject.transform.Find("Text").GetComponent<TMP_Text>();
 
-        primarySavedColor = backgroundGO.color;
-        secondarySavedColor = backgroundGO.SecondColor;
+
 
         // Subscribe to the TurnsChanged event
         if (Combat.Instance != null)
@@ -78,25 +76,23 @@ public class UI_CombatButton : MonoBehaviour
             EnableButton();
         }
 
+
+
     }
 
 
 
     public void DisableButton()
     {
-
         // Get the current color of the sprite
-        Color colorP = primarySavedColor;
-        Color colorS = secondarySavedColor;
+        Color colorP = buttonIcon.color;
 
         // Modify the alpha value
         colorP.a = disabledAlpha;
-        colorS.a = disabledAlpha;
 
-        // Apply the modified color back to the SpriteRenderer
-        backgroundGO.color = colorP;
-        backgroundGO.SecondColor = colorS;
+        buttonIcon.color = colorP;
 
+        buttonText.gameObject.SetActive(true);
         buttonText.text = cdButton.ToString();
 
     }
@@ -105,18 +101,15 @@ public class UI_CombatButton : MonoBehaviour
     {
 
         // Get the current color of the sprite
-        Color colorP = primarySavedColor;
-        Color colorS = secondarySavedColor;
+        Color colorP = buttonIcon.color;
 
         // Modify the alpha value
         colorP.a = maxAlpha;
-        colorS.a = maxAlpha;
 
-        // Apply the modified color back to the SpriteRenderer
-        backgroundGO.color = colorP;
-        backgroundGO.SecondColor = colorS;
+        buttonIcon.color = colorP;
 
-        buttonText.text = textSaved;
+        buttonText.gameObject.SetActive(false);
+        buttonText.text = "";
 
     }
 }

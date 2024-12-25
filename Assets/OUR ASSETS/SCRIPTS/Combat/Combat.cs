@@ -136,7 +136,7 @@ public class Combat : MonoBehaviour
     {
 
         //show the mana on UI
-        UI_Combat.Instance.manaText.GetComponent<TMP_Text>().text = manaAvailable.ToString();
+        UI_Combat.Instance.manaInfo.transform.Find("Text").GetComponent<TMP_Text>().text = manaAvailable.ToString();
 
         //go throught each card in the hand and update them
         foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
