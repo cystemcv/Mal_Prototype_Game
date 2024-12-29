@@ -392,33 +392,33 @@ public class ItemManager : MonoBehaviour
             if (itemDisplay != null)
             {
 
-                itemPrefab.GetChild(0).gameObject.SetActive(true);
-                itemPrefab.GetChild(1).gameObject.SetActive(true);
+                itemPrefab.GetChild(2).gameObject.SetActive(true);
+                itemPrefab.GetChild(3).gameObject.SetActive(true);
 
                 itemDisplay.SetData(classItem);
                 itemDisplay.itemID = classItem.itemID;
 
 
-                itemPrefab.GetChild(0).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
+                itemPrefab.GetChild(2).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
 
                 //level or quantity
                 if (goObject == UIManager.Instance.inventoryGO)
                 {
-                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
                     itemDisplay.itemIn = SystemManager.ItemIn.INVENTORY;
                 }
                 else if (goObject == UIManager.Instance.lootGO)
                 {
-                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
                     itemDisplay.itemIn = SystemManager.ItemIn.LOOT;
                 }
                 else if (goObject == UIManager.Instance.artifactGO)
                 {
-                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "XXX";
+                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = "XXX";
                 }
                 else
                 {
-                    itemPrefab.GetChild(1).Find("Text").gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
+                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
                 }
 
 
@@ -434,11 +434,20 @@ public class ItemManager : MonoBehaviour
         foreach (Transform itemPrefab in goObject.transform)
         {
 
+
             itemPrefab.GetComponent<ClassItem>().enabled = false;
 
             foreach (Transform itemPrefabChild in itemPrefab)
             {
-                itemPrefabChild.gameObject.SetActive(false);
+                if (itemPrefabChild.name == "Background" || itemPrefabChild.name == "Outline")
+                {
+                    itemPrefabChild.gameObject.SetActive(true);
+                }
+                else
+                {
+                    itemPrefabChild.gameObject.SetActive(false);
+                }
+             
             }
         }
 

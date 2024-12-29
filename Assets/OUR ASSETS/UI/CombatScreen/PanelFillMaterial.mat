@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ENABLEHOLOGRAM_ON
+  - _ENABLECHECKERBOARD_ON
+  - _ENABLESHINE_ON
   - _ENABLESINEGLOW_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
@@ -215,8 +216,8 @@ Material:
     - _CamouflageFade: 1
     - _CamouflageSmoothnessA: 0.2
     - _CamouflageSmoothnessB: 0.2
-    - _CheckerboardDarken: 0.5
-    - _CheckerboardTiling: 1
+    - _CheckerboardDarken: 0.23
+    - _CheckerboardTiling: 12
     - _ChromAberrAlpha: 0.4
     - _ChromAberrAmount: 1
     - _ClipUvDown: 0
@@ -273,7 +274,7 @@ Material:
     - _EnableBrightness: 0
     - _EnableBurn: 0
     - _EnableCamouflage: 0
-    - _EnableCheckerboard: 0
+    - _EnableCheckerboard: 1
     - _EnableColorReplace: 0
     - _EnableContrast: 0
     - _EnableCustomFade: 0
@@ -289,7 +290,7 @@ Material:
     - _EnableGaussianBlur: 0
     - _EnableGlitch: 0
     - _EnableHalftone: 0
-    - _EnableHologram: 1
+    - _EnableHologram: 0
     - _EnableHue: 0
     - _EnableInkSpread: 0
     - _EnableInnerOutline: 0
@@ -309,7 +310,7 @@ Material:
     - _EnableSharpen: 0
     - _EnableShiftHue: 0
     - _EnableShifting: 0
-    - _EnableShine: 0
+    - _EnableShine: 1
     - _EnableSineGlow: 1
     - _EnableSineMove: 0
     - _EnableSineRotate: 0
@@ -364,8 +365,8 @@ Material:
     - _FullAlphaDissolveFade: 0.5
     - _FullAlphaDissolveWidth: 0.5
     - _FullDistortionFade: 1
-    - _FullGlowDissolveFade: 0.5
-    - _FullGlowDissolveWidth: 0.5
+    - _FullGlowDissolveFade: 1
+    - _FullGlowDissolveWidth: 0.06
     - _GaussianBlurFade: 1
     - _GaussianBlurOffset: 0.5
     - _GhostBlend: 1
@@ -719,7 +720,7 @@ Material:
     - _FullDistortionDistortion: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _FullDistortionNoiseScale: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _FullGlowDissolveEdgeColor: {r: 11.98431, g: 0.627451, b: 0.627451, a: 0}
-    - _FullGlowDissolveNoiseScale: {r: 0.1, g: 0.1, b: 0, a: 0}
+    - _FullGlowDissolveNoiseScale: {r: 1.12, g: 1.36, b: 0, a: 0}
     - _GlitchDistortion: {r: 0.1, g: 0, b: 0, a: 0}
     - _GlitchDistortionScale: {r: 0, g: 3, b: 0, a: 0}
     - _GlitchDistortionSpeed: {r: 0, g: 1, b: 0, a: 0}
@@ -807,7 +808,7 @@ Material:
     - _UVRotatePivot: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _UVScalePivot: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _UVScaleScale: {r: 1, g: 1, b: 0, a: 0}
-    - _UVScrollSpeed: {r: 0.2, g: 0, b: 0, a: 0}
+    - _UVScrollSpeed: {r: 0.4, g: 0, b: 0, a: 0}
     - _WorldTilingOffset: {r: 0, g: 0, b: 0, a: 0}
     - _WorldTilingScale: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

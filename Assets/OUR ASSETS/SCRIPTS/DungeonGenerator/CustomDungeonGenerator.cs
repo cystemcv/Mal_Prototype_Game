@@ -336,6 +336,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         //get the sum of all rooms as the max (wont count boss or hidden rooms as i want them to be on the edge of the galaxy
         maxRooms = howManyCombatRoom + howManyEliteCombatRoom + howManyRewardRoom + howManyEventRoom + howManyRestRoom + howManyShopRoom;
+        Debug.Log("maxRooms : " + maxRooms);
     
         //get the dungeon parent transform where every room will be child of
 
