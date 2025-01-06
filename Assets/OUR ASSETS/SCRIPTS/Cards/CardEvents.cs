@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     private float hoverScale = 1.2f;
-    private float hoverChoiceScale = 1.5f;
+    private Vector3 originaChoiceScale = new Vector3(1,1,1);
+    private float hoverChoiceScale = 1.1f;
     private float transitionTime = 0.1f;
     private float hoverHeight = 0.6f;
 
@@ -351,30 +352,23 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter_ChoiceMode()
     {
         // Scale up the hovered card
-        scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverChoiceScale, transitionTime);
+        scaleTween = LeanTween.scale(childObjectVisual, originaChoiceScale * hoverChoiceScale, transitionTime);
         gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     public void OnPointerExit_ChoiceMode()
     {
         // Scale down the card
-        scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
+        scaleTween = LeanTween.scale(childObjectVisual, originaChoiceScale, transitionTime);
     }
 
   
     public void OnPointerDown_ChoiceMode(PointerEventData eventData)
     {
 
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-
-
-
-        }
-        else
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>());
-
         }
     }
 

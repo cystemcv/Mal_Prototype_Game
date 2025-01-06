@@ -28,7 +28,8 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            target = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
+            target = null;
+            //target = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
         }
 
         StartCoroutine(CenterCameraOnObject(target)); // Start the coroutine for smooth centering
@@ -58,6 +59,10 @@ public class CameraController : MonoBehaviour
 
             // Ensure the camera ends exactly at the target position
             transform.position = targetPosition;
+        }
+        else
+        {
+            transform.position = new Vector3(0, 0, -10);
         }
     }
 
