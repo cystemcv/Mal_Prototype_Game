@@ -71,9 +71,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemIn { INVENTORY, LOOT }
 
-    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM,RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
 
-    public enum ActivationType { None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd,
+    public enum ActivationType
+    {
+        None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd,
         OnNonCombatRoom, OnEntityGetHit, OnAdventureSceneLoaded, OnNextGalaxyGeneration
     }
 
@@ -292,6 +294,52 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
     }
 
+    public IEnumerator DestroyObjectIE(GameObject objectToDestroy, float timer)
+    {
+
+        Destroy(objectToDestroy, timer);
+
+        yield return null; // Wait for a frame to ensure destruction
+
+    }
+
+    public IEnumerator SpawnPrefabIE(GameObject spawnPrefab, GameObject target, float spawnTimer, string name, Vector3 spawnVector3)
+    {
+        //missing prefab vfx
+        if (spawnPrefab == null || target == null)
+        {
+            yield return null; // Wait for a frame to ensure destruction
+        }
+
+        //spawn prefab
+        GameObject spawnPrefabTrue = Instantiate(spawnPrefab, target.transform.position, Quaternion.identity);
+        spawnPrefabTrue.transform.SetParent(target.transform);
+        spawnPrefabTrue.name = name;
+        spawnPrefabTrue.transform.position = new Vector3(
+            spawnPrefabTrue.transform.position.x + spawnVector3.x,
+            spawnPrefabTrue.transform.position.y + spawnVector3.y,
+            spawnPrefabTrue.transform.position.z + spawnVector3.z
+            );
+
+        //check if there is cnvas then assign camera
+
+        Canvas canvas = spawnPrefabTrue.GetComponent<Canvas>();
+        Camera mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        if (canvas != null)
+        {
+            canvas.worldCamera = mainCamera;
+        }
+
+        ////if the target is player then we wanna rotate 
+        //if (target.tag == "Player")
+        //{
+        //    spawnPrefabTrue.transform.Rotate(new Vector3(0, 180, 0));
+        //}
+
+        yield return null; // Wait for a frame to ensure destruction
+    }
+
     public void DestroyAllChildren(GameObject parent)
     {
         // Create a list to hold references to children
@@ -364,12 +412,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     }
     public void ChangeTargetMaterial(Material customMaterial, GameObject target)
     {
-        if(target == null)
+        if (target == null)
         {
             return;
         }
 
-        if ( target.GetComponent<EntityClass>() != null)
+        if (target.GetComponent<EntityClass>() != null)
         {
 
             //change material
@@ -394,8 +442,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             {
                 target.GetComponent<Image>().material = customMaterial;
             }
-             
-          
+
+
         }
 
     }
@@ -529,7 +577,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         return tags;
     }
 
-    public void SpawnEffectPrefab( GameObject spawnPrefab ,GameObject target, float spawnTimer)
+    public void SpawnEffectPrefab(GameObject spawnPrefab, GameObject target, float spawnTimer)
     {
         //missing prefab vfx
         if (spawnPrefab == null || target == null)

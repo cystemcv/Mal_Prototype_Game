@@ -28,6 +28,9 @@ public class UI_Combat : MonoBehaviour
     public GameObject notificationParent;
     public GameObject notificationPb;
 
+    [Header("ENTITY UI")]
+    public GameObject commonGameobjectUI;
+    public GameObject playerGameobjectUI;
 
     [Header("LEADER")]
     public GameObject leaderIndicator;
