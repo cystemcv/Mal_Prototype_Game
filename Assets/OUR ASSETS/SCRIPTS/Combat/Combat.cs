@@ -23,7 +23,7 @@ public class Combat : MonoBehaviour
     public int characterCount = 0;
     public int enemyCount = 0;
     public int maxPlayerSummons = 3;
-    public int maxEnemySummons = 3;
+    public int maxEnemies = 7;
 
     [Header("COMBAT COMMON VARIABLES")]
     public int turns = 0;
@@ -189,7 +189,7 @@ public class Combat : MonoBehaviour
             //lose
             UI_Combat.Instance.gameover.SetActive(true);
         }
-        else if (enemiesAlive <= 0)
+        else if (enemyFormation.Count <= 0)
         {
 
             //get the player
@@ -323,7 +323,7 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(CheckCharactersAlive());
 
         //check the enemies that are alive
-        yield return StartCoroutine(CheckEnemiesAlive());
+        //yield return StartCoroutine(CheckEnemiesAlive());
 
         //start win conditions
         conditionsEnabled = true;
@@ -333,7 +333,7 @@ public class Combat : MonoBehaviour
         StaticData.staticScriptableCompanion.InitializeButton();
 
         //start the player
-        yield return WaitPlayerTurns();
+        yield return StartCoroutine(WaitPlayerTurns());
     }
 
 
@@ -417,7 +417,7 @@ public class Combat : MonoBehaviour
         //increase turn;
         Turns += 1;
 
-        yield return RearrangeFormation(characterFormation);
+        yield return StartCoroutine(RearrangeFormation(characterFormation));
 
         //mana should go back to full
         yield return StartCoroutine(RefillMana());
@@ -432,7 +432,7 @@ public class Combat : MonoBehaviour
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
 
-        yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetPlayerTagsList()));
+        //yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetPlayerTagsList()));
 
         //loop for all buffs and debuffs
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
@@ -445,23 +445,23 @@ public class Combat : MonoBehaviour
         yield return null; // Wait for a frame 
     }
 
-    public IEnumerator LowerSummonTurns(List<string> tags)
-    {
-        List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
+    //public IEnumerator LowerSummonTurns(List<string> tags)
+    //{
+    //    List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
 
-        foreach (GameObject entity in entities)
-        {
-            if (entity.tag == "PlayerSummon" || entity.tag == "EnemySummon")
-            {
-                EntityClass entityClass = entity.GetComponent<EntityClass>();
-                //lower every turn by 1
-                entityClass.AdjustSummonTurns(-1);
-            }
+    //    foreach (GameObject entity in entities)
+    //    {
+    //        if (entity.tag == "PlayerSummon" || entity.tag == "EnemySummon")
+    //        {
+    //            EntityClass entityClass = entity.GetComponent<EntityClass>();
+    //            //lower every turn by 1
+    //            entityClass.AdjustSummonTurns(-1);
+    //        }
 
-        }
+    //    }
 
-        yield return null;
-    }
+    //    yield return null;
+    //}
 
     public int GetLastNonNull(List<GameObject> array)
     {
@@ -544,7 +544,7 @@ public class Combat : MonoBehaviour
         //remove shield from all enemies
         RemoveShieldFromEntitiesBasedOnTag("Enemy");
 
-        yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
+       // yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
 
         yield return null;
     }
@@ -720,7 +720,7 @@ public class Combat : MonoBehaviour
 
             LeanTween.moveX(formation[i], newPosition.x, 0.2f);
 
-
+            yield return new WaitForSeconds(0.2f);
 
         }
 
@@ -828,23 +828,23 @@ public class Combat : MonoBehaviour
 
     }
 
-    public IEnumerator CheckEnemiesAlive()
-    {
-        //initialize dead count
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+    //public IEnumerator CheckEnemiesAlive()
+    //{
+    //    //initialize dead count
+    //    GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        enemiesAlive = 0;
-        foreach (GameObject enemy in enemies)
-        {
-            //count how many alive
-            if (enemy.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
-            {
-                enemiesAlive += 1;
-            }
-        }
+    //    enemiesAlive = 0;
+    //    foreach (GameObject enemy in enemies)
+    //    {
+    //        //count how many alive
+    //        if (enemy.GetComponent<EntityClass>().entityMode != SystemManager.EntityMode.DEAD)
+    //        {
+    //            enemiesAlive += 1;
+    //        }
+    //    }
 
-        yield return null;
-    }
+    //    yield return null;
+    //}
 
     public IEnumerator InitializeCardsAndDecks()
     {
@@ -890,10 +890,10 @@ public class Combat : MonoBehaviour
     {
         //yield return new WaitForSeconds(2f);
         //player turn start
-        yield return PlayerTurnStart();
+        yield return StartCoroutine(PlayerTurnStart());
         //yield return new WaitForSeconds(2f);
         //player turn
-        yield return PlayerTurn();
+        yield return StartCoroutine(PlayerTurn());
 
     }
 
@@ -1167,7 +1167,7 @@ public class Combat : MonoBehaviour
     public void CheckIfEntityIsDead(EntityClass entityClass)
     {
 
-        if (entityClass.health <= 0 || entityClass.summonTurns <= 0)
+        if (entityClass.health <= 0 )
         {
 
             entityClass.entityMode = SystemManager.EntityMode.DEAD;
@@ -1186,7 +1186,7 @@ public class Combat : MonoBehaviour
             else if (entityClass.gameObject.tag == "Enemy")
             {
                 ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath);
-                enemiesAlive -= 1;
+                //enemiesAlive -= 1;
             }
 
             if (SystemManager.Instance.GetPlayerTagsList().Contains(entityClass.gameObject.tag))
@@ -1492,5 +1492,93 @@ public class Combat : MonoBehaviour
         }
     }
 
+    public List<GameObject> SummonEntity(GameObject entityUsedCard,List<ScriptableEntity> scriptableEntities, EntityCustomClass entityCustomClass = null)
+    {
+
+        List<GameObject> summonedEntities = new List<GameObject>();
+
+        foreach (ScriptableEntity summonInCard in scriptableEntities)
+        {
+
+
+            GameObject summon;
+            //get all targets
+            if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+            {
+
+                GameObject[] summons = GameObject.FindGameObjectsWithTag("PlayerSummon");
+
+                //check if it reach the limit
+                if (summons.Length >= Combat.Instance.maxPlayerSummons)
+                {
+                    return null;
+                }
+                else
+                {
+                    summon = Combat.Instance.InstantiateCharacter(summonInCard);
+
+                    summon.tag = "PlayerSummon";
+
+                    //allow to activate coroutine on scriptable object
+                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                                       //hit at least one time if its 0
+
+                    // Start the coroutine for each hit
+                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity(entityCustomClass));
+
+
+                    //initialize 
+                    summon.GetComponent<AIBrain>().GenerateIntend();
+
+                    summonedEntities.Add(summon);
+                }
+
+
+            }
+            else
+            {
+
+                GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
+
+                //check if it reach the limit
+                if (enemyFormation.Count >= Combat.Instance.maxEnemies)
+                {
+                    return null;
+                }
+                else
+                {
+                    //enemiesAlive++;
+
+                    summon = Combat.Instance.InstantiateEnemies(summonInCard);
+
+                    summon.tag = "EnemySummon";
+
+                    //initialize the stats
+                    //allow to activate coroutine on scriptable object
+                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                                       //hit at least one time if its 0
+
+                    // Start the coroutine for each hit
+                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity(entityCustomClass));
+
+
+                    //initialize 
+                    summon.GetComponent<AIBrain>().GenerateIntend();
+
+                    summonedEntities.Add(summon);
+                }
+
+
+            }
+
+
+
+        }
+
+        return summonedEntities;
+
+
+
+    }
 
 }

@@ -5,6 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public class EntityCustomClass
+{
+    public int currHealth = 0;
+    public int poisonDmg = 0;
+    public int maxHealth = 0;
+    public int strength = 0;
+    public int defence = 0;
+}
+
 public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
@@ -17,7 +26,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     [Header("COMMON")]
     public List<GameObject> listBuffDebuffClass;
-    
+
     //stats
     public int poisongDmg;
     public int attack = 0;
@@ -36,7 +45,6 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     float rotationSpeed = -2000f;  // Degrees per second
     public bool allowEntityRotation = false;
 
-    public int summonTurns = 1;
 
     //combat
     public GameObject sliderBar;
@@ -66,7 +74,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private GameObject gameobjectUI;
     private GameObject model;
 
-    public bool spawnSummonTurnsObject = false;
+    //public bool spawnSummonTurnsObject = false;
 
     public EntityClass()
     {
@@ -105,7 +113,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-       // StartCoroutine(InititializeEntity());
+        // StartCoroutine(InititializeEntity());
 
 
     }
@@ -119,7 +127,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //Destroy the gameobject UI
         if (gameObjectUI != null)
         {
-            yield return StartCoroutine(SystemManager.Instance.DestroyObjectIE(gameObjectUI,0));
+            yield return StartCoroutine(SystemManager.Instance.DestroyObjectIE(gameObjectUI, 0));
             Debug.Log("Finished DestroyObjectIE");
         }
 
@@ -140,14 +148,14 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         yield return null;
     }
 
-    private IEnumerator InitializeHealthBar(GameObject newUI)
-    {
-        // Wait until the end of the frame to ensure the object is fully instantiated and set up
-        yield return new WaitForEndOfFrame();
+    //private IEnumerator InitializeHealthBar(GameObject newUI)
+    //{
+    //    // Wait until the end of the frame to ensure the object is fully instantiated and set up
+    //    yield return new WaitForEndOfFrame();
 
-        // Call InitUIBar now that the object is fully set up
-        InitUIBar();
-    }
+    //    // Call InitUIBar now that the object is fully set up
+    //    InitUIBar();
+    //}
 
     public void InitializeUIEntityPanel()
     {
@@ -167,43 +175,67 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // Update is called once per frame
 
 
-    public IEnumerator InititializeEntity()
+    public IEnumerator InititializeEntity(EntityCustomClass entityCustomClass = null)
     {
-     
-
-
-        if (this.gameObject.tag == "PlayerSummon" || this.gameObject.tag == "EnemySummon")
-        {
-            spawnSummonTurnsObject = true;
-        }
 
         yield return StartCoroutine(SpawnUI());
 
         //variables that can change during battle
-        poisongDmg = scriptableEntity.poisonDmg;
-        health = scriptableEntity.currHealth;
-        maxHealth = scriptableEntity.maxHealth;
-        attack = scriptableEntity.strength;
-        defence = scriptableEntity.defence;
-
-        summonTurns = scriptableEntity.summonTurns;
-
-        if (spawnSummonTurnsObject)
+        if (entityCustomClass != null && entityCustomClass.poisonDmg != 0)
         {
-            summonTurnsText = this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").Find("Text").GetComponent<TMP_Text>();
-            summonTurnsText.text = summonTurns.ToString();
+            poisongDmg = entityCustomClass.poisonDmg;
+      
         }
         else
         {
-            this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
+            poisongDmg = scriptableEntity.poisonDmg;
         }
 
+        if (entityCustomClass != null && entityCustomClass.currHealth != 0)
+        {
+            health = entityCustomClass.currHealth;
+        }
+        else
+        {
+            health = scriptableEntity.currHealth;
+        }
+
+        if (entityCustomClass != null && entityCustomClass.maxHealth != 0)
+        {
+            maxHealth = entityCustomClass.maxHealth;
+        }
+        else
+        {
+            maxHealth = scriptableEntity.maxHealth;
+        }
+
+        if (entityCustomClass != null && entityCustomClass.strength != 0)
+        {
+            attack = entityCustomClass.strength;
+        }
+        else
+        {
+            attack = scriptableEntity.strength;
+        }
+
+        if (entityCustomClass != null && entityCustomClass.defence != 0)
+        {
+            defence = entityCustomClass.defence;
+        }
+        else
+        {
+            defence = scriptableEntity.defence;
+        }
+
+
+        this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
+
         InitUIBar();
-
-
         //save current position , so it can go back if needed
         OriginXPos = this.gameObject.transform.position.x;
     }
+
+
 
     public void InitUIBar()
     {
@@ -324,26 +356,28 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     }
 
-    public void AdjustSummonTurns(int value)
-    {
-        if (spawnSummonTurnsObject)
-        {
-            summonTurns += value;
-            summonTurnsText.text = summonTurns.ToString();
+    //public void AdjustSummonTurns(int value)
+    //{
+    //    if (spawnSummonTurnsObject)
+    //    {
+    //        //summonTurns += value;
+    //        //summonTurnsText.text = summonTurns.ToString();
 
-            if (summonTurns >= 99)
-            {
-                summonTurns = 99;
-            }
+    //        //if (summonTurns >= 99)
+    //        //{
+    //        //    summonTurns = 99;
+    //        //}
 
-            if (summonTurns <= 0)
-            {
-                summonTurns = 0;
-            }
+    //        //if (summonTurns <= 0)
+    //        //{
+    //        //    summonTurns = 0;
+    //        //}
 
-            //if the target reach to 0
-            Combat.Instance.CheckIfEntityIsDead(this);
+    //        //if the target reach to 0
+    //        Combat.Instance.CheckIfEntityIsDead(this);
 
-        }
-    }
+    //    }
+    //}
 }
+
+

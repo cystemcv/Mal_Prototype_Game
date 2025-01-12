@@ -3200,6 +3200,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &189229391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9575,6 +9576,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &722587501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10321,6 +10323,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &799722527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27033,6 +27036,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1010784277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28475,6 +28479,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1163703948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28772,7 +28777,7 @@ MonoBehaviour:
   characterCount: 0
   enemyCount: 0
   maxPlayerSummons: 3
-  maxEnemySummons: 3
+  maxEnemies: 7
   turns: 0
   deathLaunchSpeed: 0
   deathLaunchTimer: 0.2
@@ -29075,6 +29080,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1203401805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31090,6 +31096,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1359014666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33628,6 +33635,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1514011575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35345,6 +35353,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!1 &1731175376
 GameObject:
   m_ObjectHideFlags: 0
@@ -36545,6 +36554,7 @@ MonoBehaviour:
   disabledAlpha: 100
   maxAlpha: 255
   activatedButton: 0
+  companionButton: 0
 --- !u!1 &1825640865
 GameObject:
   m_ObjectHideFlags: 0
@@ -43179,6 +43189,7 @@ MonoBehaviour:
   disabledAlpha: 0.1
   maxAlpha: 1
   activatedButton: 0
+  companionButton: 0
 --- !u!114 &1987725081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44925,7 +44936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsInHandList: []
   points: []
-  turnHandCardsLimit: 10
+  turnHandCardsLimit: 5
   maxHandCardsLimit: 10
   angleDelta: 1.2
   angleDeltaArray:
@@ -46294,7 +46305,6 @@ MonoBehaviour:
   maxShield: 999
   counterDamage: 0
   allowEntityRotation: 0
-  summonTurns: 1
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
@@ -46310,7 +46320,6 @@ MonoBehaviour:
   entityID: 76cdfbcc-003b-4e12-89e0-7915cbe649e5
   entityMode: 0
   spawnGameObjectUI: {x: 0, y: 0, z: 0}
-  spawnSummonTurnsObject: 0
 --- !u!61 &5259421351518280304
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -47285,6 +47294,14 @@ PrefabInstance:
       propertyPath: handCenter
       value: 
       objectReference: {fileID: 2130021374300936347}
+    - target: {fileID: 2130021374987795495, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: characterList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: de585f208d54c574284ffe0cbcfb38e3, type: 2}
+    - target: {fileID: 2130021374987795495, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: characterList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2fa82dbcc0347074083a63497d97d230, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}

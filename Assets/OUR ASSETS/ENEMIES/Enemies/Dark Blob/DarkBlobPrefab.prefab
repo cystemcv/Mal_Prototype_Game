@@ -92,7 +92,6 @@ MonoBehaviour:
   maxShield: 999
   counterDamage: 0
   allowEntityRotation: 0
-  summonTurns: 1
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
@@ -108,7 +107,6 @@ MonoBehaviour:
   entityID: 76cdfbcc-003b-4e12-89e0-7915cbe649e5
   entityMode: 0
   spawnGameObjectUI: {x: 0, y: -0.2, z: 0}
-  spawnSummonTurnsObject: 0
 --- !u!50 &2122752739540294261
 Rigidbody2D:
   serializedVersion: 4
@@ -143,6 +141,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardScriptList:
+  - {fileID: 11400000, guid: 581eba49868bacd499aa114822c1ebae, type: 2}
+  - {fileID: 11400000, guid: 8b3e89b9226639d4d8a2f13cbd27acb9, type: 2}
   - {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
   aiLogicStep: 0
   targetForCard: {fileID: 0}

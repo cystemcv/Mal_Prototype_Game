@@ -33,7 +33,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
     public AddCardTo addCardTo;
 
-    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, }
+    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon}
     public CardType cardType;
 
     public enum CardRarity { Common, Rare, Epic, Legendary };

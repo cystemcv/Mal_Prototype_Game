@@ -76,7 +76,7 @@ public class Ability_Summon : ScriptableCardAbility
                 GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
 
                 //check if it reach the limit
-                if (summons.Length >= Combat.Instance.maxEnemySummons)
+                if (summons.Length >= Combat.Instance.maxEnemies)
                 {
                     return;
                 }

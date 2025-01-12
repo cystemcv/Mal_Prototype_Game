@@ -21,6 +21,8 @@ public class UI_CombatButton : MonoBehaviour
 
     public bool activatedButton = false;
 
+    public bool companionButton = false;
+
     // Start is called before the first frame update
     void Start()
     {
