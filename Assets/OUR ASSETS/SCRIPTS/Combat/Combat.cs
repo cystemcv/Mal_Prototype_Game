@@ -1283,7 +1283,7 @@ public class Combat : MonoBehaviour
 
         if (entity == null)
         {
-            return 0; //stops function
+            return startingDmg; //stops function
         }
 
         if (combatEnded)

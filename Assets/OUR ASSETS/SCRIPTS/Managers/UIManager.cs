@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -39,7 +40,17 @@ public class UIManager : MonoBehaviour
     public GameObject notificationParent;
     public GameObject notificationPb;
 
-
+    [Header("CARD LIST")]
+    public bool enableCloseButton = false;
+    public int enableMaxSelection = 0;
+    public int enableMinSelection = 0;
+    public List<ScriptableCard> selectedCardList = new List<ScriptableCard>();
+    public enum CardListMode { VIEW, EDIT }
+    public CardListMode cardListMode = CardListMode.VIEW;
+    public GameObject cardListGO;
+    public GameObject cardListGOContent;
+    public GameObject cardPrefabScaleWithScreenOverlay;
+    List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
     public void ToggleActivateOrderVisibility()
     {
@@ -133,7 +144,7 @@ public class UIManager : MonoBehaviour
         tooltipText.text = content;
         tooltipPanel.SetActive(true);
 
-        UIManager.Instance.AdjustTooltipPosition( hoverPosition, hoverSize, FindParentCanvas(hoverObject.transform));
+        UIManager.Instance.AdjustTooltipPosition(hoverPosition, hoverSize, FindParentCanvas(hoverObject.transform));
     }
 
     public void HideTooltip()
@@ -535,7 +546,194 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OpenCardList()
+    {
 
+
+
+    }
+
+    public void OpenDeckList()
+    {
+
+        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+
+        foreach (CardScript cardScript in DeckManager.Instance.combatDeck)
+        {
+            scriptableCardList.Add(cardScript.scriptableCard);
+        }
+
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 5, "Current Deck Card List", CadList_DoNothing);
+    }
+
+    private void CadList_DoNothing()
+    {
+        Debug.Log("Does nothing");
+    }
+
+    public void OpenDiscardList()
+    {
+
+        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+
+        foreach (CardScript cardScript in DeckManager.Instance.discardedPile)
+        {
+            scriptableCardList.Add(cardScript.scriptableCard);
+        }
+
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Discarded Card List", CadList_DoNothing);
+    }
+
+    public void OpenBanishedList()
+    {
+
+        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+
+        foreach (CardScript cardScript in DeckManager.Instance.banishedPile)
+        {
+            scriptableCardList.Add(cardScript.scriptableCard);
+        }
+
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Banished Card List", CadList_DoNothing);
+    }
+
+    //-----------------
+
+    public void HideCardList()
+    {
+        ResetCardList();
+
+        this.cardListGO.SetActive(false);
+    }
+
+    public void ShowCardList(List<ScriptableCard> scriptableCardList, CardListMode cardListMode, bool enableCloseButton, int enableMinSelection, int enableMaxSelection, string title,
+        Action onConfirmAction)
+    {
+
+        this.cardListMode = cardListMode;
+        this.enableCloseButton = enableCloseButton;
+        this.enableMinSelection = enableMinSelection;
+        this.enableMaxSelection = enableMaxSelection;
+        this.scriptableCardList = scriptableCardList;
+
+        //enableMaxSelection_Selected = 0;
+        selectedCardList.Clear();
+
+        this.cardListGO.SetActive(true);
+        this.cardListGO.transform.Find("Others").Find("Title").GetComponent<TMP_Text>().text = title;
+
+        GameObject closeButton = this.cardListGO.transform.Find("Buttons").Find("btn_Close").gameObject;
+
+        if (!this.enableCloseButton)
+        {
+            closeButton.SetActive(false);
+        }
+        else
+        {
+            closeButton.SetActive(true);
+        }
+
+        GameObject selectionText = this.cardListGO.transform.Find("Others").Find("SelectionText").gameObject;
+        GameObject confirmButtonGO = this.cardListGO.transform.Find("Buttons").Find("btn_Confirm").gameObject;
+
+        if (enableMaxSelection > 0)
+        {
+            confirmButtonGO.SetActive(true);
+            selectionText.SetActive(true);
+            selectionText.GetComponent<TMP_Text>().text = selectedCardList.Count + "/" + this.enableMaxSelection;
+        }
+        else
+        {
+            selectionText.SetActive(false);
+            confirmButtonGO.SetActive(false);
+        }
+
+        AssignCardsOnCardList();
+
+      
+        Button confirmButton = confirmButtonGO.GetComponent<Button>();
+
+        // Assign the custom behavior to the Confirm button
+        confirmButton.onClick.RemoveAllListeners(); // Clear previous listeners
+        confirmButton.onClick.AddListener(() =>
+        {
+            onConfirmAction?.Invoke(); // Execute the custom function
+            cardListGO.SetActive(false); // Close the panel after confirming
+        });
+
+    }
+
+    public void ResetCardList()
+    {
+        foreach (Transform card in cardListGOContent.transform)
+        {
+            card.gameObject.SetActive(false);
+        }
+    }
+
+    public void AssignCardsOnCardList()
+    {
+
+
+        foreach (ScriptableCard scriptableCard in this.scriptableCardList)
+        {
+            foreach (Transform card in cardListGOContent.transform)
+            {
+
+
+                if (!card.gameObject.activeSelf)
+                {
+
+                    //then we use it
+                    card.gameObject.SetActive(true);
+
+                    card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
+                    card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
+
+                    Transform cardChild = card.transform.GetChild(0);
+
+                    if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
+                    {
+                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+                    }
+                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
+                    {
+                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+                    }
+                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
+                    {
+                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+                    }
+                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
+                    {
+                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+                    }
+
+                    //for example
+                    cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+                    cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
+                    cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
+
+                    //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
+
+                    //mana cost
+                    cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+                    //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+
+                    //description is based on abilities
+                    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(null, null);
+
+                    //exit loop
+                    break;
+                }
+
+
+            }
+        }
+
+
+
+    }
 
 
 }

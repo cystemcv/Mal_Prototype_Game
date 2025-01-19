@@ -8,15 +8,15 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ManaImage
-  m_Shader: {fileID: 4800000, guid: 0803c241834332942abfcbd27c498b46, type: 3}
+  m_Shader: {fileID: 10755, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - SHINE_ON
   - _ENABLESINEGLOW_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
-  m_InvalidKeywords:
-  - SHINE_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -103,11 +103,23 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetalMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -171,6 +183,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
@@ -185,6 +209,8 @@ Material:
     - _AddHueSaturation: 1
     - _AddHueSpeed: 1
     - _Alpha: 1
+    - _AlphaClip: 0.5
+    - _AlphaCutoff: 0.5
     - _AlphaCutoffValue: 0.25
     - _AlphaOutlineBlend: 1
     - _AlphaOutlineGlow: 5
@@ -227,6 +253,7 @@ Material:
     - _ColorChangeTolerance: 0.25
     - _ColorChangeTolerance2: 0.25
     - _ColorChangeTolerance3: 0.25
+    - _ColorMask: 15
     - _ColorRampBlend: 1
     - _ColorRampLuminosity: 0
     - _ColorRampOutline: 0
@@ -266,6 +293,7 @@ Material:
     - _DistortTexYSpeed: 5
     - _DstBlend: 0
     - _EditorDrawers: 6
+    - _EmissionToggle: 0
     - _EnableAddColor: 0
     - _EnableAddHue: 0
     - _EnableAlphaTint: 0
@@ -339,6 +367,7 @@ Material:
     - _EnchantedRainbowSpeed: 0.5
     - _EnchantedRainbowToggle: 0
     - _EnchantedReduce: 0
+    - _EnvironmentReflections: 1
     - _FadeAmount: -0.1
     - _FadeBurnGlow: 2
     - _FadeBurnTransition: 0.075
@@ -434,6 +463,8 @@ Material:
     - _InnerOutlineTextureToggle: 0
     - _InnerOutlineThickness: 1
     - _InnerOutlineWidth: 0.02
+    - _IsText: 0
+    - _IsTextMeshPro: 0
     - _MaxXUV: 1
     - _MaxYUV: 1
     - _MetalContrast: 2
@@ -442,6 +473,7 @@ Material:
     - _MetalHighlightDensity: 1
     - _MetalMaskToggle: 0
     - _Metallic: 0
+    - _MetallicMapToggle: 0
     - _MinXUV: 0
     - _MinYUV: 0
     - _Mode: 0
@@ -451,6 +483,7 @@ Material:
     - _MySrcMode: 5
     - _NegativeAmount: 1
     - _NegativeFade: 1
+    - _NormalIntensity: 1
     - _OcclusionStrength: 1
     - _OffsetUvX: 0
     - _OffsetUvY: 0
@@ -498,6 +531,8 @@ Material:
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
     - _PosterizeOutline: 0
+    - _QueueControl: -1
+    - _QueueOffset: 0
     - _RadialClip: 45
     - _RadialClip2: 0
     - _RadialStartAngle: 90
@@ -509,6 +544,7 @@ Material:
     - _RainbowSaturation: 1
     - _RainbowSpeed: 1
     - _RandomSeed: 0
+    - _ReceiveShadows: 1
     - _RecolorRGBFade: 1
     - _RecolorRGBTextureToggle: 0
     - _RecolorRGBYCPFade: 1
@@ -525,6 +561,7 @@ Material:
     - _ShaderFading: 0
     - _ShaderSpace: 0
     - _ShadowAlpha: 0.5
+    - _ShadowClip: 0.5
     - _ShadowFade: 1
     - _ShadowX: 0.1
     - _ShadowY: -0.05
@@ -570,6 +607,7 @@ Material:
     - _SmokeNoiseScale: 0.5
     - _SmokeSmoothness: 1
     - _SmokeVertexSeed: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SourceAlphaDissolveFade: 1
     - _SourceAlphaDissolveInvert: 0
@@ -592,10 +630,17 @@ Material:
     - _SquishSquish: 0.1
     - _SquishStretch: 0.1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _StrongTintContrast: 0
     - _StrongTintContrastToggle: 0
     - _StrongTintFade: 1
     - _StrongTintMaskToggle: 0
+    - _TMPSmoothness: 5
+    - _TMPThickness: -0.45
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TilingFix: 0
@@ -617,6 +662,7 @@ Material:
     - _UVDistortMaskToggle: 0
     - _UVRotateSpeed: 1
     - _UVSec: 0
+    - _UseUIAlphaClip: 0
     - _VertexTintFirst: 0
     - _VibrateFade: 1
     - _VibrateFrequency: 100
@@ -693,6 +739,7 @@ Material:
     - _DirectionalGlowFadeEdgeColor: {r: 11.98431, g: 0.6901961, b: 0.6901961, a: 0}
     - _DirectionalGlowFadeNoiseScale: {r: 0.4, g: 0.4, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionTint: {r: 2.996078, g: 0.1568628, b: 0.1568628, a: 0}
     - _EnchantedHighColor: {r: 0, g: 0.7098798, b: 4.237095, a: 0}
     - _EnchantedLowColor: {r: 2.996078, g: 0, b: 0, a: 0}
     - _EnchantedScale: {r: 0.1, g: 0.1, b: 0, a: 0}

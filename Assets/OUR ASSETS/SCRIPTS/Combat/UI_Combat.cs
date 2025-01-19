@@ -184,4 +184,27 @@ public class UI_Combat : MonoBehaviour
         StaticData.staticScriptableCompanion.OnabilityActivate();
 
     }
+
+    public void OpenDeckCardList()
+    {
+        UIManager.Instance.OpenDeckList();
+    }
+
+    public void OpenDiscardCardList()
+    {
+        UIManager.Instance.OpenDiscardList();
+    }
+
+    public void OpenBanishedCardList()
+    {
+        UIManager.Instance.OpenBanishedList();
+    }
+
+    public void HideCardList()
+    {
+        UIManager.Instance.HideCardList();
+    }
+
+
+
 }
