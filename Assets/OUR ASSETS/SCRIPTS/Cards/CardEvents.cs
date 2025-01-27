@@ -328,8 +328,27 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 // Scale down the card
                 scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
+
+                //put it on the list
+                PlayedCard playedCard = new PlayedCard();
+                playedCard.timer = scriptableCard.waitOnQueueTimer;
+                playedCard.target = CombatCardHandler.Instance.targetClicked;
+                playedCard.scriptableCard = scriptableCard;
+                playedCard.cardScript = gameObject.GetComponent<CardScript>();
+                playedCard.cardObject = this.gameObject;
+
+                //decrease available mana
+                Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
+
+                //add it on the list
+                Combat.Instance.playedCardList.Add(playedCard);
+                Combat.Instance.CardQueueNumbering();
+
+                playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
+
                 //do the effects 
-                DeckManager.Instance.PlayerPlayedCard(gameObject.GetComponent<CardScript>());
+                //DeckManager.Instance.PlayerPlayedCard(gameObject.GetComponent<CardScript>());
+
                 //return everything where it was
                 HandManager.Instance.SetHandCards();
             }

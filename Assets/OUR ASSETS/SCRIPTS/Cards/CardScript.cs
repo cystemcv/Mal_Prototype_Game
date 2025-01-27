@@ -21,6 +21,8 @@ public class CardScript : MonoBehaviour
     public bool resetManaCost = false;
     public bool changedMana = false;
 
+    public GameObject cardQueue;
+
     public CardScript()
     {
 

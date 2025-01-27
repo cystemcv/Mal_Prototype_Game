@@ -7,6 +7,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using static ScriptableCard;
 
+public class PlayedCard
+{
+
+    public bool isPlaying = false;
+    public float timer;
+    public GameObject target;
+    public ScriptableCard scriptableCard;
+    public CardScript cardScript;
+    public GameObject cardObject;
+    public GameObject playedCardUI;
+}
+
 public class Combat : MonoBehaviour
 {
     public static Combat Instance;
@@ -58,6 +70,10 @@ public class Combat : MonoBehaviour
 
     public delegate void OnManaChange();
     public event OnManaChange onManaChange;
+
+    public List<PlayedCard> playedCardList = new List<PlayedCard>();
+
+
 
     public int ManaAvailable
     {
@@ -128,6 +144,64 @@ public class Combat : MonoBehaviour
             (charactersAlive <= 0 || enemiesAlive <= 0))
         {
             CombatOver();
+        }
+
+        //check the queue
+        if (playedCardList.Count > 0)
+        {
+      
+            //check if the card is played
+            //play the card
+            if (playedCardList[0].isPlaying == false)
+            {
+               
+
+
+                DeckManager.Instance.PlayerPlayedCard(playedCardList[0].cardScript);
+                Debug.Log("Card played : " + playedCardList[0].scriptableCard.cardName);
+                playedCardList[0].isPlaying = true;
+
+                CardQueueNumbering();
+
+            }
+
+            //if the card is playing then start decreasing the timer
+            if (playedCardList[0].timer > 0 && playedCardList[0].isPlaying == true)
+            {
+                playedCardList[0].timer -= Time.deltaTime;
+                playedCardList[0].timer = Mathf.Max(playedCardList[0].timer,0);
+                playedCardList[0].playedCardUI.transform.Find("CardTimer").GetComponent<TMP_Text>().text = playedCardList[0].timer.ToString("F1");
+            }
+            else if (playedCardList[0].timer <= 0 && playedCardList[0].isPlaying == true)
+            {
+                //remove it
+                UI_Combat.Instance.RemovePlayedCardUI(playedCardList[0]);
+
+                playedCardList.RemoveAt(0);
+
+                CardQueueNumbering();
+
+              
+            }
+
+
+        }
+
+    }
+
+    public void CardQueueNumbering()
+    {
+        int counter = 0;
+        foreach (PlayedCard playedCard in playedCardList)
+        {
+            if (playedCard.cardObject == null)
+            {
+                continue;
+            }
+            playedCard.cardObject.GetComponent<CardEvents>().enabled = false;
+            playedCard.cardObject.GetComponent<CardScript>().cardQueue.SetActive(true);
+            playedCard.cardObject.GetComponent<CardScript>().cardQueue.transform.Find("Text").GetComponent<TMP_Text>().text = counter.ToString();
+            counter++;
         }
 
     }
@@ -544,7 +618,7 @@ public class Combat : MonoBehaviour
         //remove shield from all enemies
         RemoveShieldFromEntitiesBasedOnTag("Enemy");
 
-       // yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
+        // yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
 
         yield return null;
     }
@@ -1167,7 +1241,7 @@ public class Combat : MonoBehaviour
     public void CheckIfEntityIsDead(EntityClass entityClass)
     {
 
-        if (entityClass.health <= 0 )
+        if (entityClass.health <= 0)
         {
 
             entityClass.entityMode = SystemManager.EntityMode.DEAD;
@@ -1366,7 +1440,7 @@ public class Combat : MonoBehaviour
     }
 
 
-    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard,int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
+    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
         int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
 
@@ -1450,7 +1524,7 @@ public class Combat : MonoBehaviour
 
     public IEnumerator AttackAllEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, List<GameObject> realTargets, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
-     
+
 
         //if dead mark is as dead
         //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
@@ -1492,7 +1566,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public List<GameObject> SummonEntity(GameObject entityUsedCard,List<ScriptableEntity> scriptableEntities, EntityCustomClass entityCustomClass = null)
+    public List<GameObject> SummonEntity(GameObject entityUsedCard, List<ScriptableEntity> scriptableEntities, EntityCustomClass entityCustomClass = null)
     {
 
         List<GameObject> summonedEntities = new List<GameObject>();

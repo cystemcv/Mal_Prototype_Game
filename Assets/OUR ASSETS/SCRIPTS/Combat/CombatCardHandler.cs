@@ -199,7 +199,24 @@ public class CombatCardHandler : MonoBehaviour
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
             //do the effects 
-            DeckManager.Instance.PlayerPlayedCard(targetUIElement.gameObject.GetComponent<CardScript>());
+
+            //put it on the list
+            PlayedCard playedCard = new PlayedCard();
+            playedCard.timer = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.waitOnQueueTimer;
+            playedCard.target = CombatCardHandler.Instance.targetClicked;
+            playedCard.scriptableCard = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard;
+            playedCard.cardScript = targetUIElement.gameObject.GetComponent<CardScript>();
+            playedCard.cardObject = targetUIElement.gameObject;
+
+            //decrease available mana
+            Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
+
+            //DeckManager.Instance.PlayerPlayedCard(targetUIElement.gameObject.GetComponent<CardScript>());
+            Combat.Instance.playedCardList.Add(playedCard);
+            Combat.Instance.CardQueueNumbering();
+
+            playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
+
             //return everything where it was
             HandManager.Instance.SetHandCards();
 

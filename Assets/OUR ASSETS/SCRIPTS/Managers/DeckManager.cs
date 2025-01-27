@@ -292,8 +292,7 @@ public class DeckManager : MonoBehaviour
         CardScript tempCardScript = new CardScript();
         tempCardScript = cardScript;
 
-        //decrease available mana
-        Combat.Instance.ManaAvailable -= cardScript.primaryManaCost;
+
 
         //remove from hand and add it to the played card
         RemovePlayedCardFromHand(tempCardScript);
@@ -599,6 +598,8 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CardScript>().changedMana = cardScript.changedMana;
         cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
 
+        cardPrefab.GetComponent<CardScript>().cardQueue = cardPrefab.transform.Find("Panel").Find("Queue").gameObject;
+        cardPrefab.GetComponent<CardScript>().cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
 
         if (cardScript.changedMana == false)

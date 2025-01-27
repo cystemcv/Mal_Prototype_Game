@@ -57,6 +57,10 @@ public class UI_Combat : MonoBehaviour
     public GameObject endTurnButton;
     public GameObject companionAbilityButton;
 
+    [Header("PLAYED CARDS")]
+    public GameObject playedCardsGO;
+    public GameObject playedCardPrefab;
+
     private void Awake()
     {
 
@@ -72,7 +76,25 @@ public class UI_Combat : MonoBehaviour
     }
 
 
+    public GameObject AddPlayedCardUI(PlayedCard playedCard)
+    {
 
+        GameObject playedCardUI = Instantiate(playedCardPrefab, playedCardsGO.transform.position, Quaternion.identity);
+        playedCardUI.transform.SetParent(playedCardsGO.transform);
+        playedCardUI.transform.localScale = new Vector3(1, 1, 1);
+
+        playedCardUI.transform.Find("CardName").GetComponent<TMP_Text>().text = playedCard.scriptableCard.cardName;
+        playedCardUI.transform.Find("CardTimer").GetComponent<TMP_Text>().text = playedCard.timer.ToString("F1");
+
+        return playedCardUI;
+
+    }
+
+    public void RemovePlayedCardUI(PlayedCard playedCard)
+    {
+        playedCard.playedCardUI.GetComponent<Animator>().SetTrigger("End");
+        Destroy(playedCard.playedCardUI,1f);
+    }
 
 
     public void OnNotification(string message, float waitTime)

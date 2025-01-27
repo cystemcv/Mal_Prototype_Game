@@ -24,6 +24,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     [Title("SETTINGS")]
     public List<SystemManager.EntityTag> targetEntityTagList;
+    public float waitOnQueueTimer = 0.5f;
 
     [Title("CARD DETAILS")]
     [Range(0, 9)]
@@ -35,10 +36,12 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public float abilityEffectLifetime = 0.6f;
     public float abilityEffectYaxis = 0f;
 
+
     [Title("CARD FLAVOR")]
     public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
     public AudioClip cardSoundEffect;
     public string cardFlavor; // Flavor text- maybe not needed
+
 
 
     [FoldoutGroup("ABILITIES")]
