@@ -154,14 +154,16 @@ public class Combat : MonoBehaviour
             //play the card
             if (playedCardList[0].isPlaying == false)
             {
-               
 
+                //save the cardscript
+                DeckManager.Instance.savedPlayedCardScript = playedCardList[0].cardScript;
 
                 DeckManager.Instance.PlayerPlayedCard(playedCardList[0].cardScript);
                 Debug.Log("Card played : " + playedCardList[0].scriptableCard.cardName);
                 playedCardList[0].isPlaying = true;
 
-                CardQueueNumbering();
+      
+
 
             }
 
@@ -179,7 +181,7 @@ public class Combat : MonoBehaviour
 
                 playedCardList.RemoveAt(0);
 
-                CardQueueNumbering();
+
 
               
             }
@@ -189,22 +191,22 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void CardQueueNumbering()
-    {
-        int counter = 0;
-        foreach (PlayedCard playedCard in playedCardList)
-        {
-            if (playedCard.cardObject == null)
-            {
-                continue;
-            }
-            playedCard.cardObject.GetComponent<CardEvents>().enabled = false;
-            playedCard.cardObject.GetComponent<CardScript>().cardQueue.SetActive(true);
-            playedCard.cardObject.GetComponent<CardScript>().cardQueue.transform.Find("Text").GetComponent<TMP_Text>().text = counter.ToString();
-            counter++;
-        }
+    //public void CardQueueNumbering()
+    //{
+    //    int counter = 0;
+    //    foreach (PlayedCard playedCard in playedCardList)
+    //    {
+    //        if (playedCard.cardObject == null)
+    //        {
+    //            continue;
+    //        }
+    //        playedCard.cardObject.GetComponent<CardEvents>().enabled = false;
+    //        playedCard.cardObject.GetComponent<CardScript>().cardQueue.SetActive(true);
+    //        playedCard.cardObject.GetComponent<CardScript>().cardQueue.transform.Find("Text").GetComponent<TMP_Text>().text = counter.ToString();
+    //        counter++;
+    //    }
 
-    }
+    //}
 
     public void ManaDetectEvent()
     {
@@ -1475,7 +1477,7 @@ public class Combat : MonoBehaviour
             }
 
             // Wait between hits
-            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+            yield return new WaitForSeconds(scriptableCard.waitOnQueueTimer / multiHits);
         }
     }
 
@@ -1517,7 +1519,7 @@ public class Combat : MonoBehaviour
             }
 
             // Wait between hits
-            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+            yield return new WaitForSeconds(scriptableCard.waitOnQueueTimer / multiHits);
         }
     }
 
@@ -1562,7 +1564,7 @@ public class Combat : MonoBehaviour
             }
 
             // Wait between hits
-            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime / multiHitDuration);
+            yield return new WaitForSeconds(scriptableCard.waitOnQueueTimer / multiHits);
         }
     }
 

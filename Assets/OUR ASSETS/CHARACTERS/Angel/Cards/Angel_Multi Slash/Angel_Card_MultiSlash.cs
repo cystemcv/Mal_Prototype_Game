@@ -9,6 +9,7 @@ public class Angel_Card_MultiSlash : ScriptableCard
     public int damageAmount = 0;
     public int multiHits = 0;
 
+
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
@@ -55,7 +56,7 @@ public class Angel_Card_MultiSlash : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance;
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this,damageAmount,entityUsedCardGlobal,realTarget, multiHits, 2));
+        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this,damageAmount,entityUsedCardGlobal,realTarget, multiHits, this.abilityEffectLifetime));
 
     }
 

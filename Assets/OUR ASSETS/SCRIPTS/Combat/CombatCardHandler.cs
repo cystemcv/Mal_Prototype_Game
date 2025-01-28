@@ -213,7 +213,13 @@ public class CombatCardHandler : MonoBehaviour
 
             //DeckManager.Instance.PlayerPlayedCard(targetUIElement.gameObject.GetComponent<CardScript>());
             Combat.Instance.playedCardList.Add(playedCard);
-            Combat.Instance.CardQueueNumbering();
+
+
+            //save the cardScript temp
+            CardScript tempCardScript = new CardScript();
+            tempCardScript = playedCard.cardScript;
+            //remove from hand and add it to the played card
+            DeckManager.Instance.RemovePlayedCardFromHand(tempCardScript);
 
             playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
 

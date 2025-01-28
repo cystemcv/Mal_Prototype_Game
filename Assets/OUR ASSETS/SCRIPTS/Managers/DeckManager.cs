@@ -236,7 +236,7 @@ public class DeckManager : MonoBehaviour
         savedtweenCardPlayed = LeanTween.move(cardScript.gameObject, UI_Combat.Instance.CARDPLAYED.transform, 0.2f);
 
         //save the cardscript
-        savedPlayedCardScript = cardScript;
+        //savedPlayedCardScript = cardScript;
     }
 
     public void BanishCardFromHand(CardScript cardScript)
@@ -295,7 +295,7 @@ public class DeckManager : MonoBehaviour
 
 
         //remove from hand and add it to the played card
-        RemovePlayedCardFromHand(tempCardScript);
+        //RemovePlayedCardFromHand(tempCardScript);
 
         //activate all card abilities
         PlayerPlayCardActivate(tempCardScript);
@@ -700,7 +700,7 @@ public class DeckManager : MonoBehaviour
         //}
 
         //activation should not be visible
-        cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+        //cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
     }
 
 

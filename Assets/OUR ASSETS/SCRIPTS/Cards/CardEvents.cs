@@ -250,8 +250,18 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 
+                //check if there is more than 1 target
+                List<string> tag = new List<string>();
+
+                foreach (SystemManager.EntityTag entityTag in scriptableCard.targetEntityTagList)
+                {
+                    tag.Add(entityTag.ToString());
+                }
+
+                List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tag);
+
                 //activation should not be visible
-                if (scriptableCard.targetEntityTagList.Count > 0)
+                if (scriptableCard.targetEntityTagList.Count > 0 && targets.Count > 1)
                 {
                     OnPointerUp(null);
                 }
@@ -307,8 +317,18 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             // Scale down the card
             scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
 
+            //check if there is more than 1 target
+            List<string> tag = new List<string>();
+           
+            foreach (SystemManager.EntityTag entityTag in scriptableCard.targetEntityTagList)
+            {
+                tag.Add(entityTag.ToString());
+            }
+
+            List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tag);
+
             //if there are targetable entities
-            if (scriptableCard.targetEntityTagList.Count > 0)
+            if (scriptableCard.targetEntityTagList.Count > 0 && targets.Count > 1)
             {
                 //if the card is targetable
 
@@ -324,6 +344,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             }
             else
             {
+                //if the target is 1 then we add the target as clicked
+                if (targets.Count != 0)
+                {
+                    CombatCardHandler.Instance.targetClicked = targets[0];
+                }
 
                 // Scale down the card
                 scaleTween = LeanTween.scale(childObjectVisual, originalScale, transitionTime);
@@ -342,7 +367,12 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 //add it on the list
                 Combat.Instance.playedCardList.Add(playedCard);
-                Combat.Instance.CardQueueNumbering();
+
+                //save the cardScript temp
+                CardScript tempCardScript = new CardScript();
+                tempCardScript = playedCard.cardScript;
+                //remove from hand and add it to the played card
+                DeckManager.Instance.RemovePlayedCardFromHand(tempCardScript);
 
                 playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
 
