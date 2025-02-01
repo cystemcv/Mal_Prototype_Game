@@ -56,7 +56,7 @@ public class Angel_Card_HolySlash : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance;
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount, entityUsedCardGlobal, realTarget, multiHits, 1));
+        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount,1, entityUsedCardGlobal, realTarget, multiHits, 1));
 
     }
 

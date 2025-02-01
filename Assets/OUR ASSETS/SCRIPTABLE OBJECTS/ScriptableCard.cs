@@ -110,6 +110,11 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
     }
 
+    public virtual void OnDrawCard(CardScript cardScript)
+    {
+
+    }
+
     public virtual void OnCardCondition(CardScript cardScript, GameObject entityUsedCard)
     {
 

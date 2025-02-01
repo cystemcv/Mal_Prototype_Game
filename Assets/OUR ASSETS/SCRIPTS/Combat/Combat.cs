@@ -73,7 +73,7 @@ public class Combat : MonoBehaviour
 
     public List<PlayedCard> playedCardList = new List<PlayedCard>();
 
-
+    public SystemManager.BattleGroundType battleGroundType;
 
     public int ManaAvailable
     {
@@ -141,7 +141,7 @@ public class Combat : MonoBehaviour
     {
 
         if (conditionsEnabled == true &&
-            (charactersAlive <= 0 || enemiesAlive <= 0))
+            (charactersAlive <= 0 || enemyFormation.Count <= 0))
         {
             CombatOver();
         }
@@ -714,6 +714,8 @@ public class Combat : MonoBehaviour
 
         GameObject bg = Instantiate(CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGround, battleground.transform.position, Quaternion.identity);
         bg.transform.SetParent(battleground.transform);
+
+        battleGroundType = CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType;
 
         yield return null; // Wait for a frame 
 
@@ -1442,14 +1444,19 @@ public class Combat : MonoBehaviour
     }
 
 
-    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
+    public IEnumerator AttackSingleTargetEnemy(ScriptableCard scriptableCard, int damageAmount, int multiplyDamage, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+
+        int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount * multiplyDamage, entityUsedCardGlobal, realTarget);
 
         //if dead mark is as dead
         //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
-
-        Animator entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
+        Animator entityAnimator = null;
+        if (entityUsedCardGlobal != null)
+        {
+            entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
+        }
+       
 
         if (entityAnimator != null)
         {

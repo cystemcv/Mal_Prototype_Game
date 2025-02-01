@@ -175,7 +175,7 @@ public class ScriptableCardAbility : ScriptableObject
 
         //spawn prefab
         GameObject abilityEffect = Instantiate(cardAbilityClass.abilityEffect, target.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
-        abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
+        //abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
 
         abilityEffect.transform.position = new Vector3(abilityEffect.transform.position.x, 
             abilityEffect.transform.position.y + cardAbilityClass.abilityEffectYaxis,

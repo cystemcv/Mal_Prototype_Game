@@ -132,6 +132,8 @@ public class DeckManager : MonoBehaviour
                 //instantiate the card
                 InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true, false);
 
+                cardScript.scriptableCard.OnDrawCard(cardScript);
+
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
 
@@ -674,6 +676,10 @@ public class DeckManager : MonoBehaviour
         {
             cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
         }
+        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+        {
+            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
+        }
 
         //for example
         cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
@@ -684,6 +690,12 @@ public class DeckManager : MonoBehaviour
 
         //mana cost
         cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
+
+        if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+        {
+            cardChild.transform.Find("ManaBg").gameObject.SetActive(false);
+        }
+
         //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
         //description is based on abilities

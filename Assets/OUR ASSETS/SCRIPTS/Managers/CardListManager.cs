@@ -13,6 +13,7 @@ public class CardListManager : MonoBehaviour
     public Sprite rareBg;
     public Sprite epicBg;
     public Sprite legendaryBg;
+    public Sprite curseBg;
 
     public GameObject cardPrefab;
 

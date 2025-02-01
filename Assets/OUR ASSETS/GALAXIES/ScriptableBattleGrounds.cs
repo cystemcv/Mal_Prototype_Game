@@ -7,5 +7,6 @@ public class ScriptableBattleGrounds : ScriptableObject
 {
 
     public GameObject battleGround;
+    public SystemManager.BattleGroundType battleGroundType = SystemManager.BattleGroundType.WATER;
 
 }

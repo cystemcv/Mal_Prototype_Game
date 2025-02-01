@@ -708,6 +708,10 @@ public class UIManager : MonoBehaviour
                     {
                         cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
                     }
+                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+                    {
+                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
+                    }
 
                     //for example
                     cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;

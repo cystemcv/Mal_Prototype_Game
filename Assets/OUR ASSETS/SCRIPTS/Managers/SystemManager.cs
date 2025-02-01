@@ -36,7 +36,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon}
     public CardType cardType;
 
-    public enum CardRarity { Common, Rare, Epic, Legendary };
+    public enum CardRarity { Common, Rare, Epic, Legendary,Curse };
     public CardRarity cardRarity;
 
     public enum EntityAnimation { MeleeAttack, ProjectileAttack, SpellCast }; //Actual classes to be determined
@@ -72,6 +72,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum ItemIn { INVENTORY, LOOT }
 
     public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
+
+    public enum BattleGroundType { WATER, MAGMA, DARK, ELECTRIC, LUSH, SAND };
 
     public enum ActivationType
     {

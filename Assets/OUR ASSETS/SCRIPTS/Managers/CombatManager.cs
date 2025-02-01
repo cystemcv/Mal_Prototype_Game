@@ -40,7 +40,7 @@ public class CombatManager : MonoBehaviour
 
         //spawn prefab
         GameObject abilityEffect = Instantiate(scriptableCard.abilityEffect, target.transform.Find("model").Find("SpawnEffect").position, Quaternion.identity);
-        abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
+        //abilityEffect.transform.SetParent(target.transform.Find("model").Find("SpawnEffect"));
 
         abilityEffect.transform.position = new Vector3(abilityEffect.transform.position.x,
             abilityEffect.transform.position.y + scriptableCard.abilityEffectYaxis,
