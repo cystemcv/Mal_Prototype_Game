@@ -299,6 +299,8 @@ public class DeckManager : MonoBehaviour
         //remove from hand and add it to the played card
         //RemovePlayedCardFromHand(tempCardScript);
 
+
+
         //activate all card abilities
         PlayerPlayCardActivate(tempCardScript);
 
@@ -403,7 +405,7 @@ public class DeckManager : MonoBehaviour
             {
                 DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
             }
-     
+
         }
 
         StaticData.artifact_CardScript = cardScript;
@@ -488,7 +490,7 @@ public class DeckManager : MonoBehaviour
     //}
 
 
-    public void PlayCardFromHandRandom()
+    public void PlayCardFromHandRandom(bool customManaCostEnable = false, int customManaCost = 0)
     {
         if (handCards.Count == 0)
         {
@@ -504,9 +506,41 @@ public class DeckManager : MonoBehaviour
         ////play the card
         //PlayCard(handCards[randomIndex]);
 
-        //call the discard function
-        DiscardCardFromHand(handCards[randomIndex]);
+        CardScript cardScript = handCards[randomIndex];
 
+        HandFullSpawnCardFunction(cardScript);
+
+        //save card
+        savedPlayedCardScript = cardScript;
+
+
+
+        //random target
+        List<GameObject> allEntities = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetAllTagsList());
+
+        //get random target
+        int randomEntityIndex = UnityEngine.Random.Range(0, allEntities.Count);
+
+        CombatCardHandler.Instance.targetClicked = allEntities[randomEntityIndex];
+
+        //decrease available mana
+        if (customManaCostEnable)
+        {
+            Combat.Instance.ManaAvailable -= customManaCost;
+        }
+        else
+        {
+            Combat.Instance.ManaAvailable -= cardScript.scriptableCard.primaryManaCost;
+        }
+
+        if (Combat.Instance.ManaAvailable <= 0)
+        {
+            Combat.Instance.ManaAvailable = 0;
+        }
+
+        //call the discard function
+        DiscardCardFromHand(cardScript);
+        PlayerPlayCardActivate(cardScript);
 
     }
 
@@ -761,7 +795,7 @@ public class DeckManager : MonoBehaviour
     {
 
         int result = calculatedValue - originalValue;
-  
+
 
         if (calculatedValue < 0)
         {

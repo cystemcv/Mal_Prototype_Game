@@ -559,6 +559,18 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         return gameobjectsFound;
     }
 
+    public List<string> GetAllTagsList()
+    {
+        List<string> tags = new List<string>();
+
+        tags.Add("Enemy");
+        tags.Add("EnemySummon");
+        tags.Add("Player");
+        tags.Add("PlayerSummon");
+
+        return tags;
+    }
+
     public List<string> GetEnemyTagsList()
     {
         List<string> tags = new List<string>();

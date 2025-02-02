@@ -72,6 +72,7 @@ public class Combat : MonoBehaviour
     public event OnManaChange onManaChange;
 
     public List<PlayedCard> playedCardList = new List<PlayedCard>();
+    public List<CardScript> discardEffectCardList = new List<CardScript>();
 
     public SystemManager.BattleGroundType battleGroundType;
 
@@ -517,6 +518,24 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
         ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart);
+
+        yield return StartCoroutine(ActivateDelayedCardEffects());
+
+
+        yield return null; // Wait for a frame 
+    }
+
+    public IEnumerator ActivateDelayedCardEffects()
+    {
+
+        foreach (CardScript cardScript in discardEffectCardList)
+        {
+            cardScript.scriptableCard.OnDelayEffect(cardScript);
+           
+        }
+
+        //empty the delay effect list
+        discardEffectCardList.Clear();
 
         yield return null; // Wait for a frame 
     }
@@ -1661,6 +1680,18 @@ public class Combat : MonoBehaviour
         return summonedEntities;
 
 
+
+    }
+
+    public void ModifyMana(int modifyMana)
+    {
+
+        ManaAvailable += modifyMana;
+
+        if (ManaAvailable <= 0)
+        {
+            ManaAvailable = 0;
+        }
 
     }
 

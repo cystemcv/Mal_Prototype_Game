@@ -25,6 +25,8 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [Title("SETTINGS")]
     public List<SystemManager.EntityTag> targetEntityTagList;
     public float waitOnQueueTimer = 0.5f;
+    public bool cannotDiscard = false;
+    public bool cannorRemoveFromDeck = false;
 
     [Title("CARD DETAILS")]
     [Range(0, 9)]
@@ -111,6 +113,10 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     }
 
     public virtual void OnDrawCard(CardScript cardScript)
+    {
+
+    }
+    public virtual void OnDelayEffect(CardScript cardScript)
     {
 
     }
