@@ -16,6 +16,9 @@ public class ItemManager : MonoBehaviour
 
     public List<ScriptableItem> artifactPoolList;
 
+    public List<ScriptableItem> artifactTestPoolList;
+
+
     public GameObject itemChoosePrefab;
 
     private void Awake()

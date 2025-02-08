@@ -211,10 +211,23 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         int itemsToChoose = 3;
 
         // Filter the artifact pool to exclude items already in StaticData.artifactItemList
-        var filteredArtifactPool = ItemManager.Instance.artifactPoolList
-            .Where(scriptableItem => !StaticData.artifactItemList
-                .Any(classItem => classItem.scriptableItem == scriptableItem))
-            .ToList();
+        List<ScriptableItem> filteredArtifactPool;
+
+        if (ItemManager.Instance.artifactTestPoolList.Count != 0)
+        {
+           filteredArtifactPool = ItemManager.Instance.artifactTestPoolList
+    .Where(scriptableItem => !StaticData.artifactItemList
+        .Any(classItem => classItem.scriptableItem == scriptableItem))
+    .ToList();
+        }
+        else
+        {
+             filteredArtifactPool = ItemManager.Instance.artifactPoolList
+    .Where(scriptableItem => !StaticData.artifactItemList
+        .Any(classItem => classItem.scriptableItem == scriptableItem))
+    .ToList();
+        }
+
 
         // Check if there are any items left after filtering
         if (filteredArtifactPool.Count == 0)

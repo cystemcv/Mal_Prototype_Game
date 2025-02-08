@@ -39,7 +39,9 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public int health;
     public int maxHealth;
     public int shield;
-    public int maxShield;
+    public int maxShield = 999;
+    public int armor;
+    public int maxArmor = 999;
     public int counterDamage = 0;
 
     float rotationSpeed = -2000f;  // Degrees per second
@@ -51,6 +53,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public Slider slider;
     public GameObject shieldIcon;
     public GameObject shieldText;
+    public GameObject armorIcon;
+    public GameObject armorText;
     public GameObject healthText;
     public GameObject fillBar;
     public TMP_Text summonTurnsText;
@@ -184,7 +188,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (entityCustomClass != null && entityCustomClass.poisonDmg != 0)
         {
             poisongDmg = entityCustomClass.poisonDmg;
-      
+
         }
         else
         {
@@ -244,12 +248,15 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         slider = sliderBar.GetComponent<Slider>();
         shieldIcon = sliderBar.transform.Find("ShieldIcon").gameObject;
         shieldText = shieldIcon.transform.Find("TEXT").gameObject;
+        armorIcon = sliderBar.transform.Find("ArmorIcon").gameObject;
+        armorText = armorIcon.transform.Find("TEXT").gameObject;
         healthText = sliderBar.transform.Find("TEXT").gameObject;
         fillBar = sliderBar.transform.Find("Fill").gameObject;
 
         //make the healthbar red and hide shield
         shieldIcon.gameObject.SetActive(false);
-        fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+        armorIcon.gameObject.SetActive(false);
+        //fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
         //update based on enemy hp and max hp
         healthText.GetComponent<TMP_Text>().text = health + "/" + maxHealth;
@@ -257,19 +264,17 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //adjust the hp bar
         slider.value = (float)health / (float)maxHealth;
 
-        if (shield > 0)
+        //armor = 10;
+        //shield = 10;
+
+        if (ItemManager.Instance.artifactTestPoolList.Count != 0 && this.gameObject.tag == "Enemy" )
         {
 
-            //update text on shield
-            shieldText.GetComponent<TMP_Text>().text = shield.ToString();
-
-            //make the bar blue
-            fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-
-            //make shield icon visible
-            shieldIcon.SetActive(true);
-
+            health = 1;
         }
+
+        Combat.Instance.UpdateEntityDamageVisuals(this);
+
     }
 
     public void RotateEntity()

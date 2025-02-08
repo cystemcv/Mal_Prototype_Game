@@ -27,7 +27,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CombatTurns { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
     public CombatTurns combatTurn;
 
-    public enum AdjustNumberModes { ATTACK, HEAL, SHIELD, COUNTER }
+    public enum AdjustNumberModes { ATTACK, HEAL, SHIELD, COUNTER, ARMOR }
     public AdjustNumberModes adjustNumberModes;
 
     public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
@@ -101,6 +101,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorYellow = "F9FF00";
     public string colorGreen = "25FF00";
     public string colorGrey = "363636";
+    public string colorOrange = "e07b00";
 
     //completely transparent
     public string colorTransparent = "FFFFFF00";

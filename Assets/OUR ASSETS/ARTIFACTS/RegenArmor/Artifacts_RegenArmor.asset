@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4aa0d70e66f5f41aa33449f02caeb2, type: 3}
+  m_Name: Artifacts_RegenArmor
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 9c959e8dc47c988428d68d6e4358d393, type: 3}
+  itemName: Regen Armor
+  itemCategory: 3
+  activationType: 5
+  initializationType: 0
+  expiredType: 0
+  itemDescription: On turn 2 , +2 hp. If hp is full then +8 armor
+  maxLevel: 1
+  regenAmount: 2
+  regenOnTurn: 2
+  regenMultiplierArmor: 4

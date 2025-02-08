@@ -46707,12 +46707,16 @@ MonoBehaviour:
   maxHealth: 9999
   shield: 0
   maxShield: 999
+  armor: 0
+  maxArmor: 0
   counterDamage: 0
   allowEntityRotation: 0
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
   shieldText: {fileID: 0}
+  armorIcon: {fileID: 0}
+  armorText: {fileID: 0}
   healthText: {fileID: 0}
   fillBar: {fileID: 0}
   summonTurnsText: {fileID: 0}
@@ -47594,6 +47598,30 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactPoolList.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactPoolList.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: aaffe52950220624d875b335046ac32f, type: 2}
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactPoolList.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: f12dec5a59ba4b444a3f7b77cc08a6cc, type: 2}
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactTestPoolList.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactTestPoolList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: aaffe52950220624d875b335046ac32f, type: 2}
+    - target: {fileID: 240151190, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: artifactTestPoolList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f12dec5a59ba4b444a3f7b77cc08a6cc, type: 2}
     - target: {fileID: 833000828, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

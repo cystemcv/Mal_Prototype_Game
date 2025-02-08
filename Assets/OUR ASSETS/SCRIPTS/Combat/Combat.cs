@@ -1027,16 +1027,120 @@ public class Combat : MonoBehaviour
         //update text on shield
         entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
 
-        //make the bar red
-        entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+        if (entityClass.armor > 0)
+        {
+            entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange);
+        }
+        else
+        {
+            entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+        }
+      
 
     }
 
 
 
+    public void CalculateReceivedEntityDamage(EntityClass entityClass, int adjustNumber, bool bypassShield)
+    {
+        //logic
+        int remainingAmount = adjustNumber;
 
+        //shield
+        if (entityClass.shield > 0 && remainingAmount > 0 && bypassShield == false)
+        {
+            entityClass.shield = entityClass.shield - remainingAmount;
 
+            if (entityClass.shield >= 0)
+            {
+                remainingAmount = 0; //shield fully protected the damage
+            }
+            else
+            {
+                remainingAmount = -1 * entityClass.shield; //the remaining damage should go to the next calculations
+                entityClass.shield = 0; //shield should not be negative
+            }
+        }
 
+        //armor
+        if (entityClass.armor > 0 && remainingAmount > 0)
+        {
+            entityClass.armor = entityClass.armor - remainingAmount;
+
+            if (entityClass.armor >= 0)
+            {
+                remainingAmount = 0; //armor fully protected the damage
+            }
+            else
+            {
+                remainingAmount = -1 * entityClass.armor; //the remaining damage should go to the next calculations
+                entityClass.armor = 0; //armor should not be negative
+            }
+        }
+
+        //hp
+        if (entityClass.health > 0 && remainingAmount > 0)
+        {
+            entityClass.health = entityClass.health - remainingAmount;
+
+            if (entityClass.health <= 0)
+            {
+                entityClass.health = 0;
+            }
+        }
+    }
+
+    public void UpdateEntityDamageVisuals(EntityClass entityClass)
+    {
+        //update visuals
+
+        //hp
+        //update text on hp
+        entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
+
+        //adjust the hp bar
+        UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
+
+        //flash enemy when directly hit
+        StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
+
+        //make the bar red
+        entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+
+        //armor
+        if (entityClass.armor > 0)
+        {
+            //show icon
+            entityClass.armorIcon.SetActive(true);
+            //update text on shield
+            entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
+            //make the bar blue
+            entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange);
+        }
+        else
+        {
+            entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
+            //hide the icon
+            entityClass.armorIcon.SetActive(false);
+        }
+
+        //shield
+        if (entityClass.shield > 0)
+        {
+            //show icon
+            entityClass.shieldIcon.SetActive(true);
+            //update text on shield
+            entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
+            //make the bar blue
+            entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+        }
+        else
+        {
+            entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
+            //hide the icon
+            entityClass.shieldIcon.SetActive(false);
+        }
+    }
 
     public void AdjustTargetHealth(GameObject attacker, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
@@ -1056,67 +1160,9 @@ public class Combat : MonoBehaviour
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
 
-            int remainingShield = 0;
-            //check if there is a shield
-            if (entityClass.shield > 0 && bypassShield == false)
-            {
+            CalculateReceivedEntityDamage(entityClass,adjustNumber,bypassShield);
 
-                //then do dmg to shield
-                remainingShield = entityClass.shield - adjustNumber;
-
-                //update the ui
-                if (remainingShield > 0)
-                {
-                    //update enemy script
-                    entityClass.shield = remainingShield;
-
-                    //update text on shield
-                    entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
-
-                    //make the bar blue
-                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-
-                }
-                else
-                {
-                    //then the enemy has no shield left
-                    entityClass.shield = 0;
-
-                    //make the bar red
-                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-
-                    //hide the icon
-                    entityClass.shieldIcon.SetActive(false);
-                }
-
-            }
-            else
-            {
-                //if there is no shield go straight to the health hp
-                remainingShield = adjustNumber * -1;
-            }
-
-            if (remainingShield < 0)
-            {
-
-                //then we subtract from the health the remaining amount
-                entityClass.health += remainingShield;
-
-                if (entityClass.health < 0)
-                {
-                    entityClass.health = 0;
-                }
-
-                //update text on hp
-                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
-
-                //adjust the hp bar
-                UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
-
-                //flash enemy when directly hit
-                StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
-
-            }
+            UpdateEntityDamageVisuals(entityClass);
 
             //then calculate counter attack
             if (target.GetComponent<EntityClass>().counterDamage > 0)
@@ -1129,67 +1175,9 @@ public class Combat : MonoBehaviour
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.COUNTER)
         {
 
-            int remainingShield = 0;
-            //check if there is a shield
-            if (entityClass.shield > 0 && bypassShield == false)
-            {
+            CalculateReceivedEntityDamage(entityClass, adjustNumber, bypassShield);
 
-                //then do dmg to shield
-                remainingShield = entityClass.shield - adjustNumber;
-
-                //update the ui
-                if (remainingShield > 0)
-                {
-                    //update enemy script
-                    entityClass.shield = remainingShield;
-
-                    //update text on shield
-                    entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
-
-                    //make the bar blue
-                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
-
-                }
-                else
-                {
-                    //then the enemy has no shield left
-                    entityClass.shield = 0;
-
-                    //make the bar red
-                    entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-
-                    //hide the icon
-                    entityClass.shieldIcon.SetActive(false);
-                }
-
-            }
-            else
-            {
-                //if there is no shield go straight to the health hp
-                remainingShield = adjustNumber * -1;
-            }
-
-            if (remainingShield < 0)
-            {
-
-                //then we subtract from the health the remaining amount
-                entityClass.health += remainingShield;
-
-                if (entityClass.health < 0)
-                {
-                    entityClass.health = 0;
-                }
-
-                //update text on hp
-                entityClass.healthText.GetComponent<TMP_Text>().text = entityClass.health + "/" + entityClass.maxHealth;
-
-                //adjust the hp bar
-                UI_Combat.Instance.UpdateHealthBarSmoothly(entityClass.health, entityClass.maxHealth, entityClass.slider);
-
-                //flash enemy when directly hit
-                StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
-
-            }
+            UpdateEntityDamageVisuals(entityClass);
 
 
         }
@@ -1235,6 +1223,45 @@ public class Combat : MonoBehaviour
                 //make the bar blue
                 entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
             }
+
+        }
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.ARMOR)
+        {
+            //increase the shield
+
+            entityClass.armor = entityClass.armor + adjustNumber;
+
+            //check if max from hp
+            if (entityClass.armor > 999)
+            {
+                entityClass.armor = 999;
+            }
+
+
+            if (entityClass.armor > 0)
+            {
+                //show the icon
+                entityClass.armorIcon.SetActive(true);
+
+                //update text on shield
+                entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
+
+                //make the bar blue
+                entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange);
+            }
+
+            if (entityClass.shield > 0)
+            {
+                //show the icon
+                entityClass.shieldIcon.SetActive(true);
+
+                //update text on shield
+                entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
+
+                //make the bar blue
+                entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
+            }
+  
 
         }
 
@@ -1319,11 +1346,19 @@ public class Combat : MonoBehaviour
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.HEAL)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); ;
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); ;
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
+        }
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.ARMOR)
+        {
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange); 
+        }
+        else if (adjustNumberMode == SystemManager.AdjustNumberModes.COUNTER)
+        {
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
         }
 
         return colorToChange;
