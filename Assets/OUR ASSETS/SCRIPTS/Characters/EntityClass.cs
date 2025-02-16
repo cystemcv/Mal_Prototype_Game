@@ -35,6 +35,9 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public int defence = 0;
     public float defenceDebuffPerc = 0;
     public float defenceBuffPerc = 0;
+    public int resistance = 0;
+    public float resistanceDebuffPerc = 0;
+    public float resistanceBuffPerc = 0;
 
     public int health;
     public int maxHealth;

@@ -47,10 +47,13 @@ namespace Michsky.MUIP
                 tpManager.contentLE = descriptionText.GetComponent<LayoutElement>();
         }
 
-        public void ProcessEnter()
+        public IEnumerator ProcessEnter()
         {
+
+            yield return new WaitForSecondsRealtime(0.05f);
+
             if (tooltipRect == null || description == "")
-                return;
+               yield return null;
 
             descriptionText.text = description;
           
@@ -88,7 +91,7 @@ namespace Michsky.MUIP
             tpManager.allowUpdate = false;
         }
 
-        public void OnPointerEnter(PointerEventData eventData) { ProcessEnter(); }
+        public void OnPointerEnter(PointerEventData eventData) { StartCoroutine("ProcessEnter"); }
         public void OnPointerExit(PointerEventData eventData) { ProcessExit(); }
 
 #if !UNITY_IOS && !UNITY_ANDROID
@@ -125,8 +128,18 @@ namespace Michsky.MUIP
         IEnumerator ShowTooltip()
         {
             yield return new WaitForSecondsRealtime(delay);
-            tooltipAnimator.Play("In");
-            StopCoroutine("ShowTooltip");
+
+            if (description == "")
+            {
+                yield return null;
+            }
+            else
+            {
+                tooltipAnimator.Play("In");
+                StopCoroutine("ShowTooltip");
+            }
+            
+   
         }
 
         IEnumerator UpdateLayoutPosition()

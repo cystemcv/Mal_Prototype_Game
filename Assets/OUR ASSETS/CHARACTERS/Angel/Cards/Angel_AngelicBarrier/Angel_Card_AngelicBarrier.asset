@@ -16,9 +16,17 @@ MonoBehaviour:
   cardName: Angelic Barrier
   mainClass: 6
   cardType: 3
+  cardTypeSecondary: 7
   cardRarity: 2
   targetEntityTagList: 0000000002000000
   waitOnQueueTimer: 0.4
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: 80a91f7260be11d438c88ee3e9f91902, type: 2}
+  - {fileID: 11400000, guid: 3c378ef4ca2808f4da6d9df574aebca1, type: 2}
   primaryManaCost: 2
   cardDesc: 
   abilityEffect: {fileID: 0}

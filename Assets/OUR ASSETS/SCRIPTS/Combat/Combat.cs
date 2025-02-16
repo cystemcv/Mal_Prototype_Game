@@ -56,6 +56,9 @@ public class Combat : MonoBehaviour
 
 
     public int tempBoostAttack = 0;
+    public int tempBoostDefence = 0;
+    public int tempBoostResistance = 0;
+    public int tempMonsterAttackBoost = 0;
 
     public LTDescr moveEntityTween;
 
@@ -1369,7 +1372,7 @@ public class Combat : MonoBehaviour
 
         if (entity == null)
         {
-            return 0; //stops function
+            return startingShield; //stops function
         }
 
         if (combatEnded)
@@ -1398,7 +1401,7 @@ public class Combat : MonoBehaviour
             //}
 
             // Calculate final damage and clamp to a minimum of zero
-            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedDefence + tempBoostAttack) * finalDefenceMultiplier));
+            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedDefence + tempBoostDefence) * finalDefenceMultiplier));
 
             return finalDmg;
         }
@@ -1410,7 +1413,54 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target)
+    public int CalculateEntityArmor(int startingArmor, GameObject entity, GameObject target)
+    {
+
+        if (entity == null)
+        {
+            return startingArmor; //stops function
+        }
+
+        if (combatEnded)
+        {
+            return startingArmor;
+        }
+
+        try
+        {
+            // Get character attack, debuff, and buff percentages
+            int entity_Resistance = entity.GetComponent<EntityClass>().resistance;
+            float entity_resistanceDebuffPerc = entity.GetComponent<EntityClass>().resistanceDebuffPerc;
+            float entity_resistanceBuffPerc = entity.GetComponent<EntityClass>().resistanceBuffPerc;
+
+            // Calculate combined attack
+            int combinedResistance = startingArmor + entity_Resistance;
+
+            // Apply debuff and buff multiplicatively
+            float finalResistanceMultiplier = 1 + (entity_resistanceBuffPerc / 100) - (entity_resistanceDebuffPerc / 100);
+
+            // Check if the enemy is vulnerable and apply additional damage multiplier
+            //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
+            //if (isVulnerable)
+            //{
+            //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
+            //}
+
+            // Calculate final damage and clamp to a minimum of zero
+            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedResistance + tempBoostResistance) * finalResistanceMultiplier));
+
+            return finalDmg;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error Calculating Entity Shield : " + " : ERROR MSG : " + ex.Message);
+
+            return 0;
+        }
+    }
+
+
+    public int CalculateEntityDmg(int startingDmg, GameObject entity, GameObject target, ScriptableCard scriptableCard = null)
     {
 
         if (entity == null)
@@ -1445,6 +1495,17 @@ public class Combat : MonoBehaviour
 
             // Calculate final damage and clamp to a minimum of zero
             int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedAttack + tempBoostAttack) * finalAttackMultiplier));
+
+            if (scriptableCard != null)
+            {
+
+                //monster buff
+                if (scriptableCard.mainClass == SystemManager.MainClass.MONSTER)
+                {
+                    finalDmg += Combat.Instance.tempMonsterAttackBoost;
+                }
+
+            }
 
             return finalDmg;
         }
@@ -1628,6 +1689,8 @@ public class Combat : MonoBehaviour
             yield return new WaitForSeconds(scriptableCard.waitOnQueueTimer / multiHits);
         }
     }
+
+
 
     public List<GameObject> SummonEntity(GameObject entityUsedCard, List<ScriptableEntity> scriptableEntities, EntityCustomClass entityCustomClass = null)
     {

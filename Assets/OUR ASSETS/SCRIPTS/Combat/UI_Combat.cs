@@ -185,7 +185,7 @@ public class UI_Combat : MonoBehaviour
         ItemManager.Instance.HideInventoryParent();
 
 
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f,true,true);
     }
 
     public void BackToMainMenu()
@@ -195,7 +195,7 @@ public class UI_Combat : MonoBehaviour
 
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,false,false);
     }
 
     public void ActivateCompanionAbility()

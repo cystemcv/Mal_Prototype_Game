@@ -33,7 +33,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
     public AddCardTo addCardTo;
 
-    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon}
+    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon, None}
     public CardType cardType;
 
     public enum CardRarity { Common, Rare, Epic, Legendary,Curse };
@@ -382,18 +382,22 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     }
 
     //loading screen
-    public void LoadScene(string sceneName, float manualLoadingTime)
+    public void LoadScene(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
 
-        StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime));
+        StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime, triggerLoadingStartAnimation, triggerLoadingEndAnimation));
     }
 
-    public IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime)
+    public IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
 
         //wait for the transition
-        //Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
-        //loadingAnimator.SetTrigger("LoadingStart");
+        if (triggerLoadingStartAnimation)
+        {
+            Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+            loadingAnimator.SetTrigger("LoadingStart");
+        }
+
         yield return new WaitForSeconds(manualLoadingTime);
 
         //do the async operation
@@ -409,6 +413,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
         //now the scene is loaded
+        if (triggerLoadingEndAnimation)
+        {
+            Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+            loadingAnimator.SetTrigger("LoadingEnd");
+        }
         //loadingAnimator.SetTrigger("LoadingEnd");
         yield return new WaitForSeconds(manualLoadingTime);
 

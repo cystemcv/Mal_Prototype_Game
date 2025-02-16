@@ -16,7 +16,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     private Vector3 originalScale;
 
-    private Vector3 saveRotation;
+    public Vector3 saveRotation;
 
 
     //private int index = -1; // Initialize the index to -1
@@ -43,7 +43,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private bool canActivate = false;
     private bool isDragging = false;
 
-
+    private bool isPointerInside = false;
 
     void Start()
     {
@@ -68,6 +68,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
 
+        if (isPointerInside) return; // Prevent duplicate calls
+
+        isPointerInside = true;
+
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerEnter_TargetMode();
@@ -80,14 +84,51 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             OnPointerEnter_ShieldChoiceMode();
         }
 
-
-
     }
 
+    private void OnEnable()
+    {
+        // Wait one frame to ensure the UI updates first
+        StartCoroutine(DelayedCheck());
+    }
 
+    private IEnumerator DelayedCheck()
+    {
+        yield return null; // Wait one frame
+        if (IsPointerOverUIElement(gameObject))
+        {
+            OnPointerEnter(null); // Manually trigger OnPointerEnter
+        }
+    }
+
+    // Checks if the mouse is over this UI element
+    private bool IsPointerOverUIElement(GameObject obj)
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject == obj)
+            {
+                isPointerInside = true;
+                return true;
+            }
+      
+        }
+
+        return false;
+    }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
+        isPointerInside = false;
 
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
@@ -173,7 +214,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         localMoveTween = LeanTween.moveY(gameObject, targetY, transitionTime);
 
         //save and then make the angle 0
-        saveRotation = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+        //saveRotation = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
         gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
 
         gameObject.GetComponent<Canvas>().sortingOrder = 999;

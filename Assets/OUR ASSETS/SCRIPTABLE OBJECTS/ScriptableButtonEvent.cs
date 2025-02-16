@@ -10,7 +10,7 @@ public class ScriptableButtonEvent : ScriptableObject
 {
 
 
-
+    public string eventButtonDescription = "";
     public virtual void OnButtonCreate()
     {
 

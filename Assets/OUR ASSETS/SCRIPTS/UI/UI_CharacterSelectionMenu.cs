@@ -149,7 +149,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0f);
+        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0f, false, false);
     }
 
     public void BackToMainMenu()
@@ -159,7 +159,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, false, false);
     }
 
     public void ProceedToGame()
@@ -172,7 +172,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         ItemManager.Instance.GameStartItems();
 
         //SceneManager.LoadScene("scene_Adventure");
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, false, false);
 
 
     }

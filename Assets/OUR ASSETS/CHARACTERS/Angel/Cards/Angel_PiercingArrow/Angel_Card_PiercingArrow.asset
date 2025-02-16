@@ -16,9 +16,16 @@ MonoBehaviour:
   cardName: Piercing Arrow
   mainClass: 0
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 3
   targetEntityTagList: 0100000003000000
   waitOnQueueTimer: 0.6
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords:
+  - {fileID: 11400000, guid: 937e54055552d444aa5d0261785374dd, type: 2}
+  scriptableBuffDebuffs: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 309019412560960090, guid: afb4182a994618c4ba8eceabf1f79e32, type: 3}

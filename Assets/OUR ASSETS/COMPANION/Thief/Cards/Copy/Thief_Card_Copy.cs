@@ -33,12 +33,19 @@ public class Thief_Card_Copy : ScriptableCard
 
     }
 
+    public override void OnInitializeCard(CardScript cardScript)
+    {
+
+
+    }
+
     public void CopyCard(CardScript cardScript, GameObject entityUsedCard)
     {
         base.OnPlayCard(cardScript, entityUsedCard);
 
 
         //get a random card from enemies
+
 
         //get all enemies
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -50,6 +57,9 @@ public class Thief_Card_Copy : ScriptableCard
         //generate cardScript
         CardScript cardScriptTemp = new CardScript();
         AIBrain aIBrain = enemies[index].GetComponent<AIBrain>();
+
+
+
         cardScriptTemp.scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
 
         Debug.Log("cardScriptTemp.scriptableCard : ", cardScriptTemp.scriptableCard);

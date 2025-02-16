@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    public GameObject tooltipGlobalGO;
+
     public GameObject tooltipPanel;
     public TMP_Text tooltipText;  // Use Text instead of TextMeshPro if preferred
                                   // Padding to prevent tooltip from overlapping hovered element
@@ -51,6 +53,10 @@ public class UIManager : MonoBehaviour
     public GameObject cardListGOContent;
     public GameObject cardPrefabScaleWithScreenOverlay;
     List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+
+    public GameObject eventGO;
+    public GameObject eventButtonPrefab;
+    public GameObject closeButtonPrefab;
 
     public void ToggleActivateOrderVisibility()
     {
@@ -737,6 +743,75 @@ public class UIManager : MonoBehaviour
 
 
 
+    }
+
+    public void ShowEventGo(ScriptableEvent scriptableEvent)
+    {
+        //show the event
+        eventGO.SetActive(true);
+
+        //assign the variables
+        eventGO.transform.Find("Image").GetComponent<Image>().sprite = scriptableEvent.icon;
+        eventGO.transform.Find("Description").GetComponent<TMP_Text>().text = scriptableEvent.description;
+        eventGO.transform.Find("Title").GetComponent<TMP_Text>().text = scriptableEvent.title;
+
+        GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
+
+        //destroy all previous event buttons
+        SystemManager.Instance.DestroyAllChildren(buttonEventParent);
+
+
+
+        //create new event buttons
+        foreach (ScriptableButtonEvent scriptableButtonEvent in scriptableEvent.scriptableButtonEventList)
+        {
+
+            GameObject eventButton = Instantiate(eventButtonPrefab, buttonEventParent.transform.position, Quaternion.identity);
+            eventButton.transform.SetParent(buttonEventParent.transform);
+
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent = scriptableButtonEvent;
+
+            //assign the variables
+            eventButton.transform.Find("Text").GetComponent<TMP_Text>().text = scriptableButtonEvent.eventButtonDescription;
+
+            //call the on button create of the scriptable object
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate();
+
+        }
+
+    }
+
+    public void EndEvent(Sprite icon, string title, string description)
+    {
+        GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
+        //destroy all previous event buttons
+        SystemManager.Instance.DestroyAllChildren(buttonEventParent);
+
+        GameObject eventButtonClose = Instantiate(closeButtonPrefab, buttonEventParent.transform.position, Quaternion.identity);
+        eventButtonClose.transform.SetParent(buttonEventParent.transform);
+
+        //assign the variables
+        if (icon != null)
+        {
+            eventGO.transform.Find("Image").GetComponent<Image>().sprite = icon;
+        }
+
+        if(title != null)
+        {
+            eventGO.transform.Find("Title").GetComponent<TMP_Text>().text = title;
+        }
+
+        if (description != null)
+        {
+            eventGO.transform.Find("Description").GetComponent<TMP_Text>().text = description;
+        }
+   
+    }
+
+
+    public void HideEventGo()
+    {
+        eventGO.SetActive(false);
     }
 
 

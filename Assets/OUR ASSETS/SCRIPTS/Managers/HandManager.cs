@@ -238,7 +238,12 @@ public class HandManager : MonoBehaviour
         cardsInHandList[index].GetComponent<CardEvents>().enabled = false;
         LeanTween.move(cardsInHandList[index], targetPosition, drawSpeed).setOnComplete(() => {
             // Code to execute when the card reaches the destination
-            cardsInHandList[index].GetComponent<CardEvents>().enabled = true;
+            if (index != -1 && index < cardsInHandList.Count)
+            {
+                cardsInHandList[index].GetComponent<CardEvents>().enabled = true;
+                cardsInHandList[index].GetComponent<CardEvents>().saveRotation = new Vector3(cardsInHandList[index].transform.eulerAngles.x, cardsInHandList[index].transform.eulerAngles.y, cardsInHandList[index].transform.eulerAngles.z);
+            }
+
         });
     }
 

@@ -16,9 +16,17 @@ MonoBehaviour:
   cardName: Determination
   mainClass: 6
   cardType: 3
+  cardTypeSecondary: 7
   cardRarity: 2
   targetEntityTagList: 0000000002000000
   waitOnQueueTimer: 0.4
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: a256a86a20d4c8244aed7a504b42843d, type: 2}
+  - {fileID: 11400000, guid: f82e89059182d874992f8069c0de1cda, type: 2}
   primaryManaCost: 2
   cardDesc: 
   abilityEffect: {fileID: 0}

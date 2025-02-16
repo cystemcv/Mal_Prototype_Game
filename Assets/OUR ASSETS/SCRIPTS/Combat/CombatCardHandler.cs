@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatCardHandler : MonoBehaviour
 {
@@ -150,6 +151,9 @@ public class CombatCardHandler : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         {
+
+            targetUIElement.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);

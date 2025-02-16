@@ -266,7 +266,11 @@ public class DeckManager : MonoBehaviour
 
         for (int i = handCards.Count - 1; i >= 0; i--)
         {
-            DiscardCardFromHand(handCards[i]);
+            if (handCards[i].scriptableCard.discardCardAtEndTurn)
+            {
+                DiscardCardFromHand(handCards[i]);
+            }
+       
         }
     }
 

@@ -31,7 +31,19 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             CombatManager.Instance.scriptablePlanet = scriptablePlanet;
             CombatManager.Instance.planetClicked = this.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0f);
+            SystemManager.Instance.LoadScene("scene_Combat", 0f,true,true);
+        }
+        else if (planetType == SystemManager.PlanetTypes.EVENT)
+        {
+
+            //CombatManager.Instance.scriptablePlanet = scriptablePlanet;
+            CombatManager.Instance.planetClicked = this.gameObject;
+
+            int randomIndex = Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList.Count);
+
+            UIManager.Instance.ShowEventGo(CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex]);
+
+            //SystemManager.Instance.LoadScene("scene_Combat", 0f, true, true);
         }
         else
         {

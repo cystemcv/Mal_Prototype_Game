@@ -13,13 +13,15 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [HideLabel, PreviewField(80), HorizontalGroup("CardHeader", 80)]
     public Sprite cardArt; // Art to be displayed and attached to the card
 
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public string cardName;
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.MainClass mainClass = SystemManager.MainClass.MONSTER;
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.CardType cardType = SystemManager.CardType.Attack;
-    [Required, VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
+    public SystemManager.CardType cardTypeSecondary = SystemManager.CardType.None;
+    [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.CardRarity cardRarity = SystemManager.CardRarity.Common;
 
     [Title("SETTINGS")]
@@ -27,6 +29,13 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public float waitOnQueueTimer = 0.5f;
     public bool cannotDiscard = false;
     public bool cannorRemoveFromDeck = false;
+    public bool discardCardAtEndTurn = true;
+
+    [Title("KEYWORDS")]
+    public List<ScriptableKeywords> scriptableKeywords = new List<ScriptableKeywords>();
+
+    [Title("BUFFS/DEBUFFS")]
+    public List<ScriptableBuffDebuff> scriptableBuffDebuffs = new List<ScriptableBuffDebuff>();
 
     [Title("CARD DETAILS")]
     [Range(0, 9)]
@@ -43,6 +52,8 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
     public AudioClip cardSoundEffect;
     public string cardFlavor; // Flavor text- maybe not needed
+
+
 
 
 
@@ -116,6 +127,12 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     {
 
     }
+
+    public virtual void OnInitializeCard(CardScript cardScript)
+    {
+
+    }
+
     public virtual void OnDelayEffect(CardScript cardScript)
     {
 

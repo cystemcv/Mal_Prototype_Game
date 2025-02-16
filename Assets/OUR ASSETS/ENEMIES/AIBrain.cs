@@ -30,6 +30,12 @@ public class AIBrain : MonoBehaviour
         //play card
         PlayCardOnlyAbilities(cardScriptList[aiLogicStep]);
 
+        IncreaseAiStep();
+
+    }
+
+    public void IncreaseAiStep()
+    {
         //go to the next step
         aiLogicStep++;
 
@@ -38,6 +44,7 @@ public class AIBrain : MonoBehaviour
         {
             aiLogicStep = 0;
         }
+
 
     }
 

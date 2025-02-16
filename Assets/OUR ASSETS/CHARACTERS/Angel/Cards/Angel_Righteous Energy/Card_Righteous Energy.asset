@@ -16,10 +16,23 @@ MonoBehaviour:
   cardName: Righteous Energy
   mainClass: 6
   cardType: 2
+  cardTypeSecondary: 7
   cardRarity: 2
   targetEntityTagList: 00000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: ad2f292ac115c1c4180b36d17d764ef5, type: 2}
   primaryManaCost: 1
   cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 0
+  cardSoundEffect: {fileID: 0}
   cardFlavor: 
   cardAbilityClass:
   - scriptableCardAbility: {fileID: 11400000, guid: 38a00010653874e46a1296e26752137a, type: 2}

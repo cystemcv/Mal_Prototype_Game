@@ -1369,6 +1369,8 @@ GameObject:
   - component: {fileID: 612872951973583325}
   - component: {fileID: 805197084999856786}
   - component: {fileID: 1370452278234850681}
+  - component: {fileID: -1331177944868672131}
+  - component: {fileID: -1455288114538374846}
   m_Layer: 6
   m_Name: CardPrefabScaleWithScreenOverlay
   m_TagString: Untagged
@@ -1468,6 +1470,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markedGO: {fileID: 5074953360534568518}
+  scriptableCard: {fileID: 0}
+--- !u!114 &-1331177944868672131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501518557207666840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81a9e081a4afa64dae6b9d42bc38c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  delay: 0.2
+  tooltipRect: {fileID: 0}
+  descriptionText: {fileID: 0}
+  forceToUpdate: 0
+  useIn3D: 0
+  tooltipAnimator: {fileID: 0}
+--- !u!114 &-1455288114538374846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501518557207666840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17077cf35fdd42e49aa2bcb0877f9db8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5030472594111834486
 GameObject:
   m_ObjectHideFlags: 0

@@ -1371,6 +1371,8 @@ GameObject:
   - component: {fileID: 923566653597050969}
   - component: {fileID: 923566653597050968}
   - component: {fileID: 3012192397435766274}
+  - component: {fileID: 8162546009399413184}
+  - component: {fileID: 8898101979971228844}
   m_Layer: 6
   m_Name: CardPrefabScaleWithScreen
   m_TagString: Untagged
@@ -1498,7 +1500,38 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 100
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
+--- !u!114 &8162546009399413184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501518557207666840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81a9e081a4afa64dae6b9d42bc38c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  delay: 0.2
+  tooltipRect: {fileID: 0}
+  descriptionText: {fileID: 0}
+  forceToUpdate: 0
+  useIn3D: 0
+  tooltipAnimator: {fileID: 0}
+--- !u!114 &8898101979971228844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2501518557207666840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17077cf35fdd42e49aa2bcb0877f9db8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5030472594111834486
 GameObject:
   m_ObjectHideFlags: 0

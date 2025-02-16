@@ -16,9 +16,17 @@ MonoBehaviour:
   cardName: Berserk
   mainClass: 6
   cardType: 2
+  cardTypeSecondary: 7
   cardRarity: 0
   targetEntityTagList: 0000000002000000
   waitOnQueueTimer: 0.4
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: f82e89059182d874992f8069c0de1cda, type: 2}
+  - {fileID: 11400000, guid: 3c378ef4ca2808f4da6d9df574aebca1, type: 2}
   primaryManaCost: 0
   cardDesc: 
   abilityEffect: {fileID: 0}

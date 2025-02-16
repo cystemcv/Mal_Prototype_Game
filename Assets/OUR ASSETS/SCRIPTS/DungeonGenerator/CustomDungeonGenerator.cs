@@ -165,12 +165,25 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (CombatManager.Instance.planetClicked != null)
         {
             //activate the neighbours
-            CustomDungeonGenerator.Instance.OnRoomClick(CombatManager.Instance.planetClicked);
-            CombatManager.Instance.planetClicked.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
-            CombatManager.Instance.planetClicked.GetComponent<RoomScript>().roomCleared = true;
+            ActivatePlanet(CombatManager.Instance.planetClicked);
+            //CustomDungeonGenerator.Instance.OnRoomClick(CombatManager.Instance.planetClicked);
+            //CombatManager.Instance.planetClicked.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
+            //CombatManager.Instance.planetClicked.GetComponent<RoomScript>().roomCleared = true;
             //CombatManager.Instance.planetClicked = null;
         }
 
+
+    }
+
+    public void ActivatePlanet(GameObject planet)
+    {
+        if (planet != null)
+        {
+            CustomDungeonGenerator.Instance.OnRoomClick(planet);
+            planet.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
+            planet.GetComponent<RoomScript>().roomCleared = true;
+
+        }
 
     }
 

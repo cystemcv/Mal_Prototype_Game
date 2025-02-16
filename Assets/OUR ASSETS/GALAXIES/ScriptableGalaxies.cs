@@ -13,6 +13,8 @@ public class ScriptableGalaxies : ScriptableObject
     public List<ScriptablePlanets> scriptablePlanets;
     public List<ScriptablePlanets> scriptableStartingPlanets;
 
+    public List<ScriptableEvent> scriptableEventList;
+
     [Title("GENERATOR SETTINGS")]
     public int minCombatRoom = 10;
     public int maxCombatRoom = 10;
