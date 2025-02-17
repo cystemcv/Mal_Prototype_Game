@@ -102,7 +102,10 @@ public class CustomDungeonGenerator : MonoBehaviour
     {
 
 
-
+        if (StaticData.staticMainDeck.Count == 0)
+        {
+            DeckManager.Instance.BuildStartingDeck();
+        }
 
 
     }

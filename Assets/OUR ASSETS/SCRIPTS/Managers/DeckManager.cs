@@ -270,7 +270,7 @@ public class DeckManager : MonoBehaviour
             {
                 DiscardCardFromHand(handCards[i]);
             }
-       
+
         }
     }
 
@@ -493,6 +493,70 @@ public class DeckManager : MonoBehaviour
 
     //}
 
+    public void PlayCardFromCombatDeck(int index)
+    {
+
+        if (combatDeck.Count == 0 && discardedPile.Count == 0)
+        {
+            return;
+        }
+
+        //check deck
+        if (combatDeck.Count <= 0)
+        {
+
+            //check if there are cards on deck/ if not put the discard pile back to deck (loop)
+            FillUpDeckFromDiscardPile();
+        }
+
+
+        CardScript cardScript = combatDeck[index];
+        HandFullSpawnCardFunction(cardScript);
+
+        //save card
+        savedPlayedCardScript = cardScript;
+
+        //get card targets 
+        List<string> tagsInCard = new List<string>();
+
+        foreach (SystemManager.EntityTag entityTag in cardScript.scriptableCard.targetEntityTagList)
+        {
+            tagsInCard.Add(entityTag.ToString());
+        }
+
+        List<GameObject> allEntities = SystemManager.Instance.FindGameObjectsWithTags(tagsInCard);
+
+        //get random target if it has a target
+        if (allEntities.Count > 0)
+        {
+            int randomEntityIndex = UnityEngine.Random.Range(0, allEntities.Count);
+
+            CombatCardHandler.Instance.targetClicked = allEntities[randomEntityIndex];
+        }
+
+
+        //get the player
+        GameObject entity = GameObject.FindGameObjectWithTag("Player");
+        cardScript.scriptableCard.OnPlayCard(cardScript, entity);
+
+        if (savedPlayedCardScript.scriptableCard != null)
+        {
+            //destroy the prefab
+            if (savedPlayedCardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+            {
+                combatDeck.RemoveAt(index);
+                banishedPile.Add(savedPlayedCardScript);
+
+            }
+            else
+            {
+                combatDeck.RemoveAt(index);
+                discardedPile.Add(savedPlayedCardScript);
+            }
+
+        }
+    }
+
 
     public void PlayCardFromHandRandom(bool customManaCostEnable = false, int customManaCost = 0)
     {
@@ -605,9 +669,15 @@ public class DeckManager : MonoBehaviour
     {
 
         //add a card ti deck
-        GameObject cardPrefab = CardListManager.Instance.cardPrefab;
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-        StaticData.staticMainDeck.Add(null);
+        //GameObject cardPrefab = CardListManager.Instance.cardPrefab;
+        //cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+
+        //CardScript cardScript = new CardScript();
+
+        CardScript cardScript = new CardScript();
+        cardScript.scriptableCard = scriptableCard;
+        StaticData.staticMainDeck.Add(cardScript);
+
 
     }
 

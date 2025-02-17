@@ -19,7 +19,9 @@ public class UI_EventButton : MonoBehaviour
     {
 
         UIManager.Instance.HideEventGo();
-        
+
+        CustomDungeonGenerator.Instance.ActivatePlanet(CombatManager.Instance.planetClicked);
+
     }
 
 }
