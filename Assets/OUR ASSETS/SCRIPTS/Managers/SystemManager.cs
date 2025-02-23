@@ -69,7 +69,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum SelectionScreenPrefabType { CHARACTER, COMPANION }; //Actual classes to be determined
 
-    public enum ItemIn { INVENTORY, LOOT }
+    public enum ItemIn { INVENTORY, LOOT, ARTIFACTS, COMPANION }
 
     public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
 
@@ -159,6 +159,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         {
             Destroy(gameObject);
         }
+
+       StaticData.InitializeJsons();
     }
 
     // called first

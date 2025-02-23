@@ -398,6 +398,8 @@ public class DeckManager : MonoBehaviour
         GameObject entity = GameObject.FindGameObjectWithTag("Player");
         cardScript.scriptableCard.OnPlayCard(cardScript, entity);
 
+        CardPlayedStaticVariables(cardScript);
+
         if (savedPlayedCardScript != null)
         {
             //destroy the prefab
@@ -418,6 +420,63 @@ public class DeckManager : MonoBehaviour
         yield return null;
     }
 
+
+    public void CardPlayedStaticVariables(CardScript cardScript)
+    {
+
+        StaticData.IncrementStat(StaticData.combatStats, "Cards_Played", 1);
+        StaticData.IncrementStat(StaticData.combatStats, "Total_Cards_Played", 1);
+
+        if (cardScript.scriptableCard.primaryManaCost == 0)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Zero_Mana_Cost_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Zero_Mana_Cost_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.primaryManaCost == 1)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "One_Mana_Cost_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_One_Mana_Cost_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.primaryManaCost == 2)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Two_Mana_Cost_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Two_Mana_Cost_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.primaryManaCost == 3)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Three_Mana_Cost_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Three_Mana_Cost_Cards_Played", 1);
+        }
+        else
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Four_And_Above_Mana_Cost_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Four_And_Above_Mana_Cost_Cards_Played", 1);
+        }
+
+        if (cardScript.scriptableCard.cardType == SystemManager.CardType.Attack)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Attack_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Attack_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Skill)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Skill_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Skill_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Focus_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Focus_Cards_Played", 1);
+        }
+        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Magic)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Magic_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Magic_Cards_Played", 1);
+        }
+
+        Debug.Log(StaticData.FormatStatsForText(StaticData.combatStats));
+
+    }
 
     //public void PlayCardOnlyAbilities(CardScript cardScript)
     //{

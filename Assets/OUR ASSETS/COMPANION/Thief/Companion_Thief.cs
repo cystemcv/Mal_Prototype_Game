@@ -10,8 +10,9 @@ using static ScriptableCard;
 public class Companion_Thief : ScriptableCompanion
 {
 
-    public ScriptableCard scriptableCard;
-
+    public ScriptableCard copy;
+    public ScriptableCard steal;
+    public ScriptableItem stealCompanionUpgrade; //steal
 
     public override void OnPlayCard()
     {
@@ -34,8 +35,19 @@ public class Companion_Thief : ScriptableCompanion
         
         companionBtn.GetComponent<UI_CombatButton>().activatedButton = false;
 
-        //add card on hand
-        DeckManager.Instance.AddScriptableCardToHand(scriptableCard);
+
+        if (ItemManager.Instance.CheckIfItemExistOnList(StaticData.companionItemList, stealCompanionUpgrade) is ClassItem)
+        {
+            //add steal card on hand
+            DeckManager.Instance.AddScriptableCardToHand(steal);
+        }
+        else
+        {
+            //add copy card on hand
+            DeckManager.Instance.AddScriptableCardToHand(copy);
+        }
+
+
 
 
 

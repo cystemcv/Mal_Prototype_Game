@@ -51,8 +51,8 @@ public class ItemManager : MonoBehaviour
 
         //}
 
-        UIManager.Instance.lootGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
-        UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
+        //UIManager.Instance.lootGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
+        //UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
     }
 
 
@@ -170,29 +170,74 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void ShowLootParent()
+    public void ShowInventory() {
+        UIManager.Instance.inventoryMain.SetActive(true);
+        UIManager.Instance.lootMain.SetActive(false);
+
+        ItemManager.Instance.ClearAllText();
+
+        ResetGOObject(UIManager.Instance.inventoryGO);
+        ResetGOObject(UIManager.Instance.companionGO);
+        ResetGOObject(UIManager.Instance.artifactGO);
+
+        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
+        PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
+        PopulateGOObject(UIManager.Instance.artifactGO, StaticData.artifactItemList);
+    }
+
+    public void RefreshInventory()
     {
+        ResetGOObject(UIManager.Instance.inventoryGO);
+        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
+    }
+
+    public void RefreshArtifacts()
+    {
+        ResetGOObject(UIManager.Instance.artifactGO);
+        PopulateGOObject(UIManager.Instance.artifactGO, StaticData.artifactItemList);
+    }
+
+    public void RefreshCompanion()
+    {
+        ResetGOObject(UIManager.Instance.companionGO);
+        PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
+    }
+
+    public void ClearAllText()
+    {
+        UIManager.Instance.lootText.text = "";
+        UIManager.Instance.inventoryText.text = "";
+        UIManager.Instance.artifactText.text = "";
+        UIManager.Instance.companionText.text = "";
+    }
+
+    public void ShowLoot()
+    {
+        UIManager.Instance.lootMain.SetActive(true);
+
         ResetGOObject(UIManager.Instance.lootGO);
         PopulateGOObject(UIManager.Instance.lootGO, StaticData.lootItemList);
-        ShowItemParent(UIManager.Instance.lootGO);
     }
+
+    public void HideInventory()
+    {
+        UIManager.Instance.inventoryMain.SetActive(false);
+    }
+
+    public void HideLoot()
+    {
+        UIManager.Instance.lootMain.SetActive(false);
+    }
+
+
 
     public void HideLootParent()
     {
         HideItemParent(UIManager.Instance.lootGO);
     }
 
-    public void ShowInventoryParent()
-    {
-        ResetGOObject(UIManager.Instance.inventoryGO);
-        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
-        ShowItemParent(UIManager.Instance.inventoryGO);
-    }
 
-    public void HideInventoryParent()
-    {
-        HideItemParent(UIManager.Instance.inventoryGO);
-    }
+
 
     public void ShowItemParent(GameObject itemParent)
     {
@@ -391,37 +436,35 @@ public class ItemManager : MonoBehaviour
 
             // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
             ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
-            itemDisplay.enabled = true;
+            //itemDisplay.enabled = true;
             if (itemDisplay != null)
             {
-
-                itemPrefab.GetChild(2).gameObject.SetActive(true);
-                itemPrefab.GetChild(3).gameObject.SetActive(true);
 
                 itemDisplay.SetData(classItem);
                 itemDisplay.itemID = classItem.itemID;
 
-
-                itemPrefab.GetChild(2).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
+                itemPrefab.GetChild(1).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
 
                 //level or quantity
                 if (goObject == UIManager.Instance.inventoryGO)
                 {
-                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
                     itemDisplay.itemIn = SystemManager.ItemIn.INVENTORY;
                 }
                 else if (goObject == UIManager.Instance.lootGO)
                 {
-                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
                     itemDisplay.itemIn = SystemManager.ItemIn.LOOT;
                 }
                 else if (goObject == UIManager.Instance.artifactGO)
                 {
-                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = "XXX";
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
+                    itemDisplay.itemIn = SystemManager.ItemIn.ARTIFACTS;
                 }
                 else
                 {
-                    itemPrefab.GetChild(3).Find("Text").gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
+                    itemDisplay.itemIn = SystemManager.ItemIn.COMPANION;
                 }
 
 
@@ -436,64 +479,66 @@ public class ItemManager : MonoBehaviour
         //reset them back to blank state
         foreach (Transform itemPrefab in goObject.transform)
         {
+            itemPrefab.gameObject.SetActive(false);
 
+            //itemPrefab.GetComponent<ClassItem>().enabled = false;
 
-            itemPrefab.GetComponent<ClassItem>().enabled = false;
+            //foreach (Transform itemPrefabChild in itemPrefab)
+            //{
+          
 
-            foreach (Transform itemPrefabChild in itemPrefab)
-            {
-                if (itemPrefabChild.name == "Background" || itemPrefabChild.name == "Outline")
-                {
-                    itemPrefabChild.gameObject.SetActive(true);
-                }
-                else
-                {
-                    itemPrefabChild.gameObject.SetActive(false);
-                }
-             
-            }
+            //    //if (itemPrefabChild.name == "Background" || itemPrefabChild.name == "Outline")
+            //    //{
+            //    //    itemPrefabChild.gameObject.SetActive(true);
+            //    //}
+            //    //else
+            //    //{
+            //    //    itemPrefabChild.gameObject.SetActive(false);
+            //    //}
+
+            //}
         }
 
     }
 
-    public void OpenCompanionGO()
-    {
+    //public void OpenCompanionGO()
+    //{
 
-        //populate companionGO
-        ResetGOObject(UIManager.Instance.companionGO);
-        PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
+    //    //populate companionGO
+    //    ResetGOObject(UIManager.Instance.companionGO);
+    //    PopulateGOObject(UIManager.Instance.companionGO, StaticData.companionItemList);
 
-        UIManager.Instance.companionGO.SetActive(true);
-        UIManager.Instance.inventoryGO.SetActive(false);
-        UIManager.Instance.artifactGO.SetActive(false);
-    }
+    //    UIManager.Instance.companionGO.SetActive(true);
+    //    UIManager.Instance.inventoryGO.SetActive(false);
+    //    UIManager.Instance.artifactGO.SetActive(false);
+    //}
 
-    public void OpenInventoryGO()
-    {
+    //public void OpenInventoryGO()
+    //{
 
-        //populate companionGO
-        ResetGOObject(UIManager.Instance.inventoryGO);
+    //    //populate companionGO
+    //    ResetGOObject(UIManager.Instance.inventoryGO);
 
-        PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
+    //    PopulateGOObject(UIManager.Instance.inventoryGO, StaticData.inventoryItemList);
 
-        UIManager.Instance.inventoryGO.SetActive(true);
-        UIManager.Instance.companionGO.SetActive(false);
-        UIManager.Instance.artifactGO.SetActive(false);
+    //    UIManager.Instance.inventoryGO.SetActive(true);
+    //    UIManager.Instance.companionGO.SetActive(false);
+    //    UIManager.Instance.artifactGO.SetActive(false);
 
-    }
+    //}
 
-    public void OpenArtifactGO()
-    {
+    //public void OpenArtifactGO()
+    //{
 
-        //populate companionGO
-        ResetGOObject(UIManager.Instance.artifactGO);
+    //    //populate companionGO
+    //    ResetGOObject(UIManager.Instance.artifactGO);
 
-        PopulateGOObject(UIManager.Instance.artifactGO, StaticData.artifactItemList);
+    //    PopulateGOObject(UIManager.Instance.artifactGO, StaticData.artifactItemList);
 
-        UIManager.Instance.artifactGO.SetActive(true);
-        UIManager.Instance.companionGO.SetActive(false);
-        UIManager.Instance.inventoryGO.SetActive(false);
-    }
+    //    UIManager.Instance.artifactGO.SetActive(true);
+    //    UIManager.Instance.companionGO.SetActive(false);
+    //    UIManager.Instance.inventoryGO.SetActive(false);
+    //}
 
     public void AddItemOnActivateOrder(ScriptableItem scriptableItem, string toolTip, bool failed)
     {
@@ -531,5 +576,19 @@ public class ItemManager : MonoBehaviour
         newItem.GetComponent<Image>().color = itemColor;
     }
 
+
+    public ClassItem CheckIfItemExistOnList(List<ClassItem> scriptableItemList, ScriptableItem scriptableItem)
+    {
+        int index = scriptableItemList.FindIndex(item => item.scriptableItem.itemName == scriptableItem.itemName);
+
+        if (index == -1)
+        {
+            return null;
+        }
+        else
+        {
+            return scriptableItemList[index];
+        }
+    }
 
 }

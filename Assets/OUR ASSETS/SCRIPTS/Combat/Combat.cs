@@ -163,7 +163,7 @@ public class Combat : MonoBehaviour
                 DeckManager.Instance.savedPlayedCardScript = playedCardList[0].cardScript;
 
                 DeckManager.Instance.PlayerPlayedCard(playedCardList[0].cardScript);
-                Debug.Log("Card played : " + playedCardList[0].scriptableCard.cardName);
+
                 playedCardList[0].isPlaying = true;
 
       
@@ -286,8 +286,8 @@ public class Combat : MonoBehaviour
 
             //win
             UI_Combat.Instance.victory.SetActive(true);
-            ItemManager.Instance.ShowLootParent();
-            ItemManager.Instance.ShowInventoryParent();
+            ItemManager.Instance.ShowInventory();
+            ItemManager.Instance.ShowLoot();
         }
 
     }

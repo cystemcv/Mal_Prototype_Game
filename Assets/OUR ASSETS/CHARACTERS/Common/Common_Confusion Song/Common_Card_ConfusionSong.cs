@@ -6,8 +6,6 @@ using UnityEngine;
 public class Common_Card_ConfusionSong : ScriptableCard
 {
 
-    public int damageAmount = 0;
-    public int multiHits = 0;
 
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
@@ -24,7 +22,7 @@ public class Common_Card_ConfusionSong : ScriptableCard
 
     public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScript, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -35,7 +33,7 @@ public class Common_Card_ConfusionSong : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScript, entityUsedCard);
 
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;
@@ -46,13 +44,14 @@ public class Common_Card_ConfusionSong : ScriptableCard
     public void ExecuteCard()
     {
 
-        //then loop
-        if (multiHits <= 0)
-        {
-            multiHits = 1;
-        }
+
 
         MonoBehaviour runner = CombatCardHandler.Instance;
+
+        if (entityUsedCardGlobal == null)
+        {
+            entityUsedCardGlobal = GameObject.FindGameObjectWithTag("Player");
+        }
 
         List<GameObject> targets = AIManager.Instance.GetAllTargets(entityUsedCardGlobal);
 

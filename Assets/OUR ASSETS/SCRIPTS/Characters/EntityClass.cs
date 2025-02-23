@@ -135,19 +135,19 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (gameObjectUI != null)
         {
             yield return StartCoroutine(SystemManager.Instance.DestroyObjectIE(gameObjectUI, 0));
-            Debug.Log("Finished DestroyObjectIE");
+
         }
 
         //Add the appropriate entity UI
         if (aIBrain == null)
         {
             yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.playerGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
-            Debug.Log("Finished SpawnPrefabIE 1");
+
         }
         else
         {
             yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.commonGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
-            Debug.Log("Finished SpawnPrefabIE 2");
+    
         }
         Debug.Log("Finished SpawnPrefabIE");
 

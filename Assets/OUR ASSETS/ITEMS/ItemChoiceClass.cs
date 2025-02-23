@@ -40,14 +40,14 @@ public class ItemChoiceClass : MonoBehaviour, IPointerEnterHandler, IPointerExit
         {
             ItemManager.Instance.AddArtifactItemInList(classItem);
 
-            ItemManager.Instance.OpenArtifactGO();
+            ItemManager.Instance.RefreshArtifacts();
         }
         else
         {
             //add to companion list
             ItemManager.Instance.AddCompanionItemInList(classItem);
 
-            ItemManager.Instance.OpenCompanionGO();
+            ItemManager.Instance.RefreshCompanion();
         }
 
 

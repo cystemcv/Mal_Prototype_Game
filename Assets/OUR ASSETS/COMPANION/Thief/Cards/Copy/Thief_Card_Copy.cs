@@ -44,20 +44,26 @@ public class Thief_Card_Copy : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
 
-        //get a random card from enemies
-
-
-        //get all enemies
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
-        //get random enemy
-        int index = UnityEngine.Random.Range(0, enemies.Length);
-
         //get the card
         //generate cardScript
         CardScript cardScriptTemp = new CardScript();
-        AIBrain aIBrain = enemies[index].GetComponent<AIBrain>();
+        //get a random card from enemies
 
+        AIBrain aIBrain = null;
+
+        if (this.targetEntityTagList.Count <= 0)
+        {
+            //get all enemies
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            //get random enemy
+            int index = UnityEngine.Random.Range(0, enemies.Length);
+            aIBrain = enemies[index].GetComponent<AIBrain>();
+        }
+        else
+        {
+            realTarget = CombatCardHandler.Instance.targetClicked;
+            aIBrain = realTarget.GetComponent<AIBrain>();
+        }
 
 
         cardScriptTemp.scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];

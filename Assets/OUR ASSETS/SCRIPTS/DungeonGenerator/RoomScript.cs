@@ -17,7 +17,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //get the neighbor rooms
         //CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
-        ItemManager.Instance.HideInventoryParent();
+        ItemManager.Instance.HideInventory();
 
 
         if (roomCleared)

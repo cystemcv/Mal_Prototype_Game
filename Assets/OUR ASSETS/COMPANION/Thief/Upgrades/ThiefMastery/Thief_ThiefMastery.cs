@@ -9,6 +9,7 @@ public class Thief_ThiefMastery : ScriptableItem
 {
     [Title("UNIQUE ITEM ABILITY")]
     public ScriptableCard copyCard;
+    public ScriptableCard stealCard;
 
     public override void Activate(ClassItem classItem)
     {
@@ -17,12 +18,16 @@ public class Thief_ThiefMastery : ScriptableItem
         {
             //add tags to the copy ability
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
         }
         else if (classItem.level == 2)
         {
             //add tags to the copy ability
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.EnemySummon);
+
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.EnemySummon);
         }
         else if (classItem.level == 3)
         {
@@ -30,6 +35,10 @@ public class Thief_ThiefMastery : ScriptableItem
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.EnemySummon);
             copyCard.targetEntityTagList.Add(SystemManager.EntityTag.PlayerSummon);
+
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.Enemy);
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.EnemySummon);
+            stealCard.targetEntityTagList.Add(SystemManager.EntityTag.PlayerSummon);
         }
 
     }
@@ -37,6 +46,7 @@ public class Thief_ThiefMastery : ScriptableItem
     public override void Expired(ClassItem classItem)
     {
         copyCard.targetEntityTagList.Clear();
+        stealCard.targetEntityTagList.Clear();
     }
 
 

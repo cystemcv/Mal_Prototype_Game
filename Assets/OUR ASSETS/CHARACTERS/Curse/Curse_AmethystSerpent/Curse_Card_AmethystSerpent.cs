@@ -17,8 +17,8 @@ public class Curse_Card_AmethystSerpent : ScriptableCard
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
         int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += "Deal " + damageAmount + " to Every on Odd Turn Number!<br>";
-        customDesc += "Heal " + healAmount + " to all Enemies on on Even Turn Number!<br>";
+        customDesc += "Deal " + damageAmount + " to Everyone on Odd Turn Number!<br>";
+        customDesc += "Heal " + healAmount + " to Everyone on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
 
         return customDesc;

@@ -182,7 +182,7 @@ public class UI_Combat : MonoBehaviour
     public void BackToAdventure()
     {
         ItemManager.Instance.HideLootParent();
-        ItemManager.Instance.HideInventoryParent();
+        ItemManager.Instance.HideInventory();
 
 
         SystemManager.Instance.LoadScene("scene_Adventure", 0f,true,true);
@@ -191,7 +191,7 @@ public class UI_Combat : MonoBehaviour
     public void BackToMainMenu()
     {
         ItemManager.Instance.HideLootParent();
-        ItemManager.Instance.HideInventoryParent();
+        ItemManager.Instance.HideInventory();
 
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;

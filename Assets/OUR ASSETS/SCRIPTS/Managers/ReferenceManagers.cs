@@ -48,12 +48,12 @@ public class ReferenceManagers : MonoBehaviour
 
     public void ShowInventoryReference()
     {
-        ItemManager.Instance.ShowInventoryParent();
+        ItemManager.Instance.ShowInventory();
     }
 
     public void HideInventoryReference()
     {
-        ItemManager.Instance.HideInventoryParent();
+        ItemManager.Instance.HideInventory();
     }
 
 }

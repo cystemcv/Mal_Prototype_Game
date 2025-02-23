@@ -70,25 +70,28 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             this.gameObject.GetComponent<TooltipContent>().description = "";
         }
 
+        //change item border color
+        //this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
+
         if (itemIn == SystemManager.ItemIn.INVENTORY)
         {
-            //change item border color
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
-
-            GameObject mainItemText = this.gameObject.transform.parent.parent.Find("ItemText").gameObject;
-
             //change inventory text
-            mainItemText.GetComponent<TMP_Text>().text = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.inventoryText.text = "x" + quantity + " : " + scriptableItem.itemName;
+        }
+        else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
+        {
+            //change inventory text
+            UIManager.Instance.artifactText.text = "x" + quantity + " : " + scriptableItem.itemName;
+        }
+        else if (itemIn == SystemManager.ItemIn.COMPANION)
+        {
+            //change inventory text
+            UIManager.Instance.companionText.text = "x" + quantity + " : " + scriptableItem.itemName;
         }
         else if (itemIn == SystemManager.ItemIn.LOOT)
         {
-            //change item border color
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
-
-            GameObject mainItemText = this.gameObject.transform.parent.parent.Find("ItemText").gameObject;
-
             //change inventory text
-            mainItemText.GetComponent<TMP_Text>().text = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.lootText.text = "x" + quantity + " : " + scriptableItem.itemName;
         }
 
 
@@ -108,30 +111,23 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (itemIn == SystemManager.ItemIn.INVENTORY)
         {
-            //change item border color
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-
             //change inventory text
-            GameObject mainItemText = this.gameObject.transform.parent.parent.Find("ItemText").gameObject;
-
+            UIManager.Instance.inventoryText.text = "";
+        }
+        else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
+        {
             //change inventory text
-            mainItemText.GetComponent<TMP_Text>().text = "";
+            UIManager.Instance.artifactText.text = "";
+        }
+        else if (itemIn == SystemManager.ItemIn.COMPANION)
+        {
+            //change inventory text
+            UIManager.Instance.companionText.text = "";
         }
         else if (itemIn == SystemManager.ItemIn.LOOT)
         {
-            //change item border color
-            this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-
             //change inventory text
-            GameObject mainItemText = this.gameObject.transform.parent.parent.Find("ItemText").gameObject;
-
-            //change inventory text
-            mainItemText.GetComponent<TMP_Text>().text = "";
-
-
-
-
-
+            UIManager.Instance.lootText.text = "";
         }
 
 
@@ -170,17 +166,17 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 //Remove from loot
                 ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-                ItemManager.Instance.ShowLootParent();
-                ItemManager.Instance.ShowInventoryParent();
+                ItemManager.Instance.ShowLoot();
+                ItemManager.Instance.RefreshInventory();
             }
 
-            UIManager.Instance.lootGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
-            UIManager.Instance.inventoryGO.transform.parent.Find("ItemText").GetComponent<TMP_Text>().text = "";
-
+            ItemManager.Instance.ClearAllText();
         }
 
     }
 
+
+    
 
     public void AddCompanionItem()
     {
@@ -191,8 +187,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowLootParent();
-        ItemManager.Instance.ShowInventoryParent();
+        ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowLoot();
+  
 
 
     }
@@ -205,8 +202,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowLootParent();
-        ItemManager.Instance.ShowInventoryParent();
+        ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowLoot();
+    
 
         int itemsToChoose = 3;
 
@@ -287,8 +285,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowLootParent();
-        ItemManager.Instance.ShowInventoryParent();
+        ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowLoot();
+     
 
         int itemsToChoose = 3;
 
@@ -370,10 +369,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowLootParent();
-        ItemManager.Instance.ShowInventoryParent();
-
-    
+        ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowLoot();
+  
         List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;
 
 

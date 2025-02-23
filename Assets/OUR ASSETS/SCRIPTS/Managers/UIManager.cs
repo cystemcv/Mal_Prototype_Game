@@ -21,10 +21,17 @@ public class UIManager : MonoBehaviour
     private RectTransform panelRectTransform;
 
     //inventory
+    public GameObject inventoryMain;
+    public GameObject lootMain;
     public GameObject inventoryGO;
     public GameObject companionGO;
     public GameObject artifactGO;
     public GameObject lootGO;
+
+    public TMP_Text lootText;
+    public TMP_Text inventoryText;
+    public TMP_Text companionText;
+    public TMP_Text artifactText;
 
     public GameObject ChooseGroupUI;
 
