@@ -29,19 +29,9 @@ public class ReferenceManagers : MonoBehaviour
     {
 
         inventoryToggle = !inventoryToggle; // Toggle the value between true and false
-        Debug.Log("Inventory Toggle State: " + inventoryToggle); // Log the state for debugging
 
-
-        if (inventoryToggle)
-        {
-            //show
             ShowInventoryReference();
-        }
-        else
-        {
-            //hide
-            HideInventoryReference();
-        }
+ 
 
 
     }

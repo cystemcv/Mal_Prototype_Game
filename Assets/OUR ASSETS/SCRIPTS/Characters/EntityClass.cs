@@ -149,8 +149,6 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.commonGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
     
         }
-        Debug.Log("Finished SpawnPrefabIE");
-
 
         yield return null;
     }

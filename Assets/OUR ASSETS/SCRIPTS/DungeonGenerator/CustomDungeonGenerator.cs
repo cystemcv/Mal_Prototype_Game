@@ -129,7 +129,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     // This function will be called whenever a new scene is loaded
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Scene loaded: " + scene.name);
+        //Debug.Log("Scene loaded: " + scene.name);
         // Call your function here
 
         CustomSceneLoaded();
