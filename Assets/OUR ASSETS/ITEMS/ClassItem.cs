@@ -187,7 +187,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowInventory();
+        //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
   
 
@@ -202,7 +202,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowInventory();
+        //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
     
 
@@ -285,7 +285,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowInventory();
+        //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
      
 
@@ -369,7 +369,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //Remove from loot
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
 
-        ItemManager.Instance.ShowInventory();
+        //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
   
         List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;

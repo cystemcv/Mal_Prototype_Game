@@ -267,7 +267,7 @@ public class Combat : MonoBehaviour
             StaticData.staticDungeonParent = null;
 
             //lose
-            UI_Combat.Instance.gameover.SetActive(true);
+            UIManager.Instance.resultsWindow.SetActive(true);
         }
         else if (enemyFormation.Count <= 0)
         {
@@ -285,8 +285,11 @@ public class Combat : MonoBehaviour
             CalculateLootRewards();
 
             //win
-            UI_Combat.Instance.victory.SetActive(true);
-            ItemManager.Instance.ShowInventory();
+            //UIManager.Instance.resultsWindow.SetActive(true);
+
+            //UIManager.Instance.resultsWindow_Text.GetComponent<TMP_Text>().text = StaticData.FormatStatsForText(StaticData.combatStats);
+            //UIManager.Instance.resultsWindow_ScoringText.GetComponent<TMP_Text>().text = "Total Score : " + StaticData.GetTotalJsonScore(StaticData.combatStats);
+            //ItemManager.Instance.ShowInventory();
             ItemManager.Instance.ShowLoot();
         }
 

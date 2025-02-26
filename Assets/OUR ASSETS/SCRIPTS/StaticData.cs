@@ -1,10 +1,15 @@
 using Newtonsoft.Json;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StaticData : MonoBehaviour
 {
+    // Class to store both value and score for each stat
+    public class StatEntry
+    {
+        public int value;  // The stat value
+        public int score;  // The score weight for this stat
+    }
 
     public static List<CardScript> staticMainDeck = new List<CardScript>();
 
@@ -19,68 +24,60 @@ public class StaticData : MonoBehaviour
     public static List<ClassItem> companionItemList = new List<ClassItem>();
     public static List<ClassItem> artifactItemList = new List<ClassItem>();
 
-
-    //variables needed for artifacts]
+    // Variables needed for artifacts
     public static CardScript artifact_CardScript;
 
-    private static string combatJsonData = @"
-    {
-        ""Cards_Played"": 0,
-        ""Turns_Passed"": 0,
-        ""Total_Cards_Played"": 0,
-        ""Attack_Cards_Played"": 0,
-        ""Magic_Cards_Played"": 0,
-        ""Skill_Cards_Played"": 0,
-        ""Focus_Cards_Played"": 0,
-        ""Zero_Mana_Cost_Cards_Played"": 0,
-        ""One_Mana_Cost_Cards_Played"": 0,
-        ""Two_Mana_Cost_Cards_Played"": 0,
-        ""Three_Mana_Cost_Cards_Played"": 0,
-        ""Four_And_Above_Mana_Cost_Cards_Played"": 0,
+    // JSON strings for combat and run stats (now including value & score)
+    private static string combatJsonData = @"{
+        ""Cards_Played"": {""value"": 0, ""score"": 10},
+        ""Turns_Passed"": {""value"": 0, ""score"": 5},
+        ""Total_Cards_Played"": {""value"": 0, ""score"": 2},
+        ""Attack_Cards_Played"": {""value"": 0, ""score"": 4},
+        ""Magic_Cards_Played"": {""value"": 0, ""score"": 6},
+        ""Skill_Cards_Played"": {""value"": 0, ""score"": 3},
+        ""Focus_Cards_Played"": {""value"": 0, ""score"": 8},
+        ""Zero_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 1},
+        ""One_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 2},
+        ""Two_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 3},
+        ""Three_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 4},
+        ""Four_And_Above_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 5}
     }";
 
-
-    private static string runJsonData = @"
-    {
-        ""Total_Turns_Passed"": 0,
-        ""Total_Attack_Cards_Played"": 0,
-        ""Total_Magic_Cards_Played"": 0,
-        ""Total_Skill_Cards_Played"": 0,
-        ""Total_Focus_Cards_Played"": 0,
-        ""Total_Zero_Mana_Cost_Cards_Played"": 0,
-        ""Total_One_Mana_Cost_Cards_Played"": 0,
-        ""Total_Two_Mana_Cost_Cards_Played"": 0,
-        ""Total_Three_Mana_Cost_Cards_Played"": 0,
-        ""Total_Four_And_Above_Mana_Cost_Cards_Played"": 0,
-        ""Total_Enemies_Killed"": 0,
-        ""Total_Elite_Enemies_Killed"": 0,
-        ""Total_Planets_Explored"": 0,
-        ""Total_Events_Encountered"": 0,
-        ""Total_Gold_Gained"": 0,
-        ""Total_Silver_Gained"": 0
+    private static string runJsonData = @"{
+        ""Total_Turns_Passed"": {""value"": 0, ""score"": 5},
+        ""Total_Attack_Cards_Played"": {""value"": 0, ""score"": 4},
+        ""Total_Magic_Cards_Played"": {""value"": 0, ""score"": 6},
+        ""Total_Skill_Cards_Played"": {""value"": 0, ""score"": 3},
+        ""Total_Focus_Cards_Played"": {""value"": 0, ""score"": 8},
+        ""Total_Zero_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 1},
+        ""Total_One_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 2},
+        ""Total_Two_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 3},
+        ""Total_Three_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 4},
+        ""Total_Four_And_Above_Mana_Cost_Cards_Played"": {""value"": 0, ""score"": 5},
+        ""Total_Enemies_Killed"": {""value"": 0, ""score"": 10},
+        ""Total_Elite_Enemies_Killed"": {""value"": 0, ""score"": 15},
+        ""Total_Planets_Explored"": {""value"": 0, ""score"": 7},
+        ""Total_Events_Encountered"": {""value"": 0, ""score"": 5},
+        ""Total_Gold_Gained"": {""value"": 0, ""score"": 1},
+        ""Total_Silver_Gained"": {""value"": 0, ""score"": 1}
     }";
 
-    public static Dictionary<string, int> combatStats;
-    public static Dictionary<string, int> runStats;
+    public static Dictionary<string, StatEntry> combatStats;
+    public static Dictionary<string, StatEntry> runStats;
 
-    //public StaticData()
-    //{
-    //    combatStats = JsonConvert.DeserializeObject<Dictionary<string, int>>(combatJsonData);
-    //    runStats = JsonConvert.DeserializeObject<Dictionary<string, int>>(runJsonData);
-    //}
-
+    // Initialize the JSON data into dictionaries
     public static void InitializeJsons()
     {
-        combatStats = JsonConvert.DeserializeObject<Dictionary<string, int>>(combatJsonData);
-        runStats = JsonConvert.DeserializeObject<Dictionary<string, int>>(runJsonData);
+        combatStats = JsonConvert.DeserializeObject<Dictionary<string, StatEntry>>(combatJsonData);
+        runStats = JsonConvert.DeserializeObject<Dictionary<string, StatEntry>>(runJsonData);
     }
 
     // Get the value of a given key
-    public static int GetStatValue(Dictionary<string,int> stats ,string key)
+    public static int GetStatValue(Dictionary<string, StatEntry> stats, string key)
     {
         if (stats.ContainsKey(key))
         {
-            return stats[key];
+            return stats[key].value;
         }
         else
         {
@@ -89,11 +86,12 @@ public class StaticData : MonoBehaviour
         }
     }
 
-    public static void IncrementStat(Dictionary<string, int> stats, string key, int amount = 1)
+    // Increment the value of a given key
+    public static void IncrementStat(Dictionary<string, StatEntry> stats, string key, int amount = 1)
     {
         if (stats.ContainsKey(key))
         {
-            stats[key] += amount;
+            stats[key].value += amount;
         }
         else
         {
@@ -101,30 +99,40 @@ public class StaticData : MonoBehaviour
         }
     }
 
-
-
-    public static void ResetRunStats(Dictionary<string, int> stats)
+    // Reset all stats to zero
+    public static void ResetStats(Dictionary<string, StatEntry> stats)
     {
         foreach (var key in stats.Keys)
         {
-            stats[key] = 0;
+            stats[key].value = 0;
         }
     }
 
-    public static string GetJson(Dictionary<string, int> stats)
+    // Convert dictionary to JSON string
+    public static string GetJson(Dictionary<string, StatEntry> stats)
     {
         return JsonConvert.SerializeObject(stats, Formatting.Indented);
     }
 
-    public static string FormatStatsForText(Dictionary<string, int> stats)
+    // Convert dictionary to formatted text for UI
+    public static string FormatStatsForText(Dictionary<string, StatEntry> stats)
     {
         string formattedText = "";
-
         foreach (var stat in stats)
         {
-            formattedText += $"{stat.Key.Replace("_", " ")}: {stat.Value} <br>";
+            int totalScore = stat.Value.value * stat.Value.score;
+            formattedText += $"{stat.Key.Replace("_", " ")}: {stat.Value.value} (Score: {totalScore})<br>";
         }
-
         return formattedText;
+    }
+
+    public static int GetTotalJsonScore(Dictionary<string, StatEntry> stats)
+    {
+        int totalScore = 0;
+        foreach (var stat in stats.Values)
+        {
+            totalScore += stat.value * stat.score; // Multiply value by score and sum up
+        }
+        return totalScore;
     }
 }

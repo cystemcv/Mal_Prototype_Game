@@ -33,12 +33,22 @@ public class UIManager : MonoBehaviour
     public TMP_Text companionText;
     public TMP_Text artifactText;
 
+    public GameObject combatEndWindow;
+
     public GameObject ChooseGroupUI;
 
     //item activation ordr
     public GameObject itemActivateOrderPanel;
     public GameObject ItemActivateOrderPrefab;
 
+    [Header("RESULTS WINDOW")]
+    public GameObject resultsWindow;
+    public GameObject resultsWindow_Text;
+    public GameObject resultsWindow_Title;
+    public GameObject resultsWindow_ScoringText;
+    public GameObject resultsWindow_NextButton;
+    public GameObject resultsWindow_LootButton;
+    public GameObject resultsWindow_EndButton;
 
     [Header("SETTINGS")]
     //modal stuff
@@ -821,5 +831,11 @@ public class UIManager : MonoBehaviour
         eventGO.SetActive(false);
     }
 
+    public void BackToAdventure()
+    {
+        combatEndWindow.SetActive(false);
+
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
+    }
 
 }

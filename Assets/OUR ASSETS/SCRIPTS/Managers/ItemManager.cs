@@ -172,7 +172,11 @@ public class ItemManager : MonoBehaviour
 
     public void ShowInventory() {
         UIManager.Instance.inventoryMain.SetActive(true);
-        UIManager.Instance.lootMain.SetActive(false);
+
+        //activate animation
+        UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimation();
+
+        //UIManager.Instance.lootMain.SetActive(false);
 
         ItemManager.Instance.ClearAllText();
 
@@ -205,7 +209,7 @@ public class ItemManager : MonoBehaviour
 
     public void ClearAllText()
     {
-        UIManager.Instance.lootText.text = "";
+
         UIManager.Instance.inventoryText.text = "";
         UIManager.Instance.artifactText.text = "";
         UIManager.Instance.companionText.text = "";
@@ -213,7 +217,8 @@ public class ItemManager : MonoBehaviour
 
     public void ShowLoot()
     {
-        UIManager.Instance.lootMain.SetActive(true);
+        UIManager.Instance.combatEndWindow.SetActive(true);
+        UIManager.Instance.lootText.text = "";
 
         ResetGOObject(UIManager.Instance.lootGO);
         PopulateGOObject(UIManager.Instance.lootGO, StaticData.lootItemList);
@@ -221,7 +226,8 @@ public class ItemManager : MonoBehaviour
 
     public void HideInventory()
     {
-        UIManager.Instance.inventoryMain.SetActive(false);
+        UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimationBackward();
+        //UIManager.Instance.inventoryMain.SetActive(false);
     }
 
     public void HideLoot()

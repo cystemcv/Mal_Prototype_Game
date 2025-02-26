@@ -46,10 +46,6 @@ public class UI_Combat : MonoBehaviour
     [Header("UI NUMBER ON SCREEN - DMG,HEAL,SHIELD")]
     public GameObject numberOnScreen;
 
-    [Header("CONDITIONS")]
-    public GameObject victory;
-    public GameObject gameover;
-
     [Header("HAND")]
     public GameObject HAND;
     public GameObject CARDPLAYED;
