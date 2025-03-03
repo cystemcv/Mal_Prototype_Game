@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -836,6 +837,21 @@ public class UIManager : MonoBehaviour
         combatEndWindow.SetActive(false);
 
         SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
+    }
+
+
+    //animations
+    public void AnimateTextTypeWriter(string textToAnimate, TMP_Text textObject)
+    {
+
+        //change inventory text
+        string textTMP = "";
+
+        DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / 30f)
+            .OnUpdate(() =>
+            {
+                textObject.text = textTMP;
+            });
     }
 
 }

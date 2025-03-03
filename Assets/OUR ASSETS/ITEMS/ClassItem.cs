@@ -7,6 +7,7 @@ using TMPro;
 using System.Linq;
 using Michsky.MUIP;
 using System.Linq;
+using DG.Tweening;
 
 public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -23,6 +24,8 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public int tempValue = 0;
 
     public string customToolTip = "";
+
+    private Tween typeWriterTween;
 
     public ClassItem(ScriptableItem scriptableItem, int quantity)
     {
@@ -70,28 +73,36 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             this.gameObject.GetComponent<TooltipContent>().description = "";
         }
 
+
+
         //change item border color
         //this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
 
         if (itemIn == SystemManager.ItemIn.INVENTORY)
         {
             //change inventory text
-            UIManager.Instance.inventoryText.text = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText);
+
+       
         }
         else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
         {
             //change inventory text
-            UIManager.Instance.artifactText.text = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText);
         }
         else if (itemIn == SystemManager.ItemIn.COMPANION)
         {
             //change inventory text
-            UIManager.Instance.companionText.text = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText);
         }
         else if (itemIn == SystemManager.ItemIn.LOOT)
         {
             //change inventory text
-            UIManager.Instance.lootText.text = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText);
         }
 
 
@@ -99,6 +110,8 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
     }
+
+    
 
     public void OnPointerExit(PointerEventData eventData)
     {
