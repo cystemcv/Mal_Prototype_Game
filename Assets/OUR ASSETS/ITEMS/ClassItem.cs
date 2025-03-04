@@ -60,18 +60,18 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             return;
         }
 
-        if (customToolTip != "" && customToolTip != null)
-        {
-            this.gameObject.GetComponent<TooltipContent>().description = customToolTip;
-        }
-        else if (scriptableItem.itemDescription != "")
-        {
-            this.gameObject.GetComponent<TooltipContent>().description = scriptableItem.itemDescription;
-        }
-        else
-        {
-            this.gameObject.GetComponent<TooltipContent>().description = "";
-        }
+        //if (customToolTip != "" && customToolTip != null)
+        //{
+        //    this.gameObject.GetComponent<TooltipContent>().description = customToolTip;
+        //}
+        //else if (scriptableItem.itemDescription != "")
+        //{
+        //    this.gameObject.GetComponent<TooltipContent>().description = scriptableItem.itemDescription;
+        //}
+        //else
+        //{
+        //    this.gameObject.GetComponent<TooltipContent>().description = "";
+        //}
 
 
 
@@ -83,26 +83,33 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText);
+            string itemDesc = scriptableItem.itemDescription;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryTextDescription);
 
-       
         }
         else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText);
+            string itemDesc = scriptableItem.itemDescription;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactTextDescription);
         }
         else if (itemIn == SystemManager.ItemIn.COMPANION)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText);
+            string itemDesc = scriptableItem.itemDescription;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionTextDescription);
         }
         else if (itemIn == SystemManager.ItemIn.LOOT)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText);
+            string itemDesc = scriptableItem.itemDescription;
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootTextDescription);
         }
 
 

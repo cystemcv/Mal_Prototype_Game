@@ -170,7 +170,8 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    public void ShowInventory() {
+    public void ShowInventory()
+    {
         UIManager.Instance.inventoryMain.SetActive(true);
 
         //activate animation
@@ -294,8 +295,8 @@ public class ItemManager : MonoBehaviour
     {
         foreach (var scriptableItem in ItemManager.Instance.artifactPoolList)
         {
-                scriptableItem.GameStart();
-            
+            scriptableItem.GameStart();
+
         }
 
         foreach (var scriptableItem in StaticData.staticScriptableCompanion.companionItemList)
@@ -331,7 +332,7 @@ public class ItemManager : MonoBehaviour
         {
 
             //create new class
-            ClassItem classItemTemp = new ClassItem(classItem.scriptableItem,classItem.quantity);
+            ClassItem classItemTemp = new ClassItem(classItem.scriptableItem, classItem.quantity);
             classItemTemp.SetData(classItem);
 
             StaticData.inventoryItemList.Add(classItemTemp);
@@ -440,6 +441,11 @@ public class ItemManager : MonoBehaviour
             // Activate the child GameObject and populate it with the item
             itemPrefab.gameObject.SetActive(true);
 
+            foreach (Transform itemPrefabChild in itemPrefab)
+            {
+                itemPrefabChild.gameObject.SetActive(true);
+            }
+
             // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
             ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
             //itemDisplay.enabled = true;
@@ -485,24 +491,24 @@ public class ItemManager : MonoBehaviour
         //reset them back to blank state
         foreach (Transform itemPrefab in goObject.transform)
         {
-            itemPrefab.gameObject.SetActive(false);
+            //itemPrefab.gameObject.SetActive(false);
 
             //itemPrefab.GetComponent<ClassItem>().enabled = false;
 
-            //foreach (Transform itemPrefabChild in itemPrefab)
-            //{
-          
+            foreach (Transform itemPrefabChild in itemPrefab)
+            {
 
-            //    //if (itemPrefabChild.name == "Background" || itemPrefabChild.name == "Outline")
-            //    //{
-            //    //    itemPrefabChild.gameObject.SetActive(true);
-            //    //}
-            //    //else
-            //    //{
-            //    //    itemPrefabChild.gameObject.SetActive(false);
-            //    //}
 
-            //}
+                if (itemPrefabChild.name == "Background" || itemPrefabChild.name == "Outline")
+                {
+                    itemPrefabChild.gameObject.SetActive(true);
+                }
+                else
+                {
+                    itemPrefabChild.gameObject.SetActive(false);
+                }
+
+            }
         }
 
     }

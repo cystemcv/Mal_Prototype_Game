@@ -33,6 +33,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text inventoryText;
     public TMP_Text companionText;
     public TMP_Text artifactText;
+    public TMP_Text lootTextDescription;
+    public TMP_Text inventoryTextDescription;
+    public TMP_Text companionTextDescription;
+    public TMP_Text artifactTextDescription;
 
     public GameObject combatEndWindow;
 
