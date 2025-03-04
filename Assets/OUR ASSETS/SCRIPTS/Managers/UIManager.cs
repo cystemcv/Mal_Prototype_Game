@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    private Dictionary<TMP_Text, Tweener> activeTweeners = new Dictionary<TMP_Text, Tweener>();
+
     public GameObject tooltipGlobalGO;
 
     public GameObject tooltipPanel;
@@ -844,18 +846,63 @@ public class UIManager : MonoBehaviour
     }
 
 
-    //animations
+    ////animations
+    //public void AnimateTextTypeWriter(string textToAnimate, TMP_Text textObject)
+    //{
+
+    //    //change inventory text
+    //    string textTMP = "";
+
+    //    DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / 30f)
+    //        .OnUpdate(() =>
+    //        {
+    //            textObject.text = textTMP;
+    //        });
+    //}
+
     public void AnimateTextTypeWriter(string textToAnimate, TMP_Text textObject)
     {
+        // Stop existing animation on this specific text object before starting a new one
+        StopTypeWriter(textObject);
 
-        //change inventory text
         string textTMP = "";
+        Tweener tweener = null;
 
-        DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / 30f)
+        tweener = DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / 30f)
             .OnUpdate(() =>
             {
                 textObject.text = textTMP;
+            })
+            .OnComplete(() =>
+            {
+                if (activeTweeners.ContainsKey(textObject))
+                {
+                    activeTweeners.Remove(textObject); // Remove only this text's tween
+                }
             });
+
+        activeTweeners[textObject] = tweener; // Store tween for this specific text object
+    }
+
+    public void StopTypeWriter(TMP_Text textObject)
+    {
+        if (activeTweeners.ContainsKey(textObject))
+        {
+            activeTweeners[textObject].Kill();
+            activeTweeners.Remove(textObject);
+        }
+    }
+
+    public void StopAllTypeWriters()
+    {
+        foreach (var tweener in activeTweeners.Values)
+        {
+            if (tweener.IsActive())
+            {
+                tweener.Kill();
+            }
+        }
+        activeTweeners.Clear(); // Clear all tweens
     }
 
 }

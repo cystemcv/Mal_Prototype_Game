@@ -214,6 +214,9 @@ public class ItemManager : MonoBehaviour
         UIManager.Instance.inventoryText.text = "";
         UIManager.Instance.artifactText.text = "";
         UIManager.Instance.companionText.text = "";
+        UIManager.Instance.inventoryTextDescription.text = "";
+        UIManager.Instance.artifactTextDescription.text = "";
+        UIManager.Instance.companionTextDescription.text = "";
     }
 
     public void ShowLoot()
