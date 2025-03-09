@@ -192,6 +192,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                 ItemManager.Instance.RefreshInventory();
             }
 
+            ItemManager.Instance.ShowLoot();
             ItemManager.Instance.ClearAllText();
         }
 

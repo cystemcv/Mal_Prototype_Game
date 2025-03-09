@@ -223,6 +223,7 @@ public class ItemManager : MonoBehaviour
     {
         UIManager.Instance.combatEndWindow.SetActive(true);
         UIManager.Instance.lootText.text = "";
+        UIManager.Instance.lootTextDescription.text = "";
 
         ResetGOObject(UIManager.Instance.lootGO);
         PopulateGOObject(UIManager.Instance.lootGO, StaticData.lootItemList);
@@ -450,6 +451,7 @@ public class ItemManager : MonoBehaviour
             }
 
             // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
+            itemPrefab.GetComponent<ClassItem>().enabled = true;
             ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
             //itemDisplay.enabled = true;
             if (itemDisplay != null)
@@ -496,7 +498,7 @@ public class ItemManager : MonoBehaviour
         {
             //itemPrefab.gameObject.SetActive(false);
 
-            //itemPrefab.GetComponent<ClassItem>().enabled = false;
+            itemPrefab.GetComponent<ClassItem>().enabled = false;
 
             foreach (Transform itemPrefabChild in itemPrefab)
             {
