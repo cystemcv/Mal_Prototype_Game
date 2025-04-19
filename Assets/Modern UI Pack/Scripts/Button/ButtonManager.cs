@@ -99,9 +99,10 @@ namespace Michsky.MUIP
         public enum AnimationSolution { Custom, ScriptBased }
         public enum RippleUpdateMode { Normal, UnscaledTime }
 
-        [System.Serializable] public class Padding 
+        [System.Serializable]
+        public class Padding
         {
-            public int left = 20; 
+            public int left = 20;
             public int right = 20;
             public int top = 5;
             public int bottom = 5;
@@ -168,12 +169,12 @@ namespace Michsky.MUIP
 
         public void UpdateUI()
         {
-            if (autoFitContent == false) 
+            if (autoFitContent == false)
             {
                 if (mainFitter != null) { mainFitter.enabled = false; }
                 if (mainLayout != null) { mainLayout.enabled = false; }
-                if (targetFitter != null) 
-                { 
+                if (targetFitter != null)
+                {
                     targetFitter.enabled = false;
 
                     if (targetRect != null)
@@ -269,11 +270,45 @@ namespace Michsky.MUIP
             StartCoroutine("LayoutFix");
         }
 
+
+        public void SetOnlyText(string text)
+        {
+            buttonText = text; UpdateOnlyText();
+        }
+
+        public void UpdateOnlyText()
+        {
+            // Set Text
+            if (enableText == true)
+            {
+                if (normalText != null)
+                {
+                    normalText.gameObject.SetActive(true);
+                    normalText.text = buttonText;
+                    if (useCustomTextSize == false) { normalText.fontSize = textSize; }
+                }
+
+                if (highlightedText != null)
+                {
+                    highlightedText.gameObject.SetActive(true);
+                    highlightedText.text = buttonText;
+                    if (useCustomTextSize == false) { highlightedText.fontSize = textSize; }
+                }
+
+                if (disabledText != null)
+                {
+                    disabledText.gameObject.SetActive(true);
+                    disabledText.text = buttonText;
+                    if (useCustomTextSize == false) { disabledText.fontSize = textSize; }
+                }
+            }
+        }
+
         public void SetText(string text) { buttonText = text; UpdateUI(); }
         public void SetIcon(Sprite icon) { buttonIcon = icon; UpdateUI(); }
-        
-        public void Interactable(bool value) 
-        { 
+
+        public void Interactable(bool value)
+        {
             isInteractable = value;
 
             if (gameObject.activeInHierarchy == false) { return; }
@@ -382,7 +417,7 @@ namespace Michsky.MUIP
             if (isInteractable == false) { return; }
             if (enableButtonSounds == true && useHoverSound == true && soundSource != null) { soundSource.PlayOneShot(hoverSound); }
             if (animationSolution == AnimationSolution.ScriptBased) { StartCoroutine("SetHighlight"); }
-         
+
             isPointerOn = true;
             onHover.Invoke();
         }

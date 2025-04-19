@@ -1,3 +1,4 @@
+using Michsky.MUIP;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -92,6 +93,12 @@ public class Combat : MonoBehaviour
     }
 
 
+
+    //onCombatDeckChange += CombatDeckEvent;
+    //    onDiscardedPileChange += DiscardedPileEvent;
+    //    onBanishedPileChange += BanishedPileEvent;
+
+
     public int Turns
     {
         get => turns;
@@ -110,11 +117,13 @@ public class Combat : MonoBehaviour
     private void OnEnable()
     {
         onManaChange += ManaDetectEvent;
+
     }
 
     private void OnDisable()
     {
         onManaChange -= ManaDetectEvent;
+
     }
 
     private void Awake()
@@ -216,7 +225,8 @@ public class Combat : MonoBehaviour
     {
 
         //show the mana on UI
-        UI_Combat.Instance.manaInfo.transform.Find("Text").GetComponent<TMP_Text>().text = manaAvailable.ToString();
+        //UI_Combat.Instance.manaInfo.transform.Find("Text").GetComponent<TMP_Text>().text = manaAvailable.ToString();
+        UI_Combat.Instance.manaInfo.GetComponent<ButtonManager>().SetText("MANA [" + manaAvailable.ToString() + "]");
 
         //go throught each card in the hand and update them
         foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)

@@ -1,3 +1,4 @@
+using Michsky.MUIP;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -147,16 +148,28 @@ public class UI_Combat : MonoBehaviour
 
         // Set the sorting order to a high value to ensure it renders on top
         material.renderQueue = 999999; // Adjust the value as needed
+
+        manaInfo.GetComponent<ButtonManager>().Interactable(false);
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        deckInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
-        discardInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
-        banishedInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
+        
+  
 
+        //deckInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
+        //discardInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
+        //banishedInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.banishedPile.Count.ToString();
+
+    }
+
+    private void FixedUpdate()
+    {
+        deckInfo.GetComponent<ButtonManager>().SetOnlyText("DECK [" + DeckManager.Instance.combatDeck.Count.ToString() + "]");
+        discardInfo.GetComponent<ButtonManager>().SetOnlyText("DISCARD [" + DeckManager.Instance.discardedPile.Count.ToString() + "]");
+        banishedInfo.GetComponent<ButtonManager>().SetOnlyText("BANISH [" + DeckManager.Instance.banishedPile.Count.ToString() + "]");
     }
 
     public void UpdateHealthBarSmoothly(float health, float maxHealth, Slider slider)
