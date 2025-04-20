@@ -26,16 +26,6 @@ public class Companion_Thief : ScriptableCompanion
 
         base.OnabilityActivate();
 
-        GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
-        if (!companionBtn.GetComponent<UI_CombatButton>().activatedButton)
-        {
-            return;
-        }
-
-        
-        companionBtn.GetComponent<UI_CombatButton>().activatedButton = false;
-
-
         if (ItemManager.Instance.CheckIfItemExistOnList(StaticData.companionItemList, stealCompanionUpgrade) is ClassItem)
         {
             //add steal card on hand

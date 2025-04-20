@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using TheraBytes.BetterUi;
+using Michsky.MUIP;
 
 public class UI_CombatButton : MonoBehaviour
 {
@@ -19,16 +20,27 @@ public class UI_CombatButton : MonoBehaviour
     public float disabledAlpha = 100;
     public float maxAlpha = 255;
 
-    public bool activatedButton = false;
 
     public bool companionButton = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
 
-        buttonIcon = this.gameObject.transform.Find("Icon").GetComponent<Image>();
-        buttonText = this.gameObject.transform.Find("Text").GetComponent<TMP_Text>();
+
+        if (companionButton) {
+
+            //if null get the first choice
+            if (StaticData.staticScriptableCompanion == null)
+            {
+                StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
+            }
+
+            this.gameObject.GetComponent<ButtonManager>().SetText(StaticData.staticScriptableCompanion.companionAbilityName);
+            this.gameObject.GetComponent<ButtonManager>().SetIcon(StaticData.staticScriptableCompanion.companionAbilityIcon);
+        }
+
 
 
 
@@ -70,48 +82,26 @@ public class UI_CombatButton : MonoBehaviour
 
         if (cdButton != 0)
         {
-            DisableButton();
+            this.gameObject.GetComponent<ButtonManager>().Interactable(false);
 
         }
         else
         {
-            EnableButton();
+            this.gameObject.GetComponent<ButtonManager>().Interactable(true);
         }
 
 
 
     }
 
-
-
-    public void DisableButton()
+    public void ActivateCompanionAbility()
     {
-        // Get the current color of the sprite
-        Color colorP = buttonIcon.color;
-
-        // Modify the alpha value
-        colorP.a = disabledAlpha;
-
-        buttonIcon.color = colorP;
-
-        buttonText.gameObject.SetActive(true);
-        buttonText.text = cdButton.ToString();
-
+        if (companionButton)
+        {
+            StaticData.staticScriptableCompanion.OnabilityActivate();
+        }
     }
 
-    public void EnableButton()
-    {
 
-        // Get the current color of the sprite
-        Color colorP = buttonIcon.color;
 
-        // Modify the alpha value
-        colorP.a = maxAlpha;
-
-        buttonIcon.color = colorP;
-
-        buttonText.gameObject.SetActive(false);
-        buttonText.text = "";
-
-    }
 }

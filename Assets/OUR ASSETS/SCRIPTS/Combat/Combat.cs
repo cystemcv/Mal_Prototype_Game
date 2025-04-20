@@ -362,6 +362,9 @@ public class Combat : MonoBehaviour
 
     public IEnumerator InitializeCombat()
     {
+
+        UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(false);
+
         //hide the dungeon generato
         if (StaticData.staticDungeonParent != null)
         {
@@ -433,7 +436,8 @@ public class Combat : MonoBehaviour
     public IEnumerator WaitEnemyTurns()
     {
 
-        UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("PlayerEnd");
+        //UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("PlayerEnd");
+        UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(false);
 
         if (combatEnded)
         {
@@ -591,7 +595,8 @@ public class Combat : MonoBehaviour
 
         //if (turns != 1)
         //{
-        UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
+        //UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
+        UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(true);
         UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
         //}
 

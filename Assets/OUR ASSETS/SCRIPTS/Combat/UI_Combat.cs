@@ -149,7 +149,7 @@ public class UI_Combat : MonoBehaviour
         // Set the sorting order to a high value to ensure it renders on top
         material.renderQueue = 999999; // Adjust the value as needed
 
-        manaInfo.GetComponent<ButtonManager>().Interactable(false);
+        //manaInfo.GetComponent<ButtonManager>().Interactable(false);
     }
 
     // Update is called once per frame

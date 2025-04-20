@@ -36,45 +36,45 @@ public class ScriptableCompanion : ScriptableObject
 
     public virtual void OnabilityActivate()
     {
-        GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
+        //GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
 
-        if (companionBtn == null)
-        {
-            return;
-        }
+        //if (companionBtn == null)
+        //{
+        //    return;
+        //}
 
-        companionBtn.GetComponent<UI_CombatButton>().activatedButton = false;
+        //companionBtn.GetComponent<UI_CombatButton>().activatedButton = false;
 
-        if (companionBtn.GetComponent<UI_CombatButton>().cdButton > 0)
-        {
-            return;
-        }
+        //if (companionBtn.GetComponent<UI_CombatButton>().cdButton > 0)
+        //{
+        //    return;
+        //}
 
-        companionBtn.GetComponent<UI_CombatButton>().activatedButton = true;
+        //companionBtn.GetComponent<UI_CombatButton>().activatedButton = true;
 
-        //put the button on cd
-        companionBtn.GetComponent<UI_CombatButton>().cdButton = this.companionAbilityCD - Combat.Instance.reduceCompanionAbilityCd;
+        ////put the button on cd
+        //companionBtn.GetComponent<UI_CombatButton>().cdButton = this.companionAbilityCD - Combat.Instance.reduceCompanionAbilityCd;
 
-        companionBtn.GetComponent<UI_CombatButton>().UpdateButton();
+        //companionBtn.GetComponent<UI_CombatButton>().UpdateButton();
 
 
     }
 
     public virtual void InitializeButton()
     {
-        GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
+        //GameObject companionBtn = GameObject.FindGameObjectWithTag("CompanionButton");
 
-        companionBtn.transform.Find("Icon").GetComponent<Image>().sprite = companionAbilityIcon;
-        companionBtn.GetComponent<TooltipContent>().description = companionAbilityName + " CD:" + companionAbilityCD;
+        //companionBtn.transform.Find("Icon").GetComponent<Image>().sprite = companionAbilityIcon;
+        //companionBtn.GetComponent<TooltipContent>().description = companionAbilityName + " CD:" + companionAbilityCD;
 
-        companionBtn.GetComponent<UI_CombatButton>().EnableButton();
+        //companionBtn.GetComponent<UI_CombatButton>().EnableButton();
 
-        if (startingAbilityCd > 0)
-        {
-            companionBtn.GetComponent<UI_CombatButton>().DisableButton();
-            //put the button on cd
-            companionBtn.GetComponent<UI_CombatButton>().cdButton = startingAbilityCd;
-        }
+        //if (startingAbilityCd > 0)
+        //{
+        //    companionBtn.GetComponent<UI_CombatButton>().DisableButton();
+        //    //put the button on cd
+        //    companionBtn.GetComponent<UI_CombatButton>().cdButton = startingAbilityCd;
+        //}
 
     }
 

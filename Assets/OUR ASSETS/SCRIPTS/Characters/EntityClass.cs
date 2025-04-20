@@ -141,7 +141,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //Add the appropriate entity UI
         if (aIBrain == null)
         {
-            yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.playerGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
+            yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.commonGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
 
         }
         else
@@ -233,7 +233,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
 
-        this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
+        //this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
 
         InitUIBar();
         //save current position , so it can go back if needed
