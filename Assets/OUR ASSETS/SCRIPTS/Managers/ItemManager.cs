@@ -175,7 +175,7 @@ public class ItemManager : MonoBehaviour
         UIManager.Instance.inventoryMain.SetActive(true);
 
         //activate animation
-        UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimation();
+        //UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimation();
 
         //UIManager.Instance.lootMain.SetActive(false);
 
@@ -231,8 +231,8 @@ public class ItemManager : MonoBehaviour
 
     public void HideInventory()
     {
-        UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimationBackward();
-        //UIManager.Instance.inventoryMain.SetActive(false);
+        //UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimationBackward();
+        UIManager.Instance.inventoryMain.SetActive(false);
     }
 
     public void HideLoot()

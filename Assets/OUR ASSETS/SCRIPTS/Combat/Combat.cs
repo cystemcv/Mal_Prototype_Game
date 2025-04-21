@@ -204,6 +204,12 @@ public class Combat : MonoBehaviour
 
     }
 
+    public void FixedUpdate()
+    {
+      
+        //UIManager.Instance.turnText.GetComponent<TMP_Text>().text = "Turn:" + Turns;
+    }
+
     //public void CardQueueNumbering()
     //{
     //    int counter = 0;
@@ -513,6 +519,8 @@ public class Combat : MonoBehaviour
 
         //increase turn;
         Turns += 1;
+        //animate the text
+        UIManager.Instance.AnimateTextTypeWriter("Turn:" + Turns, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
 
         yield return StartCoroutine(RearrangeFormation(characterFormation));
 
@@ -526,7 +534,7 @@ public class Combat : MonoBehaviour
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
 
-        //generate intend for all players
+                //generate intend for all players
         yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList()));
         yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList()));
 

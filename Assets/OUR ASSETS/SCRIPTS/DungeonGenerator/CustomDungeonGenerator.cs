@@ -215,6 +215,9 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         displayCharacterCard.transform.Find("EntityImage").GetComponent<Image>().sprite = StaticData.staticCharacter.entityImage;
 
+        //animate the text
+        UIManager.Instance.AnimateTextTypeWriter("Galaxy:" + galaxyLevel, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
+
     }
 
     public void StartDungeonGeneration()

@@ -78,38 +78,43 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //change item border color
         //this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
 
+        if (scriptableItem == null)
+        {
+            return;
+        }
+
         if (itemIn == SystemManager.ItemIn.INVENTORY)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText,30f);
             string itemDesc = scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.inventoryTextDescription);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.inventoryTextDescription,200f);
 
         }
         else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText,30f);
             string itemDesc = scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.artifactTextDescription);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.artifactTextDescription,200f);
         }
         else if (itemIn == SystemManager.ItemIn.COMPANION)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText,30f);
             string itemDesc = scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.companionTextDescription);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.companionTextDescription,200f);
         }
         else if (itemIn == SystemManager.ItemIn.LOOT)
         {
             //change inventory text
             string itemText = "x" + quantity + " : " + scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText,30f);
             string itemDesc = scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.lootTextDescription);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.lootTextDescription,200f);
         }
 
 

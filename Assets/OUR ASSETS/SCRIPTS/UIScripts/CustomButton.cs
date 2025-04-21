@@ -20,6 +20,8 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 	TMP_Text txt;
 	Image icon;
 
+	public string hoverSoundName = "UI_Hover";
+	public bool randomPitch = true;
 
 	void Awake()
     {
@@ -47,7 +49,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 		//icon.sprite = selectedIcon;
 		//animator.SetBool("selectedButton", true);
-		AudioManager.Instance.PlaySfx("UI_Error");
+		AudioManager.Instance.PlaySfx(hoverSoundName, randomPitch);
 	}
 
 	public void OnPointerExit(PointerEventData eventData)

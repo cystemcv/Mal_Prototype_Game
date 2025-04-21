@@ -82,6 +82,8 @@ public class UIManager : MonoBehaviour
     public GameObject eventButtonPrefab;
     public GameObject closeButtonPrefab;
 
+    public GameObject turnText;
+
     public void ToggleActivateOrderVisibility()
     {
         // Toggle the active state of the parent of itemActivateOrderPanel
@@ -860,7 +862,7 @@ public class UIManager : MonoBehaviour
     //        });
     //}
 
-    public void AnimateTextTypeWriter(string textToAnimate, TMP_Text textObject)
+    public void AnimateTextTypeWriter(string textToAnimate, TMP_Text textObject, float speed)
     {
         // Stop existing animation on this specific text object before starting a new one
         StopTypeWriter(textObject);
@@ -868,7 +870,7 @@ public class UIManager : MonoBehaviour
         string textTMP = "";
         Tweener tweener = null;
 
-        tweener = DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / 30f)
+        tweener = DOTween.To(() => textTMP, x => textTMP = x, textToAnimate, textToAnimate.Length / speed)
             .OnUpdate(() =>
             {
                 textObject.text = textTMP;

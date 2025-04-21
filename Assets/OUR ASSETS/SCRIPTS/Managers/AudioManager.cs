@@ -51,7 +51,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySfx(string name)
+    public void PlaySfx(string name, bool randomPitch = false)
     {
         SoundSO soundSO = sfxSounds.Find(item => item.soundName == name);
 
@@ -61,8 +61,17 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
+
+            if (randomPitch)
+            {
+                sfxSource.pitch = (Random.Range(0.5f, 1f));
+            }
+            else
+            {
+                sfxSource.pitch = (1);
+            }
+
             sfxSource.PlayOneShot(soundSO.soundClip);
-   
         }
     }
 
