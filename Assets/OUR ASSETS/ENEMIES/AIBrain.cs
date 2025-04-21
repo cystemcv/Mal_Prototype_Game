@@ -15,6 +15,8 @@ public class AIBrain : MonoBehaviour
 
     public GameObject targetForCard;
 
+    public GameObject intend;
+
 
     public void ExecuteCommand()
     {
@@ -65,28 +67,22 @@ public class AIBrain : MonoBehaviour
 
         ScriptableCard scriptableCard = cardScriptList[aiLogicStep];
 
-        //create the intend based on the ai choices
-        GameObject displayCardName = this.gameObject.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject;
+        SpawnAIIntend(scriptableCard);
 
+    }
 
-        TMP_Text cardText = displayCardName.transform.Find("CardText").GetComponent<TMP_Text>();
+    public void SpawnAIIntend(ScriptableCard scriptableCard)
+    {
 
+        if (intend == null)
+        {
+            intend = SystemManager.Instance.SpawnPrefab(UI_Combat.Instance.displayCardName, this.gameObject, "DisplayCardName", this.gameObject.GetComponent<EntityClass>().scriptableEntity.spawnIntend);
+            //set parent of 
+        }
 
-
-        //get all the abilities dmg
-
-        //if (scriptableCard.targetEntityTagList.Count == 0)
-        //{
-        //    targetText.text = "";
-        //}
-        //else
-        //{
-        //    targetText.text = targetForCard.name;
-        //}
-
-        //damageText.text = GetCardDamageInString(scriptableCard, this.gameObject);
+        intend.SetActive(true);
+        TMP_Text cardText = intend.transform.Find("CardText").GetComponent<TMP_Text>();
         cardText.text = scriptableCard.cardName;
-
     }
 
     public void ReAssignTargetForCard()

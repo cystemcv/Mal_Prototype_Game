@@ -86,16 +86,23 @@ MonoBehaviour:
   defence: 0
   defenceDebuffPerc: 0
   defenceBuffPerc: 0
+  resistance: 0
+  resistanceDebuffPerc: 0
+  resistanceBuffPerc: 0
   health: 9999
   maxHealth: 9999
   shield: 0
   maxShield: 999
+  armor: 0
+  maxArmor: 999
   counterDamage: 0
   allowEntityRotation: 0
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
   shieldText: {fileID: 0}
+  armorIcon: {fileID: 0}
+  armorText: {fileID: 0}
   healthText: {fileID: 0}
   fillBar: {fileID: 0}
   summonTurnsText: {fileID: 0}
@@ -146,6 +153,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
   aiLogicStep: 0
   targetForCard: {fileID: 0}
+  intend: {fileID: 0}
 --- !u!212 &-7426720843667326011
 SpriteRenderer:
   m_ObjectHideFlags: 0

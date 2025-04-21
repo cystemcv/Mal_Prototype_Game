@@ -308,6 +308,24 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     }
 
+    public GameObject SpawnPrefab(GameObject spawnPrefab, GameObject target, string name, Vector3 spawnVector3)
+    {
+
+
+        //spawn prefab
+        GameObject spawnPrefabTrue = Instantiate(spawnPrefab, target.transform.position, Quaternion.identity);
+        spawnPrefabTrue.transform.SetParent(target.transform);
+        spawnPrefabTrue.name = name;
+        spawnPrefabTrue.transform.position = new Vector3(
+            spawnPrefabTrue.transform.position.x + spawnVector3.x,
+            spawnPrefabTrue.transform.position.y + spawnVector3.y,
+            spawnPrefabTrue.transform.position.z + spawnVector3.z
+            );
+
+
+         return spawnPrefabTrue; 
+    }
+
     public IEnumerator SpawnPrefabIE(GameObject spawnPrefab, GameObject target, float spawnTimer, string name, Vector3 spawnVector3)
     {
         //missing prefab vfx

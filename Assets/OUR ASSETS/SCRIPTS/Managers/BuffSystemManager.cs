@@ -70,7 +70,7 @@ public class BuffSystemManager : MonoBehaviour
     public EntityClass AddBuffDebuff(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int buffDebuffValue, int turnsValue)
     {
 
-        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
         BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableBuffDebuff.nameID);
 
         //if there is no buff then create it to the target
@@ -80,6 +80,7 @@ public class BuffSystemManager : MonoBehaviour
             //create the gameobject and add it
             GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
             buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+            buffdebuffPrefabLocal.transform.localScale = new Vector3(1, 1, 1);
             buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
             buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, buffDebuffValue, turnsValue);
@@ -159,7 +160,7 @@ public class BuffSystemManager : MonoBehaviour
     {
         BuffDebuffClass buffDebuffClass = null;
 
-        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
         List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
 
@@ -192,7 +193,7 @@ public class BuffSystemManager : MonoBehaviour
     public List<BuffDebuffClass> GetAllBuffDebuffFromTarget(GameObject target)
     {
 
-        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).gameObject;
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
 
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
 

@@ -33,8 +33,8 @@ public class UI_Combat : MonoBehaviour
     public GameObject commonGameobjectUI;
     public GameObject playerGameobjectUI;
 
-    [Header("LEADER")]
-    public GameObject leaderIndicator;
+    [Header("INDICATORS")]
+    public GameObject displayCardName;
 
     [Header("CARD LINE RENDERER")]
     public LineRenderer cardLineRenderer;

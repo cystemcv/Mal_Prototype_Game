@@ -24,6 +24,9 @@ public class ScriptableEntity : ScriptableObject
     [Header("SUMMON")]
     public int summonTurns = 1;
 
+    [Header("AI")]
+    public Vector3 spawnIntend = new Vector3(0, 1, 0);
+
     [Header("STATS")]
     //Character Stats - Obviously subject to alteration
     public int strength = 0;

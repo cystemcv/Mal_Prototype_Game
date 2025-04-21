@@ -522,12 +522,13 @@ public class Combat : MonoBehaviour
         //remove mana
         yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("Player"));
 
-        //generate intend for all players
-        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList()));
-        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList()));
 
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
+
+        //generate intend for all players
+        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList()));
+        yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList()));
 
         //yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetPlayerTagsList()));
 

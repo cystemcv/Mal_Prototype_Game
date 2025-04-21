@@ -65,6 +65,11 @@ public class AIManager : MonoBehaviour
 
             //loop between them and execute the command
             yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
+
+            if (aIBrain.intend != null)
+            {
+                aIBrain.intend.SetActive(false);
+            }
         }
 
 
@@ -75,7 +80,7 @@ public class AIManager : MonoBehaviour
 
     public IEnumerator GenerateIntends(List<string> tags)
     {
-        List<GameObject> entityList = entityList = SystemManager.Instance.FindGameObjectsWithTags(tags);
+        List<GameObject> entityList = SystemManager.Instance.FindGameObjectsWithTags(tags);
 
 
         foreach (GameObject entity in entityList)
