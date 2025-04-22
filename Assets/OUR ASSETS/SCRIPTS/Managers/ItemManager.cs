@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Michsky.MUIP;
 using System.Linq;
+using DG.Tweening;
 
 public class ItemManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class ItemManager : MonoBehaviour
 
         if (Instance == null)
         {
+            //DOTween.Init();
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }

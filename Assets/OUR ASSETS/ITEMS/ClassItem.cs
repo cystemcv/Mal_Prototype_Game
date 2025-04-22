@@ -267,6 +267,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //destroy previous choices
         SystemManager.Instance.DestroyAllChildren(parent);
 
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
+
         // Select random items from the filtered list
         for (int i = 0; i < itemsToChoose; i++)
         {
@@ -290,8 +293,12 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
             //ui
             itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
-            itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
-            itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+
+            //itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
+            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemName, itemPrefab.transform.Find("Title").GetComponent<TMP_Text>(), 30f));
+            //itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemDescription, itemPrefab.transform.Find("Description").GetComponent<TMP_Text>(), 200f));
+
             itemPrefab.transform.Find("ItemLevel").gameObject.SetActive(false);
 
             // Assign the item to the ItemChoiceClass component
@@ -300,8 +307,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     
         }
 
-        UIManager.Instance.ChooseGroupUI.SetActive(true);
-        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
+
 
 
     }
@@ -336,6 +342,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //destroy previous choices
         SystemManager.Instance.DestroyAllChildren(parent);
 
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE COMPANION UPGRADE!";
+
         // Select random items from the filtered list
         for (int i = 0; i < itemsToChoose; i++)
         {
@@ -359,8 +368,13 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
             //ui
             itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
-            itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
-            itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+
+            //itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
+            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemName, itemPrefab.transform.Find("Title").GetComponent<TMP_Text>(), 30f));
+            //itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
+            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemDescription, itemPrefab.transform.Find("Description").GetComponent<TMP_Text>(), 200f));
+
+            //itemPrefab.transform.Find("ItemLevel").gameObject.SetActive(false);
             itemPrefab.transform.Find("ItemLevel").GetComponent<TMP_Text>().text = "LV" + ItemManager.Instance.GetItemLevelFromList(itemClassTemp);
 
             // Assign the item to the ItemChoiceClass component
@@ -368,8 +382,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             itemChoiceClass.classItem = itemClassTemp;
         }
 
-        UIManager.Instance.ChooseGroupUI.SetActive(true);
-        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE COMPANION UPGRADE!";
+
 
 
     }

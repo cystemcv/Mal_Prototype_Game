@@ -306,17 +306,23 @@ MonoBehaviour:
   defence: 0
   defenceDebuffPerc: 0
   defenceBuffPerc: 0
+  resistance: 0
+  resistanceDebuffPerc: 0
+  resistanceBuffPerc: 0
   health: 9999
   maxHealth: 9999
-  shield: 0
+  shield: 99
   maxShield: 999
+  armor: 99
+  maxArmor: 999
   counterDamage: 0
   allowEntityRotation: 0
-  summonTurns: 1
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
   shieldText: {fileID: 0}
+  armorIcon: {fileID: 0}
+  armorText: {fileID: 0}
   healthText: {fileID: 0}
   fillBar: {fileID: 0}
   summonTurnsText: {fileID: 0}
@@ -328,7 +334,6 @@ MonoBehaviour:
   entityID: 76cdfbcc-003b-4e12-89e0-7915cbe649e5
   entityMode: 0
   spawnGameObjectUI: {x: 0, y: -0.2, z: 0}
-  spawnSummonTurnsObject: 0
 --- !u!50 &8072798983806717724
 Rigidbody2D:
   serializedVersion: 4

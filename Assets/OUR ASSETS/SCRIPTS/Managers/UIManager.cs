@@ -895,6 +895,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator DelayedTypewriter(string text, TMP_Text textObject, float speed)
+    {
+        yield return null; // Wait 1 frame
+        UIManager.Instance.AnimateTextTypeWriter(text, textObject, speed);
+    }
+
     public void StopAllTypeWriters()
     {
         foreach (var tweener in activeTweeners.Values)
