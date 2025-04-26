@@ -48,7 +48,7 @@ public class Artifacts_Salamander : ScriptableItem
     private IEnumerator ExecuteMultiHits()
     {
 
-
+        MonoBehaviour runner = CombatCardHandler.Instance;
 
         for (int i = 0; i < multiHits; i++)
         {
@@ -75,8 +75,8 @@ public class Artifacts_Salamander : ScriptableItem
                     //spawn prefab
                     SystemManager.Instance.SpawnEffectPrefab(SpawnEffectPrefab,targetFound, SpawnEffectPrefabTimer);
 
-                    
-                    Combat.Instance.AdjustTargetHealth(null, targetFound, dmgDone, false, SystemManager.AdjustNumberModes.ATTACK);
+
+                    runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, targetFound, dmgDone, false, SystemManager.AdjustNumberModes.ATTACK));
                 }
             }
 

@@ -263,20 +263,21 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public void ActivateItemList(SystemManager.ActivationType activationType)
+    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType)
     {
         //use all lists of items
-        ActivateItems(activationType, StaticData.companionItemList);
-        ActivateItems(activationType, StaticData.artifactItemList);
+      yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList));
+      yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList));
     }
 
-    public void ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems)
+    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems)
     {
         foreach (var item in classItems)
         {
             if (item.scriptableItem.initializationType == activationType)
             {
                 item.scriptableItem.Initialiaze(item);
+                yield return new WaitForSeconds(0.5f);
             }
         }
 
@@ -285,6 +286,7 @@ public class ItemManager : MonoBehaviour
             if (item.scriptableItem.activationType == activationType)
             {
                 item.scriptableItem.Activate(item);
+                yield return new WaitForSeconds(0.5f);
             }
         }
 
@@ -293,8 +295,11 @@ public class ItemManager : MonoBehaviour
             if (item.scriptableItem.expiredType == activationType)
             {
                 item.scriptableItem.Expired(item);
+                yield return new WaitForSeconds(0.5f);
             }
         }
+
+
     }
 
     public void GameStartItems()

@@ -444,6 +444,23 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         yield return new WaitForSeconds(manualLoadingTime);
 
     }
+
+    public IEnumerator TriggerLoadStartAnimation()
+    {
+        Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+        loadingAnimator.SetTrigger("LoadingStart");
+
+        yield return null;
+    }
+
+    public IEnumerator TriggerLoadEndAnimation()
+    {
+        Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+        loadingAnimator.SetTrigger("LoadingEnd");
+
+        yield return null;
+    }
+
     public void ChangeTargetMaterial(Material customMaterial, GameObject target)
     {
         if (target == null)

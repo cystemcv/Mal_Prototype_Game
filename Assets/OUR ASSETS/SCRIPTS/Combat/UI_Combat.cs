@@ -96,7 +96,7 @@ public class UI_Combat : MonoBehaviour
     }
 
 
-    public void OnNotification(string message, float waitTime)
+    public IEnumerator OnNotification(string message, float waitTime)
     {
         // Instantiate at position (0, 0, 0) and zero rotation.
         GameObject notificationPrefab = Instantiate(notificationPb, notificationParent.transform.position, Quaternion.identity);
@@ -112,7 +112,8 @@ public class UI_Combat : MonoBehaviour
         notificationPrefab.transform.Find("TEXT").GetComponent<TMP_Text>().text = message;
 
         //start waiting time
-        StartCoroutine(WaitNotification(notificationPrefab, waitTime));
+        yield return StartCoroutine(WaitNotification(notificationPrefab, waitTime));
+
     }
 
     public void OffNotification(GameObject notificationPrefab, float timeToDestroy)

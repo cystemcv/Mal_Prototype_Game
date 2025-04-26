@@ -17,6 +17,8 @@ public class Artifacts_KnightArmor : ScriptableItem
     public override void Activate(ClassItem classItem)
     {
 
+
+
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         EntityClass entityClass = character.GetComponent<EntityClass>();
 
@@ -50,7 +52,7 @@ public class Artifacts_KnightArmor : ScriptableItem
             return;
         }
 
-
+        MonoBehaviour runner = CombatCardHandler.Instance;
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         EntityClass entityClass = character.GetComponent<EntityClass>();
@@ -59,7 +61,7 @@ public class Artifacts_KnightArmor : ScriptableItem
         {
             int remainder = armorMax - entityClass.armor;
 
-            Combat.Instance.AdjustTargetHealth(null, character, remainder, false, SystemManager.AdjustNumberModes.ARMOR);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, remainder, false, SystemManager.AdjustNumberModes.ARMOR));
 
             ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Added Armor +" + remainder, false);
         }
@@ -79,7 +81,9 @@ public class Artifacts_KnightArmor : ScriptableItem
             return;
         }
 
-        Combat.Instance.AdjustTargetHealth(null, character, armorMax, false, SystemManager.AdjustNumberModes.ARMOR);
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, armorMax, false, SystemManager.AdjustNumberModes.ARMOR));
 
 
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Added Armor +" + armorMax, false);

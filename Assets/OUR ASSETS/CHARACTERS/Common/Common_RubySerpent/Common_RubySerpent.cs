@@ -49,12 +49,12 @@ public class Common_RubySerpent : ScriptableCard
 
     public void ExecuteCard()
     {
-   
-      
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         if (IsOdd(Combat.Instance.turns))
         {
             int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
-            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDamage, false, SystemManager.AdjustNumberModes.ATTACK);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDamage, false, SystemManager.AdjustNumberModes.ATTACK));
         }
         else
         {

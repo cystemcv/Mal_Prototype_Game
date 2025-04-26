@@ -28,7 +28,9 @@ public class Artifacts_QuickSnack : ScriptableItem
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        Combat.Instance.AdjustTargetHealth(null, character, hpToHeal, false, SystemManager.AdjustNumberModes.HEAL);
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, hpToHeal, false, SystemManager.AdjustNumberModes.HEAL));
 
 
     }

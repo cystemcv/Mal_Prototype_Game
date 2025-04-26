@@ -42,6 +42,9 @@ public class Curse_Card_AmethystSerpent : ScriptableCard
 
     public void ExecuteCard()
     {
+
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         if (this.cardSoundEffect != null)
         {
             AudioManager.Instance.cardSource.PlayOneShot(this.cardSoundEffect);
@@ -54,7 +57,7 @@ public class Curse_Card_AmethystSerpent : ScriptableCard
             foreach (GameObject entity in allEntities)
             {
                 SystemManager.Instance.SpawnEffectPrefab(this.abilityEffect,entity,0.6f);
-                Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entity, damageAmount, false, SystemManager.AdjustNumberModes.ATTACK);
+                runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entity, damageAmount, false, SystemManager.AdjustNumberModes.ATTACK));
             }
 
         }
@@ -65,7 +68,7 @@ public class Curse_Card_AmethystSerpent : ScriptableCard
 
             foreach (GameObject entity in allEntities)
             {
-                Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entity, damageAmount, false, SystemManager.AdjustNumberModes.HEAL);
+                runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entity, damageAmount, false, SystemManager.AdjustNumberModes.HEAL));
             }
         }
     }

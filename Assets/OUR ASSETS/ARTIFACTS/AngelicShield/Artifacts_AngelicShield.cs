@@ -16,6 +16,8 @@ public class Artifacts_AngelicShield : ScriptableItem
     public override void Activate(ClassItem classItem)
     {
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         if (shieldAdded <= 0)
         {
             return;
@@ -23,7 +25,7 @@ public class Artifacts_AngelicShield : ScriptableItem
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        Combat.Instance.AdjustTargetHealth(null, character, shieldAdded, false, SystemManager.AdjustNumberModes.SHIELD);
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, shieldAdded, false, SystemManager.AdjustNumberModes.SHIELD));
 
         //decrease it
         shieldAdded -= shieldDescrease;

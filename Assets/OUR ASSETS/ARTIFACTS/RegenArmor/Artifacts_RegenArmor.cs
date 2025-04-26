@@ -23,15 +23,17 @@ public class Artifacts_RegenArmor : ScriptableItem
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         EntityClass entityClass = character.GetComponent<EntityClass>();
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         if (entityClass.health >= entityClass.maxHealth)
         {
             //then increase armor
-            Combat.Instance.AdjustTargetHealth(null, character, regenAmount * regenMultiplierArmor, false, SystemManager.AdjustNumberModes.ARMOR);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, regenAmount * regenMultiplierArmor, false, SystemManager.AdjustNumberModes.ARMOR));
             ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Armor +" + regenAmount * regenMultiplierArmor, false);
         }
         else
         {
-            Combat.Instance.AdjustTargetHealth(null, character, regenAmount, false, SystemManager.AdjustNumberModes.HEAL);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, regenAmount, false, SystemManager.AdjustNumberModes.HEAL));
             ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Heal +" + regenAmount, false);
         }
 

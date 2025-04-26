@@ -69,6 +69,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     //ui
     public GameObject displayCharacterCard;
+    public GameObject displayCompanionCard;
 
     private int howManyCombatRoom = 10;
     private int howManyEliteCombatRoom = 0;
@@ -208,12 +209,13 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         float targetValue = (float)StaticData.staticCharacter.currHealth / (float)StaticData.staticCharacter.maxHealth;
         displayCharacterCard.transform.Find("Health").GetComponent<Slider>().value = targetValue;
-
         displayCharacterCard.transform.Find("CardText").GetComponent<TMP_Text>().text = StaticData.staticCharacter.mainClass.ToString();
-
         displayCharacterCard.transform.Find("Health").Find("TEXT").GetComponent<TMP_Text>().text = StaticData.staticCharacter.currHealth + "/" + StaticData.staticCharacter.maxHealth;
-
         displayCharacterCard.transform.Find("EntityImage").GetComponent<Image>().sprite = StaticData.staticCharacter.entityImage;
+
+        displayCompanionCard = GameObject.Find("ROOT").transform.Find("STAYONCAMERA").transform.Find("DisplayCompanionCard").gameObject;
+        displayCompanionCard.transform.Find("CardText").GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionName;
+        displayCompanionCard.transform.Find("EntityImage").GetComponent<Image>().sprite = StaticData.staticScriptableCompanion.companionImage;
 
         //animate the text
         UIManager.Instance.AnimateTextTypeWriter("Galaxy:" + galaxyLevel, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);

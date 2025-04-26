@@ -156,7 +156,7 @@ public class Combat : MonoBehaviour
         if (conditionsEnabled == true &&
             (charactersAlive <= 0 || enemyFormation.Count <= 0))
         {
-            CombatOver();
+           CombatOver();
         }
 
         //check the queue
@@ -266,13 +266,13 @@ public class Combat : MonoBehaviour
     {
         if (combatEnded)
         {
-            return;
+         return;
         }
 
         //make mana back to full
-        StartCoroutine(RefillMana());
+         StartCoroutine(RefillMana());
 
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatEnd);
+        //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatEnd));
         combatEnded = true;
 
         //always check characters first, if both lost = game over
@@ -300,13 +300,15 @@ public class Combat : MonoBehaviour
 
             CalculateLootRewards();
 
+            ItemManager.Instance.ShowLoot();
+
             //win
             //UIManager.Instance.resultsWindow.SetActive(true);
 
             //UIManager.Instance.resultsWindow_Text.GetComponent<TMP_Text>().text = StaticData.FormatStatsForText(StaticData.combatStats);
             //UIManager.Instance.resultsWindow_ScoringText.GetComponent<TMP_Text>().text = "Total Score : " + StaticData.GetTotalJsonScore(StaticData.combatStats);
             //ItemManager.Instance.ShowInventory();
-            ItemManager.Instance.ShowLoot();
+
         }
 
     }
@@ -357,12 +359,12 @@ public class Combat : MonoBehaviour
             //then add item to loot
             StaticData.lootItemList.Add(classItem);
 
-            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
-
+           //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+           // yield return new WaitForSeconds(0.1f);
         }
+        //yield return null;
 
-
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot);
+       //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot));
 
     }
 
@@ -430,9 +432,17 @@ public class Combat : MonoBehaviour
         //start win conditions
         conditionsEnabled = true;
 
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart);
+        yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
+
+        yield return new WaitForSeconds(0.5f);
+
+        yield return StartCoroutine(UI_Combat.Instance.OnNotification("COMBAT START", 1));
+
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart));
 
         StaticData.staticScriptableCompanion.InitializeButton();
+
+   
 
         //start the player
         yield return StartCoroutine(WaitPlayerTurns());
@@ -546,7 +556,7 @@ public class Combat : MonoBehaviour
         //draw cards
         yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart);
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart));
 
         yield return StartCoroutine(ActivateDelayedCardEffects());
 
@@ -606,7 +616,7 @@ public class Combat : MonoBehaviour
         //{
         //UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
         UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(true);
-        UI_Combat.Instance.OnNotification("PLAYER TURN", 1);
+        yield return StartCoroutine(UI_Combat.Instance.OnNotification("PLAYER TURN", 1));
         //}
 
 
@@ -640,7 +650,7 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd);
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd));
 
         yield return new WaitForSeconds(1f);
 
@@ -659,7 +669,7 @@ public class Combat : MonoBehaviour
 
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
-        UI_Combat.Instance.OnNotification("ENEMY TURN", 1);
+        yield return StartCoroutine(UI_Combat.Instance.OnNotification("ENEMY TURN", 1));
 
         yield return RearrangeFormation(enemyFormation);
 
@@ -1172,19 +1182,19 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public void AdjustTargetHealth(GameObject attacker, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
+    public IEnumerator AdjustTargetHealth(GameObject attacker, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
         if (target == null)
         {
-            return;
+            yield return null;
         }
 
         EntityClass entityClass = target.GetComponent<EntityClass>();
 
         if (entityClass.entityMode == SystemManager.EntityMode.DEAD)
         {
-            return;
+            yield return null;
         }
 
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
@@ -1308,17 +1318,17 @@ public class Combat : MonoBehaviour
         Destroy(numberOnScreenPrefab, 1f);
 
 
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit);
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit));
 
         //if the target reach to 0
-        CheckIfEntityIsDead(entityClass);
+        yield return StartCoroutine(CheckIfEntityIsDead(entityClass));
 
 
     }
 
 
 
-    public void CheckIfEntityIsDead(EntityClass entityClass)
+    public IEnumerator CheckIfEntityIsDead(EntityClass entityClass)
     {
 
         if (entityClass.health <= 0)
@@ -1334,12 +1344,12 @@ public class Combat : MonoBehaviour
 
             if (entityClass.gameObject.tag == "Player")
             {
-                ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath);
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath));
                 charactersAlive -= 1;
             }
             else if (entityClass.gameObject.tag == "Enemy")
             {
-                ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath);
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath));
                 //enemiesAlive -= 1;
             }
 
@@ -1618,7 +1628,7 @@ public class Combat : MonoBehaviour
             CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
 
 
-            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, pierce, SystemManager.AdjustNumberModes.ATTACK);
+            yield return StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, pierce, SystemManager.AdjustNumberModes.ATTACK));
 
             if (scriptableCard.cardSoundEffect != null)
             {
@@ -1660,7 +1670,7 @@ public class Combat : MonoBehaviour
             CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
 
 
-            Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+            yield return StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK));
 
             if (scriptableCard.cardSoundEffect != null)
             {
@@ -1704,7 +1714,7 @@ public class Combat : MonoBehaviour
                 CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
 
 
-                Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK);
+                yield return StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, false, SystemManager.AdjustNumberModes.ATTACK));
 
                 if (scriptableCard.cardSoundEffect != null)
                 {

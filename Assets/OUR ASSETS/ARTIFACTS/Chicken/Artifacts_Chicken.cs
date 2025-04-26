@@ -12,6 +12,7 @@ public class Artifacts_Chicken : ScriptableItem
 
     public override void Activate(ClassItem classItem)
     {
+        MonoBehaviour runner = CombatCardHandler.Instance;
 
         int randomChance = UnityEngine.Random.Range(0, 100);
 
@@ -22,7 +23,7 @@ public class Artifacts_Chicken : ScriptableItem
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        Combat.Instance.AdjustTargetHealth(null, character, healAdded, false, SystemManager.AdjustNumberModes.HEAL);
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, healAdded, false, SystemManager.AdjustNumberModes.HEAL));
 
 
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Heal +" + healAdded, false);

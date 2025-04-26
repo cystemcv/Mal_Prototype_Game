@@ -49,17 +49,20 @@ public class Common_EmeraldSerpent : ScriptableCard
 
     public void ExecuteCard()
     {
-   
-      
+
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+
         if (IsOdd(Combat.Instance.turns))
         {
             int calculatedArmor = Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCardGlobal, realTarget);
-            Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedArmor, false, SystemManager.AdjustNumberModes.ARMOR);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedArmor, false, SystemManager.AdjustNumberModes.ARMOR));
         }
         else
         {
             int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCardGlobal, realTarget);
-            Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
         }
     }
 

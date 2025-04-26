@@ -22,6 +22,8 @@ public class Artifacts_CrescendoDial : ScriptableItem
     public override void Activate(ClassItem classItem)
     {
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         //if the cost of the card is not the same as the combo value then reset the combo back and stop this
         if (StaticData.artifact_CardScript.scriptableCard.primaryManaCost != combo)
         {
@@ -53,7 +55,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
             entityClass.defence += defenceValue;
 
             //increase hp
-            Combat.Instance.AdjustTargetHealth(null, target, healValue, false, SystemManager.AdjustNumberModes.HEAL);
+            runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, target, healValue, false, SystemManager.AdjustNumberModes.HEAL));
 
             //reset combo
             combo = 0;

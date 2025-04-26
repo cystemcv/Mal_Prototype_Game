@@ -24,10 +24,12 @@ public class Angel_Card_AngelicBlock : ScriptableCard
     {
         base.OnPlayCard(cardScript, entityUsedCard);
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         realTarget = CombatCardHandler.Instance.targetClicked;
 
         int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD);
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
 
     }
 
@@ -35,10 +37,12 @@ public class Angel_Card_AngelicBlock : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 
         int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD);
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
     }
 
 

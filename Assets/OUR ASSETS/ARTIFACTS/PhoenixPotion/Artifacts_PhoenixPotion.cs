@@ -29,13 +29,15 @@ public class Artifacts_PhoenixPotion : ScriptableItem
             return;
         }
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         triggered = true;
 
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
 
-        Combat.Instance.AdjustTargetHealth(null, character, 
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, 
             (character.GetComponent<EntityClass>().maxHealth * hpToHealPerc) / 100
-            , false, SystemManager.AdjustNumberModes.HEAL);
+            , false, SystemManager.AdjustNumberModes.HEAL));
 
 
     }
