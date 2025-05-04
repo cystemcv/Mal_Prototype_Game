@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,8 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool roomCleared = false;
 
     public ScriptablePlanets scriptablePlanet;
+
+
 
     public void ClickedRoom()
     {
@@ -81,6 +84,13 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         //SystemManager.Instance.object_HighlightButton.SetActive(true);
 
+        List<GameObject> path = CustomDungeonGenerator.Instance.GetShortestVisiblePath( CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded , this.gameObject);
+        Debug.Log("Path count: " + (path == null ? "null" : path.Count.ToString()));
+        CustomDungeonGenerator.Instance.DrawHighlightedPathLine(path);
+
+        CustomDungeonGenerator.Instance.StartPathTraversal(path);
+
+
         AudioManager.Instance.PlaySfx("UI_goNext");
 
     }
@@ -89,6 +99,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
         //SystemManager.Instance.object_HighlightButton.SetActive(false);
     }
 

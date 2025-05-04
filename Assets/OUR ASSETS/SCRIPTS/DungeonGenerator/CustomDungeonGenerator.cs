@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -54,10 +55,10 @@ public class CustomDungeonGenerator : MonoBehaviour
     public EventSystem eventSystem;
 
     //private Queue<GameObject> roomQueue = new Queue<GameObject>();
-    private Dictionary<Vector2Int, GameObject> roomGrid = new Dictionary<Vector2Int, GameObject>();
+    public Dictionary<Vector2Int, GameObject> roomGrid = new Dictionary<Vector2Int, GameObject>();
 
-    private Dictionary<GameObject, List<GameObject>> roomConnections = new Dictionary<GameObject, List<GameObject>>();
-    private HashSet<(GameObject, GameObject)> existingConnections = new HashSet<(GameObject, GameObject)>();
+    public Dictionary<GameObject, List<RoomEdge>> roomConnections = new Dictionary<GameObject, List<RoomEdge>>();
+    public HashSet<(GameObject, GameObject)> existingConnections = new HashSet<(GameObject, GameObject)>();
 
 
     public int dungeonGeneratorPos = 0;
@@ -84,6 +85,11 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     private GameObject lastCreatedPlanet;
     List<GameObject> usedBossRooms = new List<GameObject>();
+
+    public LineRenderer pathHighlightedLineRenderer;
+
+    public GameObject playerSpaceShip;
+    public bool playerSpaceShipMoving = false;
 
     private void Awake()
     {
@@ -298,6 +304,25 @@ public class CustomDungeonGenerator : MonoBehaviour
         yield return StartCoroutine(GenerateDungeonRoutine());
         //the dungeon is finished
         dungeonIsGenerating = false;
+
+        //end generation 
+        yield return StartCoroutine(SetPlayerSpaceship());
+    
+    }
+
+    public IEnumerator SetPlayerSpaceship()
+    {
+        //set it to the start
+        playerSpaceShip.transform.position = rooms[0].transform.position;
+        UpdateLandPlayerSpaceship(rooms[0]);
+
+        yield return null;
+    }
+
+    public void UpdateLandPlayerSpaceship(GameObject planet)
+    {
+        playerSpaceShipMoving = false;
+        playerSpaceShip.GetComponent<DungeonShipController>().planetLanded = planet;
     }
 
     public IEnumerator GetAppropriateGalaxy()
@@ -647,12 +672,13 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
-            position = new Vector2(0, 0);
+            position = new Vector2(0, 0); // Position for start room
         }
 
-
+        // Instantiate the room
         GameObject newRoom = Instantiate(roomPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity);
 
+        // Ensure the room has a RectTransform component (for UI-based rooms)
         RectTransform rt = newRoom.GetComponent<RectTransform>();
         if (rt == null)
         {
@@ -660,25 +686,23 @@ public class CustomDungeonGenerator : MonoBehaviour
             yield break;
         }
 
+        // Set the parent and scale of the room
         newRoom.transform.SetParent(StaticData.staticDungeonParent.transform);
         newRoom.transform.localScale = new Vector3(1, 1, 1);
-        //newRoom.transform.position = new Vector3(0, 0, 0);
         newRoom.transform.position = new Vector3(newRoom.transform.position.x, newRoom.transform.position.y, 0);
 
+        // If the room is a BATTLE type, assign a random planet and set its art
         if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
-
-            //get the planet
             int randomPlanetIndex = UnityEngine.Random.Range(0, galaxyGenerating.scriptablePlanets.Count);
             ScriptablePlanets scriptablePlanet = galaxyGenerating.scriptablePlanets[randomPlanetIndex];
             newRoom.GetComponent<RoomScript>().scriptablePlanet = scriptablePlanet;
 
             newRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = scriptablePlanet.planetArt;
-
         }
 
-        //hide everything except the start room
-        if (planetType != SystemManager.PlanetTypes.START && hideRooms == true)
+        // Hide the room initially if it's not the start room and if `hideRooms` is true
+        if (planetType != SystemManager.PlanetTypes.START && hideRooms)
         {
             newRoom.SetActive(false); // Set the room to be inactive initially
         }
@@ -688,99 +712,131 @@ public class CustomDungeonGenerator : MonoBehaviour
         TMP_Text roomText = newRoom.GetComponentInChildren<TMP_Text>();
         if (roomText != null)
         {
-            roomText.text = ""; //roomType.ToString();
+            roomText.text = ""; // You can set room type or other info here if needed
         }
 
-        //add the room type
+        // Assign the planet type to the room's RoomScript
         newRoom.GetComponent<RoomScript>().planetType = planetType;
 
-        //add the room to the list
+        // Add the room to the rooms list and grid
         rooms.Add(newRoom);
-        //add the room at the grid
         roomGrid[gridPosition] = newRoom;
-        //add to the room connection
-        roomConnections[newRoom] = new List<GameObject>();
 
+        // Initialize the room connections
+        roomConnections[newRoom] = new List<RoomEdge>();
 
+        // If the room is a BOSS or REST type, add it to the usedBossRooms list
+        if (planetType == SystemManager.PlanetTypes.BOSS || planetType == SystemManager.PlanetTypes.REST)
+        {
+            usedBossRooms.Add(newRoom);
+        }
+
+        // If it's the start room, set up its connections (if necessary)
+        if (planetType == SystemManager.PlanetTypes.START)
+        {
+            // If the room is the start room, we may want to initialize connections to neighboring rooms here
+            // You can add custom logic to connect the start room to its neighbors if needed
+        }
+
+        // Add a RoomEdge for the newly created room and set trueConnect as false initially
+        // (You might connect it later when valid connections are established)
+        roomConnections[newRoom] = new List<RoomEdge>();
+
+        // If drawing lines is enabled, draw the connection lines between rooms
+        if (drawLines && gridPosition != Vector2Int.zero) // Avoid drawing lines for the start room
+        {
+            // Find neighboring rooms to connect with
+            foreach (Vector2Int dir in new Vector2Int[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right })
+            {
+                Vector2Int neighborPos = gridPosition + dir;
+
+                if (roomGrid.ContainsKey(neighborPos))
+                {
+                    GameObject neighborRoom = roomGrid[neighborPos];
+                    DrawLineBetweenRooms(newRoom, neighborRoom);
+                }
+            }
+        }
     }
+
 
     public IEnumerator CreateRoomsAfterGeneration(GameObject room, SystemManager.PlanetTypes planetType)
     {
         int randomPercentage = 0;
 
-        //rooms can only spawn up,down,left and right from the current room
+        // Rooms can only spawn up, down, left, and right from the current room
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-        //we get the position of the current room as it will be used to calculate the neibour rooms
+
+        // Get the position of the current room as it will be used to calculate the neighbor rooms
         Vector2Int roomGridPosition = GetRoomGridPosition(room);
 
-        //loop through all the directions (up,down,left,right)
+        // Loop through all the directions (up, down, left, right)
         foreach (Vector2Int dir in directions)
         {
-
-            //calculate the position of the neighbor by using the direction
+            // Calculate the position of the neighbor by using the direction
             Vector2Int adjacentGridPos = roomGridPosition + dir;
 
-            // If there is already a room on that grid then we check for connection
+            // If there is already a room on that grid, then we check for connection
             if (roomGrid.ContainsKey(adjacentGridPos))
             {
                 GameObject adjacentRoom = roomGrid[adjacentGridPos];
 
-                // Check if they are already connected
-                if (roomConnections[room].Contains(adjacentRoom))
+                // Check if they are already connected with trueConnect flag
+                if (roomConnections[room].Exists(edge => edge.targetRoom == adjacentRoom && edge.trueConnect))
                 {
-                    continue; // If already connected, move to the next neighbor
+                    continue; // If already connected with trueConnect, move to the next neighbor
                 }
 
                 randomPercentage = UnityEngine.Random.Range(0, 100);
+                // Check if we should connect the rooms based on allowed percentage for REST planet type
                 if (randomPercentage <= galaxyGenerating.allowedPercentageConnectBoss && planetType == SystemManager.PlanetTypes.REST)
                 {
-                    // Connect the rooms
-
+                    // Connect the rooms using RoomEdge
                     ConnectRooms(room, adjacentRoom);
                 }
 
                 continue;
             }
 
-
-            //get random room type=
+            // If no room exists, create the room and connect it to the current room
+            // Get the random room type
             yield return StartCoroutine(CreateRoomAndConnect(room, adjacentGridPos, planetType));
-            break;
 
+            break; // Break after creating the first neighbor room
         }
     }
+
 
     public IEnumerator CreateNeighborRooms(GameObject room)
     {
         int randomPercentage = 0;
 
-        //rooms can only spawn up,down,left and right from the current room
+        // Rooms can only spawn up, down, left, and right from the current room
         Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
-        //we get the position of the current room as it will be used to calculate the neibour rooms
+
+        // Get the position of the current room as it will be used to calculate the neighbor rooms
         Vector2Int roomGridPosition = GetRoomGridPosition(room);
 
-        //loop through all the directions (up,down,left,right)
+        // Loop through all the directions (up, down, left, right)
         foreach (Vector2Int dir in directions)
         {
-
-
-            //if we reach the room limit then we stop
+            // If we reach the room limit, then we stop
             if (rooms.Count > maxRooms)
             {
                 Debug.Log("BREAK");
                 break;
             }
 
-            //calculate the position of the neighbor by using the direction
+            // Calculate the position of the neighbor by using the direction
             Vector2Int adjacentGridPos = roomGridPosition + dir;
 
-            // If there is already a room on that grid then we check for connection
+            // If there is already a room on that grid, then we check for connection
             if (roomGrid.ContainsKey(adjacentGridPos))
             {
                 GameObject adjacentRoom = roomGrid[adjacentGridPos];
 
                 // Check if they are already connected
-                if (roomConnections[room].Contains(adjacentRoom))
+                if (roomConnections[room].Exists(edge => edge.targetRoom == adjacentRoom && edge.trueConnect))
                 {
                     continue; // If already connected, move to the next neighbor
                 }
@@ -789,23 +845,21 @@ public class CustomDungeonGenerator : MonoBehaviour
                 randomPercentage = UnityEngine.Random.Range(0, 100);
                 if (randomPercentage <= galaxyGenerating.allowedPercentage)
                 {
-                    // Connect the rooms
-
+                    // Connect the rooms using RoomEdge
                     ConnectRooms(room, adjacentRoom);
                 }
 
                 continue;
             }
 
-            //the random percentage that it will generate a room if the position is empty . Meaning no room exist on that neighbor position
+            // The random percentage that it will generate a room if the position is empty (i.e., no room exists at that neighbor position)
             randomPercentage = UnityEngine.Random.Range(0, 100);
 
-            //if it is allowed based on our custom parameter
+            // If it is allowed based on our custom parameter
             if (randomPercentage <= galaxyGenerating.allowedPercentage)
             {
-
-                //then create room
-                //get random room type
+                // Then create the room
+                // Get random room type
                 SystemManager.PlanetTypes planetType = GetPlanetType();
                 yield return StartCoroutine(CreateRoomAndConnect(room, adjacentGridPos, planetType));
             }
@@ -814,9 +868,10 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     private IEnumerator CreateRoomAndConnect(GameObject currentRoom, Vector2Int position, SystemManager.PlanetTypes planetType)
     {
-        //first we create the room
+        // First, create the room
         yield return StartCoroutine(CreateRoom(position, planetType));
-        //Get the room from the grid by using the position we would have spawn it
+
+        // Get the room from the grid by using the position we would have spawned it
         GameObject newRoom = roomGrid[position];
         lastCreatedPlanet = newRoom;
 
@@ -824,30 +879,63 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             usedBossRooms.Add(newRoom);
         }
-      
+
+        // Optionally, draw a line between the rooms if drawing lines is enabled
         if (drawLines)
         {
-            //then we draw a line between the current room and the neighbor created
             DrawLineBetweenRooms(currentRoom, newRoom);
         }
 
-        // Add to the connections dictionary
-        roomConnections[currentRoom].Add(newRoom);
-        roomConnections[newRoom].Add(currentRoom);
+        // Create RoomEdge instances for the connection between the rooms
+        RoomEdge edge1 = new RoomEdge();  // currentRoom connects to newRoom
+        RoomEdge edge2 = new RoomEdge();  // newRoom connects to currentRoom
+
+        // Set the trueConnect flag to true for both edges (assuming these rooms are now connected)
+        edge1.trueConnect = true;
+        edge1.targetRoom = newRoom;
+        edge2.trueConnect = true;
+        edge2.targetRoom = currentRoom;
+
+        // Ensure both rooms have entries in the dictionary before adding connections
+        if (!roomConnections.ContainsKey(currentRoom))
+        {
+            roomConnections[currentRoom] = new List<RoomEdge>();
+        }
+        if (!roomConnections.ContainsKey(newRoom))
+        {
+            roomConnections[newRoom] = new List<RoomEdge>();
+        }
+
+        // Add the connections to each room's list of connected rooms
+        roomConnections[currentRoom].Add(edge1);
+        roomConnections[newRoom].Add(edge2);
     }
+
 
     private void ConnectRooms(GameObject room1, GameObject room2)
     {
-        // Add to the connections dictionary
-        roomConnections[room1].Add(room2);
-        roomConnections[room2].Add(room1);
+        // Create RoomEdge instances for each connection
+        RoomEdge edge1 = new RoomEdge(); // Initial connection to room2
+        RoomEdge edge2 = new RoomEdge(); // Initial connection to room1
 
-        // Draw a line between the rooms if drawing lines is enabled
+        // Set the trueConnect flag to true for both edges
+        edge1.trueConnect = true;
+        edge1.targetRoom = room2;
+        edge2.trueConnect = true;
+        edge2.targetRoom = room1;
+
+        // Add the RoomEdge objects to the connections dictionary
+        roomConnections[room1].Add(edge1);
+        roomConnections[room2].Add(edge2);
+
+        // Optionally draw a line between the rooms if drawing lines is enabled
         if (drawLines)
         {
             DrawLineBetweenRooms(room1, room2);
         }
     }
+
+
     private void DrawLineBetweenRooms(GameObject room1, GameObject room2)
     {
         // Ensure the pair is ordered to avoid duplicate entries (room1, room2) and (room2, room1)
@@ -902,23 +990,67 @@ public class CustomDungeonGenerator : MonoBehaviour
     //    }
     //}
 
+    //public void OnRoomClick(GameObject clickedRoom)
+    //{
+    //    if (roomConnections.ContainsKey(clickedRoom))
+    //    {
+    //        foreach (RoomEdge edge in roomConnections[clickedRoom])
+    //        {
+    //            if (!edge.trueConnect)
+    //                continue; // Skip if the connection is not yet true
+
+    //            GameObject room = edge.targetRoom;
+
+    //            edge.pathConnected = true;
+
+    //            // Here you can add code to highlight or show the connected rooms
+
+    //            // Make the room appear
+    //            room.SetActive(true);
+
+    //            // Then we draw a line between the current room and the neighbor created
+    //            DrawLineBetweenRooms(clickedRoom, room);
+    //        }
+    //    }
+
+    //    if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.START)
+    //    {
+    //        clickedRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = CustomDungeonGenerator.Instance.clearIcon;
+    //    }
+
+    //    clickedRoom.GetComponent<RoomScript>().roomCleared = true;
+    //}
+
     public void OnRoomClick(GameObject clickedRoom)
     {
         if (roomConnections.ContainsKey(clickedRoom))
         {
-            List<GameObject> connectedRooms = roomConnections[clickedRoom];
-
-            foreach (GameObject room in connectedRooms)
+            foreach (RoomEdge edge in roomConnections[clickedRoom])
             {
-                // Here you can add code to highlight or show the connected rooms
+                if (!edge.trueConnect)
+                    continue;
 
+                GameObject room = edge.targetRoom;
 
-                //make the room appear
+                // Set pathConnected for this edge
+                edge.pathConnected = true;
+
+                // Set pathConnected for the reverse edge
+                if (roomConnections.ContainsKey(room))
+                {
+                    foreach (RoomEdge reverseEdge in roomConnections[room])
+                    {
+                        if (reverseEdge.targetRoom == clickedRoom)
+                        {
+                            reverseEdge.pathConnected = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Reveal and connect
                 room.SetActive(true);
-
-                //then we draw a line between the current room and the neighbor created
                 DrawLineBetweenRooms(clickedRoom, room);
-
             }
         }
 
@@ -928,190 +1060,192 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
         clickedRoom.GetComponent<RoomScript>().roomCleared = true;
-
     }
+
 
     public bool RoomConnectedTo(GameObject clickedRoom, SystemManager.PlanetTypes planetType)
     {
-        bool connected = false;
-        //check if the room is connected to the type specified
-
         if (roomConnections.ContainsKey(clickedRoom))
         {
-            List<GameObject> connectedRooms = roomConnections[clickedRoom];
-
-            foreach (GameObject room in connectedRooms)
+            foreach (RoomEdge edge in roomConnections[clickedRoom])
             {
+                if (!edge.trueConnect)
+                    continue;
+
+                GameObject room = edge.targetRoom;
 
                 if (room.GetComponent<RoomScript>().planetType == planetType)
                 {
-                    connected = true;
-                    break;
+                    return true;
                 }
-
             }
         }
 
-        return connected;
+        return false;
     }
+
 
 
     public GameObject GetFurthestRoomFromStart()
     {
         GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
         Queue<GameObject> queue = new Queue<GameObject>();
-        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // Distance from start
         GameObject furthestRoom = startRoom;
         int maxDistance = 0;
 
-        // Initialize BFS
         queue.Enqueue(startRoom);
-        distances[startRoom] = 0; // Start room has a distance of 0
+        distances[startRoom] = 0;
 
         while (queue.Count > 0)
         {
             GameObject currentRoom = queue.Dequeue();
             int currentDistance = distances[currentRoom];
 
-            // Loop through all connected rooms
-            foreach (GameObject neighbor in roomConnections[currentRoom])
-            {
-                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
-                {
-                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
-                    queue.Enqueue(neighbor);
+            if (!roomConnections.ContainsKey(currentRoom))
+                continue;
 
-                    // Check if this is the furthest room found so far
-                    if (distances[neighbor] > maxDistance)
-                    {
-                        maxDistance = distances[neighbor];
-                        furthestRoom = neighbor;
-                    }
+            foreach (RoomEdge edge in roomConnections[currentRoom])
+            {
+                GameObject neighbor = edge.targetRoom;
+
+                if (!edge.trueConnect || distances.ContainsKey(neighbor))
+                    continue;
+
+                distances[neighbor] = currentDistance + 1;
+                queue.Enqueue(neighbor);
+
+                if (distances[neighbor] > maxDistance)
+                {
+                    maxDistance = distances[neighbor];
+                    furthestRoom = neighbor;
                 }
             }
         }
 
-        return furthestRoom; // Return the furthest room
+        return furthestRoom;
     }
+
 
     public GameObject GetFurthestRoomFromStartExcludeRest()
     {
         GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
         Queue<GameObject> queue = new Queue<GameObject>();
-        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // Distance from start
         GameObject furthestRoom = startRoom;
         int maxDistance = 0;
 
-        // Initialize BFS
         queue.Enqueue(startRoom);
-        distances[startRoom] = 0; // Start room has a distance of 0
+        distances[startRoom] = 0;
 
         while (queue.Count > 0)
         {
             GameObject currentRoom = queue.Dequeue();
             int currentDistance = distances[currentRoom];
 
-            // Skip rooms with the planetType of REST or BOSS
-            RoomScript roomScript = currentRoom.GetComponent<RoomScript>();
-            if (roomScript != null && roomScript.planetType == SystemManager.PlanetTypes.REST
-                && roomScript.planetType == SystemManager.PlanetTypes.BOSS)
+            RoomScript currentRoomScript = currentRoom.GetComponent<RoomScript>();
+            if (currentRoomScript != null &&
+                currentRoomScript.planetType == SystemManager.PlanetTypes.REST)
             {
-                continue; // Skip this room if its planetType is REST or BOSS
+                continue;
             }
 
-            // Loop through all connected rooms
-            foreach (GameObject neighbor in roomConnections[currentRoom])
+            if (!roomConnections.ContainsKey(currentRoom))
+                continue;
+
+            foreach (RoomEdge edge in roomConnections[currentRoom])
             {
-                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
+                GameObject neighbor = edge.targetRoom;
+
+                if (!edge.trueConnect || distances.ContainsKey(neighbor))
+                    continue;
+
+                distances[neighbor] = currentDistance + 1;
+                queue.Enqueue(neighbor);
+
+                RoomScript neighborScript = neighbor.GetComponent<RoomScript>();
+                if (neighborScript != null &&
+                    neighborScript.planetType == SystemManager.PlanetTypes.REST)
                 {
-                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
-                    queue.Enqueue(neighbor);
+                    continue;
+                }
 
-                    // Skip rooms with the planetType of REST
-                    RoomScript neighborRoomScript = neighbor.GetComponent<RoomScript>();
-                    if (roomScript != null && roomScript.planetType == SystemManager.PlanetTypes.REST
-              && roomScript.planetType == SystemManager.PlanetTypes.BOSS)
-                    {
-                        continue; // Skip this room if its planetType is REST or BOSS
-                    }
-
-                    // Check if this is the furthest room found so far
-                    if (distances[neighbor] > maxDistance)
-                    {
-                        maxDistance = distances[neighbor];
-                        furthestRoom = neighbor;
-                    }
+                if (distances[neighbor] > maxDistance)
+                {
+                    maxDistance = distances[neighbor];
+                    furthestRoom = neighbor;
                 }
             }
         }
 
-        return furthestRoom; // Return the furthest room that is not of planetType REST
+        return furthestRoom;
     }
+
 
     public GameObject GetFurthestRoomFromStartExcludeRestAndBoss()
     {
         GameObject startRoom = rooms[0]; // Assuming the start room is the first room in the list
         Queue<GameObject> queue = new Queue<GameObject>();
-        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // To track the distance of each room from the start
+        Dictionary<GameObject, int> distances = new Dictionary<GameObject, int>(); // Distance from start
         GameObject furthestRoom = startRoom;
         int maxDistance = 0;
 
-        // Initialize BFS
         queue.Enqueue(startRoom);
-        distances[startRoom] = 0; // Start room has a distance of 0
+        distances[startRoom] = 0;
 
         while (queue.Count > 0)
         {
             GameObject currentRoom = queue.Dequeue();
             int currentDistance = distances[currentRoom];
 
-            // Skip rooms with the planetType of REST or BOSS
-            RoomScript roomScript = currentRoom.GetComponent<RoomScript>();
-            if (roomScript != null && (roomScript.planetType == SystemManager.PlanetTypes.REST ||
-                roomScript.planetType == SystemManager.PlanetTypes.BOSS))
+            RoomScript currentRoomScript = currentRoom.GetComponent<RoomScript>();
+            if (currentRoomScript != null &&
+                (currentRoomScript.planetType == SystemManager.PlanetTypes.REST ||
+                 currentRoomScript.planetType == SystemManager.PlanetTypes.BOSS))
             {
-                continue; // Skip this room if its planetType is REST or BOSS
+                continue;
             }
 
-            // Skip if the room has already been used as a boss room
             if (usedBossRooms.Contains(currentRoom))
             {
                 continue;
             }
 
-            // Loop through all connected rooms
-            foreach (GameObject neighbor in roomConnections[currentRoom])
+            if (!roomConnections.ContainsKey(currentRoom))
+                continue;
+
+            foreach (RoomEdge edge in roomConnections[currentRoom])
             {
-                if (!distances.ContainsKey(neighbor)) // If the neighbor hasn't been visited
+                GameObject neighbor = edge.targetRoom;
+
+                if (!edge.trueConnect || distances.ContainsKey(neighbor))
+                    continue;
+
+                distances[neighbor] = currentDistance + 1;
+                queue.Enqueue(neighbor);
+
+                RoomScript neighborScript = neighbor.GetComponent<RoomScript>();
+                if (neighborScript != null &&
+                    (neighborScript.planetType == SystemManager.PlanetTypes.REST ||
+                     neighborScript.planetType == SystemManager.PlanetTypes.BOSS))
                 {
-                    distances[neighbor] = currentDistance + 1; // Increase the distance by 1
-                    queue.Enqueue(neighbor);
+                    continue;
+                }
 
-                    // Skip rooms with the planetType of REST or BOSS
-                    RoomScript neighborRoomScript = neighbor.GetComponent<RoomScript>();
-                    if (neighborRoomScript != null && (neighborRoomScript.planetType == SystemManager.PlanetTypes.REST ||
-                        neighborRoomScript.planetType == SystemManager.PlanetTypes.BOSS))
-                    {
-                        continue; // Skip this neighbor if its planetType is REST or BOSS
-                    }
+                if (usedBossRooms.Contains(neighbor))
+                {
+                    continue;
+                }
 
-                    // Skip if the neighbor room has already been used as a boss room
-                    if (usedBossRooms.Contains(neighbor))
-                    {
-                        continue;
-                    }
-
-                    // Check if this is the furthest room found so far
-                    if (distances[neighbor] > maxDistance)
-                    {
-                        maxDistance = distances[neighbor];
-                        furthestRoom = neighbor;
-                    }
+                if (distances[neighbor] > maxDistance)
+                {
+                    maxDistance = distances[neighbor];
+                    furthestRoom = neighbor;
                 }
             }
         }
 
-        return furthestRoom; // Return the furthest room that is not of planetType REST or BOSS
+        return furthestRoom;
     }
 
     public GameObject GetRandomRoomWithEmptyConection()
@@ -1198,6 +1332,137 @@ public class CustomDungeonGenerator : MonoBehaviour
         return roomsWithOneConnection[randomIndex];
     }
 
+
+
+    public void DrawHighlightedPathLine(List<GameObject> path)
+    {
+        if (path == null || path.Count < 2)
+        {
+            pathHighlightedLineRenderer.positionCount = 0;
+            return;
+        }
+
+        pathHighlightedLineRenderer.positionCount = path.Count;
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            pathHighlightedLineRenderer.SetPosition(i, path[i].transform.position);
+        }
+    }
+
+    public List<GameObject> GetShortestVisiblePath(GameObject startRoom, GameObject endRoom)
+    {
+        Queue<GameObject> queue = new Queue<GameObject>();
+        Dictionary<GameObject, GameObject> cameFrom = new Dictionary<GameObject, GameObject>();
+        HashSet<GameObject> visited = new HashSet<GameObject>();
+
+        queue.Enqueue(startRoom);
+        visited.Add(startRoom);
+        cameFrom[startRoom] = null;
+
+        while (queue.Count > 0)
+        {
+            GameObject current = queue.Dequeue();
+
+            if (!roomConnections.ContainsKey(current))
+                continue;
+
+            foreach (RoomEdge edge in roomConnections[current])
+            {
+                GameObject neighbor = edge.targetRoom;
+
+                // Only consider the edge if it's truly connected AND the room is active
+                if (!edge.pathConnected || !neighbor.activeSelf || visited.Contains(neighbor))
+                    continue;
+
+                visited.Add(neighbor);
+                cameFrom[neighbor] = current;
+                queue.Enqueue(neighbor);
+
+                if (neighbor == endRoom)
+                {
+                    // Reconstruct path
+                    List<GameObject> path = new List<GameObject>();
+                    GameObject step = endRoom;
+
+                    while (step != null)
+                    {
+                        path.Insert(0, step);
+                        step = cameFrom[step];
+                    }
+
+                    return path;
+                }
+            }
+        }
+
+        return null; // No valid visible path found
+    }
+
+    public void StartPathTraversal(List<GameObject> path)
+    {
+        if (path == null || path.Count == 0 || playerSpaceShipMoving) return;
+        StartCoroutine(MoveAlongPath(path));
+    }
+
+    private IEnumerator MoveAlongPath(List<GameObject> path)
+    {
+        playerSpaceShipMoving = true;
+        float speed = 20f;
+        float rotationSpeed = 1080f; // degrees per second, adjust for snappiness
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            GameObject targetPlanet = path[i];
+            Vector3 direction = (targetPlanet.transform.position - playerSpaceShip.transform.position).normalized;
+
+            // Calculate desired angle in degrees
+            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+            Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+
+            // Rotate before moving (optional: make it simultaneous)
+            while (Quaternion.Angle(playerSpaceShip.transform.rotation, targetRotation) > 0.1f)
+            {
+                playerSpaceShip.transform.rotation = Quaternion.RotateTowards(
+                    playerSpaceShip.transform.rotation,
+                    targetRotation,
+                    rotationSpeed * Time.deltaTime
+                );
+                yield return null;
+            }
+
+            // Move toward target
+            while (Vector3.Distance(playerSpaceShip.transform.position, targetPlanet.transform.position) > 0.1f)
+            {
+                playerSpaceShip.transform.position = Vector3.MoveTowards(
+                    playerSpaceShip.transform.position,
+                    targetPlanet.transform.position,
+                    speed * Time.deltaTime
+                );
+                yield return null;
+            }
+
+            // Snap to exact position and rotation
+            playerSpaceShip.transform.position = targetPlanet.transform.position;
+            playerSpaceShip.transform.rotation = targetRotation;
+
+            // Trigger landing logic at destination
+            if (i == path.Count - 1)
+            {
+                UpdateLandPlayerSpaceship(targetPlanet);
+            }
+        }
+
+        playerSpaceShipMoving = false;
+    }
+
+
 }
 
-
+[System.Serializable]
+public class RoomEdge
+{
+    public GameObject targetRoom;
+    public bool trueConnect = false; // Only becomes "connected" when this is true
+    public bool pathConnected = false;
+}
