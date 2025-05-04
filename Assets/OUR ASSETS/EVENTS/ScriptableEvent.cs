@@ -12,9 +12,11 @@ public class ScriptableEvent : ScriptableObject
     public Sprite icon;
     public string title;
     [TextArea(1, 20)]
-    public string description;
+    public List<string> conversation = new List<string>();
 
     public List<ScriptableButtonEvent> scriptableButtonEventList;
+
+    public ScriptablePlanets scriptablePlanet;
 
 
 

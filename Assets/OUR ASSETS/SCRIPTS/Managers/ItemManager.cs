@@ -263,20 +263,20 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType)
+    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType,CardScript cardScript)
     {
         //use all lists of items
-      yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList));
-      yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList));
+      yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList, cardScript));
+      yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScript));
     }
 
-    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems)
+    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems,CardScript cardScript)
     {
         foreach (var item in classItems)
         {
             if (item.scriptableItem.initializationType == activationType)
             {
-                item.scriptableItem.Initialiaze(item);
+                item.scriptableItem.Initialiaze(item, cardScript);
                 yield return new WaitForSeconds(0.5f);
             }
         }
@@ -285,7 +285,7 @@ public class ItemManager : MonoBehaviour
         {
             if (item.scriptableItem.activationType == activationType)
             {
-                item.scriptableItem.Activate(item);
+                item.scriptableItem.Activate(item, cardScript);
                 yield return new WaitForSeconds(0.5f);
             }
         }
@@ -294,7 +294,7 @@ public class ItemManager : MonoBehaviour
         {
             if (item.scriptableItem.expiredType == activationType)
             {
-                item.scriptableItem.Expired(item);
+                item.scriptableItem.Expired(item, cardScript);
                 yield return new WaitForSeconds(0.5f);
             }
         }

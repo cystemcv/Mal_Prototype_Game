@@ -11,7 +11,7 @@ public class Thief_ThiefMastery : ScriptableItem
     public ScriptableCard copyCard;
     public ScriptableCard stealCard;
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         if (classItem.level == 1)
@@ -43,7 +43,7 @@ public class Thief_ThiefMastery : ScriptableItem
 
     }
 
-    public override void Expired(ClassItem classItem)
+    public override void Expired(ClassItem classItem, CardScript cardScript)
     {
         copyCard.targetEntityTagList.Clear();
         stealCard.targetEntityTagList.Clear();

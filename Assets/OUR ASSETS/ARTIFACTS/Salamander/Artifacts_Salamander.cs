@@ -19,11 +19,11 @@ public class Artifacts_Salamander : ScriptableItem
 
     
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         //check if mana of card is 3
-        if (StaticData.artifact_CardScript.scriptableCard.primaryManaCost != cardActivationCost)
+        if (cardScript.scriptableCard.primaryManaCost != cardActivationCost)
         {
             return;
         }
@@ -76,7 +76,7 @@ public class Artifacts_Salamander : ScriptableItem
                     SystemManager.Instance.SpawnEffectPrefab(SpawnEffectPrefab,targetFound, SpawnEffectPrefabTimer);
 
 
-                    runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, targetFound, dmgDone, false, SystemManager.AdjustNumberModes.ATTACK));
+                    yield return runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, targetFound, dmgDone, false, SystemManager.AdjustNumberModes.ATTACK));
                 }
             }
 

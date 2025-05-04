@@ -19,7 +19,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
     public int combo = 0;
     public int maxCombo = 2;
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
@@ -72,13 +72,13 @@ public class Artifacts_CrescendoDial : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem)
+    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
     {
         combo = 0;
     }
 
 
-    public override void Expired(ClassItem classItem)
+    public override void Expired(ClassItem classItem, CardScript cardScript)
     {
         combo = 0;
     }

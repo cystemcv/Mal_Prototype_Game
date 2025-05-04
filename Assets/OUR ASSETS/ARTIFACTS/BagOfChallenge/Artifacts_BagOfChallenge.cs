@@ -11,7 +11,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     private bool playedCard = false;
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         if (playedCard)
@@ -45,12 +45,12 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem)
+    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
     {
         playedCard = false;
     }
 
-    public override void Expired(ClassItem classItem)
+    public override void Expired(ClassItem classItem, CardScript cardScript)
     {
         if(Combat.Instance.turns == 1)
         {

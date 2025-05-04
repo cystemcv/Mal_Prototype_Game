@@ -10,12 +10,12 @@ public class Thief_MonsterTamer : ScriptableItem
     [Title("UNIQUE ITEM ABILITY")]
     public int attackBoost = 2; 
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
         Combat.Instance.tempMonsterAttackBoost = attackBoost * classItem.level;
     }
 
-    public override void Expired(ClassItem classItem)
+    public override void Expired(ClassItem classItem, CardScript cardScript)
     {
         Combat.Instance.tempMonsterAttackBoost = 0;
     }

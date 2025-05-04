@@ -138,7 +138,17 @@ public class Combat : MonoBehaviour
             Destroy(gameObject);
         }
         //at the start of combat
-        StartCombat();
+
+        if (CombatManager.Instance.ScriptableEvent == null)
+        {
+            StartCombat();
+        }
+        else
+        {
+            StartEvent();
+        }
+    
+
     }
 
     // Start is called before the first frame update
@@ -368,7 +378,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public IEnumerator InitializeCombat()
+    public IEnumerator InitializeCombat(string code = "")
     {
 
         UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(false);
@@ -432,13 +442,17 @@ public class Combat : MonoBehaviour
         //start win conditions
         conditionsEnabled = true;
 
-        yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
+        if(code != "EVENT")
+        {
+            yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
+        }
+
 
         yield return new WaitForSeconds(0.5f);
 
         yield return StartCoroutine(UI_Combat.Instance.OnNotification("COMBAT START", 1));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart,null));
 
         StaticData.staticScriptableCompanion.InitializeButton();
 
@@ -556,7 +570,7 @@ public class Combat : MonoBehaviour
         //draw cards
         yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart,null));
 
         yield return StartCoroutine(ActivateDelayedCardEffects());
 
@@ -650,7 +664,7 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd,null));
 
         yield return new WaitForSeconds(1f);
 
@@ -939,10 +953,15 @@ public class Combat : MonoBehaviour
 
     }
 
-    public void StartCombat()
+    public void StartCombat(string code = "")
     {
-        StartCoroutine(InitializeCombat());
+        StartCoroutine(InitializeCombat(code));
 
+    }
+
+    public void StartEvent()
+    {
+        StartCoroutine(InitializeEvent());
     }
 
     public IEnumerator CheckCharactersAlive()
@@ -1318,7 +1337,7 @@ public class Combat : MonoBehaviour
         Destroy(numberOnScreenPrefab, 1f);
 
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit,null));
 
         //if the target reach to 0
         yield return StartCoroutine(CheckIfEntityIsDead(entityClass));
@@ -1344,12 +1363,12 @@ public class Combat : MonoBehaviour
 
             if (entityClass.gameObject.tag == "Player")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath,null));
                 charactersAlive -= 1;
             }
             else if (entityClass.gameObject.tag == "Enemy")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath,null));
                 //enemiesAlive -= 1;
             }
 
@@ -1827,6 +1846,67 @@ public class Combat : MonoBehaviour
         {
             ManaAvailable = 0;
         }
+
+    }
+
+
+    public IEnumerator InitializeEvent()
+    {
+
+        UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(false);
+
+        //hide the dungeon generato
+        if (StaticData.staticDungeonParent != null)
+        {
+            StaticData.staticDungeonParent.SetActive(false);
+        }
+        else
+        {
+            StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
+            StaticData.staticDungeonParent.SetActive(false);
+        }
+
+        //change into combat mode
+        SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
+
+        //Debug.Log("Test dsck"  + DeckManager.Instance.scriptableDeck.mainDeck[0].scriptableCard.cardName);
+
+        //reset turns
+        Turns = 0;
+
+        //play music
+        AudioManager.Instance.PlayMusic("Combat_1");
+
+        //clear all lists
+        yield return StartCoroutine(ClearLists());
+
+        //destroy any previous characters
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject));
+
+        //destroy any previous enemies
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Enemies").gameObject));
+
+        //destroy battleground
+        battleground = GameObject.FindGameObjectWithTag("BattleGround");
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.GetChild(0).gameObject));
+
+        //spawn the characters
+        yield return StartCoroutine(SpawnCharacters());
+
+        //spawn the enemies
+        yield return StartCoroutine(SpawnEnemies());
+
+        //spawn battleground
+        yield return StartCoroutine(SpawnBattleground());
+
+        yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
+
+        UIManager.Instance.AnimateTextTypeWriter(CombatManager.Instance.ScriptableEvent.title, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        //show the Event UI
+        yield return StartCoroutine(UIManager.Instance.StartUIEvent());
 
     }
 

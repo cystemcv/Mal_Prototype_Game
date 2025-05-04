@@ -15,7 +15,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
     private int relentless = 0;
     public int maxRelentless = 2;
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         relentless += 1;
@@ -27,7 +27,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem)
+    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
     {
         if (relentless == 0)
         {
@@ -54,7 +54,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
     }
 
 
-    public override void Expired(ClassItem classItem)
+    public override void Expired(ClassItem classItem, CardScript cardScript)
     {
         if (relentless > 0)
         {

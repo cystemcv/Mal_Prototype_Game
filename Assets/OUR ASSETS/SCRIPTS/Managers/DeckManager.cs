@@ -415,7 +415,7 @@ public class DeckManager : MonoBehaviour
         }
 
         StaticData.artifact_CardScript = cardScript;
-        ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard);
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard,cardScript));
 
         yield return null;
     }

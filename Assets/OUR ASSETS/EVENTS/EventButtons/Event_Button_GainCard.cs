@@ -8,7 +8,7 @@ public class Event_Button_GainCard : ScriptableButtonEvent
 
     public ScriptableCard scriptableCard;
     [TextArea(1, 20)]
-    public string descriptionAfterClick = "";
+    public string finalWording = "";
 
     public override void OnButtonClick()
     {
@@ -23,11 +23,25 @@ public class Event_Button_GainCard : ScriptableButtonEvent
         DeckManager.Instance.AddCardOnDeck(scriptableCard,0);
 
 
-        //change event 
-        UIManager.Instance.EndEvent(null,null, descriptionAfterClick);
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+        // Start the coroutine for each hit
+        runner.StartCoroutine(EventEnd());
 
         //CustomDungeonGenerator.Instance.ActivatePlanet(CombatManager.Instance.planetClicked);
 
     }
+
+    public IEnumerator EventEnd()
+    {
+
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+
+        yield return runner.StartCoroutine(UIManager.Instance.EndEvent(finalWording));
+
+        yield return null;
+    }
+
 
 }

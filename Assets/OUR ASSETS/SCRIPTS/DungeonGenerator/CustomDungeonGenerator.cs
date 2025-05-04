@@ -149,7 +149,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded);
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded,null);
             UpdateAdventureUI();
         }
 

@@ -84,6 +84,10 @@ public class UIManager : MonoBehaviour
 
     public GameObject turnText;
 
+    private int eventConversation = 0;
+    private bool eventButtonsShown = false;
+    private bool canExitEvent = false;
+
     public void ToggleActivateOrderVisibility()
     {
         // Toggle the active state of the parent of itemActivateOrderPanel
@@ -682,7 +686,7 @@ public class UIManager : MonoBehaviour
 
         AssignCardsOnCardList();
 
-      
+
         Button confirmButton = confirmButtonGO.GetComponent<Button>();
 
         // Assign the custom behavior to the Confirm button
@@ -771,6 +775,92 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public IEnumerator StartUIEvent()
+    {
+        eventConversation = 0;
+        eventButtonsShown = false;
+        canExitEvent = false;
+
+        //show the event
+        eventGO.SetActive(true);
+
+        GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
+
+        //destroy all previous event buttons
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(buttonEventParent));
+
+        yield return StartCoroutine(ShowNextConversation());
+
+        yield return null;
+    }
+
+    public void ShowNextConversation_Click()
+    {
+
+        if (canExitEvent)
+        {
+            BackToAdventure();
+        }
+
+        if (eventButtonsShown)
+        {
+            return;
+        }
+
+        StartCoroutine(ShowNextConversation());
+    }
+
+
+
+    public IEnumerator ShowNextConversation()
+    {
+
+
+        if (eventConversation < CombatManager.Instance.ScriptableEvent.conversation.Count)
+        {
+            UIManager.Instance.AnimateTextTypeWriter(CombatManager.Instance.ScriptableEvent.conversation[eventConversation], eventGO.transform.Find("Conversation").Find("Text").GetComponent<TMP_Text>(), 100f);
+            eventConversation++;
+            eventGO.transform.Find("Conversation").Find("NextArrow").gameObject.SetActive(true);
+        }
+        else
+        {
+            eventGO.transform.Find("Conversation").Find("NextArrow").gameObject.SetActive(false);
+            eventButtonsShown = true;
+
+            //show buttons
+            yield return StartCoroutine(ShowEventButtons());
+        }
+
+        yield return null;
+    }
+
+    public IEnumerator ShowEventButtons()
+    {
+
+        GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
+
+        //create new event buttons
+        foreach (ScriptableButtonEvent scriptableButtonEvent in CombatManager.Instance.ScriptableEvent.scriptableButtonEventList)
+        {
+
+            GameObject eventButton = Instantiate(eventButtonPrefab, buttonEventParent.transform.position, Quaternion.identity);
+            eventButton.transform.SetParent(buttonEventParent.transform);
+
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent = scriptableButtonEvent;
+
+            //assign the variables
+            eventButton.GetComponent<ButtonManager>().SetText(scriptableButtonEvent.eventButtonDescription);
+
+            //call the on button create of the scriptable object
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate();
+
+        }
+
+
+
+        yield return null;
+    }
+
     public void ShowEventGo(ScriptableEvent scriptableEvent)
     {
         //show the event
@@ -778,7 +868,7 @@ public class UIManager : MonoBehaviour
 
         //assign the variables
         eventGO.transform.Find("Image").GetComponent<Image>().sprite = scriptableEvent.icon;
-        eventGO.transform.Find("Description").GetComponent<TMP_Text>().text = scriptableEvent.description;
+        //eventGO.transform.Find("Description").GetComponent<TMP_Text>().text = scriptableEvent.description;
         eventGO.transform.Find("Title").GetComponent<TMP_Text>().text = scriptableEvent.title;
 
         GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
@@ -807,31 +897,27 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void EndEvent(Sprite icon, string title, string description)
+    public IEnumerator EndEvent(string finalWording)
     {
         GameObject buttonEventParent = eventGO.transform.Find("Buttons").gameObject;
         //destroy all previous event buttons
         SystemManager.Instance.DestroyAllChildren(buttonEventParent);
 
-        GameObject eventButtonClose = Instantiate(closeButtonPrefab, buttonEventParent.transform.position, Quaternion.identity);
-        eventButtonClose.transform.SetParent(buttonEventParent.transform);
+        //GameObject eventButtonClose = Instantiate(closeButtonPrefab, buttonEventParent.transform.position, Quaternion.identity);
+        //eventButtonClose.transform.SetParent(buttonEventParent.transform);
 
-        //assign the variables
-        if (icon != null)
+        if (finalWording != null)
         {
-            eventGO.transform.Find("Image").GetComponent<Image>().sprite = icon;
+            UIManager.Instance.AnimateTextTypeWriter(finalWording, eventGO.transform.Find("Conversation").Find("Text").GetComponent<TMP_Text>(), 100f);
         }
 
-        if(title != null)
-        {
-            eventGO.transform.Find("Title").GetComponent<TMP_Text>().text = title;
-        }
+        yield return new WaitForSeconds(0.5f);
 
-        if (description != null)
-        {
-            eventGO.transform.Find("Description").GetComponent<TMP_Text>().text = description;
-        }
-   
+
+        canExitEvent = true;
+
+        yield return null;
+
     }
 
 
@@ -843,6 +929,8 @@ public class UIManager : MonoBehaviour
     public void BackToAdventure()
     {
         combatEndWindow.SetActive(false);
+
+        eventGO.SetActive(false);
 
         SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
     }

@@ -13,7 +13,7 @@ public class Artifacts_AngelicShield : ScriptableItem
 
     private int shieldAdded = 10;
 
-    public override void Activate(ClassItem classItem)
+    public override void Activate(ClassItem classItem, CardScript cardScript)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
@@ -34,7 +34,7 @@ public class Artifacts_AngelicShield : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem)
+    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
     {
         shieldAdded = shieldMax;
     }

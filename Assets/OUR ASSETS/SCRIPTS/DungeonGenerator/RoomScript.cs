@@ -19,6 +19,8 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         ItemManager.Instance.HideInventory();
 
+        CombatManager.Instance.ScriptableEvent = null;
+        CombatManager.Instance.scriptablePlanet = null;
 
         if (roomCleared)
         {
@@ -36,19 +38,25 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         else if (planetType == SystemManager.PlanetTypes.EVENT)
         {
 
-            //CombatManager.Instance.scriptablePlanet = scriptablePlanet;
-            CombatManager.Instance.planetClicked = this.gameObject;
+  
 
             int randomIndex = Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList.Count);
+            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex];
 
-            UIManager.Instance.ShowEventGo(CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex]);
+            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
+            CombatManager.Instance.ScriptableEvent = scriptableEvent;
+            CombatManager.Instance.planetClicked = this.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+
+            //UIManager.Instance.ShowEventGo(CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex]);
 
             //SystemManager.Instance.LoadScene("scene_Combat", 0f, true, true);
         }
         else
         {
 
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom);
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom,null);
 
             CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
