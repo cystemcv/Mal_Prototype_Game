@@ -108,6 +108,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     void Start()
     {
 
+        playerSpaceShip.SetActive(false);
 
         if (StaticData.staticMainDeck.Count == 0)
         {
@@ -163,6 +164,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (StaticData.staticDungeonParent != null && StaticData.staticDungeonParentGenerated == true)
         {
             StaticData.staticDungeonParent.SetActive(true);
+            playerSpaceShip.SetActive(true);
         }
         else
         {
@@ -170,6 +172,8 @@ public class CustomDungeonGenerator : MonoBehaviour
             StaticData.staticDungeonParent.SetActive(true);
             StartDungeonGeneration();
         }
+
+
 
         //if came back from battle
         if (CombatManager.Instance.planetClicked != null)
@@ -312,6 +316,8 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public IEnumerator SetPlayerSpaceship()
     {
+        playerSpaceShip.SetActive(true);
+        playerSpaceShip.GetComponent<Image>().sprite = StaticData.staticCharacter.entitySpaceShipImage;
         //set it to the start
         playerSpaceShip.transform.position = rooms[0].transform.position;
         UpdateLandPlayerSpaceship(rooms[0]);
@@ -1336,6 +1342,12 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public void DrawHighlightedPathLine(List<GameObject> path)
     {
+
+        if (playerSpaceShipMoving)
+        {
+            return;
+        }
+
         if (path == null || path.Count < 2)
         {
             pathHighlightedLineRenderer.positionCount = 0;

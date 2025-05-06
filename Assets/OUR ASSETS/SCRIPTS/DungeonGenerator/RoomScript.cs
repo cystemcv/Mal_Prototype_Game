@@ -9,6 +9,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public bool roomCleared = false;
 
     public ScriptablePlanets scriptablePlanet;
+    private bool isHovered = false;
 
 
 
@@ -73,16 +74,22 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     }
 
+
+    private void Update()
+    {
+        if (isHovered && !CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+        {
+            List<GameObject> path = CustomDungeonGenerator.Instance.GetShortestVisiblePath(CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded, this.gameObject);
+            Debug.Log("Path count: " + (path == null ? "null" : path.Count.ToString()));
+            CustomDungeonGenerator.Instance.DrawHighlightedPathLine(path);
+
+            CustomDungeonGenerator.Instance.StartPathTraversal(path);
+        }
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-
-        //SystemManager.Instance.object_HighlightButton.SetActive(false);
-
-        //SystemManager.Instance.object_HighlightButton.transform.position = this.gameObject.transform.position;
-
-        //SystemManager.Instance.object_HighlightButton.GetComponent<ImprovedRadialFillController>().InitMaterial();
-
-        //SystemManager.Instance.object_HighlightButton.SetActive(true);
+        isHovered = true;
 
         List<GameObject> path = CustomDungeonGenerator.Instance.GetShortestVisiblePath( CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded , this.gameObject);
         Debug.Log("Path count: " + (path == null ? "null" : path.Count.ToString()));
@@ -99,6 +106,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isHovered = false;
         CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
         //SystemManager.Instance.object_HighlightButton.SetActive(false);
     }

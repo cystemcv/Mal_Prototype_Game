@@ -394,6 +394,12 @@ public class Combat : MonoBehaviour
             StaticData.staticDungeonParent.SetActive(false);
         }
 
+        GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
+        if (spaceship )
+        {
+            spaceship.SetActive(false);
+        }
+
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
 
@@ -1864,6 +1870,12 @@ public class Combat : MonoBehaviour
         {
             StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
             StaticData.staticDungeonParent.SetActive(false);
+        }
+
+        GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
+        if (spaceship)
+        {
+            spaceship.SetActive(false);
         }
 
         //change into combat mode

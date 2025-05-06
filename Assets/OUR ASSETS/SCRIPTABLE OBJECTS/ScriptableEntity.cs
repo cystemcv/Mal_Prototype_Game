@@ -24,6 +24,10 @@ public class ScriptableEntity : ScriptableObject
     [Header("SUMMON")]
     public int summonTurns = 1;
 
+    [Header("PLAYER")]
+    public GameObject entitySpaceShipPrefab;
+    public Sprite entitySpaceShipImage;
+
     [Header("AI")]
     public Vector3 spawnIntend = new Vector3(0, 1, 0);
 
