@@ -14,6 +14,7 @@ public class ScriptableGalaxies : ScriptableObject
     public List<ScriptablePlanets> scriptableStartingPlanets;
 
     public List<ScriptableEvent> scriptableEventList;
+    public List<ScriptableEvent> scriptableEventRewardsList;
 
     [Title("GENERATOR SETTINGS")]
     public int minCombatRoom = 10;

@@ -90,6 +90,9 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public GameObject playerSpaceShip;
     public bool playerSpaceShipMoving = false;
+    public List<GameObject> path;
+    public GameObject lastHoveredRoom = null;
+    public GameObject lastHoveredRoomSecondary = null;
 
     private void Awake()
     {
@@ -116,6 +119,16 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
 
+    }
+
+    private void Update()
+    {
+        if (lastHoveredRoom != null && !CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+        {
+            CustomDungeonGenerator.Instance.path = CustomDungeonGenerator.Instance.GetShortestVisiblePath(CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded, lastHoveredRoom);
+
+            CustomDungeonGenerator.Instance.DrawHighlightedPathLine(CustomDungeonGenerator.Instance.path);
+        }
     }
 
 
@@ -165,6 +178,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             StaticData.staticDungeonParent.SetActive(true);
             playerSpaceShip.SetActive(true);
+            pathHighlightedLineRenderer.gameObject.SetActive(true);
         }
         else
         {
@@ -320,6 +334,9 @@ public class CustomDungeonGenerator : MonoBehaviour
         playerSpaceShip.GetComponent<Image>().sprite = StaticData.staticCharacter.entitySpaceShipImage;
         //set it to the start
         playerSpaceShip.transform.position = rooms[0].transform.position;
+
+        pathHighlightedLineRenderer.gameObject.SetActive(true);
+
         UpdateLandPlayerSpaceship(rooms[0]);
 
         yield return null;
@@ -440,7 +457,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             GameObject startRoom = roomGrid[startRoomPosition];
             //click on the start
-            startRoom.GetComponent<RoomScript>().ClickedRoom();
+            startRoom.GetComponent<RoomScript>().ClickedRoom(true);
         }
 
 
@@ -1411,13 +1428,13 @@ public class CustomDungeonGenerator : MonoBehaviour
         return null; // No valid visible path found
     }
 
-    public void StartPathTraversal(List<GameObject> path)
+    public void StartPathTraversal(List<GameObject> path, RoomScript roomScript)
     {
         if (path == null || path.Count == 0 || playerSpaceShipMoving) return;
-        StartCoroutine(MoveAlongPath(path));
+        StartCoroutine(MoveAlongPath(path, roomScript));
     }
 
-    private IEnumerator MoveAlongPath(List<GameObject> path)
+    private IEnumerator MoveAlongPath(List<GameObject> path, RoomScript roomScript)
     {
         playerSpaceShipMoving = true;
         float speed = 20f;
@@ -1461,11 +1478,74 @@ public class CustomDungeonGenerator : MonoBehaviour
             // Trigger landing logic at destination
             if (i == path.Count - 1)
             {
+                CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
                 UpdateLandPlayerSpaceship(targetPlanet);
+                ClickedRoom(roomScript);
+
+                if (lastHoveredRoomSecondary != null)
+                {
+                    lastHoveredRoom = lastHoveredRoomSecondary; 
+                }
+                else
+                {
+                    path.Clear();
+                }
             }
         }
 
         playerSpaceShipMoving = false;
+    }
+
+    public void ClickedRoom(RoomScript roomScript)
+    {
+
+        if (roomScript.roomCleared)
+        {
+            return;
+        }
+
+        if (roomScript.planetType == SystemManager.PlanetTypes.BATTLE)
+        {
+
+            CombatManager.Instance.scriptablePlanet = roomScript.scriptablePlanet;
+            CombatManager.Instance.planetClicked = roomScript.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        }
+        else if (roomScript.planetType == SystemManager.PlanetTypes.EVENT)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList.Count);
+            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex];
+
+            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
+            CombatManager.Instance.scriptableFakeEventPlanet = scriptableEvent.scriptableEventFakePlanet;
+            CombatManager.Instance.ScriptableEvent = scriptableEvent;
+            CombatManager.Instance.planetClicked = roomScript.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        }
+        else if (roomScript.planetType == SystemManager.PlanetTypes.REWARD)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventRewardsList.Count);
+            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventRewardsList[randomIndex];
+
+            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
+            CombatManager.Instance.scriptableFakeEventPlanet = scriptableEvent.scriptableEventFakePlanet;
+            CombatManager.Instance.ScriptableEvent = scriptableEvent;
+            CombatManager.Instance.planetClicked = roomScript.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        }
+        else
+        {
+
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom, null);
+
+            CustomDungeonGenerator.Instance.OnRoomClick(roomScript.gameObject);
+
+
+        }
+
     }
 
 

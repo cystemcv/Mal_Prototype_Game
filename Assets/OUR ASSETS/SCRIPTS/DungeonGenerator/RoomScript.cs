@@ -12,8 +12,12 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private bool isHovered = false;
 
 
+    public void Update()
+    {
+     
+    }
 
-    public void ClickedRoom()
+    public void ClickedRoom(bool ignoreSpaceShip = false)
     {
 
         //SystemManager.Instance.object_HighlightButton.SetActive(false);
@@ -21,51 +25,42 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //get the neighbor rooms
         //CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
 
-        ItemManager.Instance.HideInventory();
-
-        CombatManager.Instance.ScriptableEvent = null;
-        CombatManager.Instance.scriptablePlanet = null;
-
-        if (roomCleared)
-        {
-            return;
-        }
-
-        if (planetType == SystemManager.PlanetTypes.BATTLE)
+        if (!ignoreSpaceShip)
         {
 
-            CombatManager.Instance.scriptablePlanet = scriptablePlanet;
-            CombatManager.Instance.planetClicked = this.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f,true,false);
-        }
-        else if (planetType == SystemManager.PlanetTypes.EVENT)
-        {
 
-  
+            if (CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+            {
+                return;
+            }
 
-            int randomIndex = Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList.Count);
-            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex];
+            ItemManager.Instance.HideInventory();
 
-            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
-            CombatManager.Instance.ScriptableEvent = scriptableEvent;
-            CombatManager.Instance.planetClicked = this.gameObject;
+            CombatManager.Instance.ScriptableEvent = null;
+            CombatManager.Instance.scriptablePlanet = null;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            //CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
 
-            //UIManager.Instance.ShowEventGo(CustomDungeonGenerator.Instance.galaxyGenerating.scriptableEventList[randomIndex]);
+            CustomDungeonGenerator.Instance.StartPathTraversal(CustomDungeonGenerator.Instance.path, this);
 
-            //SystemManager.Instance.LoadScene("scene_Combat", 0f, true, true);
         }
         else
         {
 
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom,null);
+            if (CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+            {
+                return;
+            }
 
-            CustomDungeonGenerator.Instance.OnRoomClick(this.gameObject);
+            ItemManager.Instance.HideInventory();
 
+            CombatManager.Instance.ScriptableEvent = null;
+            CombatManager.Instance.scriptablePlanet = null;
 
+            CustomDungeonGenerator.Instance.ClickedRoom(this);
         }
+
 
 
 
@@ -75,30 +70,19 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
 
-    private void Update()
-    {
-        if (isHovered && !CustomDungeonGenerator.Instance.playerSpaceShipMoving)
-        {
-            List<GameObject> path = CustomDungeonGenerator.Instance.GetShortestVisiblePath(CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded, this.gameObject);
-            Debug.Log("Path count: " + (path == null ? "null" : path.Count.ToString()));
-            CustomDungeonGenerator.Instance.DrawHighlightedPathLine(path);
 
-            CustomDungeonGenerator.Instance.StartPathTraversal(path);
-        }
-    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovered = true;
 
-        List<GameObject> path = CustomDungeonGenerator.Instance.GetShortestVisiblePath( CustomDungeonGenerator.Instance.playerSpaceShip.GetComponent<DungeonShipController>().planetLanded , this.gameObject);
-        Debug.Log("Path count: " + (path == null ? "null" : path.Count.ToString()));
-        CustomDungeonGenerator.Instance.DrawHighlightedPathLine(path);
+        CustomDungeonGenerator.Instance.lastHoveredRoomSecondary = this.gameObject;
 
-        CustomDungeonGenerator.Instance.StartPathTraversal(path);
-
-
-        AudioManager.Instance.PlaySfx("UI_goNext");
+        if (!CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+        {
+            CustomDungeonGenerator.Instance.lastHoveredRoom = this.gameObject;
+            AudioManager.Instance.PlaySfx("UI_goNext");
+        }
 
     }
 
@@ -107,7 +91,12 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData eventData)
     {
         isHovered = false;
-        CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
+        if (!CustomDungeonGenerator.Instance.playerSpaceShipMoving)
+        {
+            CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
+        }
+
+        CustomDungeonGenerator.Instance.lastHoveredRoomSecondary = null;
         //SystemManager.Instance.object_HighlightButton.SetActive(false);
     }
 

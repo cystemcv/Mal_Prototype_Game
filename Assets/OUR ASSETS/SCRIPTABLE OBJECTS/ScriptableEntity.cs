@@ -27,6 +27,8 @@ public class ScriptableEntity : ScriptableObject
     [Header("PLAYER")]
     public GameObject entitySpaceShipPrefab;
     public Sprite entitySpaceShipImage;
+    public RuntimeAnimatorController entityAnimator;
+    public RuntimeAnimatorController spaceShipAnimator;
 
     [Header("AI")]
     public Vector3 spawnIntend = new Vector3(0, 1, 0);

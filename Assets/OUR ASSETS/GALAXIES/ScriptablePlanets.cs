@@ -27,6 +27,12 @@ public class ScriptablePlanets : ScriptableObject
     [FoldoutGroup("CONDITIONS")]
     public List<ItemClassPlanet> itemClassPlanet;
 
+    [FoldoutGroup("CONDITIONS")]
+    public List<ItemClassPlanet> lootBoxGood;
+
+    [FoldoutGroup("CONDITIONS")]
+    public List<ItemClassPlanet> lootBoxBad;
+
     [Serializable]
     public class ItemClassPlanet
     {

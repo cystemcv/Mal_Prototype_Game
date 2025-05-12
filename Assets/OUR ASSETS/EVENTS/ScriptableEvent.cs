@@ -17,8 +17,7 @@ public class ScriptableEvent : ScriptableObject
     public List<ScriptableButtonEvent> scriptableButtonEventList;
 
     public ScriptablePlanets scriptablePlanet;
-
-
+    public ScriptablePlanets scriptableEventFakePlanet;
 
 
 }

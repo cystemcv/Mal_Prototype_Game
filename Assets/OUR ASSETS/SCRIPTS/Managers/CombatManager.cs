@@ -10,6 +10,7 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance;
 
     public ScriptablePlanets scriptablePlanet;
+    public ScriptablePlanets scriptableFakeEventPlanet;
     public ScriptableEvent ScriptableEvent;
 
     public GameObject planetClicked;

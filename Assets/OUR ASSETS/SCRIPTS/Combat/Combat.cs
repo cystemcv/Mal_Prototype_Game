@@ -395,9 +395,11 @@ public class Combat : MonoBehaviour
         }
 
         GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
+        GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
         if (spaceship )
         {
             spaceship.SetActive(false);
+            spaceshipLine.SetActive(false);
         }
 
         //change into combat mode
@@ -428,10 +430,12 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(SpawnCharacters());
 
         //spawn the enemies
-        yield return StartCoroutine(SpawnEnemies());
+        yield return StartCoroutine(SpawnEnemies(false));
 
         //spawn battleground
         yield return StartCoroutine(SpawnBattleground());
+
+
 
         yield return new WaitForSeconds(0.5f);
 
@@ -767,11 +771,33 @@ public class Combat : MonoBehaviour
 
     }
 
-    public IEnumerator SpawnEnemies()
+    public ScriptablePlanets GetScriptablePlanet(bool isFakeEventPlanet)
     {
 
+        ScriptablePlanets scriptablePlanet;
+
+        if (CombatManager.Instance.scriptableFakeEventPlanet != null && isFakeEventPlanet == true)
+        {
+            scriptablePlanet = CombatManager.Instance.scriptableFakeEventPlanet;
+        }
+        else
+        {
+            scriptablePlanet = CombatManager.Instance.scriptablePlanet;
+        }
+
+
+        return scriptablePlanet;
+
+    }
+
+    public IEnumerator SpawnEnemies(bool isFakeEventPlanet)
+    {
+
+        ScriptablePlanets scriptablePlanet = GetScriptablePlanet(isFakeEventPlanet);
+
+
         //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in CombatManager.Instance.scriptablePlanet.scriptableEntities)
+        foreach (ScriptableEntity scriptableEntity in scriptablePlanet.scriptableEntities)
         {
             //instantiate our character or characters
             GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);
@@ -795,6 +821,18 @@ public class Combat : MonoBehaviour
         bg.transform.SetParent(battleground.transform);
 
         battleGroundType = CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType;
+
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+        if (CombatManager.Instance.scriptablePlanet.planetBattleGround.isSpaceShip)
+        {
+            player.transform.Find("model").GetComponent<Animator>().runtimeAnimatorController = StaticData.staticCharacter.spaceShipAnimator;
+        }
+        else
+        {
+            player.transform.Find("model").GetComponent<Animator>().runtimeAnimatorController = StaticData.staticCharacter.entityAnimator;
+        }
+
 
         yield return null; // Wait for a frame 
 
@@ -1873,9 +1911,11 @@ public class Combat : MonoBehaviour
         }
 
         GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
+        GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
         if (spaceship)
         {
             spaceship.SetActive(false);
+            spaceshipLine.SetActive(false);
         }
 
         //change into combat mode
@@ -1906,7 +1946,7 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(SpawnCharacters());
 
         //spawn the enemies
-        yield return StartCoroutine(SpawnEnemies());
+        yield return StartCoroutine(SpawnEnemies(true));
 
         //spawn battleground
         yield return StartCoroutine(SpawnBattleground());
@@ -1921,5 +1961,75 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(UIManager.Instance.StartUIEvent());
 
     }
+
+    public void CalculateLootBoxRewards(int caseOfLoot) //0 = good, 1 = bad
+    {
+
+        List<ScriptablePlanets.ItemClassPlanet> loot = null;
+
+        if (caseOfLoot == 0)
+        {
+            //good loot
+            loot = CombatManager.Instance.scriptablePlanet.lootBoxGood;
+        }
+        else
+        {
+            //bad loot
+            loot = CombatManager.Instance.scriptablePlanet.lootBoxBad;
+        }
+
+        foreach (ScriptablePlanets.ItemClassPlanet itemClassPlanet in loot)
+        {
+
+            //based on min and max value
+            int quantity = UnityEngine.Random.Range(itemClassPlanet.minQuantity, itemClassPlanet.maxQuantity);
+
+            int percQuantity = 0;
+
+            if (itemClassPlanet.percentage != 0)
+            {
+
+
+                //then give value based on range
+                for (int i = 0; i < quantity; i++)
+                {
+
+                    int randomChance = UnityEngine.Random.Range(0, 100);
+
+                    if (randomChance <= itemClassPlanet.percentage)
+                    {
+                        percQuantity++; //add quantity by 1
+                    }
+
+                }
+
+                quantity = percQuantity;
+
+            }
+
+
+
+            //if 0 then nothing should be added on loot
+            if (quantity == 0)
+            {
+                continue;
+            }
+
+            //create the classItem
+            ClassItem classItem = new ClassItem(itemClassPlanet.scriptableItem, quantity);
+
+            //then add item to loot
+            StaticData.lootItemList.Add(classItem);
+
+            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+            // yield return new WaitForSeconds(0.1f);
+        }
+        //yield return null;
+
+        //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot));
+
+    }
+
+
 
 }

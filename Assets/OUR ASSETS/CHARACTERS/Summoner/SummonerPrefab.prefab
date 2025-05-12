@@ -57,7 +57,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4367227256133611183}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.63, y: 0.006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -65,7 +65,7 @@ Transform:
   - {fileID: 7245441924916326518}
   - {fileID: 496880093236683639}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4367227256133611344
 BoxCollider2D:
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUI: 0
-  scriptableEntity: {fileID: 11400000, guid: ff880a7e2f339f44a8f182d81b51a996, type: 2}
+  scriptableEntity: {fileID: 11400000, guid: de585f208d54c574284ffe0cbcfb38e3, type: 2}
   listBuffDebuffClass: []
   poisongDmg: 0
   attack: 0
@@ -115,17 +115,23 @@ MonoBehaviour:
   defence: 0
   defenceDebuffPerc: 0
   defenceBuffPerc: 0
+  resistance: 0
+  resistanceDebuffPerc: 0
+  resistanceBuffPerc: 0
   health: 9999
   maxHealth: 9999
   shield: 0
   maxShield: 999
+  armor: 0
+  maxArmor: 999
   counterDamage: 0
   allowEntityRotation: 0
-  summonTurns: 1
   sliderBar: {fileID: 0}
   slider: {fileID: 0}
   shieldIcon: {fileID: 0}
   shieldText: {fileID: 0}
+  armorIcon: {fileID: 0}
+  armorText: {fileID: 0}
   healthText: {fileID: 0}
   fillBar: {fileID: 0}
   summonTurnsText: {fileID: 0}
@@ -137,7 +143,6 @@ MonoBehaviour:
   entityID: 76cdfbcc-003b-4e12-89e0-7915cbe649e5
   entityMode: 0
   spawnGameObjectUI: {x: 0, y: -0.2, z: 0}
-  spawnSummonTurnsObject: 0
 --- !u!50 &2887073087468624651
 Rigidbody2D:
   serializedVersion: 4
