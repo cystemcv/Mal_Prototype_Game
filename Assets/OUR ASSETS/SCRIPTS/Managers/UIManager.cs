@@ -703,7 +703,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (Transform card in cardListGOContent.transform)
         {
-            card.gameObject.SetActive(false);
+            Destroy(card.gameObject);
         }
     }
 
@@ -711,64 +711,88 @@ public class UIManager : MonoBehaviour
     {
 
 
+
         foreach (ScriptableCard scriptableCard in this.scriptableCardList)
         {
-            foreach (Transform card in cardListGOContent.transform)
-            {
+            CardScript cardScript = new CardScript();
+            cardScript.scriptableCard = scriptableCard;
+            //instantiate the card
+            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScript, cardListGOContent, false, false);
+
+            //do extra stuff on card
+            Destroy(card.GetComponent<CanvasScaler>());
+            Destroy(card.GetComponent<GraphicRaycaster>());
+            Destroy(card.GetComponent<Canvas>());
+
+            //disable scripts not needed
+            card.GetComponent<CardScript>().enabled = false;
+            card.GetComponent<CardEvents>().enabled = false;
+
+            //enable scripts needed
+            card.GetComponent<CardListCardEvents>().enabled = true;
+            card.GetComponent<Button>().enabled = true;
+            card.GetComponent<CustomButton>().enabled = true;
+
+            card.GetComponent<CardListCardEvents>().markedGO = card.transform.GetChild(0).Find("UtilityFront").Find("Marked").gameObject;
+            card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
+            card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
+
+            //foreach (Transform card in cardListGOContent.transform)
+            //{
 
 
-                if (!card.gameObject.activeSelf)
-                {
+            //    if (!card.gameObject.activeSelf)
+            //    {
 
-                    //then we use it
-                    card.gameObject.SetActive(true);
+            //        //then we use it
+            //        card.gameObject.SetActive(true);
 
-                    card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
-                    card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
+            //        card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
+            //        card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
 
-                    Transform cardChild = card.transform.GetChild(0);
+            //        Transform cardChild = card.transform.GetChild(0);
 
-                    if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
-                    {
-                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
-                    }
-                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
-                    {
-                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
-                    }
-                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
-                    {
-                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
-                    }
-                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
-                    {
-                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
-                    }
-                    else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
-                    {
-                        cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
-                    }
+            //        if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
+            //        {
+            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+            //        }
+            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
+            //        {
+            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+            //        }
+            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
+            //        {
+            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+            //        }
+            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
+            //        {
+            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+            //        }
+            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+            //        {
+            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
+            //        }
 
-                    //for example
-                    cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
-                    cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
-                    cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
+            //        //for example
+            //        cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+            //        cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
+            //        cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
 
-                    //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
+            //        //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
 
-                    //mana cost
-                    cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
-                    //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+            //        //mana cost
+            //        cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
+            //        //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
-                    //description is based on abilities
-                    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(null, null);
+            //        //description is based on abilities
+            //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(null, null);
 
-                    //exit loop
-                    break;
-                }
+            //        //exit loop
+            //        break;
+            //    }
 
 
-            }
+            //}
         }
 
 

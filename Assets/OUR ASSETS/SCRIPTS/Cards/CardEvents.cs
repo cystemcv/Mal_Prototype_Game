@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,9 +59,14 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Update()
     {
-
-        DeckManager.Instance.UpdateCardUI(this.gameObject);
-        //DeckManager.Instance.UpdateCardDescription(this.gameObject);
+        try
+        {
+            DeckManager.Instance.UpdateCardUI(this.gameObject);
+        }
+        catch(Exception ex)
+        {
+            string error = ex.ToString();
+        }
     }
 
     #region EVENTS
@@ -309,13 +315,13 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 }
 
                 //green color
-                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationSuccess);
+                gameObject.transform.GetChild(0).Find("UtilityBack").Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationSuccess);
             }
             else
             {
 
                 //red color
-                gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationFail);
+                gameObject.transform.GetChild(0).Find("UtilityBack").Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorActivationFail);
             }
 
         }
@@ -324,7 +330,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerUp_TargetMode(PointerEventData eventData)
     {
         //no color 
-        gameObject.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+        gameObject.transform.GetChild(0).Find("UtilityBack").Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
 
 
         //if it cancel drag

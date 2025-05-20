@@ -108,8 +108,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorTransparent = "FFFFFF00";
 
     //specific
-    public string colorActivationFail = "FF000060";
-    public string colorActivationSuccess = "25FF0060";
+    public string colorActivationFail = "FF000010";
+    public string colorActivationSuccess = "25FF0010";
 
     public GameObject uiManager;
     public GameObject audioManager;

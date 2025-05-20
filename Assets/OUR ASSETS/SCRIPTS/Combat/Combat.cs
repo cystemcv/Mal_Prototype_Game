@@ -256,7 +256,7 @@ public class Combat : MonoBehaviour
     {
         ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
         CardScript cardScript = cardPrefab.GetComponent<CardScript>();
-        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
+        TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
 
 
         //check the mana cost of each

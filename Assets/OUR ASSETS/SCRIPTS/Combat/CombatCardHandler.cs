@@ -47,7 +47,7 @@ public class CombatCardHandler : MonoBehaviour
             {
                 // Get the position of the target UI element in screen space
                 //Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
-                Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, targetUIElement.Find("LineRendererStart").position);
+                Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, targetUIElement.transform.Find("Panel").Find("UtilityFront").Find("LineRendererStart").position);
 
 
                 // Convert the screen space position to world space
@@ -152,7 +152,7 @@ public class CombatCardHandler : MonoBehaviour
         else if (Input.GetMouseButtonDown(1))
         {
 
-            targetUIElement.transform.GetChild(0).Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+            targetUIElement.transform.GetChild(0).Find("UtilityBack").Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
 
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);

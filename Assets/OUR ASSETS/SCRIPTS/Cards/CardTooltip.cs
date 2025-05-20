@@ -30,8 +30,7 @@ public class CardTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             scriptableCard = cardScript.scriptableCard;
         }
-
-        if (cardListCardEvents != null)
+        else if (cardListCardEvents != null)
         {
             scriptableCard = cardListCardEvents.scriptableCard;
         }

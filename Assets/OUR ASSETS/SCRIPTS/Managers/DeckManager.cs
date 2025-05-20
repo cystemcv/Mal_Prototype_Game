@@ -752,7 +752,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand, bool normalUI)
+    public GameObject InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand, bool normalUI)
     {
 
         //instantiate the prefab 
@@ -761,13 +761,22 @@ public class DeckManager : MonoBehaviour
         //get the scriptable object
         ScriptableCard scriptableCard = cardScript.scriptableCard;
 
+        //disable scripts not needed
+        cardPrefab.GetComponent<CardScript>().enabled = true;
+        cardPrefab.GetComponent<CardEvents>().enabled = true;
+
+        //enable scripts needed
+        cardPrefab.GetComponent<CardListCardEvents>().enabled = false;
+        cardPrefab.GetComponent<Button>().enabled = false;
+        cardPrefab.GetComponent<CustomButton>().enabled = false;
+
         //add the scriptable card object to the prefab class to reference
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
         cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
         cardPrefab.GetComponent<CardScript>().changedMana = cardScript.changedMana;
         cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
 
-        cardPrefab.GetComponent<CardScript>().cardQueue = cardPrefab.transform.Find("Panel").Find("Queue").gameObject;
+        cardPrefab.GetComponent<CardScript>().cardQueue = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("Queue").gameObject;
         cardPrefab.GetComponent<CardScript>().cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
 
@@ -815,6 +824,10 @@ public class DeckManager : MonoBehaviour
         //check mana
         Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
 
+
+
+        return cardPrefab;
+
     }
 
     public void UpdateCardUI(GameObject cardPrefab)
@@ -829,44 +842,44 @@ public class DeckManager : MonoBehaviour
 
         if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
         {
-            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
         }
         else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
         {
-            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
         }
         else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
         {
-            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
         }
         else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
         {
-            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
         }
         else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
         {
-            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
         }
 
         //for example
-        cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
-        cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
-        cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
+        cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+        cardChild.transform.Find("Info").Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
+        cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
 
         //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
 
         //mana cost
-        cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
+        cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
 
         if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
         {
-            cardChild.transform.Find("ManaBg").gameObject.SetActive(false);
+            cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
         }
 
         //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
 
         //description is based on abilities
-        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character);
+        cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character);
         //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
         //{
         //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
