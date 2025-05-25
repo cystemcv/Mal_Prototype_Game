@@ -263,14 +263,14 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType,CardScript cardScript)
+    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType, CardScript cardScript)
     {
         //use all lists of items
-      yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList, cardScript));
-      yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScript));
+        yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList, cardScript));
+        yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScript));
     }
 
-    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems,CardScript cardScript)
+    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems, CardScript cardScript)
     {
         foreach (var item in classItems)
         {
@@ -613,6 +613,20 @@ public class ItemManager : MonoBehaviour
         {
             return scriptableItemList[index];
         }
+    }
+
+
+
+    public ClassItem GetItemByScriptableName(string name, List<ClassItem> listOfItems)
+    {
+        return listOfItems.FirstOrDefault(item => item.scriptableItem.name == name);
+    }
+
+    public int GetItemIndexByScriptableName(string name, List<ClassItem> listOfItems)
+    {
+        int index = listOfItems.FindIndex(item => item.scriptableItem.itemName == name);
+
+        return index;
     }
 
 }

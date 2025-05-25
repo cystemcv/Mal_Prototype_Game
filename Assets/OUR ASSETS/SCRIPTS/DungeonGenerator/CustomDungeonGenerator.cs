@@ -1536,6 +1536,18 @@ public class CustomDungeonGenerator : MonoBehaviour
 
             SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
         }
+        else if (roomScript.planetType == SystemManager.PlanetTypes.SHOP)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableShopList.Count);
+            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableShopList[randomIndex];
+
+            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
+            CombatManager.Instance.scriptableFakeEventPlanet = scriptableEvent.scriptableEventFakePlanet;
+            CombatManager.Instance.ScriptableEvent = scriptableEvent;
+            CombatManager.Instance.planetClicked = roomScript.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        }
         else
         {
 

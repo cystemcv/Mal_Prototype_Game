@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f01d6f886ac444fa4e3ac2539077d0, type: 3}
+  m_Name: ScriptableEvent_Shop
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  title: Shop
+  conversation:
+  - Any goods?
+  - Sure...
+  scriptableButtonEventList:
+  - {fileID: 11400000, guid: 87370607370d4264597d1dbb3d8586ca, type: 2}
+  - {fileID: 11400000, guid: 51c21dff2a7b72141bcab70bc798652b, type: 2}
+  - {fileID: 11400000, guid: 0c10cd52f03f9b94d895171692ed8804, type: 2}
+  scriptablePlanet: {fileID: 11400000, guid: 7c0707e3c7eefdc449a2256b75cf93d6, type: 2}
+  scriptableEventFakePlanet: {fileID: 0}

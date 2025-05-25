@@ -16,8 +16,8 @@ MonoBehaviour:
   planetType: 0
   planetName: Loot Box
   scriptableEntities:
-  - {fileID: 11400000, guid: 1bf234bafd7c7bf42b05f5f727519c52, type: 2}
-  planetBattleGround: {fileID: 11400000, guid: b47bbf6cc38f29945987031a830ae21a, type: 2}
+  - {fileID: 11400000, guid: 22437af65673e21499dce540d8a43aea, type: 2}
+  planetBattleGround: {fileID: 11400000, guid: 8e05acf9e83a04143a54c0249d89fed9, type: 2}
   itemClassPlanet:
   - scriptableItem: {fileID: 11400000, guid: b30f1a0ae10d67c4d897a3be63b6b62e, type: 2}
     minQuantity: 12
@@ -31,13 +31,5 @@ MonoBehaviour:
     minQuantity: 1
     maxQuantity: 1
     percentage: 0
-  lootBoxGood:
-  - scriptableItem: {fileID: 11400000, guid: 377ccf79b6fbef648aeee614be79d40f, type: 2}
-    minQuantity: 1
-    maxQuantity: 1
-    percentage: 0
-  lootBoxBad:
-  - scriptableItem: {fileID: 11400000, guid: c21ad052952b18149ba1d0badd7a17ec, type: 2}
-    minQuantity: 1
-    maxQuantity: 1
-    percentage: 0
+  lootBoxGood: []
+  lootBoxBad: []

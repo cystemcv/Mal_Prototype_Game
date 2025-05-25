@@ -16,6 +16,8 @@ public class ScriptableGalaxies : ScriptableObject
     public List<ScriptableEvent> scriptableEventList;
     public List<ScriptableEvent> scriptableEventRewardsList;
 
+    public List<ScriptableEvent> scriptableShopList;
+
     [Title("GENERATOR SETTINGS")]
     public int minCombatRoom = 10;
     public int maxCombatRoom = 10;

@@ -82,6 +82,8 @@ public class UIManager : MonoBehaviour
     public GameObject eventButtonPrefab;
     public GameObject closeButtonPrefab;
 
+    public GameObject shopUI;
+
     public GameObject turnText;
 
     private int eventConversation = 0;
