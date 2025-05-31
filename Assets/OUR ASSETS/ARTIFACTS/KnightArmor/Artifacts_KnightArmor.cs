@@ -14,7 +14,7 @@ public class Artifacts_KnightArmor : ScriptableItem
     private int armorTurnsPassed = 0;
     private bool armorRegenActivated = false;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
 
 
@@ -45,7 +45,7 @@ public class Artifacts_KnightArmor : ScriptableItem
 
     }
 
-    public override void Expired(ClassItem classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScript cardScript)
     {
         if (armorRegenActivated == false)
         {
@@ -71,7 +71,7 @@ public class Artifacts_KnightArmor : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
     {
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         EntityClass entityClass = character.GetComponent<EntityClass>();

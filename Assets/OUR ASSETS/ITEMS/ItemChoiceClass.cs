@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class ItemChoiceClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
 
-    public ClassItem classItem;
+    public ClassItemData classItem;
     private float hoverChoiceScale = 1.2f;
     private float transitionTime = 0.1f;
 

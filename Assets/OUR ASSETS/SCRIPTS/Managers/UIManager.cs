@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using DG.Tweening;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -1025,6 +1026,29 @@ public class UIManager : MonoBehaviour
             }
         }
         activeTweeners.Clear(); // Clear all tweens
+    }
+
+    public void CloseShop()
+    {
+
+        //save the cardlist
+
+        GameObject cardList = UIManager.Instance.shopUI.transform.Find("CardList").gameObject;
+        //List<ShopCard> shopCardList = cardList.GetComponentsInChildren<ShopCard>(true).ToList();
+        List<ShopCardData> shopCardDataList = new List<ShopCardData>(); 
+        List<ShopCard> shopCardList = cardList.GetComponentsInChildren<ShopCard>(true).ToList();
+
+        foreach (ShopCard shopCard in shopCardList)
+        {
+            shopCardDataList.Add(shopCard.shopCardData);
+        }
+
+
+        CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopCards = shopCardDataList;
+
+        UIManager.Instance.shopUI.SetActive(false);
+
+
     }
 
 }

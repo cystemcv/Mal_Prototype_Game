@@ -11,6 +11,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public ScriptablePlanets scriptablePlanet;
     private bool isHovered = false;
 
+    public List<ShopCardData> shopCards = new List<ShopCardData>();
 
     public void Update()
     {

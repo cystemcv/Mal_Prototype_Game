@@ -25,17 +25,17 @@ public class ScriptableItem : ScriptableObject
     public int maxLevel = 1;
 
     // Abstract method for activation, implemented by derived classes
-    public virtual void Activate(ClassItem classItem, CardScript cardScript)
+    public virtual void Activate(ClassItemData classItem, CardScript cardScript)
     {
 
     }
 
-    public virtual void Initialiaze(ClassItem classItem, CardScript cardScript)
+    public virtual void Initialiaze(ClassItemData classItem, CardScript cardScript)
     {
 
     }
 
-    public virtual void Expired(ClassItem classItem, CardScript cardScript)
+    public virtual void Expired(ClassItemData classItem, CardScript cardScript)
     {
 
     }

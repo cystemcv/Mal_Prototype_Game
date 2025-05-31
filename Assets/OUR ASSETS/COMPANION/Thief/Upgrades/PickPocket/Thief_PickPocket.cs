@@ -10,7 +10,7 @@ public class Thief_PickPocket : ScriptableItem
     public int chancePerc = 100;
     public int goldGained = 5;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
         // Define what happens when this ability upgrade is activated
 
@@ -26,7 +26,7 @@ public class Thief_PickPocket : ScriptableItem
         classItem.tempValue = gold;
 
         // Default behavior if needed
-        ClassItem classItemTemp = new ClassItem(goldSO, classItem.tempValue);
+        ClassItemData classItemTemp = new ClassItemData(goldSO, classItem.tempValue);
         classItemTemp.customToolTip = "EXTRA GOLD! (Received from Pick Pocket!)";
 
         StaticData.lootItemList.Add(classItemTemp);

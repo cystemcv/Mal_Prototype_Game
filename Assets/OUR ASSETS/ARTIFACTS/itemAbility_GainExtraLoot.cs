@@ -14,7 +14,7 @@ public class itemAbility_GainExtraLoot : ScriptableItem
 
     public List<ExtraItemProperties> itemExtraPropertiesList;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
         // Check if only one random item should be chosen
         if (methodToUse == MethodToUse.CHOOSERANDOM)
@@ -23,10 +23,10 @@ public class itemAbility_GainExtraLoot : ScriptableItem
             if (itemExtraPropertiesList.Count > 0)
             {
                 int randomIndex = UnityEngine.Random.Range(0, itemExtraPropertiesList.Count);
-         
+
 
                 // Add item to loot
-                ClassItem classItemTemp = new ClassItem(itemExtraPropertiesList[randomIndex].scriptableItem, 1)
+                ClassItemData classItemTemp = new ClassItemData(itemExtraPropertiesList[randomIndex].scriptableItem, 1)
                 {
                     customToolTip = customToolTip
                 };
@@ -54,7 +54,7 @@ public class itemAbility_GainExtraLoot : ScriptableItem
         int quantity = UnityEngine.Random.Range(extraItemProperties.minQuantity, extraItemProperties.maxQuantity);
 
         // Add item to loot
-        ClassItem classItemTemp = new ClassItem(extraItemProperties.scriptableItem, quantity)
+        ClassItemData classItemTemp = new ClassItemData(extraItemProperties.scriptableItem, quantity)
         {
             customToolTip = customToolTip
         };

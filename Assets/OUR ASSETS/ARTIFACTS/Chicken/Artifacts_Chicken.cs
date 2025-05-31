@@ -10,7 +10,7 @@ public class Artifacts_Chicken : ScriptableItem
     public int chancePerc = 10;
     public int healAdded = 6;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
         MonoBehaviour runner = CombatCardHandler.Instance;
 

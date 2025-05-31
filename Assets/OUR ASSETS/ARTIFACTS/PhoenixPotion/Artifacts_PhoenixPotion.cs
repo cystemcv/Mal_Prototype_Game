@@ -14,7 +14,7 @@ public class Artifacts_PhoenixPotion : ScriptableItem
     
     private bool triggered = false;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
 
         if (triggered)
@@ -42,12 +42,12 @@ public class Artifacts_PhoenixPotion : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
     {
     
     }
 
-    public override void Expired(ClassItem classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScript cardScript)
     {
  
     }

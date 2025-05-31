@@ -12,45 +12,9 @@ using DG.Tweening;
 public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
 
-    public ScriptableItem scriptableItem;
-    public int quantity = 0;
-    public string itemID = "";
-    public SystemManager.ItemIn itemIn = SystemManager.ItemIn.INVENTORY;
-
+    public ClassItemData classItemData;
     public bool stopEvents = false;
-
-    public int level = 0;
-
-    public int tempValue = 0;
-
-    public string customToolTip = "";
-
     private Tween typeWriterTween;
-
-    public ClassItem(ScriptableItem scriptableItem, int quantity)
-    {
-        //add an id to this scriptableCard, this is in order to identify it by comparisons
-        itemID = System.Guid.NewGuid().ToString();
-
-        this.scriptableItem = scriptableItem;
-        this.quantity = quantity;
-    }
-
-    // Method to set the data
-    public void SetData(ClassItem item)
-    {
-        scriptableItem = item.scriptableItem;
-        quantity = item.quantity;
-        level = item.level;
-        customToolTip = item.customToolTip;
-
-        if (itemID == "")
-        {
-            itemID = System.Guid.NewGuid().ToString();
-        }
-    }
-
-
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -60,60 +24,43 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             return;
         }
 
-        //if (customToolTip != "" && customToolTip != null)
-        //{
-        //    this.gameObject.GetComponent<TooltipContent>().description = customToolTip;
-        //}
-        //else if (scriptableItem.itemDescription != "")
-        //{
-        //    this.gameObject.GetComponent<TooltipContent>().description = scriptableItem.itemDescription;
-        //}
-        //else
-        //{
-        //    this.gameObject.GetComponent<TooltipContent>().description = "";
-        //}
 
-
-
-        //change item border color
-        //this.gameObject.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorBlue);
-
-        if (scriptableItem == null)
+        if (classItemData.scriptableItem == null)
         {
             return;
         }
 
-        if (itemIn == SystemManager.ItemIn.INVENTORY)
+        if (classItemData.itemIn == SystemManager.ItemIn.INVENTORY)
         {
             //change inventory text
-            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText,30f);
-            string itemDesc = scriptableItem.itemDescription;
+            string itemDesc = classItemData.scriptableItem.itemDescription;
             UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.inventoryTextDescription,200f);
 
         }
-        else if (itemIn == SystemManager.ItemIn.ARTIFACTS)
+        else if (classItemData.itemIn == SystemManager.ItemIn.ARTIFACTS)
         {
             //change inventory text
-            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText,30f);
-            string itemDesc = scriptableItem.itemDescription;
+            string itemDesc = classItemData.scriptableItem.itemDescription;
             UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.artifactTextDescription,200f);
         }
-        else if (itemIn == SystemManager.ItemIn.COMPANION)
+        else if (classItemData.itemIn == SystemManager.ItemIn.COMPANION)
         {
             //change inventory text
-            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText,30f);
-            string itemDesc = scriptableItem.itemDescription;
+            string itemDesc = classItemData.scriptableItem.itemDescription;
             UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.companionTextDescription,200f);
         }
-        else if (itemIn == SystemManager.ItemIn.LOOT)
+        else if (classItemData.itemIn == SystemManager.ItemIn.LOOT)
         {
             //change inventory text
-            string itemText = "x" + quantity + " : " + scriptableItem.itemName;
+            string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
             UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText,30f);
-            string itemDesc = scriptableItem.itemDescription;
+            string itemDesc = classItemData.scriptableItem.itemDescription;
             UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.lootTextDescription,200f);
         }
 
@@ -162,36 +109,36 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (itemIn == SystemManager.ItemIn.INVENTORY)
+        if (classItemData.itemIn == SystemManager.ItemIn.INVENTORY)
         {
 
         }
-        else if (itemIn == SystemManager.ItemIn.LOOT)
+        else if (classItemData.itemIn == SystemManager.ItemIn.LOOT)
         {
 
-            if (scriptableItem.itemCategory == SystemManager.ItemCategory.CARD)
+            if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.CARD)
             {
                 ChooseCardToDeck();
             }
-            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
+            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
             {
                 AddCompanionItem();
             }
-            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMCOMPANIONITEM)
+            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMCOMPANIONITEM)
             {
                 AddRandomCompanionItem();
             }
-            else if (scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMARTIFACTITEM)
+            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMARTIFACTITEM)
             {
                 AddRandomArtifactItem();
             }
             else
             {
                 //add to inventory
-                ItemManager.Instance.AddInventoryItemInList(this);
+                ItemManager.Instance.AddRemoveInventoryItemInList(this.classItemData);
 
                 //Remove from loot
-                ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+                ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
                 ItemManager.Instance.ShowLoot();
                 ItemManager.Instance.RefreshInventory();
@@ -210,10 +157,10 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
 
         //add to companion list
-        ItemManager.Instance.AddCompanionItemInList(this);
+        ItemManager.Instance.AddCompanionItemInList(this.classItemData);
 
         //Remove from loot
-        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
@@ -228,7 +175,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
         //Remove from loot
-        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
@@ -277,7 +224,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             int randomIndex = UnityEngine.Random.Range(0, filteredArtifactPool.Count);
 
             // Create a ClassItem for the randomly selected item
-            ClassItem itemClassTemp = new ClassItem(filteredArtifactPool[randomIndex], 1);
+            ClassItemData itemClassTemp = new ClassItemData(filteredArtifactPool[randomIndex], 1);
 
             // Instantiate the item prefab
             GameObject itemPrefab = Instantiate(
@@ -317,7 +264,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
         //Remove from loot
-        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
@@ -327,7 +274,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         // Get the companion item list and filter out items at max level
         List<ScriptableItem> companionSOItems = StaticData.staticScriptableCompanion.companionItemList
-            .Where(item => !ItemManager.Instance.CheckIfItemMaxLevel(new ClassItem(item, 1)))
+            .Where(item => !ItemManager.Instance.CheckIfItemMaxLevel(new ClassItemData(item, 1)))
             .ToList();
 
         // Check if there are any items left after filtering
@@ -352,7 +299,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             int randomIndex = UnityEngine.Random.Range(0, companionSOItems.Count);
 
             // Create a ClassItem for the randomly selected item
-            ClassItem itemClassTemp = new ClassItem(companionSOItems[randomIndex], 1);
+            ClassItemData itemClassTemp = new ClassItemData(companionSOItems[randomIndex], 1);
 
             // Instantiate the item prefab
             GameObject itemPrefab = Instantiate(
@@ -408,7 +355,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
         //Remove from loot
-        ItemManager.Instance.RemoveItemFromListGOFromLoot(this, StaticData.lootItemList);
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();

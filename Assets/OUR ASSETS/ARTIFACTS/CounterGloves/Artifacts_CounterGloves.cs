@@ -10,7 +10,7 @@ public class Artifacts_CounterGloves : ScriptableItem
     [Title("UNIQUE ITEM ABILITY")]
     public int dmgDone = 1;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 

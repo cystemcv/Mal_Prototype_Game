@@ -11,7 +11,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     private bool playedCard = false;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
 
         if (playedCard)
@@ -33,7 +33,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
             ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Extra " + scriptableItems[randomItem].itemName, false);
 
             // Default behavior if needed
-            ClassItem classItemTemp = new ClassItem(scriptableItems[randomItem], classItem.tempValue);
+            ClassItemData classItemTemp = new ClassItemData(scriptableItems[randomItem], classItem.tempValue);
             classItemTemp.customToolTip = "Bag Of Challenge Extra Loot!";
 
             StaticData.lootItemList.Add(classItemTemp);
@@ -45,12 +45,12 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItem classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
     {
         playedCard = false;
     }
 
-    public override void Expired(ClassItem classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScript cardScript)
     {
         if(Combat.Instance.turns == 1)
         {

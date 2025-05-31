@@ -364,7 +364,7 @@ public class Combat : MonoBehaviour
             }
 
             //create the classItem
-            ClassItem classItem = new ClassItem(itemClassPlanet.scriptableItem, quantity);
+            ClassItemData classItem = new ClassItemData(itemClassPlanet.scriptableItem, quantity);
 
             //then add item to loot
             StaticData.lootItemList.Add(classItem);
@@ -2016,7 +2016,7 @@ public class Combat : MonoBehaviour
             }
 
             //create the classItem
-            ClassItem classItem = new ClassItem(itemClassPlanet.scriptableItem, quantity);
+            ClassItemData classItem = new ClassItemData(itemClassPlanet.scriptableItem, quantity);
 
             //then add item to loot
             StaticData.lootItemList.Add(classItem);

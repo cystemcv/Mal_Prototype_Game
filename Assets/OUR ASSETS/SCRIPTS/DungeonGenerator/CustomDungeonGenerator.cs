@@ -208,7 +208,13 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (planet != null)
         {
             CustomDungeonGenerator.Instance.OnRoomClick(planet);
-            planet.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
+
+            if(planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP)
+            {
+                planet.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
+            }
+        
+            
             planet.GetComponent<RoomScript>().roomCleared = true;
 
         }
@@ -1079,7 +1085,10 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.START)
         {
-            clickedRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = CustomDungeonGenerator.Instance.clearIcon;
+            if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP)
+            {
+                clickedRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = CustomDungeonGenerator.Instance.clearIcon;
+            }
         }
 
         clickedRoom.GetComponent<RoomScript>().roomCleared = true;
@@ -1499,7 +1508,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     public void ClickedRoom(RoomScript roomScript)
     {
 
-        if (roomScript.roomCleared)
+        if (roomScript.roomCleared && roomScript.planetType != SystemManager.PlanetTypes.SHOP)
         {
             return;
         }

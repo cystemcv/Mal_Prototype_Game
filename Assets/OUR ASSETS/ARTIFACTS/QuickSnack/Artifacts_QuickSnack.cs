@@ -14,7 +14,7 @@ public class Artifacts_QuickSnack : ScriptableItem
     
     private bool triggered = false;
 
-    public override void Activate(ClassItem classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
 
         if (Combat.Instance.turns > 1 && !triggered)
@@ -35,7 +35,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
     }
 
-    public override void Expired(ClassItem classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScript cardScript)
     {
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired!", true);
         triggered = false;

@@ -50,4 +50,28 @@ public class ScriptableGalaxies : ScriptableObject
     public int allowedPercentageConnectBoss = 30;
     public int distanceBetweenRooms = 2; // Distance you want to put between rooms
 
+    [Title("SHOP ECONOMY CARDS")]
+    //shop economics
+    public int minCommonCardCost = 0;
+    public int maxCommonCardCost = 0;
+    public int minRareCardCost = 0;
+    public int maxRareCardCost = 0;
+    public int minEpicCardCost = 0;
+    public int maxEpicCardCost = 0;
+    public int minLegendaryCardCost = 0;
+    public int maxLegendaryCardCost = 0;
+
+    [Title("SHOP ECONOMY ARTIFACTS")]
+    public int minCommonArtifactCost = 0;
+    public int maxCommonArtifactCost = 0;
+    public int minRareArtifactCost = 0;
+    public int maxRareArtifactCost = 0;
+    public int minEpicArtifactCost = 0;
+    public int maxEpicArtifactCost = 0;
+    public int minLegendaryArtifactCost = 0;
+    public int maxLegendaryArtifactCost = 0;
+
+    [Title("SHOP ECONOMY ITEMS")]
+    public int minCommonItemCost = 0;
+    public int maxCommonItemCost = 0;
 }

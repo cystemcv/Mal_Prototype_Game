@@ -10,6 +10,8 @@ using DG.Tweening;
 public class ItemManager : MonoBehaviour
 {
 
+    public List<ScriptableItem> scriptableItemsCheats = new List<ScriptableItem>();
+
     public static ItemManager Instance;
 
     public List<ScriptableItem> scriptableItemList;
@@ -40,6 +42,15 @@ public class ItemManager : MonoBehaviour
 
     public void Start()
     {
+
+        foreach (ScriptableItem scriptableItem in scriptableItemsCheats)
+        {
+
+            ClassItemData classItem = new ClassItemData(scriptableItem,9990);
+            StaticData.inventoryItemList.Add(classItem);
+
+        }
+
         //foreach (ScriptableItem scriptableItem in scriptableItemList)
         //{
 
@@ -159,7 +170,7 @@ public class ItemManager : MonoBehaviour
     //    //gameObject.GetComponent<TooltipContent>().description = "";
     //}
 
-    public void RemoveItemFromListGOFromLoot(ClassItem classItemToRemove, List<ClassItem> classItemList)
+    public void RemoveItemFromListGOFromLoot(ClassItemData classItemToRemove, List<ClassItemData> classItemList)
     {
         // Find the index of the item with the same itemID
         int indexToRemove = classItemList.FindIndex(item => item.itemID == classItemToRemove.itemID);
@@ -270,7 +281,7 @@ public class ItemManager : MonoBehaviour
         yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScript));
     }
 
-    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItem> classItems, CardScript cardScript)
+    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItemData> classItems, CardScript cardScript)
     {
         foreach (var item in classItems)
         {
@@ -317,15 +328,15 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public ClassItem SOItemToClass(ScriptableItem scriptableItem)
+    public ClassItemData SOItemToClass(ScriptableItem scriptableItem)
     {
 
-        ClassItem classItemTemp = new ClassItem(scriptableItem, 0);
+        ClassItemData classItemTemp = new ClassItemData(scriptableItem, 0);
         return classItemTemp;
 
     }
 
-    public void AddInventoryItemInList(ClassItem classItem)
+    public void AddRemoveInventoryItemInList(ClassItemData classItem)
     {
         // Check if an item with the same scriptableItem name exists in the list
         bool itemExists = StaticData.inventoryItemList.Any(
@@ -334,23 +345,41 @@ public class ItemManager : MonoBehaviour
 
         if (itemExists)
         {
-            // If the item exists, find it and increase its quantity based on the item quantity
-            StaticData.inventoryItemList.First(
+
+            ClassItemData itemFound = StaticData.inventoryItemList.First(
                 item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
-            ).quantity += classItem.quantity;
+            );
+
+            // If the item exists, find it and increase its quantity based on the item quantity
+            itemFound.quantity += classItem.quantity;
+
+            //remove item
+            if (itemFound.quantity <= 0)
+            {
+                ItemManager.Instance.RemoveItemFromListGOFromLoot(itemFound, StaticData.inventoryItemList);
+            }
         }
         else
         {
 
+            if (classItem.quantity < 0)
+            {
+                return;
+            }
+
             //create new class
-            ClassItem classItemTemp = new ClassItem(classItem.scriptableItem, classItem.quantity);
+            ClassItemData classItemTemp = new ClassItemData(classItem.scriptableItem, classItem.quantity);
             classItemTemp.SetData(classItem);
 
             StaticData.inventoryItemList.Add(classItemTemp);
         }
+
+    
+
+
     }
 
-    public void AddCompanionItemInList(ClassItem classItem)
+    public void AddCompanionItemInList(ClassItemData classItem)
     {
         // Check if an item with the same scriptableItem name exists in the list
         bool itemExists = StaticData.companionItemList.Any(
@@ -372,7 +401,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void AddArtifactItemInList(ClassItem classItem)
+    public void AddArtifactItemInList(ClassItemData classItem)
     {
         // Check if an item with the same scriptableItem name exists in the list
         bool itemExists = StaticData.artifactItemList.Any(
@@ -385,7 +414,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public bool CheckIfItemMaxLevel(ClassItem classItem)
+    public bool CheckIfItemMaxLevel(ClassItemData classItem)
     {
 
         bool isMaxLevel = false;
@@ -398,7 +427,7 @@ public class ItemManager : MonoBehaviour
         if (itemExists)
         {
             // If the item exists, find it and increase its level by 1
-            ClassItem item = StaticData.companionItemList.First(
+            ClassItemData item = StaticData.companionItemList.First(
                 item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
             );
 
@@ -412,7 +441,7 @@ public class ItemManager : MonoBehaviour
         return isMaxLevel;
     }
 
-    public int GetItemLevelFromList(ClassItem classItem)
+    public int GetItemLevelFromList(ClassItemData classItem)
     {
 
         int itemLevel = 0;
@@ -425,7 +454,7 @@ public class ItemManager : MonoBehaviour
         if (itemExists)
         {
             // If the item exists, find it and increase its level by 1
-            ClassItem item = StaticData.companionItemList.First(
+            ClassItemData item = StaticData.companionItemList.First(
                 item => item.scriptableItem.itemName == classItem.scriptableItem.itemName
             );
 
@@ -435,7 +464,7 @@ public class ItemManager : MonoBehaviour
         return itemLevel;
     }
 
-    public void PopulateGOObject(GameObject goObject, List<ClassItem> classItems)
+    public void PopulateGOObject(GameObject goObject, List<ClassItemData> classItems)
     {
 
         // Get the companion item list
@@ -446,7 +475,7 @@ public class ItemManager : MonoBehaviour
         {
             // Get the current item and child
             //classItems[i].gameObject.GetComponent<ClassItem>().enabled = true;
-            ClassItem classItem = classItems[i];
+            ClassItemData classItem = classItems[i];
             Transform itemPrefab = goObject.transform.GetChild(i);
 
             // Activate the child GameObject and populate it with the item
@@ -460,35 +489,36 @@ public class ItemManager : MonoBehaviour
             // Assuming itemPrefab has a script (e.g., ItemDisplay) to show the item's details
             itemPrefab.GetComponent<ClassItem>().enabled = true;
             ClassItem itemDisplay = itemPrefab.GetComponent<ClassItem>();
+            itemDisplay.classItemData = classItem;
             //itemDisplay.enabled = true;
             if (itemDisplay != null)
             {
 
-                itemDisplay.SetData(classItem);
-                itemDisplay.itemID = classItem.itemID;
+                itemDisplay.classItemData.SetData(classItem);
+                itemDisplay.classItemData.itemID = classItem.itemID;
 
-                itemPrefab.GetChild(1).gameObject.GetComponent<Image>().sprite = itemDisplay.scriptableItem.Icon;
+                itemPrefab.GetChild(1).gameObject.GetComponent<Image>().sprite = itemDisplay.classItemData.scriptableItem.Icon;
 
                 //level or quantity
                 if (goObject == UIManager.Instance.inventoryGO)
                 {
-                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
-                    itemDisplay.itemIn = SystemManager.ItemIn.INVENTORY;
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.classItemData.quantity.ToString();
+                    itemDisplay.classItemData.itemIn = SystemManager.ItemIn.INVENTORY;
                 }
                 else if (goObject == UIManager.Instance.lootGO)
                 {
-                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.quantity.ToString();
-                    itemDisplay.itemIn = SystemManager.ItemIn.LOOT;
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = itemDisplay.classItemData.quantity.ToString();
+                    itemDisplay.classItemData.itemIn = SystemManager.ItemIn.LOOT;
                 }
                 else if (goObject == UIManager.Instance.artifactGO)
                 {
                     itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "";
-                    itemDisplay.itemIn = SystemManager.ItemIn.ARTIFACTS;
+                    itemDisplay.classItemData.itemIn = SystemManager.ItemIn.ARTIFACTS;
                 }
                 else
                 {
-                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.level.ToString();
-                    itemDisplay.itemIn = SystemManager.ItemIn.COMPANION;
+                    itemPrefab.GetChild(2).gameObject.GetComponent<TMP_Text>().text = "LV" + itemDisplay.classItemData.level.ToString();
+                    itemDisplay.classItemData.itemIn = SystemManager.ItemIn.COMPANION;
                 }
 
 
@@ -601,7 +631,7 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public ClassItem CheckIfItemExistOnList(List<ClassItem> scriptableItemList, ScriptableItem scriptableItem)
+    public ClassItemData CheckIfItemExistOnList(List<ClassItemData> scriptableItemList, ScriptableItem scriptableItem)
     {
         int index = scriptableItemList.FindIndex(item => item.scriptableItem.itemName == scriptableItem.itemName);
 
@@ -615,18 +645,65 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    public void AddRemoveInventoryItemInListByScriptableName(string name, int quantity)
+    {
 
+        ClassItemData itemFound = GetItemByScriptableName(name, StaticData.inventoryItemList);
 
-    public ClassItem GetItemByScriptableName(string name, List<ClassItem> listOfItems)
+        itemFound.quantity += quantity;
+
+        if (itemFound.quantity <= 0)
+        {
+            ItemManager.Instance.RemoveItemFromListGOFromLoot(itemFound, StaticData.inventoryItemList);
+        }
+
+    }
+
+    public ClassItemData GetItemByScriptableName(string name, List<ClassItemData> listOfItems)
     {
         return listOfItems.FirstOrDefault(item => item.scriptableItem.name == name);
     }
 
-    public int GetItemIndexByScriptableName(string name, List<ClassItem> listOfItems)
+    public int GetItemIndexByScriptableName(string name, List<ClassItemData> listOfItems)
     {
         int index = listOfItems.FindIndex(item => item.scriptableItem.itemName == name);
 
         return index;
     }
 
+    public int GetItemQuantity(string name, List<ClassItemData> listOfItems)
+    {
+
+        int quantity = 0;
+
+        int itemIndex = ItemManager.Instance.GetItemIndexByScriptableName("Gold", StaticData.inventoryItemList);
+      
+        if (itemIndex != -1)
+        {
+            quantity = listOfItems[itemIndex].quantity;
+        }
+
+        return quantity;
+
+    }
+
+    public bool CanPlayerBuy(int priceCost)
+    {
+
+        bool canBuy = false;
+
+        int playerGold = ItemManager.Instance.GetItemQuantity("Gold", StaticData.inventoryItemList);
+        
+        if (playerGold < priceCost)
+        {
+            canBuy = false;
+        }
+        else
+        {
+            canBuy = true;
+        }
+
+        return canBuy;
+
+    }
 }
