@@ -40,6 +40,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardRarity { Common, Rare, Epic, Legendary,Curse };
     public CardRarity cardRarity;
 
+    public enum ItemRarity { Common, Rare, Epic, Legendary, Curse };
+    public ItemRarity itemRarity;
+
     public enum EntityAnimation { MeleeAttack, ProjectileAttack, SpellCast }; //Actual classes to be determined
     public EntityAnimation entityAnimation;
 

@@ -74,4 +74,10 @@ public class ScriptableGalaxies : ScriptableObject
     [Title("SHOP ECONOMY ITEMS")]
     public int minCommonItemCost = 0;
     public int maxCommonItemCost = 0;
+    public int minRareItemCost = 0;
+    public int maxRareItemCost = 0;
+    public int minEpicItemCost = 0;
+    public int maxEpicItemCost = 0;
+    public int minLegendaryItemCost = 0;
+    public int maxLegendaryItemCost = 0;
 }

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class ShopCard : MonoBehaviour, IPointerClickHandler
 {
 
-    public ShopCardData shopCardData;
+    public ShopData shopData;
 
 
 
@@ -31,17 +31,17 @@ public class ShopCard : MonoBehaviour, IPointerClickHandler
     public void BuyCard()
     {
         //if enough gold
-        if (ItemManager.Instance.CanPlayerBuy(shopCardData.shopCostItem) && shopCardData.itemAvailable)
+        if (ItemManager.Instance.CanPlayerBuy(shopData.shopCostItem) && shopData.itemAvailable)
         {
 
             //add sold on card
             this.gameObject.transform.GetChild(0).Find("UtilityFront").Find("SoldOut").gameObject.SetActive(true);
             this.gameObject.transform.GetChild(0).Find("UtilityFront").Find("GoldPanel").Find("Text").GetComponent<TMP_Text>().text = "SOLD";
 
-            shopCardData.itemAvailable = false;
+            shopData.itemAvailable = false;
 
             //decrease the gold from player
-            ItemManager.Instance.AddRemoveInventoryItemInListByScriptableName("Gold", shopCardData.shopCostItem * -1);
+            ItemManager.Instance.AddRemoveInventoryItemInListByScriptableName("Gold", shopData.shopCostItem * -1);
 
             //show the new shop gold
 
@@ -51,7 +51,7 @@ public class ShopCard : MonoBehaviour, IPointerClickHandler
             UIManager.Instance.shopUI.transform.Find("PlayerGold").GetComponent<TMP_Text>().text = playerGold.ToString();
 
             //add card on deck
-            DeckManager.Instance.AddCardOnDeck(shopCardData.scriptableCard,0);
+            DeckManager.Instance.AddCardOnDeck(shopData.scriptableCard,0);
 
         }
         else

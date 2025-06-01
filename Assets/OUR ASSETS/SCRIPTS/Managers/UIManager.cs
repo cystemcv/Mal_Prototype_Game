@@ -1032,19 +1032,39 @@ public class UIManager : MonoBehaviour
     {
 
         //save the cardlist
-
         GameObject cardList = UIManager.Instance.shopUI.transform.Find("CardList").gameObject;
-        //List<ShopCard> shopCardList = cardList.GetComponentsInChildren<ShopCard>(true).ToList();
-        List<ShopCardData> shopCardDataList = new List<ShopCardData>(); 
+        List<ShopData> shopDataList = new List<ShopData>(); 
         List<ShopCard> shopCardList = cardList.GetComponentsInChildren<ShopCard>(true).ToList();
 
         foreach (ShopCard shopCard in shopCardList)
         {
-            shopCardDataList.Add(shopCard.shopCardData);
+            shopDataList.Add(shopCard.shopData);
         }
 
+        //save artifacts
+        GameObject artifactList = UIManager.Instance.shopUI.transform.Find("ArtifactsList").gameObject;
+        List<ShopData> shopDataListArtifact = new List<ShopData>();
+        List<ShopArtifact> shopArtifactList = artifactList.GetComponentsInChildren<ShopArtifact>(true).ToList();
 
-        CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopCards = shopCardDataList;
+        foreach (ShopArtifact shopArtifact in shopArtifactList)
+        {
+            shopDataListArtifact.Add(shopArtifact.shopData);
+        }
+
+        //save items
+        GameObject itemList = UIManager.Instance.shopUI.transform.Find("ItemList").gameObject;
+        List<ShopData> shopDataListItem = new List<ShopData>();
+        List<ShopItem> shopItemList = itemList.GetComponentsInChildren<ShopItem>(true).ToList();
+
+        foreach (ShopItem shopItem in shopItemList)
+        {
+            shopDataListItem.Add(shopItem.shopData);
+        }
+
+        //save on planet
+        CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopCards = shopDataList;
+        CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopArtifacts = shopDataListArtifact;
+        CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopItems = shopDataListItem;
 
         UIManager.Instance.shopUI.SetActive(false);
 

@@ -10,19 +10,18 @@ using DG.Tweening;
 public class ItemManager : MonoBehaviour
 {
 
-    public List<ScriptableItem> scriptableItemsCheats = new List<ScriptableItem>();
+
 
     public static ItemManager Instance;
 
-    public List<ScriptableItem> scriptableItemList;
-
-
+    public List<ScriptableItem> scriptableItemPoolList;
+    public List<ScriptableItem> scriptableItemTestPoolList = new List<ScriptableItem>();
     public List<ScriptableItem> artifactPoolList;
-
     public List<ScriptableItem> artifactTestPoolList;
 
 
     public GameObject itemChoosePrefab;
+    public GameObject itemPrefab;
 
     private void Awake()
     {
@@ -43,7 +42,7 @@ public class ItemManager : MonoBehaviour
     public void Start()
     {
 
-        foreach (ScriptableItem scriptableItem in scriptableItemsCheats)
+        foreach (ScriptableItem scriptableItem in scriptableItemTestPoolList)
         {
 
             ClassItemData classItem = new ClassItemData(scriptableItem,9990);
@@ -706,4 +705,50 @@ public class ItemManager : MonoBehaviour
         return canBuy;
 
     }
+
+    public List<ScriptableItem> GetItemList(
+    List<ScriptableItem> scriptableItemList, 
+    List<SystemManager.ItemCategory> allowedCategories = null,
+    List<SystemManager.ItemRarity> allowedRarities = null)
+    {
+        return scriptableItemList
+            .Where(item =>
+                (allowedCategories == null || allowedCategories.Count == 0 || allowedCategories.Contains(item.itemCategory)) &&
+                (allowedRarities == null || allowedRarities.Count == 0 || allowedRarities.Contains(item.itemRarity)))
+            .ToList();
+    }
+
+    public List<ScriptableItem> ChooseItems(
+        List<ScriptableItem> scriptableItemList,
+        List<SystemManager.ItemCategory> allowedCategories = null,
+        List<SystemManager.ItemRarity> allowedRarities = null,
+        int? numberOfItems = null,
+        bool allowDuplicates = false)
+    {
+        List<ScriptableItem> allItems = GetItemList(scriptableItemList,allowedCategories, allowedRarities);
+
+        if (allItems.Count == 0 || !numberOfItems.HasValue || numberOfItems.Value <= 0)
+            return allItems;
+
+        List<ScriptableItem> result = new List<ScriptableItem>();
+
+        if (allowDuplicates)
+        {
+            for (int i = 0; i < numberOfItems.Value; i++)
+            {
+                ScriptableItem randomItem = allItems[UnityEngine.Random.Range(0, allItems.Count)];
+                result.Add(randomItem);
+            }
+        }
+        else
+        {
+            result = allItems.Distinct() // removes duplicate object references
+                             .OrderBy(_ => UnityEngine.Random.value)
+                             .Take(numberOfItems.Value)
+                             .ToList();
+        }
+
+        return result;
+    }
+
 }
