@@ -879,7 +879,7 @@ public class UIManager : MonoBehaviour
             eventButton.GetComponent<ButtonManager>().SetText(scriptableButtonEvent.eventButtonDescription);
 
             //call the on button create of the scriptable object
-            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate();
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate(eventButton);
 
         }
 
@@ -918,7 +918,7 @@ public class UIManager : MonoBehaviour
             eventButton.transform.Find("Text").GetComponent<TMP_Text>().text = scriptableButtonEvent.eventButtonDescription;
 
             //call the on button create of the scriptable object
-            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate();
+            eventButton.GetComponent<UI_EventButton>().scriptableButtonEvent.OnButtonCreate(eventButton);
 
         }
 

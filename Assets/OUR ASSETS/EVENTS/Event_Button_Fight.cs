@@ -7,9 +7,9 @@ public class Event_Button_Fight : ScriptableButtonEvent
 {
     [TextArea(1, 20)]
     public string finalWording = "";
-    public override void OnButtonClick()
+    public override void OnButtonClick(GameObject eventButton)
     {
-        base.OnButtonClick();
+        base.OnButtonClick(eventButton);
 
         //hide ui
         UIManager.Instance.HideEventGo();

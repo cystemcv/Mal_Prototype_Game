@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9f01d6f886ac444fa4e3ac2539077d0, type: 3}
+  m_Name: ScriptableEvent_Rest
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  title: Rest
+  conversation:
+  - A healing Pod! What will you do?
+  scriptableButtonEventList:
+  - {fileID: 11400000, guid: 2f1d5464eec45e24eaa76957464c36d7, type: 2}
+  - {fileID: 11400000, guid: b2c4563c30ae4c6459af9570a01a874a, type: 2}
+  - {fileID: 11400000, guid: 4b61c336b50fb954a9894c7900134b29, type: 2}
+  scriptablePlanet: {fileID: 11400000, guid: f11f4f2396802f546aa8523eef3aa14e, type: 2}
+  scriptableEventFakePlanet: {fileID: 0}

@@ -209,7 +209,9 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             CustomDungeonGenerator.Instance.OnRoomClick(planet);
 
-            if(planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP)
+            if(planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP
+                && planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.REST
+                )
             {
                 planet.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
             }
@@ -1085,7 +1087,9 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.START)
         {
-            if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP)
+            if (clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP
+                && clickedRoom.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.REST
+                )
             {
                 clickedRoom.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = CustomDungeonGenerator.Instance.clearIcon;
             }
@@ -1508,7 +1512,10 @@ public class CustomDungeonGenerator : MonoBehaviour
     public void ClickedRoom(RoomScript roomScript)
     {
 
-        if (roomScript.roomCleared && roomScript.planetType != SystemManager.PlanetTypes.SHOP)
+        if (roomScript.roomCleared 
+            && roomScript.planetType != SystemManager.PlanetTypes.SHOP
+            && roomScript.planetType != SystemManager.PlanetTypes.REST
+            )
         {
             return;
         }
@@ -1549,6 +1556,18 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableShopList.Count);
             ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableShopList[randomIndex];
+
+            CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
+            CombatManager.Instance.scriptableFakeEventPlanet = scriptableEvent.scriptableEventFakePlanet;
+            CombatManager.Instance.ScriptableEvent = scriptableEvent;
+            CombatManager.Instance.planetClicked = roomScript.gameObject;
+
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        }
+        else if (roomScript.planetType == SystemManager.PlanetTypes.REST)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, CustomDungeonGenerator.Instance.galaxyGenerating.scriptableRestList.Count);
+            ScriptableEvent scriptableEvent = CustomDungeonGenerator.Instance.galaxyGenerating.scriptableRestList[randomIndex];
 
             CombatManager.Instance.scriptablePlanet = scriptableEvent.scriptablePlanet;
             CombatManager.Instance.scriptableFakeEventPlanet = scriptableEvent.scriptableEventFakePlanet;

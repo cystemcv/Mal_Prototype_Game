@@ -7,9 +7,9 @@ public class Event_Button_Retreat : ScriptableButtonEvent
 {
     [TextArea(1, 20)]
     public string finalWording = "";
-    public override void OnButtonClick()
+    public override void OnButtonClick(GameObject eventButton)
     {
-        base.OnButtonClick();
+        base.OnButtonClick(eventButton);
 
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0

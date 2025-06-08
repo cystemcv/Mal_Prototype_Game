@@ -11,9 +11,13 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public ScriptablePlanets scriptablePlanet;
     private bool isHovered = false;
 
+    //shop
     public List<ShopData> shopCards = new List<ShopData>();
     public List<ShopData> shopArtifacts = new List<ShopData>();
     public List<ShopData> shopItems = new List<ShopData>();
+
+    //rest
+    public bool usedRest = false;
 
     public void Update()
     {

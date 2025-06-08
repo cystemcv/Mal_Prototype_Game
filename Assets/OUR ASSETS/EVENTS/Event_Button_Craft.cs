@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using static SystemManager;
 
-[CreateAssetMenu(fileName = "Event_Button_Shop", menuName = "Events/ScriptableButtonEvent/Event_Button_Shop")]
-public class Event_Button_Shop : ScriptableButtonEvent
+[CreateAssetMenu(fileName = "Event_Button_Craft", menuName = "Events/ScriptableButtonEvent/Event_Button_Craft")]
+public class Event_Button_Craft : ScriptableButtonEvent
 {
     [TextArea(1, 20)]
     public string finalWording = "";

@@ -156,6 +156,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\CharacterManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Notification\NotificationManagerEditor.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\ForceSaveTagManager.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Shop.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\MultiGraphicsButton.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerTooltip.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CollectionScripts\SpriteCollection.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseAttackInfinite.cs" />
     <Compile Include="Assets\PixelFantasy\PixelMonsters\Common\Scripts\Monster.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSliderEditor.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopArtifact.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RadialSliderEditor.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\LogoCinematic.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Core\MUIPInternalTools.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Dropdown\DropdownMultiSelect.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\ScreenType\IsScreenTagPresent.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_GainShieldEveryTurn.cs" />
+    <Compile Include="Assets\OUR ASSETS\ITEMS\ClassItemData.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_HealSingleTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Defence.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingMaxTweens.cs" />
@@ -269,6 +272,8 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseDefenceTimer.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\SizeDeltaSizer.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListViewEditor.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopData.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopCard.cs" />
     <Compile Include="Assets\Game2DWaterKit\Demo\Large Water Area\Scripts\Platform.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerPieChart.cs" />
     <Compile Include="Assets\PixelFantasy\PixelMonsters\Common\Scripts\InanimateControls.cs" />
@@ -311,6 +316,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\IDataPersistence.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowDragger.cs" />
     <Compile Include="Assets\Isle of Assets\Simple UI Blur\Scripts\BlurController.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopItem.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageRandomTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\SplitDarkBlob\Monster_Card_SplitDarkBlob.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\CardTooltip.cs" />
@@ -562,7 +568,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_TemporaryStrength.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\LevelBuilder.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableButtonEvent.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\ScriptableButtonEvent.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Energy\Angel_Card_RighteousEnergy.cs" />
     <Compile Include="Assets\OUR ASSETS\GALAXIES\ScriptableBattleGrounds.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Icon\IconManagerEditor.cs" />
@@ -599,12 +605,8 @@
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralBasic.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Boomerang\Common_Card_Boomerang.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UI\UI_EventButton.cs" />
-    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Shop.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopCard.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopData.cs" />
-    <Compile Include="Assets\OUR ASSETS\ITEMS\ClassItemData.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopArtifact.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopItem.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Rest.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Craft.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />

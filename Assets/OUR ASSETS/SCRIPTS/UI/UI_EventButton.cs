@@ -10,8 +10,9 @@ public class UI_EventButton : MonoBehaviour
 
     public void ClickedEventButton()
     {
+        
 
-        scriptableButtonEvent.OnButtonClick();
+        scriptableButtonEvent.OnButtonClick(this.gameObject);
 
     }
 

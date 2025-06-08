@@ -11,12 +11,12 @@ public class ScriptableButtonEvent : ScriptableObject
 
 
     public string eventButtonDescription = "";
-    public virtual void OnButtonCreate()
+    public virtual void OnButtonCreate(GameObject eventButton)
     {
 
     }
 
-    public virtual void OnButtonClick()
+    public virtual void OnButtonClick(GameObject eventButton)
     {
 
     }
