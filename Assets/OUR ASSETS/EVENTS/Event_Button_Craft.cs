@@ -78,7 +78,7 @@ public class Event_Button_Craft : ScriptableButtonEvent
         {
 
             var allowedTypes = new List<ItemCategory> { ItemCategory.RESOURCE, ItemCategory.CONSUMABLE };
-            var allowedRarities = new List<ItemRarity> { ItemRarity.Common, ItemRarity.Rare };
+            var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare };
 
             List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(ItemManager.Instance.scriptableItemPoolList, allowedTypes, null, 8, true);
 
@@ -143,7 +143,7 @@ public class Event_Button_Craft : ScriptableButtonEvent
 
             item.transform.Find("Text").GetComponent<TMP_Text>().text = shopData.shopQuantityItem.ToString();
 
-            item.GetComponent<TooltipContent>().description = shopData.scriptableItem.itemName + " : " +  shopData.scriptableItem.itemDescription;
+            item.GetComponent<TooltipContent>().description = "<color=yellow>" + shopData.scriptableItem.itemName + "</color> : " +  shopData.scriptableItem.itemDescription;
 
 
             if (!shopData.itemAvailable)
@@ -186,7 +186,7 @@ public class Event_Button_Craft : ScriptableButtonEvent
         {
      
             var allowedTypes = new List<ItemCategory> { ItemCategory.ARTIFACT};
-            var allowedRarities = new List<ItemRarity> { ItemRarity.Common, ItemRarity.Rare };
+            var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare };
 
             List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(ItemManager.Instance.artifactPoolList, allowedTypes, null, 3, false);
 
@@ -301,7 +301,7 @@ public class Event_Button_Craft : ScriptableButtonEvent
         {
             var allowedClasses = new List<MainClass> { MainClass.COMMON };
             var allowedTypes = new List<CardType> { CardType.Attack };
-            var allowedRarities = new List<CardRarity> { CardRarity.Common, CardRarity.Rare, CardRarity.Epic, CardRarity.Legendary };
+            var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare, Rarity.Epic, Rarity.Legendary };
 
             allowedClasses.Add(StaticData.staticCharacter.mainClass);
 
@@ -404,19 +404,19 @@ public class Event_Button_Craft : ScriptableButtonEvent
 
         int goldCost = 0;
 
-        if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
+        if (scriptableCard.cardRarity == SystemManager.Rarity.Common)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minCommonCardCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxCommonCardCost);
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Rare)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minRareCardCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxRareCardCost);
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Epic)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minEpicCardCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxEpicCardCost);
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Legendary)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minLegendaryCardCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxLegendaryCardCost);
         }
@@ -430,19 +430,19 @@ public class Event_Button_Craft : ScriptableButtonEvent
 
         int goldCost = 0;
 
-        if (scriptableItem.itemRarity == SystemManager.ItemRarity.Common)
+        if (scriptableItem.itemRarity == SystemManager.Rarity.Common)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minCommonArtifactCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxCommonArtifactCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Rare)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Rare)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minRareArtifactCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxRareArtifactCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Epic)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Epic)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minEpicArtifactCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxEpicArtifactCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Legendary)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Legendary)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minLegendaryArtifactCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxLegendaryArtifactCost);
         }
@@ -456,19 +456,19 @@ public class Event_Button_Craft : ScriptableButtonEvent
 
         int goldCost = 0;
 
-        if (scriptableItem.itemRarity == SystemManager.ItemRarity.Common)
+        if (scriptableItem.itemRarity == SystemManager.Rarity.Common)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minCommonItemCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxCommonItemCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Rare)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Rare)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minRareItemCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxRareItemCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Epic)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Epic)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minEpicItemCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxEpicItemCost);
         }
-        else if (scriptableItem.itemRarity == SystemManager.ItemRarity.Legendary)
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Legendary)
         {
             goldCost = Random.Range(CustomDungeonGenerator.Instance.galaxyGenerating.minLegendaryItemCost, CustomDungeonGenerator.Instance.galaxyGenerating.maxLegendaryItemCost);
         }

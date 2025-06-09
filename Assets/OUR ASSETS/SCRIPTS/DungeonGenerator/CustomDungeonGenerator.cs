@@ -18,6 +18,10 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public int galaxyLevel = 1;
 
+    public int stepsTaken = 0;
+    public int maxSteps = 30;
+    public int scalingLevel = 0;
+
     public List<ScriptableGalaxies> scriptableGalaxies_1;
     public List<ScriptableGalaxies> scriptableGalaxies_2;
     public List<ScriptableGalaxies> scriptableGalaxies_3;
@@ -117,6 +121,8 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             DeckManager.Instance.BuildStartingDeck();
         }
+
+        UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + maxSteps + " (LV:" + scalingLevel + ")";
 
 
     }
@@ -1455,6 +1461,9 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         for (int i = 0; i < path.Count; i++)
         {
+
+          
+
             GameObject targetPlanet = path[i];
             Vector3 direction = (targetPlanet.transform.position - playerSpaceShip.transform.position).normalized;
 
@@ -1488,12 +1497,28 @@ public class CustomDungeonGenerator : MonoBehaviour
             playerSpaceShip.transform.position = targetPlanet.transform.position;
             playerSpaceShip.transform.rotation = targetRotation;
 
+            //ignore the first planet
+            if (i != 0)
+            {
+                stepsTaken += 1;
+            }
+
+            if (stepsTaken >= maxSteps)
+            {
+                stepsTaken = 0;
+                scalingLevel += 1;
+            }
+
+            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + maxSteps + " (LV:" + scalingLevel + ")";
+
             // Trigger landing logic at destination
             if (i == path.Count - 1)
             {
                 CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
                 UpdateLandPlayerSpaceship(targetPlanet);
                 ClickedRoom(roomScript);
+
+            
 
                 if (lastHoveredRoomSecondary != null)
                 {

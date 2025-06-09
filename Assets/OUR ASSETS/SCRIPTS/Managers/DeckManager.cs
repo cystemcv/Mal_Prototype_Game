@@ -840,23 +840,23 @@ public class DeckManager : MonoBehaviour
         //get the character to be used
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
+        if (scriptableCard.cardRarity == SystemManager.Rarity.Common)
         {
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Rare)
         {
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Epic)
         {
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Legendary)
         {
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
         }
-        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+        else if (scriptableCard.cardRarity == SystemManager.Rarity.Curse)
         {
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
         }
@@ -871,7 +871,7 @@ public class DeckManager : MonoBehaviour
         //mana cost
         cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
 
-        if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
+        if (scriptableCard.cardRarity == SystemManager.Rarity.Curse)
         {
             cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
         }

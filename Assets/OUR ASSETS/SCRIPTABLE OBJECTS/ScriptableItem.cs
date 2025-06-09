@@ -14,7 +14,7 @@ public class ScriptableItem : ScriptableObject
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.ItemCategory itemCategory = SystemManager.ItemCategory.RESOURCE;
 
-    public SystemManager.ItemRarity itemRarity = SystemManager.ItemRarity.Common;
+    public SystemManager.Rarity itemRarity = SystemManager.Rarity.Common;
 
     [Title("Activation Type")]
     public SystemManager.ActivationType activationType;

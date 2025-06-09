@@ -91,6 +91,9 @@ public class UIManager : MonoBehaviour
     private bool eventButtonsShown = false;
     private bool canExitEvent = false;
 
+    [Header("GALAXY")]
+    public GameObject galaxyScaling;
+
     public void ToggleActivateOrderVisibility()
     {
         // Toggle the active state of the parent of itemActivateOrderPanel

@@ -660,7 +660,7 @@ public class ItemManager : MonoBehaviour
 
     public ClassItemData GetItemByScriptableName(string name, List<ClassItemData> listOfItems)
     {
-        return listOfItems.FirstOrDefault(item => item.scriptableItem.name == name);
+        return listOfItems.FirstOrDefault(item => item.scriptableItem.itemName == name);
     }
 
     public int GetItemIndexByScriptableName(string name, List<ClassItemData> listOfItems)
@@ -709,7 +709,7 @@ public class ItemManager : MonoBehaviour
     public List<ScriptableItem> GetItemList(
     List<ScriptableItem> scriptableItemList, 
     List<SystemManager.ItemCategory> allowedCategories = null,
-    List<SystemManager.ItemRarity> allowedRarities = null)
+    List<SystemManager.Rarity> allowedRarities = null)
     {
         return scriptableItemList
             .Where(item =>
@@ -721,7 +721,7 @@ public class ItemManager : MonoBehaviour
     public List<ScriptableItem> ChooseItems(
         List<ScriptableItem> scriptableItemList,
         List<SystemManager.ItemCategory> allowedCategories = null,
-        List<SystemManager.ItemRarity> allowedRarities = null,
+        List<SystemManager.Rarity> allowedRarities = null,
         int? numberOfItems = null,
         bool allowDuplicates = false)
     {

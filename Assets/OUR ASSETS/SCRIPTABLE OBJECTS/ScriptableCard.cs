@@ -22,7 +22,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.CardType cardTypeSecondary = SystemManager.CardType.None;
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
-    public SystemManager.CardRarity cardRarity = SystemManager.CardRarity.Common;
+    public SystemManager.Rarity cardRarity = SystemManager.Rarity.Common;
 
     [Title("SETTINGS")]
     public List<SystemManager.EntityTag> targetEntityTagList;

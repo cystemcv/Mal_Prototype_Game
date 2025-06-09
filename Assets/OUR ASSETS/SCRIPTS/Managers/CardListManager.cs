@@ -79,7 +79,7 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> GetCardList(
         List<MainClass> allowedMainClasses = null,
         List<CardType> allowedCardTypes = null,
-        List<CardRarity> allowedCardRarities = null,
+        List<Rarity> allowedCardRarities = null,
         int? allowedPrimaryManaCost = null)
     {
         return CardListManager.Instance.cardPoolLists
@@ -98,7 +98,7 @@ public class CardListManager : MonoBehaviour
     public List<ScriptableCard> ChooseCards(
         List<MainClass> allowedMainClasses = null,
         List<CardType> allowedCardTypes = null,
-        List<CardRarity> allowedCardRarities = null,
+        List<Rarity> allowedCardRarities = null,
         int? allowedPrimaryManaCost = null,
         int? numberOfCards = null,
         bool allowDuplicates = false)
