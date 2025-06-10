@@ -7,11 +7,14 @@ public class Event_Button_ForceOpen : ScriptableButtonEvent
 {
     [TextArea(1, 20)]
     public string finalWording = "";
+
+    MonoBehaviour runner;
+
     public override void OnButtonClick(GameObject eventButton)
     {
         base.OnButtonClick(eventButton);
 
-        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+         runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
         // Start the coroutine for each hit
@@ -24,7 +27,7 @@ public class Event_Button_ForceOpen : ScriptableButtonEvent
     public IEnumerator EventEnd()
     {
 
-        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+        //MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
         yield return runner.StartCoroutine(ForceOpenEvent());
 
@@ -42,16 +45,22 @@ public class Event_Button_ForceOpen : ScriptableButtonEvent
 
         if (random == 0)
         {
+            finalWording = "Good!";
+            yield return runner.StartCoroutine(UIManager.Instance.EndEvent(finalWording));
             //0 = Good
-            LootShow(random);
+            yield return runner.StartCoroutine(LootShow(random));
         }
         else if (random == 1)
         {
+            finalWording = "Bad!";
+            yield return runner.StartCoroutine(UIManager.Instance.EndEvent(finalWording));
             //1 = Bad
-            LootShow(random);
+            yield return runner.StartCoroutine(LootShow(random));
         }
         else
         {
+            finalWording = "Fight!";
+            yield return runner.StartCoroutine(UIManager.Instance.EndEvent(finalWording));
             Combat.Instance.StartCombat("EVENT");
         }
 
@@ -59,7 +68,7 @@ public class Event_Button_ForceOpen : ScriptableButtonEvent
         yield return null;
     }
 
-    public void LootShow(int random)
+    public IEnumerator LootShow(int random)
     {
         GameObject playerCharacter = GameObject.FindGameObjectWithTag("Player");
         EntityClass entityClass = playerCharacter.GetComponent<EntityClass>();
@@ -73,6 +82,8 @@ public class Event_Button_ForceOpen : ScriptableButtonEvent
         Combat.Instance.CalculateLootBoxRewards(random);
 
         ItemManager.Instance.ShowLoot();
+
+        yield return null;
     }
 
 }
