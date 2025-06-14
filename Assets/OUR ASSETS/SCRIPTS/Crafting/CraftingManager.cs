@@ -60,17 +60,21 @@ public class CraftingManager : MonoBehaviour
         if (randomChance <= 2)
         {
             rarityCreation.rarity = SystemManager.Rarity.Legendary;
-            rarityCreation.itemsToGenerate = 8;
+            rarityCreation.itemsToGenerate = 4;
             return rarityCreation;
         }
+
+        randomChance = UnityEngine.Random.Range(0, 100);
 
         //epic
         if (randomChance <= 6)
         {
             rarityCreation.rarity = SystemManager.Rarity.Epic;
-            rarityCreation.itemsToGenerate = 6;
+            rarityCreation.itemsToGenerate = 4;
             return rarityCreation;
         }
+
+        randomChance = UnityEngine.Random.Range(0, 100);
 
         //rare
         if (randomChance <= 20)
@@ -81,7 +85,7 @@ public class CraftingManager : MonoBehaviour
         }
 
         rarityCreation.rarity = SystemManager.Rarity.Common;
-        rarityCreation.itemsToGenerate = 2;
+        rarityCreation.itemsToGenerate = 4;
         return rarityCreation;
 
     }
