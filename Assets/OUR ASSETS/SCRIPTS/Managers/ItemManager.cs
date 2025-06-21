@@ -22,6 +22,7 @@ public class ItemManager : MonoBehaviour
 
     public GameObject itemChoosePrefab;
     public GameObject itemPrefab;
+    public GameObject itemPrefabCrafting;
 
     private void Awake()
     {
@@ -45,7 +46,9 @@ public class ItemManager : MonoBehaviour
         foreach (ScriptableItem scriptableItem in scriptableItemTestPoolList)
         {
 
-            ClassItemData classItem = new ClassItemData(scriptableItem,9990);
+            int randomTest = UnityEngine.Random.Range(1, 99);
+
+            ClassItemData classItem = new ClassItemData(scriptableItem, randomTest);
             StaticData.inventoryItemList.Add(classItem);
 
         }
@@ -675,7 +678,7 @@ public class ItemManager : MonoBehaviour
 
         int quantity = 0;
 
-        int itemIndex = ItemManager.Instance.GetItemIndexByScriptableName("Gold", StaticData.inventoryItemList);
+        int itemIndex = ItemManager.Instance.GetItemIndexByScriptableName(name, StaticData.inventoryItemList);
       
         if (itemIndex != -1)
         {

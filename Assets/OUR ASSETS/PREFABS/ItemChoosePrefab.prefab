@@ -1146,6 +1146,7 @@ GameObject:
   - component: {fileID: 5484541190084641974}
   - component: {fileID: 4588073410603895313}
   - component: {fileID: 8325610031427921906}
+  - component: {fileID: 9204782596512914361}
   m_Layer: 5
   m_Name: ItemChoosePrefab
   m_TagString: Untagged
@@ -1162,7 +1163,7 @@ RectTransform:
   m_GameObject: {fileID: 5940823426826818201}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7184296898985022828}
@@ -1179,8 +1180,8 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 600, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1282,6 +1283,26 @@ MonoBehaviour:
   animator: {fileID: 0}
   hoverSoundName: UI_Hover
   randomPitch: 1
+--- !u!114 &9204782596512914361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5940823426826818201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 1
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &6104397129835312351
 GameObject:
   m_ObjectHideFlags: 0

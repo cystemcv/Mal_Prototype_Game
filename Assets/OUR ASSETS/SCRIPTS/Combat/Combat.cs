@@ -372,9 +372,56 @@ public class Combat : MonoBehaviour
            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
            // yield return new WaitForSeconds(0.1f);
         }
-        //yield return null;
 
-       //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot));
+
+        foreach (ScriptablePlanets.ItemClassPlanet itemClassPlanet in CombatManager.Instance.scriptablePlanet.planetBattleGround.itemClassPlanet)
+        {
+
+            //based on min and max value
+            int quantity = UnityEngine.Random.Range(itemClassPlanet.minQuantity, itemClassPlanet.maxQuantity);
+
+            int percQuantity = 0;
+
+            if (itemClassPlanet.percentage != 0)
+            {
+
+
+                //then give value based on range
+                for (int i = 0; i < quantity; i++)
+                {
+
+                    int randomChance = UnityEngine.Random.Range(0, 100);
+
+                    if (randomChance <= itemClassPlanet.percentage)
+                    {
+                        percQuantity++; //add quantity by 1
+                    }
+
+                }
+
+                quantity = percQuantity;
+
+            }
+
+
+
+            //if 0 then nothing should be added on loot
+            if (quantity == 0)
+            {
+                continue;
+            }
+
+            //create the classItem
+            ClassItemData classItem = new ClassItemData(itemClassPlanet.scriptableItem, quantity);
+
+            //then add item to loot
+            StaticData.lootItemList.Add(classItem);
+
+            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+            // yield return new WaitForSeconds(0.1f);
+        }
+
+        //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot));
 
     }
 

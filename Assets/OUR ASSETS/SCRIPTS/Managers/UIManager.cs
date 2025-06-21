@@ -91,6 +91,11 @@ public class UIManager : MonoBehaviour
     private bool eventButtonsShown = false;
     private bool canExitEvent = false;
 
+    [Header("CRAFTING")]
+    public GameObject craftingPanelUI;
+    public GameObject craftingPanelUI_content;
+    public GameObject recipeUIPrefab;
+
     [Header("GALAXY")]
     public GameObject galaxyScaling;
 
@@ -949,6 +954,8 @@ public class UIManager : MonoBehaviour
         yield return null;
 
     }
+
+
 
 
     public void HideEventGo()

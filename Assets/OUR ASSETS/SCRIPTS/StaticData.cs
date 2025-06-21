@@ -24,6 +24,8 @@ public class StaticData : MonoBehaviour
     public static List<ClassItemData> companionItemList = new List<ClassItemData>();
     public static List<ClassItemData> artifactItemList = new List<ClassItemData>();
 
+    public static List<CraftingRecipesData> craftingRecipesDataList = new List<CraftingRecipesData>();
+
     // Variables needed for artifacts
     public static CardScript artifact_CardScript;
 
