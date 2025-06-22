@@ -757,7 +757,7 @@ public class DeckManager : MonoBehaviour
 
         //instantiate the prefab 
         // Instantiate at position (0, 0, 0) and zero rotation.
-        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UI_Combat.Instance.deckInfo.transform.position, Quaternion.identity);
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, parent.transform.position, Quaternion.identity);
         //get the scriptable object
         ScriptableCard scriptableCard = cardScript.scriptableCard;
 
@@ -822,7 +822,10 @@ public class DeckManager : MonoBehaviour
         }
 
         //check mana
-        Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
+        if (Combat.Instance != null)
+        {
+            Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
+        }
 
 
 

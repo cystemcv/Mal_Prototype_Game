@@ -20,8 +20,8 @@ public class Common_Card_Boomerang : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        int selfCalculatedDamage = Combat.Instance.CalculateEntityDmg(selfDamageAmount, entityUsedCard, realTarget);
+        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
+        int selfCalculatedDamage = (Combat.Instance == null) ? selfDamageAmount : Combat.Instance.CalculateEntityDmg(selfDamageAmount, entityUsedCard, realTarget);
         customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies<br>";
         customDesc += selfMultiHits + "X" + " Deal " + DeckManager.Instance.GetCalculatedValueString(selfDamageAmount, selfCalculatedDamage) + " to all allies";
 
@@ -104,7 +104,7 @@ public class Common_Card_Boomerang : ScriptableCard
                 break;
             }
 
-            int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+            int calculatedDmg = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
 
             CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
 

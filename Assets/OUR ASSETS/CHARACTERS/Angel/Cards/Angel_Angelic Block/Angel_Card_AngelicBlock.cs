@@ -14,7 +14,7 @@ public class Angel_Card_AngelicBlock : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmount, calculatedShield) + " shield to character";
 
         return customDesc;
@@ -28,7 +28,7 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
 
     }
@@ -41,7 +41,7 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 
-        int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
     }
 

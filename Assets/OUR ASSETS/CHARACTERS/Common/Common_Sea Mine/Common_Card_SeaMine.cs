@@ -17,11 +17,11 @@ public class Common_Card_SeaMine : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
+        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
 
         int finalDamage = calculatedDamage * multiplyAmountGlobal;
 
-        if (Combat.Instance.battleGroundType == SystemManager.BattleGroundType.WATER)
+        if (Combat.Instance != null && Combat.Instance.battleGroundType == SystemManager.BattleGroundType.WATER)
         {
             customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an enemy." + "<br>" +
                 "<color=blue>(x" + multiplyAmountGlobal + " on Water Battleground)</color>";

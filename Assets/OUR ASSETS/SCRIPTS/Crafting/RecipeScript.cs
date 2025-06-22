@@ -14,6 +14,7 @@ public class RecipeScript : MonoBehaviour
         if (!CraftingManager.Instance.CanRecipeBeCrafted(craftingRecipesData))
         {
             Debug.Log("CANNOT CRAFT!");
+            NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.ERROR, "CANNOT CRAFT!", "Insufficient materials to craft this recipe!");
             return;
         }
 
@@ -30,6 +31,7 @@ public class RecipeScript : MonoBehaviour
 
             //add card on deck
             DeckManager.Instance.AddCardOnDeck(craftingRecipesData.scriptableCard, 0);
+            NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.SUCCESS, "CRAFT SUCCESSFULL!", "Crafted Card '" + craftingRecipesData.scriptableCard.cardName + "' !");
 
         }
         else
@@ -38,14 +40,20 @@ public class RecipeScript : MonoBehaviour
             {
                 ClassItemData classItemData = new ClassItemData(craftingRecipesData.scriptableItem, 1);
                 ItemManager.Instance.AddArtifactItemInList(classItemData);
+                NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.SUCCESS, "CRAFT SUCCESSFULL!", "Crafted Artifact '" + craftingRecipesData.scriptableItem.itemName + "' !");
             }
             else
             {
                 ClassItemData classItemData = new ClassItemData(craftingRecipesData.scriptableItem, 1);
                 ItemManager.Instance.AddCompanionItemInList(classItemData);
+                NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.SUCCESS, "CRAFT SUCCESSFULL!", "Crafted Companion Upgrade '" + craftingRecipesData.scriptableItem.itemName + "' !");
             }
 
+
+
         }
+
+
 
         //remove recipe
         CraftingManager.Instance.RemoveRecipeFromList(craftingRecipesData,StaticData.craftingRecipesDataList);

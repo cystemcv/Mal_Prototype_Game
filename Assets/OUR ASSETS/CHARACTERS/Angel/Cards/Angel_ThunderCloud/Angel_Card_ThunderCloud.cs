@@ -6,7 +6,7 @@ using UnityEngine;
 public class Angel_Card_ThunderCloud : ScriptableCard
 {
 
-    public int cardDmg = 0;
+    public int damageAmount = 0;
 
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
@@ -15,9 +15,9 @@ public class Angel_Card_ThunderCloud : ScriptableCard
     public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(cardDmg, entityUsedCard, null);
+        int calculatedDmg = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, null);
 
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(cardDmg, calculatedDmg) + " to an enemy for every <color=yellow>Wet</color>. Remove each " +
+        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDmg) + " to an enemy for every <color=yellow>Wet</color>. Remove each " +
             "<color=yellow>Wet</color>";
         return customDesc;
     }

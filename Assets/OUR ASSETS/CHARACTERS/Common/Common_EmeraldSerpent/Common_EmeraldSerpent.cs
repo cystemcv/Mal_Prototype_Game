@@ -16,8 +16,8 @@ public class Common_EmeraldSerpent : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        int calculatedArmor = Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCard, realTarget);
+        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        int calculatedArmor =  (Combat.Instance == null) ? armorAmount : Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCard, realTarget);
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(armorAmount, calculatedArmor) + " armor to character on Odd Turn Number!<br>";
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmount, calculatedShield) + " shield to character on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
@@ -56,12 +56,12 @@ public class Common_EmeraldSerpent : ScriptableCard
 
         if (IsOdd(Combat.Instance.turns))
         {
-            int calculatedArmor = Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCardGlobal, realTarget);
+            int calculatedArmor = (Combat.Instance == null) ? armorAmount : Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedArmor, false, SystemManager.AdjustNumberModes.ARMOR));
         }
         else
         {
-            int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCardGlobal, realTarget);
+            int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
         }
     }

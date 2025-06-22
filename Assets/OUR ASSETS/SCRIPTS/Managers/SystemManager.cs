@@ -73,9 +73,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemIn { INVENTORY, LOOT, ARTIFACTS, COMPANION }
 
-    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM }
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM,RANDOMRECIPEITEM }
 
     public enum BattleGroundType { WATER, MAGMA, DARK, ELECTRIC, LUSH, SAND };
+
+    public enum NotificationOperation { WARNING,ERROR,SUCCESS }
 
     public enum ActivationType
     {

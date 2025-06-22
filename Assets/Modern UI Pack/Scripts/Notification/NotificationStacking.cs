@@ -11,7 +11,7 @@ namespace Michsky.MUIP
         public float delay = 1;
 
         // Helpers
-        List<NotificationManager> notifications = new List<NotificationManager>();
+        public List<NotificationManager> notifications = new List<NotificationManager>();
         int currentNotification = 0;
         bool enableUpdating = false;
 

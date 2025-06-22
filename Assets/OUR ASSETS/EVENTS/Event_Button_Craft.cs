@@ -42,8 +42,8 @@ public class Event_Button_Craft : ScriptableButtonEvent
 
     public IEnumerator ForceOpenEvent()
     {
-        //open shop ui
-        CraftingManager.Instance.OpenCraftingUI();
+        //open craft ui
+        CraftingManager.Instance.OpenCraftingUI("EDIT");
 
         yield return null;
     }

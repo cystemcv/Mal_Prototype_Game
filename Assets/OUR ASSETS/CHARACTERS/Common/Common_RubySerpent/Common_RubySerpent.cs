@@ -17,7 +17,7 @@ public class Common_RubySerpent : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
+        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
         customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an Enemy on Odd Turn Number!<br>";
         customDesc += "Add x" + burnAmount + " <color=yellow>" + burn.nameID   + "</color> to an Enemy on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
@@ -53,7 +53,7 @@ public class Common_RubySerpent : ScriptableCard
 
         if (IsOdd(Combat.Instance.turns))
         {
-            int calculatedDamage = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+            int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDamage, false, SystemManager.AdjustNumberModes.ATTACK));
         }
         else

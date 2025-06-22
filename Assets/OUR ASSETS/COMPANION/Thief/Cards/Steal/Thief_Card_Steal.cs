@@ -14,7 +14,6 @@ public class Thief_Card_Steal : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedShield = Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         customDesc += "Steal a monster card and add it to your hand, forcing the enemy to advance to the next turn card!";
 
         return customDesc;

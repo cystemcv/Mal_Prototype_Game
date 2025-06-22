@@ -132,6 +132,10 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             {
                 AddRandomArtifactItem();
             }
+            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMRECIPEITEM)
+            {
+                AddRandomRecipeItem();
+            }
             else
             {
                 //add to inventory
@@ -256,6 +260,23 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
 
 
+
+    }
+
+    public void AddRandomRecipeItem()
+    {
+
+        //Remove from loot
+        ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
+
+        //ItemManager.Instance.ShowInventory();
+        ItemManager.Instance.ShowLoot();
+
+
+        CraftingRecipesData craftingRecipesData = CraftingManager.Instance.CreateRecipe();
+        StaticData.craftingRecipesDataList.Add(craftingRecipesData);
+
+        CraftingManager.Instance.OpenCraftingUI("VIEW");
 
     }
 

@@ -600,17 +600,30 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OpenMainDeckList()
+    {
+
+        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+
+        foreach (CardScript cardScript in StaticData.staticMainDeck)
+        {
+            scriptableCardList.Add(cardScript.scriptableCard);
+        }
+
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Deck Card List", CadList_DoNothing);
+    }
+
     public void OpenDeckList()
     {
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in DeckManager.Instance.combatDeck)
+        foreach (CardScript cardScript in DeckManager.Instance.banishedPile)
         {
             scriptableCardList.Add(cardScript.scriptableCard);
         }
 
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 5, "Current Deck Card List", CadList_DoNothing);
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Current Deck Card List", CadList_DoNothing);
     }
 
     private void CadList_DoNothing()

@@ -189,7 +189,7 @@ public class CraftingManager : MonoBehaviour
 
     }
 
-    public void OpenCraftingUI()
+    public void OpenCraftingUI(string mode)
     {
 
         //open the UI for crafting
@@ -197,7 +197,7 @@ public class CraftingManager : MonoBehaviour
 
         //testing crafting
 
-        for(int i=0; i< recipeListLimit; i++)
+        for (int i = 0; i < recipeListLimit; i++)
         {
             CraftingRecipesData craftingRecipesData = CreateRecipe();
             StaticData.craftingRecipesDataList.Add(craftingRecipesData);
@@ -220,6 +220,8 @@ public class CraftingManager : MonoBehaviour
 
             GameObject craftingReward = recipeGO.transform.Find("CraftingReward").gameObject;
             GameObject itemListMaterials = recipeGO.transform.Find("ItemList").gameObject;
+            GameObject craftButtons = recipeGO.transform.Find("Buttons").gameObject;
+
             SystemManager.Instance.DestroyAllChildren(craftingReward);
             SystemManager.Instance.DestroyAllChildren(itemListMaterials);
 
@@ -237,6 +239,17 @@ public class CraftingManager : MonoBehaviour
 
             //create items
             CreateRecipeItems(data,itemListMaterials);
+
+            if (mode != "EDIT")
+            {
+
+                //disable the buttons
+                foreach(Transform button in craftButtons.transform)
+                {
+                    button.GetComponent<ButtonManager>().Interactable(false);
+                }
+
+            }
 
         }
 
