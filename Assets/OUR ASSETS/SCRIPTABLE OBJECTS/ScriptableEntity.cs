@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,10 @@ public class ScriptableEntity : ScriptableObject
 
     [Header("AI")]
     public Vector3 spawnIntend = new Vector3(0, 1, 0);
+    public AICommand aICommandsInitialize;
+    public List<AICommand> aICommands = new List<AICommand>();
+
+
 
     [Header("STATS")]
     //Character Stats - Obviously subject to alteration
@@ -61,4 +66,13 @@ public class ScriptableEntity : ScriptableObject
         return clone;
     }
 
+
+    [Serializable]
+    public class AICommand
+    {
+
+        public SystemManager.AICommandType aICommandType;
+        public List<ScriptableCard> aiScriptableCards;
+
+    }
 }

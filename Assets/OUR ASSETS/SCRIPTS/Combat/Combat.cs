@@ -513,7 +513,8 @@ public class Combat : MonoBehaviour
 
         StaticData.staticScriptableCompanion.InitializeButton();
 
-   
+        //do the ai logic for each enemy
+        yield return StartCoroutine(AIManager.Instance.AiActInitialize(SystemManager.Instance.GetEnemyTagsList()));
 
         //start the player
         yield return StartCoroutine(WaitPlayerTurns());
@@ -615,7 +616,7 @@ public class Combat : MonoBehaviour
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiAct(SystemManager.Instance.GetPlayerTagsList()));
 
-                //generate intend for all players
+        //generate intend for all players
         yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetPlayerTagsList()));
         yield return StartCoroutine(AIManager.Instance.GenerateIntends(SystemManager.Instance.GetEnemyTagsList()));
 

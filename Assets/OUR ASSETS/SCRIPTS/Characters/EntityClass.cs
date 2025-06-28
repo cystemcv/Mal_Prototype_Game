@@ -329,7 +329,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
         cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
 
-        ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+        ScriptableCard scriptableCard = aIBrain.scriptableCardToUse;
 
         //add the scriptable card object to the prefab class to reference
         cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;

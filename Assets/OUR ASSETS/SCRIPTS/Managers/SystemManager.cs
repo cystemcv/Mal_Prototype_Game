@@ -58,6 +58,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum AIIntend { ATTACK, MAGIC, BUFF, DEBUFF, CARDDECK }
 
+    public enum AICommandType { MANUAL, RANDOM }
+
     public enum CardThrow { DISCARD, BANISH, DECK }
 
     public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon }

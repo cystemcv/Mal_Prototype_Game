@@ -65,7 +65,7 @@ public class Thief_Card_Steal : ScriptableCard
         }
 
 
-        cardScriptTemp.scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+        cardScriptTemp.scriptableCard = aIBrain.scriptableCardToUse;
 
         Debug.Log("cardScriptTemp.scriptableCard : ", cardScriptTemp.scriptableCard);
 

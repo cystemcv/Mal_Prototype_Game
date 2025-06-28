@@ -41,7 +41,7 @@ public class Ability_CopyEnemyCard : ScriptableCardAbility
         //generate cardScript
         CardScript cardScriptTemp = new CardScript();
         AIBrain aIBrain = enemies[index].GetComponent<AIBrain>();
-        cardScriptTemp.scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+        cardScriptTemp.scriptableCard = aIBrain.scriptableCardToUse;
 
         Debug.Log("cardScriptTemp.scriptableCard : ", cardScriptTemp.scriptableCard);
 

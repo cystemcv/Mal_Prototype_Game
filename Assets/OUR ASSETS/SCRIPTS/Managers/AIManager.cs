@@ -51,7 +51,7 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
-            ScriptableCard scriptableCard = aIBrain.cardScriptList[aIBrain.aiLogicStep];
+            ScriptableCard scriptableCard = aIBrain.scriptableCardToUse;
             float totalAbilitiesWaitTime = 0;
 
             ////go throught every ability and calculate the waitTime
@@ -75,6 +75,49 @@ public class AIManager : MonoBehaviour
 
     }
 
+
+    public IEnumerator AiActInitialize(List<string> tags)
+    {
+
+
+        //get how many enemies will act
+        List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+        foreach (GameObject entity in entities)
+        {
+
+            if (entity == null)
+            {
+                continue;
+            }
+
+            AIBrain aIBrain = entity.GetComponent<AIBrain>();
+
+            //if no ai brain the get continue to the next or deasd
+            if (aIBrain == null || entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+            {
+                continue;
+            }
+
+            ScriptableCard scriptableCard = entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards[0];
+            float totalAbilitiesWaitTime = 0;
+
+            aIBrain.scriptableEntity = entity.GetComponent<EntityClass>().scriptableEntity;
+
+            //execute ai
+            aIBrain.ExecuteInitializeCommand();
+
+            //loop between them and execute the command
+            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
+
+            if (aIBrain.intend != null)
+            {
+                aIBrain.intend.SetActive(false);
+            }
+        }
+
+
+    }
 
 
 

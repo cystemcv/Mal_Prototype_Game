@@ -6,10 +6,15 @@ using UnityEngine.UI;
 using System.Linq;
 using static ScriptableCard;
 
+
+
 public class AIBrain : MonoBehaviour
 {
 
-    public List<ScriptableCard> cardScriptList;
+ 
+
+
+    //public List<ScriptableCard> cardScriptList;
 
     public int aiLogicStep = 0;
 
@@ -17,24 +22,43 @@ public class AIBrain : MonoBehaviour
 
     public GameObject intend;
 
+    public ScriptableEntity scriptableEntity;
+    public ScriptableCard scriptableCardToUse;
 
     public void ExecuteCommand()
     {
 
         //if there are not cards then dont do anything
-        if (cardScriptList.Count <= 0)
+        if (scriptableEntity.aICommands.Count <= 0)
         {
             aiLogicStep = 0;
             return;
         }
 
-
         //play card
-        PlayCardOnlyAbilities(cardScriptList[aiLogicStep]);
+        PlayCardOnlyAbilities(scriptableCardToUse);
 
         IncreaseAiStep();
 
     }
+
+    public void ExecuteInitializeCommand()
+    {
+
+        //if there are not cards then dont do anything
+        if (scriptableEntity.aICommandsInitialize == null)
+        {
+            return;
+        }
+
+        ScriptableCard scriptableCard = GetAICardFromCommand(scriptableEntity.aICommandsInitialize);
+        //play card
+        PlayCardOnlyAbilities(scriptableCard);
+
+        IncreaseAiStep();
+
+    }
+
 
     public void IncreaseAiStep()
     {
@@ -42,7 +66,7 @@ public class AIBrain : MonoBehaviour
         aiLogicStep++;
 
         //check if it goes over the card limit reset it
-        if (aiLogicStep > cardScriptList.Count - 1)
+        if (aiLogicStep > scriptableEntity.aICommands.Count - 1)
         {
             aiLogicStep = 0;
         }
@@ -65,10 +89,33 @@ public class AIBrain : MonoBehaviour
         //assign a target for card
         targetForCard = gameobjectsFound[indexForTargetForCard];
 
-        ScriptableCard scriptableCard = cardScriptList[aiLogicStep];
+        //test
+        scriptableEntity = this.gameObject.GetComponent<EntityClass>().scriptableEntity;
 
-        SpawnAIIntend(scriptableCard);
+        scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
 
+        SpawnAIIntend(scriptableCardToUse);
+
+    }
+
+    public ScriptableCard GetAICardFromCommand(ScriptableEntity.AICommand aICommand)
+    {
+
+        ScriptableCard scriptableCard = null;
+
+        if (aICommand.aICommandType == SystemManager.AICommandType.MANUAL)
+        {
+            //then play the first card
+            scriptableCard = aICommand.aiScriptableCards[0];
+        }
+        else if (aICommand.aICommandType == SystemManager.AICommandType.RANDOM)
+        {
+            //then play a random card from that set
+            int randomNumber = Random.Range(0, scriptableEntity.aICommands.Count);
+            scriptableCard = aICommand.aiScriptableCards[randomNumber];
+        }
+
+        return scriptableCard;
     }
 
     public void SpawnAIIntend(ScriptableCard scriptableCard)
@@ -99,10 +146,10 @@ public class AIBrain : MonoBehaviour
         targetForCard = gameobjectsFound[indexForTargetForCard];
     }
 
-    public void PlayCardOnlyAbilities(ScriptableCard cardScript)
+    public void PlayCardOnlyAbilities(ScriptableCard scriptableCard)
     {
 
-        StartCoroutine(PlayCardCoroutine(cardScript));
+        StartCoroutine(PlayCardCoroutine(scriptableCard));
 
     }
 
