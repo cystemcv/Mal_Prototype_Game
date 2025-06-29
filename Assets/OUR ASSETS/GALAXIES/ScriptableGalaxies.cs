@@ -9,6 +9,8 @@ public class ScriptableGalaxies : ScriptableObject
     [Title("GALAXY")]
     public string galaxyName = "";
 
+
+
     [Title("GALAXY PLANETS")]
     public List<ScriptablePlanets> scriptablePlanets;
     public List<ScriptablePlanets> scriptableStartingPlanets;

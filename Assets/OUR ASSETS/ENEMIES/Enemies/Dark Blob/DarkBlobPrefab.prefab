@@ -80,7 +80,7 @@ MonoBehaviour:
   scriptableEntity: {fileID: 11400000, guid: f3154542a1fa7e4478d9ceeca1cd5ff3, type: 2}
   listBuffDebuffClass: []
   poisongDmg: 0
-  attack: 3
+  attack: 0
   attackDebuffPerc: 0
   attackBuffPerc: 0
   defence: 0
@@ -89,12 +89,12 @@ MonoBehaviour:
   resistance: 0
   resistanceDebuffPerc: 0
   resistanceBuffPerc: 0
-  health: 9999
-  maxHealth: 9999
+  health: 0
+  maxHealth: 0
   shield: 0
-  maxShield: 999
+  maxShield: 0
   armor: 0
-  maxArmor: 999
+  maxArmor: 0
   counterDamage: 0
   allowEntityRotation: 0
   sliderBar: {fileID: 0}
@@ -147,13 +147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7532010e7df2804a88c84842968220d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardScriptList:
-  - {fileID: 11400000, guid: aaf0e2302bd5e1b4a9850c288fd5e3ca, type: 2}
-  - {fileID: 11400000, guid: 581eba49868bacd499aa114822c1ebae, type: 2}
-  - {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
   aiLogicStep: 0
   targetForCard: {fileID: 0}
   intend: {fileID: 0}
+  scriptableEntity: {fileID: 0}
+  scriptableCardToUse: {fileID: 0}
 --- !u!212 &-7426720843667326011
 SpriteRenderer:
   m_ObjectHideFlags: 0

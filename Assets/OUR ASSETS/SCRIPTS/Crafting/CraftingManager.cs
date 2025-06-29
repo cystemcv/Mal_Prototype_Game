@@ -197,11 +197,11 @@ public class CraftingManager : MonoBehaviour
 
         //testing crafting
 
-        for (int i = 0; i < recipeListLimit; i++)
-        {
-            CraftingRecipesData craftingRecipesData = CreateRecipe();
-            StaticData.craftingRecipesDataList.Add(craftingRecipesData);
-        }
+        //for (int i = 0; i < recipeListLimit; i++)
+        //{
+        //    CraftingRecipesData craftingRecipesData = CreateRecipe();
+        //    StaticData.craftingRecipesDataList.Add(craftingRecipesData);
+        //}
 
 
         //generate all the crafting UI

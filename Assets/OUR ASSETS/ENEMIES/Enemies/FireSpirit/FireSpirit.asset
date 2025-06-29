@@ -23,7 +23,18 @@ MonoBehaviour:
   entityDescription: 
   entityChoose: {fileID: 0}
   summonTurns: 3
+  entitySpaceShipPrefab: {fileID: 0}
+  entitySpaceShipImage: {fileID: 0}
+  entityAnimator: {fileID: 0}
+  spaceShipAnimator: {fileID: 0}
   spawnIntend: {x: 0, y: 1.5, z: 0}
+  aICommandsInitialize:
+    aICommandType: 0
+    aiScriptableCards: []
+  aICommands:
+  - aICommandType: 0
+    aiScriptableCards:
+    - {fileID: 11400000, guid: 35d6d5b989d9b9540a174d2904732345, type: 2}
   strength: 0
   defence: 0
   maxHealth: 15

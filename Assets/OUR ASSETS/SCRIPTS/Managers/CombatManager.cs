@@ -57,4 +57,18 @@ public class CombatManager : MonoBehaviour
         Destroy(abilityEffect, scriptableCard.abilityEffectLifetime);
     }
 
+    public int GetScaleNumber(List<int> scalingList)
+    {
+
+        int num = 0;
+
+        int galaxyLevel = CustomDungeonGenerator.Instance.scalingLevel;
+
+        // Ensure galaxyLevel doesn't exceed the list's count to avoid exceptions
+        num = scalingList.Take(galaxyLevel).Sum();
+
+        return num; 
+
+    } 
+
 }

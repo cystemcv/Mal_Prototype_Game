@@ -255,7 +255,10 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             // Assign the item to the ItemChoiceClass component
             ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
             itemChoiceClass.classItem = itemClassTemp;
-    
+
+
+            Destroy(itemPrefab.GetComponent<LayoutElement>());
+
         }
 
 
@@ -348,6 +351,9 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             // Assign the item to the ItemChoiceClass component
             ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
             itemChoiceClass.classItem = itemClassTemp;
+
+            Destroy(itemPrefab.GetComponent<LayoutElement>());
+
         }
 
 

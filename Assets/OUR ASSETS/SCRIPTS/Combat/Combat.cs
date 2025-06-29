@@ -843,9 +843,22 @@ public class Combat : MonoBehaviour
 
         ScriptablePlanets scriptablePlanet = GetScriptablePlanet(isFakeEventPlanet);
 
+        List<ScriptableEntity> scriptableEntities = scriptablePlanet.scriptableEntities;
+
+        //if its not fake planet
+        if (!isFakeEventPlanet)
+        {
+            //check if starting battle
+            if (CustomDungeonGenerator.Instance.basicFightsFought < CustomDungeonGenerator.Instance.basicFightsFoughtMax)
+            {
+                scriptableEntities = scriptablePlanet.scriptableBasicEntities;
+                CustomDungeonGenerator.Instance.basicFightsFought++;
+            }
+
+        }
 
         //generate the selected characters that will be used throught the game
-        foreach (ScriptableEntity scriptableEntity in scriptablePlanet.scriptableEntities)
+        foreach (ScriptableEntity scriptableEntity in scriptableEntities)
         {
             //instantiate our character or characters
             GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);

@@ -17,7 +17,9 @@ MonoBehaviour:
   planetName: Ifrit
   scriptableEntities:
   - {fileID: 11400000, guid: e61130daee90bf94aa1b294539adc567, type: 2}
-  - {fileID: 11400000, guid: 6b27e8168f86d6244b594da465c75e79, type: 2}
+  - {fileID: 11400000, guid: e61130daee90bf94aa1b294539adc567, type: 2}
+  scriptableBasicEntities:
+  - {fileID: 11400000, guid: e61130daee90bf94aa1b294539adc567, type: 2}
   planetBattleGround: {fileID: 11400000, guid: d3a385727ca0bce4380b3069071dcd35, type: 2}
   itemClassPlanet:
   - scriptableItem: {fileID: 11400000, guid: b30f1a0ae10d67c4d897a3be63b6b62e, type: 2}
@@ -25,6 +27,14 @@ MonoBehaviour:
     maxQuantity: 4
     percentage: 0
   - scriptableItem: {fileID: 11400000, guid: 07613f5b85e38ff48a1d2df9e01c9fcc, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
+    percentage: 0
+  - scriptableItem: {fileID: 11400000, guid: c21ad052952b18149ba1d0badd7a17ec, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
+    percentage: 0
+  - scriptableItem: {fileID: 11400000, guid: 377ccf79b6fbef648aeee614be79d40f, type: 2}
     minQuantity: 1
     maxQuantity: 1
     percentage: 0

@@ -19,8 +19,11 @@ public class CustomDungeonGenerator : MonoBehaviour
     public int galaxyLevel = 1;
 
     public int stepsTaken = 0;
-    public int maxSteps = 30;
+    //public int maxSteps = 30;
     public int scalingLevel = 0;
+    //public int maxScalingLevel = 10;
+    public ScriptableScaling scriptableScaling;
+
 
     public List<ScriptableGalaxies> scriptableGalaxies_1;
     public List<ScriptableGalaxies> scriptableGalaxies_2;
@@ -31,6 +34,9 @@ public class CustomDungeonGenerator : MonoBehaviour
     public ScriptableGalaxies galaxyGenerating;
 
     public Sprite clearIcon;
+
+    public int basicFightsFought = 0;
+    public int basicFightsFoughtMax = 3;
 
     public GameObject StartPlanetPrefab;
     public GameObject BattlePlanetPrefab;
@@ -122,7 +128,15 @@ public class CustomDungeonGenerator : MonoBehaviour
             DeckManager.Instance.BuildStartingDeck();
         }
 
-        UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + maxSteps + " (LV:" + scalingLevel + ")";
+        if (scalingLevel < scriptableScaling.maxScalingLevel)
+        {
+            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
+        }
+        else
+        {
+            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "MAXED! (LV:" + scalingLevel + ")";
+        }
+
 
 
     }
@@ -175,7 +189,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded,null);
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded, null);
             UpdateAdventureUI();
         }
 
@@ -215,14 +229,14 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             CustomDungeonGenerator.Instance.OnRoomClick(planet);
 
-            if(planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP
+            if (planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.SHOP
                 && planet.GetComponent<RoomScript>().planetType != SystemManager.PlanetTypes.REST
                 )
             {
                 planet.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = clearIcon;
             }
-        
-            
+
+
             planet.GetComponent<RoomScript>().roomCleared = true;
 
         }
@@ -339,7 +353,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         //end generation 
         yield return StartCoroutine(SetPlayerSpaceship());
-    
+
     }
 
     public IEnumerator SetPlayerSpaceship()
@@ -420,7 +434,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         //get the sum of all rooms as the max (wont count boss or hidden rooms as i want them to be on the edge of the galaxy
         maxRooms = howManyCombatRoom + howManyEliteCombatRoom + howManyRewardRoom + howManyEventRoom + howManyRestRoom + howManyShopRoom;
         Debug.Log("maxRooms : " + maxRooms);
-    
+
         //get the dungeon parent transform where every room will be child of
 
         Transform dungeonParentTransform = StaticData.staticDungeonParent.transform;
@@ -486,43 +500,43 @@ public class CustomDungeonGenerator : MonoBehaviour
 
         //RULES OF DUNGEON
 
-        //1ST RULE , THE FIRST ROOMS WILL BE STARTING / NOOBY FRIENDLY. AND WILL CONTAIN STARTING BATTLES/EVENTS ONLY
-        if (rooms.Count < galaxyGenerating.startingRooms)
-        {
-            //if both rooms are available then choose randomly between them
-            if (howManyCombatRoom != 0 && howManyEventRoom != 0)
-            {
-                int randomChance = UnityEngine.Random.Range(0, 1);
+        ////1ST RULE , THE FIRST ROOMS WILL BE STARTING / NOOBY FRIENDLY. AND WILL CONTAIN STARTING BATTLES/EVENTS ONLY
+        //if (rooms.Count < galaxyGenerating.startingRooms)
+        //{
+        //    //if both rooms are available then choose randomly between them
+        //    if (howManyCombatRoom != 0 && howManyEventRoom != 0)
+        //    {
+        //        int randomChance = UnityEngine.Random.Range(0, 1);
 
-                if (randomChance == 0)
-                {
-                    howManyCombatRoom--;
-                    planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
-                    return planetType;
-                }
-                else
-                {
-                    howManyEventRoom--;
-                    planetType = SystemManager.PlanetTypes.EVENT;
-                    return planetType;
-                }
-            }
-            else if (howManyCombatRoom != 0)
-            {
-                howManyCombatRoom--;
-                planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
-                return planetType;
-            }
-            else if (howManyEventRoom != 0)
-            {
-                howManyEventRoom--;
-                planetType = SystemManager.PlanetTypes.EVENT;
-                return planetType;
-            }
+        //        if (randomChance == 0)
+        //        {
+        //            howManyCombatRoom--;
+        //            planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
+        //            return planetType;
+        //        }
+        //        else
+        //        {
+        //            howManyEventRoom--;
+        //            planetType = SystemManager.PlanetTypes.EVENT;
+        //            return planetType;
+        //        }
+        //    }
+        //    else if (howManyCombatRoom != 0)
+        //    {
+        //        howManyCombatRoom--;
+        //        planetType = SystemManager.PlanetTypes.STARTINGBATTLE;
+        //        return planetType;
+        //    }
+        //    else if (howManyEventRoom != 0)
+        //    {
+        //        howManyEventRoom--;
+        //        planetType = SystemManager.PlanetTypes.EVENT;
+        //        return planetType;
+        //    }
 
 
 
-        }
+        //}
 
         //2ND RULE THE HALF ROOM WILL ALWAYS BE A REWARD ROOM
         if (rooms.Count == maxRooms / 2)
@@ -573,9 +587,10 @@ public class CustomDungeonGenerator : MonoBehaviour
             planetTypes.Add(SystemManager.PlanetTypes.SHOP);
         }
 
-        if (planetTypes.Count > 0) {
+        if (planetTypes.Count > 0)
+        {
 
-            int randomIndex = UnityEngine.Random.Range(0,planetTypes.Count);
+            int randomIndex = UnityEngine.Random.Range(0, planetTypes.Count);
             SystemManager.PlanetTypes randomPlanetType = planetTypes[randomIndex];
 
             if (randomPlanetType == SystemManager.PlanetTypes.BATTLE)
@@ -592,7 +607,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             }
             else if (randomPlanetType == SystemManager.PlanetTypes.REST)
             {
-                howManyRestRoom--; 
+                howManyRestRoom--;
             }
             else if (randomPlanetType == SystemManager.PlanetTypes.REWARD)
             {
@@ -656,10 +671,6 @@ public class CustomDungeonGenerator : MonoBehaviour
         if (planetType == SystemManager.PlanetTypes.START)
         {
             return StartPlanetPrefab;
-        }
-        else if (planetType == SystemManager.PlanetTypes.STARTINGBATTLE)
-        {
-            return BattlePlanetPrefab;
         }
         else if (planetType == SystemManager.PlanetTypes.BATTLE)
         {
@@ -1462,7 +1473,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         for (int i = 0; i < path.Count; i++)
         {
 
-          
+
 
             GameObject targetPlanet = path[i];
             Vector3 direction = (targetPlanet.transform.position - playerSpaceShip.transform.position).normalized;
@@ -1503,13 +1514,22 @@ public class CustomDungeonGenerator : MonoBehaviour
                 stepsTaken += 1;
             }
 
-            if (stepsTaken >= maxSteps)
+
+            if (stepsTaken >= scriptableScaling.maxSteps && scalingLevel < scriptableScaling.maxScalingLevel)
             {
                 stepsTaken = 0;
                 scalingLevel += 1;
             }
 
-            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + maxSteps + " (LV:" + scalingLevel + ")";
+
+            if (scalingLevel < scriptableScaling.maxScalingLevel)
+            {
+                UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
+            }
+            else
+            {
+                UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "MAXED! (LV:" + scalingLevel + ")";
+            }
 
             // Trigger landing logic at destination
             if (i == path.Count - 1)
@@ -1518,11 +1538,11 @@ public class CustomDungeonGenerator : MonoBehaviour
                 UpdateLandPlayerSpaceship(targetPlanet);
                 ClickedRoom(roomScript);
 
-            
+
 
                 if (lastHoveredRoomSecondary != null)
                 {
-                    lastHoveredRoom = lastHoveredRoomSecondary; 
+                    lastHoveredRoom = lastHoveredRoomSecondary;
                 }
                 else
                 {
@@ -1537,7 +1557,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     public void ClickedRoom(RoomScript roomScript)
     {
 
-        if (roomScript.roomCleared 
+        if (roomScript.roomCleared
             && roomScript.planetType != SystemManager.PlanetTypes.SHOP
             && roomScript.planetType != SystemManager.PlanetTypes.REST
             )

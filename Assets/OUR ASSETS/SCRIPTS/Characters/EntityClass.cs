@@ -147,7 +147,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         else
         {
             yield return StartCoroutine(SystemManager.Instance.SpawnPrefabIE(UI_Combat.Instance.commonGameobjectUI, this.gameObject, 0, "gameobjectUI", spawnGameObjectUI));
-    
+
         }
 
         yield return null;
@@ -183,55 +183,34 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public IEnumerator InititializeEntity(EntityCustomClass entityCustomClass = null)
     {
 
+        bool allowScaling = false;
+
+        List<string> tagsAllowedForScaling = SystemManager.Instance.GetEnemyTagsList();
+
+        if (tagsAllowedForScaling.Contains(this.gameObject.tag))
+        {
+            allowScaling = true;
+        }
+
+
         yield return StartCoroutine(SpawnUI());
 
-        //variables that can change during battle
-        if (entityCustomClass != null && entityCustomClass.poisonDmg != 0)
-        {
-            poisongDmg = entityCustomClass.poisonDmg;
+        //initialize from SO
+        poisongDmg = scriptableEntity.poisonDmg;
+        health = scriptableEntity.currHealth;
+        maxHealth = scriptableEntity.maxHealth;
+        attack = scriptableEntity.strength;
+        defence = scriptableEntity.defence;
 
-        }
-        else
-        {
-            poisongDmg = scriptableEntity.poisonDmg;
-        }
 
-        if (entityCustomClass != null && entityCustomClass.currHealth != 0)
+        //add scaling
+        if (allowScaling)
         {
-            health = entityCustomClass.currHealth;
+            health += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
+            maxHealth += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
+            attack += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingAttack);
+            defence += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingDefence);
         }
-        else
-        {
-            health = scriptableEntity.currHealth;
-        }
-
-        if (entityCustomClass != null && entityCustomClass.maxHealth != 0)
-        {
-            maxHealth = entityCustomClass.maxHealth;
-        }
-        else
-        {
-            maxHealth = scriptableEntity.maxHealth;
-        }
-
-        if (entityCustomClass != null && entityCustomClass.strength != 0)
-        {
-            attack = entityCustomClass.strength;
-        }
-        else
-        {
-            attack = scriptableEntity.strength;
-        }
-
-        if (entityCustomClass != null && entityCustomClass.defence != 0)
-        {
-            defence = entityCustomClass.defence;
-        }
-        else
-        {
-            defence = scriptableEntity.defence;
-        }
-
 
         //this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
 
@@ -268,7 +247,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         //armor = 10;
         //shield = 10;
 
-        if (ItemManager.Instance.artifactTestPoolList.Count != 0 && this.gameObject.tag == "Enemy" )
+        if (ItemManager.Instance.artifactTestPoolList.Count != 0 && this.gameObject.tag == "Enemy")
         {
 
             health = 1;
