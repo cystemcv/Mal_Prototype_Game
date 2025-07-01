@@ -61,6 +61,7 @@
     <Compile Include="Assets\PixelFantasy\Common\Scripts\Creature.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\Tileset.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_ShieldSingleTarget.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\NotificationSystemManager.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\Transitions\SpriteSwapTransitions.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CharacterScripts\CharacterState.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerToggle.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Assets\LeanTween\Testing\TestingSequencer.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UIScripts\DropShadow.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Rendering\Ripple.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableScaling.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_BanishCardFromHand.cs" />
     <Compile Include="Assets\Game2DWaterKit\Demo\Large Water Area\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\ValueDragger.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\BetterOffsetter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_DamageAllTargets.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\CraftingRecipesData.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\SizeModifiers\ImpactMode.cs" />
     <Compile Include="Assets\LeanTween\Framework\LTDescrOptional.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralSequencer.cs" />
@@ -193,6 +196,7 @@
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Game2DWaterKitObject.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseAttackInfinite.cs" />
     <Compile Include="Assets\PixelFantasy\PixelMonsters\Common\Scripts\Monster.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\CraftingManager.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSliderEditor.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopArtifact.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RadialSliderEditor.cs" />
@@ -218,7 +222,9 @@
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Summoner\Cards\Summoner_Dark Slash\Summoner_Card_DarkSlash.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Demo\InputSystemChecker.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Conditions\ScriptableCardCondition.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\RecipeScript.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\Internal\InstancerSSU.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Craft.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Demo\Scripts\Demo_Camera.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Rendering\UIGradientEditor.cs" />
@@ -587,6 +593,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerSwitch.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableKeywords.cs" />
     <Compile Include="Assets\PixelFantasy\PixelMonsters\Common\Scripts\MonsterGrid.cs" />
+    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Rest.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\IngameResolutionMonitor.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Toggle\CustomToggle.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Camera\CameraController.cs" />
@@ -605,13 +612,6 @@
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralBasic.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Boomerang\Common_Card_Boomerang.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UI\UI_EventButton.cs" />
-    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Rest.cs" />
-    <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Craft.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\CraftingRecipesData.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\CraftingManager.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Crafting\RecipeScript.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\NotificationSystemManager.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\ScriptableScaling.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />
