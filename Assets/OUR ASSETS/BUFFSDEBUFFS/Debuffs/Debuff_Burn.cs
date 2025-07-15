@@ -11,13 +11,15 @@ public class Debuff_Burn : ScriptableBuffDebuff
     public override bool OnCharacterTurnStart(GameObject target)
     {
 
+        MonoBehaviour runner = CombatCardHandler.Instance;
+
         //+1 damage on each stack
         BuffDebuffClass buffDebuff = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
 
         int extraBurn = buffDebuff.tempVariable;
 
         //deal damage each turn
-        Combat.Instance.AdjustTargetHealth(null, target, burnDamage + extraBurn, false, SystemManager.AdjustNumberModes.ATTACK);
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, target, burnDamage + extraBurn, false, SystemManager.AdjustNumberModes.ATTACK));
 
         return base.OnCharacterTurnStart(target);
 

@@ -55,4 +55,9 @@ public class ScriptableBuffDebuff : ScriptableObject
 
     }
 
+    public virtual void OnGettingHit(GameObject caster , GameObject target, int value, int turnsValue)
+    {
+
+    }
+
 }

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f10652f2d07b8434e948a144d24ac880, type: 3}
+  m_Name: Monster_Card_FlameAura
+  m_EditorClassIdentifier: 
+  cardArt: {fileID: 21300000, guid: 0404515f7a8eb124eaf16cb90860edaf, type: 3}
+  cardName: Flame Aura
+  mainClass: 0
+  cardType: 2
+  cardTypeSecondary: 7
+  cardRarity: 2
+  targetEntityTagList: 
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  primaryManaCost: 5
+  cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 2
+  cardSoundEffect: {fileID: 8300000, guid: 68ac7c55765933d40835defbccf9f137, type: 3}
+  cardFlavor: 
+  cardAbilityClass: []
+  unlockable: 0
+  cardConditionClass: []
+  statusBurn: {fileID: 11400000, guid: 1f3bd41e23298f34ba81599c5140003a, type: 2}

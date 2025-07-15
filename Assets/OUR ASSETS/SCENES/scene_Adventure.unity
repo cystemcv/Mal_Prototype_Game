@@ -1708,73 +1708,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470861723}
   m_CullTransparentMesh: 1
---- !u!1001 &497007361
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2770725649494367896, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_Name
-      value: SeedoodPrefab
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2770725649494367897, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6607698910911391237, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6607698910911391237, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
 --- !u!1 &525856538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,6 +1895,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPrefabScaleWithScreen (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2501518557207666840, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3012192397435766274, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -1969,11 +1906,11 @@ PrefabInstance:
     - target: {fileID: 6706667132104149849, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6eb711d3f7176c040a217c7490f3bad2, type: 3}
+      objectReference: {fileID: 21300000, guid: c91283cc4d336454ca1dc3904711616a, type: 3}
     - target: {fileID: 6706667132104149849, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: fallbackSpriteSettings.Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6eb711d3f7176c040a217c7490f3bad2, type: 3}
+      objectReference: {fileID: 21300000, guid: c91283cc4d336454ca1dc3904711616a, type: 3}
     - target: {fileID: 7135465371217609601, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2387,6 +2324,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPrefabScaleWithScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 2501518557207666840, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3012192397435766274, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
@@ -2394,11 +2335,11 @@ PrefabInstance:
     - target: {fileID: 6706667132104149849, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 365babb06d12a734f9efabef6f78bfd9, type: 3}
+      objectReference: {fileID: 21300000, guid: 2ff0245e3504f1e4b97d56b9c88785c7, type: 3}
     - target: {fileID: 6706667132104149849, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: fallbackSpriteSettings.Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 365babb06d12a734f9efabef6f78bfd9, type: 3}
+      objectReference: {fileID: 21300000, guid: 2ff0245e3504f1e4b97d56b9c88785c7, type: 3}
     - target: {fileID: 7135465371217609601, guid: 9a458cf4b38bccc41b12b557cdc01ef6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8299,6 +8240,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2130021374987795495, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: characterList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2fa82dbcc0347074083a63497d97d230, type: 2}
+    - target: {fileID: 2130021374987795495, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
+      propertyPath: characterList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: de585f208d54c574284ffe0cbcfb38e3, type: 2}
     - target: {fileID: 2328592549228993460, guid: 3b742e1aa03ee0944ba5b9471a2fea38, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

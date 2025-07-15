@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c428e00b6c6bae49987cf0f509b03b6, type: 3}
+  m_Name: Monster_Card_ReflectingMirror
+  m_EditorClassIdentifier: 
+  cardArt: {fileID: 21300000, guid: ea1cd5fcebf187f418ac46bda448e63c, type: 3}
+  cardName: Reflecting Mirror
+  mainClass: 0
+  cardType: 2
+  cardTypeSecondary: 7
+  cardRarity: 1
+  targetEntityTagList: 0000000002000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: f7a9e44658f5306488e4c845a8a0aad6, type: 2}
+  primaryManaCost: 2
+  cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 2
+  cardSoundEffect: {fileID: 8300000, guid: d8aaeff66f25b45d1af61ac93e540246, type: 3}
+  cardFlavor: 
+  cardAbilityClass: []
+  unlockable: 0
+  cardConditionClass: []
+  counter: {fileID: 11400000, guid: f7a9e44658f5306488e4c845a8a0aad6, type: 2}
+  counterAmount: 3

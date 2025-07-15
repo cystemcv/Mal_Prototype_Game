@@ -742,7 +742,7 @@ public class DeckManager : MonoBehaviour
 
     public void AddCardOnCombatDeck(CardScript cardScript)
     {
-
+        DeckManager.Instance.combatDeck.Add(cardScript);
     }
 
     public void RemoveCardFromDeck(ScriptableCard card, int character)

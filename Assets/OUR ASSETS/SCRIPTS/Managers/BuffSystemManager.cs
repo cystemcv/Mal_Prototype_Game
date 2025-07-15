@@ -105,10 +105,55 @@ public class BuffSystemManager : MonoBehaviour
         //activate the buff
         buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, buffDebuffValue, turnsValue);
 
-         //get the buffed class
-         EntityClass entityClass = target.GetComponent<EntityClass>();
+        //get the buffed class
+        EntityClass entityClass = target.GetComponent<EntityClass>();
 
         return entityClass;
+
+    }
+
+    public IEnumerator AddBuffDebuffIE(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int buffDebuffValue, int turnsValue)
+    {
+
+        GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
+        BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, scriptableBuffDebuff.nameID);
+
+        //if there is no buff then create it to the target
+        if (buffDebuffClass == null)
+        {
+            //if not then add this buff
+            //create the gameobject and add it
+            GameObject buffdebuffPrefabLocal = Instantiate(buffdebuffPrefab, gridSystem.transform.position, Quaternion.identity);
+            buffdebuffPrefabLocal.transform.SetParent(gridSystem.transform);
+            buffdebuffPrefabLocal.transform.localScale = new Vector3(1, 1, 1);
+            buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
+
+            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, buffDebuffValue, turnsValue);
+
+            //first time it gets created it should not increase the stacks just the turns
+            if (!buffDebuffClass.infiniteDuration)
+            {
+                buffDebuffClass.tempVariable = buffDebuffValue;
+            }
+        }
+
+        //increase the value of the buff
+        if (!buffDebuffClass.infiniteDuration)
+        {
+            buffDebuffClass.ModifyTurnsAvailable(turnsValue);
+        }
+        else if (buffDebuffClass.infiniteDuration)
+        {
+            buffDebuffClass.ModifyValueAvailable(buffDebuffValue);
+        }
+
+        //activate the buff
+        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, buffDebuffValue, turnsValue);
+
+        //get the buffed class
+        EntityClass entityClass = target.GetComponent<EntityClass>();
+
+        yield return entityClass;
 
     }
 
@@ -128,7 +173,7 @@ public class BuffSystemManager : MonoBehaviour
     //        {
     //            buffDebuffClass.ModifyValueAvailable(variableValue);
     //        }
-       
+
     //    }
     //    else
     //    {
@@ -222,9 +267,9 @@ public class BuffSystemManager : MonoBehaviour
                 //activate buffs/debuffs
                 if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
-              
+
                     activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(character);
-                 
+
                     //if activated then we decrease the turns
                     if (activated)
                     {
@@ -263,7 +308,7 @@ public class BuffSystemManager : MonoBehaviour
                 }
 
 
-  
+
 
                 //check if destroyed
                 buffDebuffClass.CheckIfExpired();
@@ -343,4 +388,24 @@ public class BuffSystemManager : MonoBehaviour
         }
     }
 
+
+    public IEnumerator ActivateBuffsDebuffs_OnGettingHit(GameObject caster, GameObject target)
+    {
+
+
+        List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(target);
+
+        Debug.Log("In here 1");
+
+        foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
+        {
+            Debug.Log("In here loop " + buffdebufPRefab.scriptableBuffDebuff.nameID);
+            BuffDebuffClass buffDebuffClass = buffdebufPRefab;
+            
+            buffDebuffClass.scriptableBuffDebuff.OnGettingHit(caster,target,0,0);
+        }
+
+        yield return null;
+
+    }
 }

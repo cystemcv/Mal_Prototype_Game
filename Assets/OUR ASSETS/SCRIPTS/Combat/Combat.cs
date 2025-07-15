@@ -1306,7 +1306,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public IEnumerator AdjustTargetHealth(GameObject attacker, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
+    public IEnumerator AdjustTargetHealth(GameObject caster, GameObject target, int adjustNumber, bool bypassShield, SystemManager.AdjustNumberModes adjustNumberMode)
     {
 
         if (target == null)
@@ -1328,17 +1328,13 @@ public class Combat : MonoBehaviour
 
             UpdateEntityDamageVisuals(entityClass);
 
-            //then calculate counter attack
-            if (target.GetComponent<EntityClass>().counterDamage > 0)
-            {
-                AdjustTargetHealth(target, attacker, target.GetComponent<EntityClass>().counterDamage, false, SystemManager.AdjustNumberModes.COUNTER);
-            }
+            yield return StartCoroutine(BuffSystemManager.Instance.ActivateBuffsDebuffs_OnGettingHit(caster, target));
 
 
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.COUNTER)
         {
-
+            Debug.Log("COUNTER????");
             CalculateReceivedEntityDamage(entityClass, adjustNumber, bypassShield);
 
             UpdateEntityDamageVisuals(entityClass);

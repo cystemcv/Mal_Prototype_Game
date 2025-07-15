@@ -99,7 +99,7 @@
     <Compile Include="Assets\Game2DWaterKit\Demo\Large Water Area\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\ValueDragger.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Ripples\Effects\WaterRipplesParticleEffect.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_TemporaryDefence.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_TemporaryDefence.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_AddBuffDebuffIfEmpty.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListView.cs" />
@@ -202,6 +202,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RadialSliderEditor.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\LogoCinematic.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Core\MUIPInternalTools.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Evil Flame\Monster_Card_EvilFlame.cs" />
     <Compile Include="Assets\48 Particle Effect Pack\Script\csShowAllEffect.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingIssue.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\RectTransformData.cs" />
@@ -247,7 +248,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_GainShieldEveryTurn.cs" />
     <Compile Include="Assets\OUR ASSETS\ITEMS\ClassItemData.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_HealSingleTarget.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Defence.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_Defence.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingMaxTweens.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\LevelBuilderWorkspace.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\SizeModifiers\SizeModifierCollection.cs" />
@@ -306,7 +307,7 @@
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\TransformScaler.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\GameData.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Switch\SwitchManager.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Debuffs\Debuff_Burn.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Debuffs\Debuff_Burn.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\Transitions\AlphaTransitions.cs" />
@@ -453,7 +454,7 @@
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CharacterScripts\CharacterBuilder.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Ripples\Effects\WaterRipplesSoundEffect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Righteous.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_Righteous.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\Notification\NotificationManager.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\SpriteSheetSSU.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Mesh\WaterMeshModule.cs" />
@@ -511,7 +512,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\CardListManager.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\GameObjectActivator.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanAudio.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_Strength.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_Strength.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\OUR ASSETS\GALAXIES\ScriptableGalaxies.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\BetterLayoutElement.cs" />
@@ -571,7 +572,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerProgressBarLoopEditor.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Summoner\Cards\Summoner_Dark Blob\Summoner_Card_DarkBlobArmy.cs" />
     <Compile Include="Assets\PixelFantasy\Common\Scripts\EffectManager.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Buffs\Buff_TemporaryStrength.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_TemporaryStrength.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\LevelBuilder.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\OUR ASSETS\EVENTS\ScriptableButtonEvent.cs" />
@@ -605,13 +606,17 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Slider\RadialSlider.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\OUR ASSETS\EVENTS\Event_Button_Fight.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Debuffs\Debuff_Wet.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Debuffs\Debuff_Wet.cs" />
     <Compile Include="Assets\Game2DWaterKit\Runtime\Scripts\Main\MainModule.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\ManaOrb\Artifacts_ManaOrb.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CharacterScripts\Firearm.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralBasic.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Boomerang\Common_Card_Boomerang.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UI\UI_EventButton.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Burn Status\Status_Card_Burn.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Flaming Aura\Monster_Card_FlameAura.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_Counter.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Reflecting Mirror\Monster_Card_ReflectingMirror.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />
