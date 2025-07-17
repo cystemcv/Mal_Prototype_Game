@@ -58,6 +58,7 @@ public class BuffDebuffClass : MonoBehaviour
     public void UpdateBuffDebuffUI()
     {
         gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = turnsAvailable.ToString();
+        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
     }
 
     public void UpdateBuffDebuffUI_InfiniteDuration()

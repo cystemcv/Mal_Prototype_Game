@@ -5,25 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Buff_Defence", menuName = "Buffs/Buff_Defence")]
 public class Buff_Defence : ScriptableBuffDebuff
 {
-    //public override bool OnCharacterTurnStart(GameObject target)
-    //{
 
-    //    //activated
-    //    return true;
-    //}
-
-    public override void OnExpireBuffDebuff(GameObject target)
+    public override StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)
     {
-        //get the buff/debuff
-        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
 
-        target.GetComponent<EntityClass>().defence -= buffDebuffClass.tempVariable;
+        BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(caster, "Defence");
 
+        StatModifiedValue statModifiedValue = new StatModifiedValue();
+        statModifiedValue.StatModifiedAttribute = SystemManager.StatModifiedAttribute.DEFENCE;
+        statModifiedValue.statModifiedType = SystemManager.StatModifiedType.NORMAL;
+        statModifiedValue.statIncreaseInt = buffDebuffClass.tempVariable;
+        statModifiedValue.statIncreaseFloat = 0;
 
-    }
-
-    public override void OnApplyBuff(GameObject target, int value, int turnsValue)
-    {
-        target.GetComponent<EntityClass>().defence += value;
+        return statModifiedValue;
     }
 }

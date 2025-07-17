@@ -1524,7 +1524,7 @@ public class Combat : MonoBehaviour
         return colorToChange;
     }
 
-    public int CalculateEntityShield(int startingShield, GameObject entity, GameObject target)
+    public int CalculateEntityShield(int startingShield, GameObject entity, GameObject target, ScriptableCard scriptableCard = null)
     {
 
         if (entity == null)
@@ -1540,37 +1540,60 @@ public class Combat : MonoBehaviour
         try
         {
             // Get character attack, debuff, and buff percentages
-            int entity_Defence = entity.GetComponent<EntityClass>().defence;
-            float entity_defenceDebuffPerc = entity.GetComponent<EntityClass>().defenceDebuffPerc;
-            float entity_defenceBuffPerc = entity.GetComponent<EntityClass>().defenceBuffPerc;
+            int increaseStatValueInt = 0;
+            float increaseStatValueFloat = 0;
+
+
+            //get all buffs
+            List<BuffDebuffClass> buffDebuffClassList = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(entity);
+
+            //then loop
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
+            {
+
+                //check if the buff has value to return
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+
+                //check if it has value then it modifies stats
+                if (result.HasValue)
+                {
+                    var value = result.Value;
+                    // use value
+
+                    if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.DEFENCE)
+                    {
+
+                        if (value.statModifiedType == SystemManager.StatModifiedType.NORMAL)
+                        {
+                            increaseStatValueInt += value.statIncreaseInt;
+                        }
+                        else if (value.statModifiedType == SystemManager.StatModifiedType.PERCENTAGE)
+                        {
+                            increaseStatValueFloat += value.statIncreaseFloat;
+                        }
+
+                    }
+                }
+
+            }
 
             // Calculate combined attack
-            int combinedDefence = startingShield + entity_Defence;
+            int combinedVar = startingShield + increaseStatValueInt;
+            int resultVar = combinedVar;
+            resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
 
-            // Apply debuff and buff multiplicatively
-            float finalDefenceMultiplier = 1 + (entity_defenceBuffPerc / 100) - (entity_defenceDebuffPerc / 100);
 
-            // Check if the enemy is vulnerable and apply additional damage multiplier
-            //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
-            //if (isVulnerable)
-            //{
-            //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
-            //}
-
-            // Calculate final damage and clamp to a minimum of zero
-            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedDefence + tempBoostDefence) * finalDefenceMultiplier));
-
-            return finalDmg;
+            return resultVar;
         }
         catch (Exception ex)
         {
-            Debug.LogError("Error Calculating Entity Shield : " + " : ERROR MSG : " + ex.Message);
+            // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
 
             return 0;
         }
     }
 
-    public int CalculateEntityArmor(int startingArmor, GameObject entity, GameObject target)
+    public int CalculateEntityArmor(int startingArmor, GameObject entity, GameObject target, ScriptableCard scriptableCard = null)
     {
 
         if (entity == null)
@@ -1586,31 +1609,54 @@ public class Combat : MonoBehaviour
         try
         {
             // Get character attack, debuff, and buff percentages
-            int entity_Resistance = entity.GetComponent<EntityClass>().resistance;
-            float entity_resistanceDebuffPerc = entity.GetComponent<EntityClass>().resistanceDebuffPerc;
-            float entity_resistanceBuffPerc = entity.GetComponent<EntityClass>().resistanceBuffPerc;
+            int increaseStatValueInt = 0;
+            float increaseStatValueFloat = 0;
+
+
+            //get all buffs
+            List<BuffDebuffClass> buffDebuffClassList = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(entity);
+
+            //then loop
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
+            {
+
+                //check if the buff has value to return
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+
+                //check if it has value then it modifies stats
+                if (result.HasValue)
+                {
+                    var value = result.Value;
+                    // use value
+
+                    if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ARMOR)
+                    {
+
+                        if (value.statModifiedType == SystemManager.StatModifiedType.NORMAL)
+                        {
+                            increaseStatValueInt += value.statIncreaseInt;
+                        }
+                        else if (value.statModifiedType == SystemManager.StatModifiedType.PERCENTAGE)
+                        {
+                            increaseStatValueFloat += value.statIncreaseFloat;
+                        }
+
+                    }
+                }
+
+            }
 
             // Calculate combined attack
-            int combinedResistance = startingArmor + entity_Resistance;
+            int combinedVar = startingArmor + increaseStatValueInt;
+            int resultVar = combinedVar;
+            resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
 
-            // Apply debuff and buff multiplicatively
-            float finalResistanceMultiplier = 1 + (entity_resistanceBuffPerc / 100) - (entity_resistanceDebuffPerc / 100);
 
-            // Check if the enemy is vulnerable and apply additional damage multiplier
-            //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
-            //if (isVulnerable)
-            //{
-            //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
-            //}
-
-            // Calculate final damage and clamp to a minimum of zero
-            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedResistance + tempBoostResistance) * finalResistanceMultiplier));
-
-            return finalDmg;
+            return resultVar;
         }
         catch (Exception ex)
         {
-            Debug.LogError("Error Calculating Entity Shield : " + " : ERROR MSG : " + ex.Message);
+           // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
 
             return 0;
         }
@@ -1633,42 +1679,54 @@ public class Combat : MonoBehaviour
         try
         {
             // Get character attack, debuff, and buff percentages
-            int entity_Attack = entity.GetComponent<EntityClass>().attack;
-            float entity_attackDebuffPerc = entity.GetComponent<EntityClass>().attackDebuffPerc;
-            float entity_attackBuffPerc = entity.GetComponent<EntityClass>().attackBuffPerc;
+            int increaseStatValueInt = 0;
+            float increaseStatValueFloat = 0;
 
-            // Calculate combined attack
-            int combinedAttack = startingDmg + entity_Attack;
 
-            // Apply debuff and buff multiplicatively
-            float finalAttackMultiplier = 1 + (entity_attackBuffPerc / 100) - (entity_attackDebuffPerc / 100);
+            //get all buffs
+            List<BuffDebuffClass> buffDebuffClassList = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(entity);
 
-            // Check if the enemy is vulnerable and apply additional damage multiplier
-            //bool isVulnerable = enemy.GetComponent<EnemyClass>().isVulnerable; // Assume the enemy class has an isVulnerable property
-            //if (isVulnerable)
-            //{
-            //    finalAttackMultiplier += 0.25f; // Apply 25% more damage
-            //}
-
-            // Calculate final damage and clamp to a minimum of zero
-            int finalDmg = Mathf.Max(0, Mathf.FloorToInt((combinedAttack + tempBoostAttack) * finalAttackMultiplier));
-
-            if (scriptableCard != null)
+            //then loop
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
             {
 
-                //monster buff
-                if (scriptableCard.mainClass == SystemManager.MainClass.MONSTER)
+                //check if the buff has value to return
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+
+                //check if it has value then it modifies stats
+                if (result.HasValue)
                 {
-                    finalDmg += Combat.Instance.tempMonsterAttackBoost;
+                    var value = result.Value;
+                    // use value
+
+                    if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ATTACK)
+                    {
+
+                        if (value.statModifiedType == SystemManager.StatModifiedType.NORMAL)
+                        {
+                            increaseStatValueInt += value.statIncreaseInt;
+                        }
+                        else if (value.statModifiedType == SystemManager.StatModifiedType.PERCENTAGE)
+                        {
+                            increaseStatValueFloat += value.statIncreaseFloat;
+                        }
+
+                    }
                 }
 
             }
 
-            return finalDmg;
+            // Calculate combined attack
+            int combinedVar = startingDmg + increaseStatValueInt;
+            int resultVar = combinedVar;
+            resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
+
+
+            return resultVar;
         }
         catch (Exception ex)
         {
-            Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
+            // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
 
             return 0;
         }

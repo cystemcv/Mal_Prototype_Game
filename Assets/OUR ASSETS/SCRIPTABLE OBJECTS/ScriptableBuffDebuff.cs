@@ -14,6 +14,14 @@ public class ScriptableBuffDebuff : ScriptableObject
 
     public bool infiniteDuration = false;
 
+    public struct StatModifiedValue
+    {
+        public SystemManager.StatModifiedAttribute StatModifiedAttribute;
+        public SystemManager.StatModifiedType statModifiedType;
+        public int statIncreaseInt;
+        public float statIncreaseFloat;
+    }
+
 
     public virtual void OnDiscardCard(CardScript cardScript)
     {
@@ -59,5 +67,14 @@ public class ScriptableBuffDebuff : ScriptableObject
     {
 
     }
+
+    public virtual StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)
+    {
+
+        return null;
+
+    }
+
+
 
 }

@@ -7,21 +7,20 @@ public class Angel_Card_Determination : ScriptableCard
 {
 
     public int buffValueStrength = 0;
-    public int buffValueTempStrength = 0;
-    public int buffTurnsTempStrength = 0;
+    public int buffValuedDefence = 0;
 
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
     public ScriptableBuffDebuff strength;
-    public ScriptableBuffDebuff tempStrength;
+    public ScriptableBuffDebuff defence;
 
     public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
         customDesc += "Add " + buffValueStrength + " <color=yellow>" + strength.nameID + "</color>";
-        customDesc += "\nAdd " + buffValueTempStrength + " <color=yellow>" + tempStrength.nameID + "</color> for " + buffTurnsTempStrength + " turns";
+        customDesc += "\nAdd " + buffValuedDefence + " <color=yellow>" + defence.nameID + "</color>";
         return customDesc;
     }
 
@@ -34,8 +33,8 @@ public class Angel_Card_Determination : ScriptableCard
         //strength
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength, 0);
 
-        //temp strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, tempStrength, buffValueTempStrength, buffTurnsTempStrength);
+        //defence
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence, 0);
 
 
     }
@@ -48,10 +47,10 @@ public class Angel_Card_Determination : ScriptableCard
 
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, strength, buffValueStrength, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength, 0);
 
-        //temp strength
-        EntityClass entityClassTemp = BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, tempStrength, buffValueTempStrength, buffTurnsTempStrength);
+        //defence
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence, 0);
     }
 
 
