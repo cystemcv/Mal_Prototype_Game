@@ -40,6 +40,7 @@ public class UI_Combat : MonoBehaviour
     [Header("CARD LINE RENDERER")]
     public LineRenderer cardLineRenderer;
     public GameObject cardLineRendererArrow;
+    public GameObject moveHeroText;
 
 
     public float fillbarVelocity = 0;

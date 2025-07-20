@@ -295,32 +295,32 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
         SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorVeryLightBlue, this.gameObject);
 
-        AIBrain aIBrain = this.GetComponent<AIBrain>();
+        //AIBrain aIBrain = this.GetComponent<AIBrain>();
 
-        //if no ai brain the get continue to the next or deasd
-        if (aIBrain == null)
-        {
-            return;
-        }
+        ////if no ai brain the get continue to the next or deasd
+        //if (aIBrain == null)
+        //{
+        //    return;
+        //}
 
-        //create gameobject on scene and spawn it on the discard spawner
-        UI_Combat.Instance.CheckEnemyCard.SetActive(true);
-        GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
-        cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
+        ////create gameobject on scene and spawn it on the discard spawner
+        //UI_Combat.Instance.CheckEnemyCard.SetActive(true);
+        //GameObject cardPrefab = UI_Combat.Instance.CheckEnemyCard.transform.GetChild(0).gameObject;
+        //cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
 
-        ScriptableCard scriptableCard = aIBrain.scriptableCardToUse;
+        //ScriptableCard scriptableCard = aIBrain.scriptableCardToUse;
 
-        //add the scriptable card object to the prefab class to reference
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
+        ////add the scriptable card object to the prefab class to reference
+        //cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
 
-        //make the local scale 1,1,1
-        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+        ////make the local scale 1,1,1
+        //cardPrefab.transform.localScale = new Vector3(1, 1, 1);
 
-        //update the information on the card prefab
-        DeckManager.Instance.UpdateCardUI(cardPrefab);
+        ////update the information on the card prefab
+        //DeckManager.Instance.UpdateCardUI(cardPrefab);
 
-        //deactivate events
-        cardPrefab.GetComponent<CardEvents>().enabled = false;
+        ////deactivate events
+        //cardPrefab.GetComponent<CardEvents>().enabled = false;
 
     }
 

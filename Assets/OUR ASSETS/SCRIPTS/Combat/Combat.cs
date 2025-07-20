@@ -878,6 +878,7 @@ public class Combat : MonoBehaviour
         if (SystemManager.Instance.GetPlayerTagsList().Contains(tag))
         {
             entity.transform.SetParent(this.gameObject.transform.Find("Characters"));
+            //entity.AddComponent<EntityExtras>();
 
             if (entity.GetComponent<AIBrain>() != null)
             {
@@ -1183,6 +1184,21 @@ public class Combat : MonoBehaviour
         }
 
         return isFull;
+    }
+
+
+    public int GetStepsBetweenPositions(CombatPosition from, CombatPosition to)
+    {
+        int startIndex = characterCombatPositions.IndexOf(from);
+        int endIndex = characterCombatPositions.IndexOf(to);
+
+        if (startIndex == -1 || endIndex == -1)
+        {
+            Debug.LogWarning("One or both CombatPosition instances not found in the list.");
+            return -1;
+        }
+
+        return Mathf.Abs(endIndex - startIndex);
     }
 
     public void FlipSprite(GameObject spriteObject)

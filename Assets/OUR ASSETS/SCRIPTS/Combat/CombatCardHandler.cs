@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ public class CombatCardHandler : MonoBehaviour
     public RectTransform targetUIElement;
     public bool targetCardActivated = false;
     public GameObject targetClicked;
-    public CombatPosition posClicked= null;
+    public CombatPosition posClicked = null;
 
     [Header("VISUAL PREFABS")]
     public GameObject discardEffect;
@@ -89,7 +90,7 @@ public class CombatCardHandler : MonoBehaviour
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
 
 
-               // ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
+                // ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
 
 
 
@@ -104,11 +105,11 @@ public class CombatCardHandler : MonoBehaviour
         {
 
             // Check if the target UI element is available
-            if (UI_Combat.Instance.moveHeroButton != null)
+            if (targetClicked != null)
             {
                 // Get the position of the target UI element in screen space
 
-                GameObject hero = GameObject.FindGameObjectWithTag("Player");
+                GameObject hero = targetClicked;
                 //Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
                 Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, hero.transform.position);
 
@@ -149,8 +150,9 @@ public class CombatCardHandler : MonoBehaviour
                 //line renderer
                 UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(true);
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
+                UI_Combat.Instance.moveHeroText.SetActive(true);
 
-
+                UI_Combat.Instance.moveHeroText.transform.position = new Vector3(hero.transform.position.x + 1, hero.transform.position.y, hero.transform.position.z);
                 // ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
 
 
@@ -159,10 +161,18 @@ public class CombatCardHandler : MonoBehaviour
                 //lineRenderer.SetPosition(0, targetPosition);
                 //lineRenderer.SetPosition(1, mousePosition);
             }
-            //CheckHitTarget();
+            CheckHitMoveHero();
             CheckClickMoveHero();
         }
+        else if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                HitMoveHero();
+            }
 
+
+        }
     }
 
     public void CheckHitTarget()
@@ -183,6 +193,58 @@ public class CombatCardHandler : MonoBehaviour
         }
 
     }
+
+    public void CheckHitMoveHero()
+    {
+        // Cast a ray from mouse position
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
+
+
+
+        // Check if the ray intersects with any colliders
+        if (hit.collider != null && (SystemManager.Instance.GetPlayerTagsList().Contains(hit.collider.gameObject.tag) || hit.collider.transform.parent.tag == "PlayerPos"))
+        {
+
+            CombatPosition posClicked;
+
+            //if it belongs to the positioning tag
+            if (hit.collider.gameObject.name == "Visual")
+            {
+                posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
+            }
+            else
+            {
+                posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
+            }
+
+            //get hero position
+            CombatPosition posHero = Combat.Instance.FindCombatPositionByEntity(targetClicked);
+
+            int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+
+            TMP_Text manaMoveText = UI_Combat.Instance.moveHeroText.transform.Find("TEXT").GetComponent<TMP_Text>();
+            manaMoveText.text = manaToDrain.ToString();
+
+            if (Combat.Instance.ManaAvailable < Combat.Instance.GetStepsBetweenPositions(posHero, posClicked))
+            {
+                manaMoveText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
+            }
+            else
+            {
+                manaMoveText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+                ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen));
+            }
+
+
+
+        }
+
+    }
+
 
     public void ChangeLineAndArrowColor(Color color)
     {
@@ -208,10 +270,6 @@ public class CombatCardHandler : MonoBehaviour
         {
             HitTarget();
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            HitTarget();
-        }
         else if (Input.GetMouseButtonDown(1))
         {
 
@@ -220,6 +278,7 @@ public class CombatCardHandler : MonoBehaviour
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            UI_Combat.Instance.moveHeroText.SetActive(false);
             //ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
 
             //return everything where it was
@@ -238,11 +297,7 @@ public class CombatCardHandler : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            HitMoveHero();
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            HitMoveHero();
+            StartMoveHero();
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -252,6 +307,7 @@ public class CombatCardHandler : MonoBehaviour
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            UI_Combat.Instance.moveHeroText.SetActive(false);
             //ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
 
             //return everything where it was
@@ -304,6 +360,7 @@ public class CombatCardHandler : MonoBehaviour
             //remove line renderer
             UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
             UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            UI_Combat.Instance.moveHeroText.SetActive(false);
             //ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
 
             //leave from target
@@ -344,6 +401,102 @@ public class CombatCardHandler : MonoBehaviour
         }
     }
 
+    public void StartMoveHero()
+    {
+        // Cast a ray from mouse position
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+
+        // Check if the ray intersects with any colliders
+        if (hit.collider != null)
+        {
+            //check if the target is the required one or it is not dead
+            if (hit.collider.gameObject.GetComponent<EntityClass>() != null)
+            {
+                if (hit.collider.gameObject.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+                {
+                    return;
+                }
+            }
+
+
+
+            if (!SystemManager.Instance.GetPlayerTagsList().Contains(hit.collider.gameObject.tag) && hit.collider.transform.parent.tag != "PlayerPos")
+            {
+                return;
+            }
+
+            //get the positioning
+
+            CombatPosition posClicked;
+
+            //if it belongs to the positioning tag
+            if (hit.collider.gameObject.name == "Visual")
+            {
+                posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
+            }
+            else
+            {
+                posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
+            }
+
+            //get hero position
+            CombatPosition posHero = Combat.Instance.FindCombatPositionByEntity(targetClicked);
+
+            //check if enough mana
+            int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+
+            if (Combat.Instance.ManaAvailable < manaToDrain)
+            {
+                return;
+            }
+            else
+            {
+                Combat.Instance.ModifyMana(manaToDrain * -1);
+            }
+
+
+
+            //move the hero to that position
+            if (posClicked.entityOccupiedPos == null)
+            {
+                //then just move to the position
+                posClicked.entityOccupiedPos = targetClicked;
+                posHero.entityOccupiedPos = null;
+
+                targetClicked.transform.position = posClicked.position.transform.position;
+            }
+            else
+            {
+                GameObject clickedEntity = posClicked.entityOccupiedPos;
+                //then just move to the position
+                posClicked.entityOccupiedPos = targetClicked;
+                posHero.entityOccupiedPos = clickedEntity;
+
+                targetClicked.transform.position = posClicked.position.transform.position;
+                clickedEntity.transform.position = posHero.position.transform.position;
+            }
+
+            //remove line renderer
+            UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
+            UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
+            UI_Combat.Instance.moveHeroText.SetActive(false);
+            //ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
+
+            //leave from target
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
+
+
+            //decrease available mana
+            // Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
+
+
+            Combat.Instance.HideAllCombatPosVisuals();
+            posClicked = null;
+
+        }
+    }
+
     public void HitMoveHero()
     {
         // Cast a ray from mouse position
@@ -369,57 +522,19 @@ public class CombatCardHandler : MonoBehaviour
                 return;
             }
 
-            CombatPosition posClicked;
 
-            //if it belongs to the positioning tag
-            if (hit.collider.gameObject.name == "Visual")
-            {
-                posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
-            }
-            else
-            {
-                posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
-            }
+            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.MOVEHERO;
 
-            //get hero position
-            GameObject hero = GameObject.FindGameObjectWithTag("Player");
-            CombatPosition posHero = Combat.Instance.FindCombatPositionByEntity(hero);
+            List<string> tagList = new List<string>();
+            tagList.Add("Player");
+            tagList.Add("PlayerSummon");
+            tagList.Add("PlayerPos");
+            List<GameObject> targetPosList = Combat.Instance.FindPosTargeting(tagList);
 
-            //move the hero to that position
-            if (posClicked.entityOccupiedPos == null)
-            {
-                //then just move to the position
-                posClicked.entityOccupiedPos = hero;
-                posHero.entityOccupiedPos = null;
+            List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tagList);
 
-                hero.transform.position = posClicked.position.transform.position;
-            }
-            else
-            {
-                GameObject clickedEntity = posClicked.entityOccupiedPos;
-                //then just move to the position
-                posClicked.entityOccupiedPos = hero;
-                posHero.entityOccupiedPos = clickedEntity;
-
-                hero.transform.position = posClicked.position.transform.position;
-                clickedEntity.transform.position = posHero.position.transform.position;
-            }
-
-            //remove line renderer
-            UI_Combat.Instance.cardLineRenderer.gameObject.SetActive(false);
-            UI_Combat.Instance.cardLineRendererArrow.SetActive(false);
-            //ChangeTargetMaterial(SystemManager.Instance.materialDefaultEntity);
-
-            //leave from target
-            SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
-
-    
-            //decrease available mana
-           // Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
-
-
-            Combat.Instance.HideAllCombatPosVisuals();
-            posClicked = null;
+            targets.AddRange(targetPosList);
+            targetClicked = hit.collider.gameObject;
 
         }
     }
@@ -428,7 +543,7 @@ public class CombatCardHandler : MonoBehaviour
     {
 
         //if its targeting position then get the parent
-        if(target.name == "Visual")
+        if (target.name == "Visual")
         {
             target = target.transform.parent.gameObject;
         }
@@ -467,8 +582,8 @@ public class CombatCardHandler : MonoBehaviour
                     SystemManager.Instance.ChangeTargetMaterial(customMaterial, targetFound);
                 }
 
-                  
-          
+
+
 
 
             }
