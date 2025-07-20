@@ -259,54 +259,33 @@ public class BuffSystemManager : MonoBehaviour
 
             List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(character);
 
-            foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
             {
-                BuffDebuffClass buffDebuffClass = buffdebufPRefab;
 
-                bool activated = false;
                 //activate buffs/debuffs
                 if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
+                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(character);
 
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(character);
-
-                    //if activated then we decrease the turns
-                    if (activated)
+                    //reduce the turns
+                    if (!buffDebuffClass.scriptableBuffDebuff.infiniteDuration && Combat.Instance.turns != 0)
                     {
                         buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
+
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(character);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
+                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(character);
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(character);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
+                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(character);
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(character);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
+                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(character);
                 }
-
 
 
 
@@ -327,59 +306,30 @@ public class BuffSystemManager : MonoBehaviour
 
             List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(enemy);
 
-            foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
             {
-                BuffDebuffClass buffDebuffClass = buffdebufPRefab;
-
-
-                bool activated = false;
                 //activate buffs/debuffs
                 if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(enemy);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
+                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(enemy);
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(enemy);
+                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(enemy);
 
-                    //if activated then we decrease the turns
-                    if (activated)
+                    //reduce the turns
+                    if (!buffDebuffClass.scriptableBuffDebuff.infiniteDuration && Combat.Instance.turns != 0)
                     {
                         buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(enemy);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
+                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(enemy);
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
                 {
-                    activated = buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(enemy);
-
-                    //if activated then we decrease the turns
-                    if (activated)
-                    {
-                        buffDebuffClass.ModifyTurnsAvailable(-1);
-                    }
-                }
-
-
-                //if activated then we decrease the turns
-                if (activated)
-                {
-                    buffDebuffClass.ModifyTurnsAvailable(-1);
+                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(enemy);
                 }
 
                 //check if destroyed
@@ -401,8 +351,8 @@ public class BuffSystemManager : MonoBehaviour
         {
             Debug.Log("In here loop " + buffdebufPRefab.scriptableBuffDebuff.nameID);
             BuffDebuffClass buffDebuffClass = buffdebufPRefab;
-            
-            buffDebuffClass.scriptableBuffDebuff.OnGettingHit(caster,target,0,0);
+
+            buffDebuffClass.scriptableBuffDebuff.OnGettingHit(caster, target, 0, 0);
         }
 
         yield return null;

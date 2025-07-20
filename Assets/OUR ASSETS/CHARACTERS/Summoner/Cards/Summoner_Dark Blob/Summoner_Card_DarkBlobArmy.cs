@@ -24,7 +24,10 @@ public class Summoner_Card_DarkBlobArmy : ScriptableCard
     {
         base.OnPlayCard(cardScript, entityUsedCard);
 
-        Combat.Instance.SummonEntity(entityUsedCard, scriptableEntities);
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
 
     }
 
@@ -32,7 +35,10 @@ public class Summoner_Card_DarkBlobArmy : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        Combat.Instance.SummonEntity(entityUsedCard, scriptableEntities);
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
     }
 
 

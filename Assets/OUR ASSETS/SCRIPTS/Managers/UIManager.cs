@@ -610,7 +610,7 @@ public class UIManager : MonoBehaviour
             scriptableCardList.Add(cardScript.scriptableCard);
         }
 
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Deck Card List", CadList_DoNothing);
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Deck", CadList_DoNothing);
     }
 
     public void OpenDeckList()
@@ -618,12 +618,12 @@ public class UIManager : MonoBehaviour
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in DeckManager.Instance.banishedPile)
+        foreach (CardScript cardScript in DeckManager.Instance.combatDeck)
         {
             scriptableCardList.Add(cardScript.scriptableCard);
         }
 
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Current Deck Card List", CadList_DoNothing);
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Remaining Deck", CadList_DoNothing);
     }
 
     private void CadList_DoNothing()
@@ -641,7 +641,7 @@ public class UIManager : MonoBehaviour
             scriptableCardList.Add(cardScript.scriptableCard);
         }
 
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Discarded Card List", CadList_DoNothing);
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Discarded Cards", CadList_DoNothing);
     }
 
     public void OpenBanishedList()
@@ -654,7 +654,7 @@ public class UIManager : MonoBehaviour
             scriptableCardList.Add(cardScript.scriptableCard);
         }
 
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Banished Card List", CadList_DoNothing);
+        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Banished Cards", CadList_DoNothing);
     }
 
     //-----------------

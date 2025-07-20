@@ -299,14 +299,19 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
 
                 //check if there is more than 1 target
-                List<string> tag = new List<string>();
+                List<string> tagList = new List<string>();
 
                 foreach (SystemManager.EntityTag entityTag in scriptableCard.targetEntityTagList)
                 {
-                    tag.Add(entityTag.ToString());
+                    tagList.Add(entityTag.ToString());
                 }
 
-                List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tag);
+                //depending on the tags
+                List<GameObject> targetPosList = Combat.Instance.FindPosTargeting(tagList);
+
+                List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tagList);
+
+                targets.AddRange(targetPosList);
 
                 //activation should not be visible
                 if (scriptableCard.targetEntityTagList.Count > 0 && targets.Count > 1)

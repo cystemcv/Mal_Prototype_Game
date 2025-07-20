@@ -34,77 +34,77 @@ public class Ability_Summon : ScriptableCardAbility
 
         base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
 
-        foreach (ScriptableEntity summonInCard in cardAbilityClass.summonList)
-        {
+        //foreach (ScriptableEntity summonInCard in cardAbilityClass.summonList)
+        //{
 
 
-            GameObject summon;
-            //get all targets
-            if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
-            {
+        //    GameObject summon;
+        //    //get all targets
+        //    if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+        //    {
 
-                GameObject[] summons = GameObject.FindGameObjectsWithTag("PlayerSummon");
+        //        GameObject[] summons = GameObject.FindGameObjectsWithTag("PlayerSummon");
 
-                //check if it reach the limit
-                if (summons.Length >= Combat.Instance.maxPlayerSummons)
-                {
-                    return;
-                }
-                else
-                {
-                    summon = Combat.Instance.InstantiateCharacter(summonInCard);
+        //        //check if it reach the limit
+        //        if (summons.Length >= Combat.Instance.maxPlayerSummons)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            summon = Combat.Instance.InstantiateCharacter(summonInCard);
 
-                    summon.tag = "PlayerSummon";
+        //            summon.tag = "PlayerSummon";
 
-                    //allow to activate coroutine on scriptable object
-                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
-                                                                       //hit at least one time if its 0
+        //            //allow to activate coroutine on scriptable object
+        //            MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+        //                                                               //hit at least one time if its 0
 
-                    // Start the coroutine for each hit
-                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
-
-
-                    //initialize 
-                    summon.GetComponent<AIBrain>().GenerateIntend();
-                }
+        //            // Start the coroutine for each hit
+        //            runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
 
 
-            }
-            else
-            {
-
-                GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
-
-                //check if it reach the limit
-                if (summons.Length >= Combat.Instance.maxEnemies)
-                {
-                    return;
-                }
-                else
-                {
-                    summon = Combat.Instance.InstantiateEnemies(summonInCard);
-
-                    summon.tag = "EnemySummon";
-
-                    //initialize the stats
-                    //allow to activate coroutine on scriptable object
-                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
-                                                                       //hit at least one time if its 0
-
-                    // Start the coroutine for each hit
-                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
+        //            //initialize 
+        //            summon.GetComponent<AIBrain>().GenerateIntend();
+        //        }
 
 
-                    //initialize 
-                    summon.GetComponent<AIBrain>().GenerateIntend();
-                }
+        //    }
+        //    else
+        //    {
+
+        //        GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
+
+        //        //check if it reach the limit
+        //        if (summons.Length >= Combat.Instance.maxEnemies)
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            summon = Combat.Instance.InstantiateEnemies(summonInCard);
+
+        //            summon.tag = "EnemySummon";
+
+        //            //initialize the stats
+        //            //allow to activate coroutine on scriptable object
+        //            MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+        //                                                               //hit at least one time if its 0
+
+        //            // Start the coroutine for each hit
+        //            runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity());
+
+
+        //            //initialize 
+        //            summon.GetComponent<AIBrain>().GenerateIntend();
+        //        }
 
      
-            }
+        //    }
 
 
 
-        }
+        //}
 
 
 

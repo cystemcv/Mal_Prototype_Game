@@ -17,6 +17,7 @@ public class UI_Combat : MonoBehaviour
     public GameObject deckInfo;
     public GameObject discardInfo;
     public GameObject banishedInfo;
+    public GameObject moveHeroButton;
 
     [Header("SPAWN OF DISCARD CARD")]
     public GameObject handFullSpawnCard;
@@ -239,6 +240,21 @@ public class UI_Combat : MonoBehaviour
         UIManager.Instance.HideCardList();
     }
 
+
+    public void ActivateMoveButton()
+    {
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.MOVEHERO;
+
+        List<string> tagList = new List<string>();
+        tagList.Add("Player");
+        tagList.Add("PlayerSummon");
+        tagList.Add("PlayerPos");
+        List<GameObject> targetPosList = Combat.Instance.FindPosTargeting(tagList);
+
+        List<GameObject> targets = SystemManager.Instance.FindGameObjectsWithTags(tagList);
+
+        targets.AddRange(targetPosList);
+    }
 
 
 }

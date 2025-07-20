@@ -20,6 +20,14 @@ public class PlayedCard
     public GameObject playedCardUI;
 }
 
+[Serializable]
+public class CombatPosition
+{
+    public GameObject position;
+    public GameObject entityOccupiedPos;
+    public string hazard;
+}
+
 public class Combat : MonoBehaviour
 {
     public static Combat Instance;
@@ -29,14 +37,11 @@ public class Combat : MonoBehaviour
     public GameObject characterStartSpawn;
     public GameObject enemyStartSpawn;
 
+    public List<CombatPosition> companionCombatPositions;
+    public List<CombatPosition> characterCombatPositions;
+    public List<CombatPosition> enemiesCombatPositions;
 
-    [Header("COMBAT FORMATIONS")]
-    public List<GameObject> characterFormation;
-    public List<GameObject> enemyFormation;
-    public int characterCount = 0;
-    public int enemyCount = 0;
-    public int maxPlayerSummons = 3;
-    public int maxEnemies = 7;
+
 
     [Header("COMBAT COMMON VARIABLES")]
     public int turns = 0;
@@ -147,7 +152,7 @@ public class Combat : MonoBehaviour
         {
             StartEvent();
         }
-    
+
 
     }
 
@@ -164,15 +169,16 @@ public class Combat : MonoBehaviour
     {
 
         if (conditionsEnabled == true &&
-            (charactersAlive <= 0 || enemyFormation.Count <= 0))
+            (CheckIfSpawnPosAreEmpty("Player") || CheckIfSpawnPosAreEmpty("Enemy")))
         {
-           CombatOver();
+            Debug.Log("its true?");
+            CombatOver();
         }
 
         //check the queue
         if (playedCardList.Count > 0)
         {
-      
+
             //check if the card is played
             //play the card
             if (playedCardList[0].isPlaying == false)
@@ -185,7 +191,7 @@ public class Combat : MonoBehaviour
 
                 playedCardList[0].isPlaying = true;
 
-      
+
 
 
             }
@@ -194,7 +200,7 @@ public class Combat : MonoBehaviour
             if (playedCardList[0].timer > 0 && playedCardList[0].isPlaying == true)
             {
                 playedCardList[0].timer -= Time.deltaTime;
-                playedCardList[0].timer = Mathf.Max(playedCardList[0].timer,0);
+                playedCardList[0].timer = Mathf.Max(playedCardList[0].timer, 0);
                 playedCardList[0].playedCardUI.transform.Find("CardTimer").GetComponent<TMP_Text>().text = playedCardList[0].timer.ToString("F1");
             }
             else if (playedCardList[0].timer <= 0 && playedCardList[0].isPlaying == true)
@@ -206,7 +212,7 @@ public class Combat : MonoBehaviour
 
 
 
-              
+
             }
 
 
@@ -216,7 +222,7 @@ public class Combat : MonoBehaviour
 
     public void FixedUpdate()
     {
-      
+
         //UIManager.Instance.turnText.GetComponent<TMP_Text>().text = "Turn:" + Turns;
     }
 
@@ -276,17 +282,17 @@ public class Combat : MonoBehaviour
     {
         if (combatEnded)
         {
-         return;
+            return;
         }
 
         //make mana back to full
-         StartCoroutine(RefillMana());
+        StartCoroutine(RefillMana());
 
         //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatEnd));
         combatEnded = true;
 
         //always check characters first, if both lost = game over
-        if (charactersAlive <= 0)
+        if (CheckIfSpawnPosAreEmpty("Player"))
         {
 
             //remove the dungeon
@@ -295,7 +301,7 @@ public class Combat : MonoBehaviour
             //lose
             UIManager.Instance.resultsWindow.SetActive(true);
         }
-        else if (enemyFormation.Count <= 0)
+        else if (CheckIfSpawnPosAreEmpty("Enemy"))
         {
 
             //get the player
@@ -369,8 +375,8 @@ public class Combat : MonoBehaviour
             //then add item to loot
             StaticData.lootItemList.Add(classItem);
 
-           //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
-           // yield return new WaitForSeconds(0.1f);
+            //ItemManager.Instance.AddItemToParent(classItem, UIManager.Instance.lootGO, SystemManager.ItemIn.LOOT);
+            // yield return new WaitForSeconds(0.1f);
         }
 
 
@@ -443,7 +449,7 @@ public class Combat : MonoBehaviour
 
         GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
         GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
-        if (spaceship )
+        if (spaceship)
         {
             spaceship.SetActive(false);
             spaceshipLine.SetActive(false);
@@ -460,8 +466,7 @@ public class Combat : MonoBehaviour
         //play music
         AudioManager.Instance.PlayMusic("Combat_1");
 
-        //clear all lists
-        yield return StartCoroutine(ClearLists());
+
 
         //destroy any previous characters
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject));
@@ -473,11 +478,15 @@ public class Combat : MonoBehaviour
         battleground = GameObject.FindGameObjectWithTag("BattleGround");
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.GetChild(0).gameObject));
 
+        //spawn the companion
+        yield return StartCoroutine(SpawnCompanion());
+
         //spawn the characters
         yield return StartCoroutine(SpawnCharacters());
 
         //spawn the enemies
         yield return StartCoroutine(SpawnEnemies(false));
+
 
         //spawn battleground
         yield return StartCoroutine(SpawnBattleground());
@@ -496,10 +505,9 @@ public class Combat : MonoBehaviour
         //check the enemies that are alive
         //yield return StartCoroutine(CheckEnemiesAlive());
 
-        //start win conditions
-        conditionsEnabled = true;
 
-        if(code != "EVENT")
+
+        if (code != "EVENT")
         {
             yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
         }
@@ -509,12 +517,15 @@ public class Combat : MonoBehaviour
 
         yield return StartCoroutine(UI_Combat.Instance.OnNotification("COMBAT START", 1));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart,null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart, null));
 
         StaticData.staticScriptableCompanion.InitializeButton();
 
         //do the ai logic for each enemy
         yield return StartCoroutine(AIManager.Instance.AiActInitialize(SystemManager.Instance.GetEnemyTagsList()));
+
+        //start win conditions
+        conditionsEnabled = true;
 
         //start the player
         yield return StartCoroutine(WaitPlayerTurns());
@@ -575,14 +586,7 @@ public class Combat : MonoBehaviour
         }
     }
 
-    public IEnumerator ClearLists()
-    {
-        characterFormation.Clear();
-        enemyFormation.Clear();
 
-
-        yield return null;
-    }
 
     public IEnumerator PlayerTurnStart()
     {
@@ -604,7 +608,6 @@ public class Combat : MonoBehaviour
         //animate the text
         UIManager.Instance.AnimateTextTypeWriter("Turn:" + Turns, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
 
-        yield return StartCoroutine(RearrangeFormation(characterFormation));
 
         //mana should go back to full
         yield return StartCoroutine(RefillMana());
@@ -628,7 +631,7 @@ public class Combat : MonoBehaviour
         //draw cards
         yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart,null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart, null));
 
         yield return StartCoroutine(ActivateDelayedCardEffects());
 
@@ -642,7 +645,7 @@ public class Combat : MonoBehaviour
         foreach (CardScript cardScript in discardEffectCardList)
         {
             cardScript.scriptableCard.OnDelayEffect(cardScript);
-           
+
         }
 
         //empty the delay effect list
@@ -720,9 +723,9 @@ public class Combat : MonoBehaviour
         DeckManager.Instance.DiscardWholeHand();
 
         //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+        yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd,null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd, null));
 
         yield return new WaitForSeconds(1f);
 
@@ -743,10 +746,9 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
         yield return StartCoroutine(UI_Combat.Instance.OnNotification("ENEMY TURN", 1));
 
-        yield return RearrangeFormation(enemyFormation);
 
         //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+        yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
         //remove shield from all enemies
         RemoveShieldFromEntitiesBasedOnTag("Enemy");
@@ -785,10 +787,28 @@ public class Combat : MonoBehaviour
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyEndTurn;
 
         //loop for all buffs and debuffs
-        BuffSystemManager.Instance.ActivateAllBuffsDebuffs();
+        yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
         yield return null;
     }
+
+    public IEnumerator SpawnCompanion()
+    {
+
+
+
+        if (StaticData.staticScriptableCompanion == null)
+        {
+            StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
+        }
+
+        StartCoroutine(InstantiateEntity(null, StaticData.staticScriptableCompanion, "Companion", null));
+
+        yield return null; // Wait for a frame 
+
+
+    }
+
 
     public IEnumerator SpawnCharacters()
     {
@@ -805,17 +825,93 @@ public class Combat : MonoBehaviour
             StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
         }
 
-        //instantiate our character or characters
-        GameObject characterInCombat = InstantiateCharacter(StaticData.staticCharacter);
-
-        //assign the characters in combat
-        //CharacterManager.Instance.charactersInAdventure.Add(characterInCombat);
-
-        //initialize the stats
-        StartCoroutine(characterInCombat.GetComponent<EntityClass>().InititializeEntity());
+        StartCoroutine(InstantiateEntity(StaticData.staticCharacter, null, "Player", null));
 
         yield return null; // Wait for a frame 
 
+
+    }
+
+
+
+    public IEnumerator InstantiateEntity(ScriptableEntity scriptableEntity, ScriptableCompanion scriptableCompanion, string tag, EntityClass modifiedEntityClass)
+    {
+
+        //check if available spots
+        if (CheckIfSpawnPosAreFull(tag))
+        {
+            Debug.Log("FULL LIST! " + tag);
+            yield break;
+        }
+
+        CombatPosition combatPosition;
+        //get the postition in combat
+        if (CombatCardHandler.Instance.posClicked == null || CombatCardHandler.Instance.posClicked.position == null)
+        {
+            combatPosition = GetSpawnPosition(tag);
+        }
+        else
+        {
+            combatPosition = CombatCardHandler.Instance.posClicked;
+            CombatCardHandler.Instance.posClicked = null;
+        }
+
+        GameObject entity;
+        //instantiate the character prefab based on the spawnPosition
+        if (scriptableEntity != null)
+        {
+            entity = Instantiate(scriptableEntity.entityPrefab, combatPosition.position.transform.position, Quaternion.identity);
+            //pass it the scriptable object to the class
+            entity.GetComponent<EntityClass>().scriptableEntity = scriptableEntity;
+        }
+        else
+        {
+            entity = Instantiate(scriptableCompanion.companionPrefab, combatPosition.position.transform.position, Quaternion.identity);
+        }
+
+        entity.tag = tag;
+
+        combatPosition.entityOccupiedPos = entity;
+
+
+
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(tag))
+        {
+            entity.transform.SetParent(this.gameObject.transform.Find("Characters"));
+
+            if (entity.GetComponent<AIBrain>() != null)
+            {
+
+                FlipSprite(entity);
+            }
+            else
+            {
+                //entity.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject.SetActive(false);
+            }
+        }
+        else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag))
+        {
+            entity.transform.SetParent(this.gameObject.transform.Find("Enemies"));
+        }
+        else
+        {
+
+        }
+
+
+        if (entity.GetComponent<AIBrain>() != null)
+        {
+
+            entity.GetComponent<AIBrain>().GenerateIntend();
+        }
+
+        if (entity.GetComponent<EntityClass>() != null)
+        {
+            yield return StartCoroutine(entity.GetComponent<EntityClass>().InititializeEntity());
+        }
+
+
+        yield return null;
 
     }
 
@@ -861,14 +957,7 @@ public class Combat : MonoBehaviour
         foreach (ScriptableEntity scriptableEntity in scriptableEntities)
         {
             //instantiate our character or characters
-            GameObject enemyInCombat = InstantiateEnemies(scriptableEntity);
-
-            //assign the characters in combat
-            //CharacterManager.Instance.charactersInAdventure.Add(enemyInCombat);
-
-            //initialize the stats
-            StartCoroutine(enemyInCombat.GetComponent<EntityClass>().InititializeEntity());
-
+            yield return StartCoroutine(InstantiateEntity(scriptableEntity, null, "Enemy", null));
 
             yield return null; // Wait for a frame 
         }
@@ -899,46 +988,201 @@ public class Combat : MonoBehaviour
 
     }
 
-    public GameObject InstantiateCharacter(ScriptableEntity scriptableEntity)
+    public List<GameObject> FindPosTargeting(List<string> tags)
     {
+        // If no tags are provided, return an empty list
+        if (tags == null || tags.Count == 0)
+        {
+            return new List<GameObject>();
+        }
 
 
-        Vector3 spawn = new Vector3(0, 0, 0);
 
-        //get distance needed
-        float distance = GetDistanceOfFormation(characterFormation, characterFormation.Count);
+        List<GameObject> listOfGameobjects = new List<GameObject>();
+        List<CombatPosition> availablePositions = new List<CombatPosition>();
 
-        spawn = new Vector3(characterStartSpawn.transform.position.x + distance, characterStartSpawn.transform.position.y, characterStartSpawn.transform.position.z);
-
-        //instantiate the character prefab based on the spawnPosition
-        GameObject entity = Instantiate(scriptableEntity.entityPrefab, spawn, Quaternion.identity);
-
-        //pass it the scriptable object to the class
-        entity.GetComponent<EntityClass>().scriptableEntity = scriptableEntity;
-        //svae the position as it can be used later
-        entity.GetComponent<EntityClass>().originalCombatPos = spawn;
-
-        entity.transform.SetParent(this.gameObject.transform.Find("Characters"));
-
-        if (entity.GetComponent<AIBrain>() != null)
+        foreach (string tag in tags)
         {
 
-            FlipSprite(entity);
+            if (tag != "PlayerPos" && tag != "EnemyPos")
+            {
+                //continue to the next tag
+                continue;
+            }
+
+            //if tag is then we need to enable them
+
+            if (Combat.Instance.CheckIfSpawnPosAreFull(tag))
+            {
+                //continue to the next tag
+                continue;
+            }
+
+            if (tag == "PlayerPos")
+            {
+                availablePositions = characterCombatPositions
+                   .Where(pos => pos.entityOccupiedPos == null)
+                   .ToList();
+
+
+            }
+            else if (tag == "EnemyPos")
+            {
+                availablePositions = enemiesCombatPositions
+                 .Where(pos => pos.entityOccupiedPos == null)
+                 .ToList();
+
+
+            }
+
+            foreach (CombatPosition combatPosition in availablePositions)
+            {
+                combatPosition.position.transform.Find("Visual").gameObject.SetActive(true);
+                listOfGameobjects.Add(combatPosition.entityOccupiedPos);
+            }
+
+        }
+
+
+
+        return listOfGameobjects;
+    }
+
+    public void HideAllCombatPosVisuals()
+    {
+        foreach (CombatPosition combatPosition in characterCombatPositions)
+        {
+            combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
+        }
+
+        foreach (CombatPosition combatPosition in enemiesCombatPositions)
+        {
+            combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
+        }
+
+        foreach (CombatPosition combatPosition in companionCombatPositions)
+        {
+            combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
+        }
+    }
+
+
+
+    public CombatPosition FindCombatPositionByEntity(GameObject clickedEntity)
+    {
+        // Search companion positions
+        CombatPosition match = companionCombatPositions
+            .FirstOrDefault(pos => pos.entityOccupiedPos == clickedEntity);
+        if (match != null) return match;
+
+        // Search character positions
+        match = characterCombatPositions
+            .FirstOrDefault(pos => pos.entityOccupiedPos == clickedEntity);
+        if (match != null) return match;
+
+        // Search enemy positions
+        match = enemiesCombatPositions
+            .FirstOrDefault(pos => pos.entityOccupiedPos == clickedEntity);
+        if (match != null) return match;
+
+        // If nothing is found
+        return null;
+    }
+
+    public CombatPosition FindCombatPositionByGameObject(GameObject clickedPosition)
+    {
+        // Search companion positions
+        CombatPosition match = companionCombatPositions
+            .FirstOrDefault(pos => pos.position == clickedPosition);
+        if (match != null) return match;
+
+        // Search character positions
+        match = characterCombatPositions
+            .FirstOrDefault(pos => pos.position == clickedPosition);
+        if (match != null) return match;
+
+        // Search enemy positions
+        match = enemiesCombatPositions
+            .FirstOrDefault(pos => pos.position == clickedPosition);
+        if (match != null) return match;
+
+        // If nothing is found
+        return null;
+    }
+
+    public CombatPosition GetSpawnPosition(string tag)
+    {
+        CombatPosition combatPosition = new CombatPosition();
+
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
+        {
+
+            List<CombatPosition> availablePositions = characterCombatPositions
+            .Where(pos => pos.entityOccupiedPos == null)
+            .ToList();
+
+            int random = UnityEngine.Random.Range(0, availablePositions.Count);
+            combatPosition = availablePositions[random];
+        }
+        else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag) || tag == "EnemyPos")
+        {
+            List<CombatPosition> availablePositions = enemiesCombatPositions
+            .Where(pos => pos.entityOccupiedPos == null)
+            .ToList();
+
+            int random = UnityEngine.Random.Range(0, availablePositions.Count);
+            combatPosition = availablePositions[random];
         }
         else
         {
-            //entity.transform.Find("gameobjectUI").Find("DisplayCardName").gameObject.SetActive(false);
+            //companion
+            combatPosition = companionCombatPositions[0];
         }
 
-        //assign the entity to formation
+        return combatPosition;
+    }
 
-        characterFormation.Add(entity);
+    public bool CheckIfSpawnPosAreFull(string tag)
+    {
+        bool isFull = false;
 
-        //reassign them
-        RearrangeFormation(characterFormation);
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
+        {
+            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos != null);
+        }
+        else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag) || tag == "EnemyPos")
+        {
+            isFull = enemiesCombatPositions.All(pos => pos.entityOccupiedPos != null);
+        }
+        else
+        {
+            //companion
+            isFull = companionCombatPositions.All(pos => pos.entityOccupiedPos != null);
+        }
 
-        return entity;
+        return isFull;
+    }
 
+
+    public bool CheckIfSpawnPosAreEmpty(string tag)
+    {
+        bool isFull = false;
+
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
+        {
+            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos == null);
+        }
+        else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag) || tag == "EnemyPos")
+        {
+            isFull = enemiesCombatPositions.All(pos => pos.entityOccupiedPos == null);
+        }
+        else
+        {
+            //companion
+            isFull = companionCombatPositions.All(pos => pos.entityOccupiedPos == null);
+        }
+
+        return isFull;
     }
 
     public void FlipSprite(GameObject spriteObject)
@@ -984,34 +1228,7 @@ public class Combat : MonoBehaviour
 
     }
 
-    public GameObject InstantiateEnemies(ScriptableEntity scriptableEntity)
-    {
 
-        Vector3 spawn = new Vector3(0, 0, 0);
-
-        //get distance needed
-        float distance = GetDistanceOfFormation(enemyFormation, enemyFormation.Count);
-
-        spawn = new Vector3(enemyStartSpawn.transform.position.x - distance, enemyStartSpawn.transform.position.y, enemyStartSpawn.transform.position.z);
-
-        //instantiate the character prefab based on the spawnPosition
-        GameObject entity = Instantiate(scriptableEntity.entityPrefab, spawn, Quaternion.identity);
-
-        //pass it the scriptable object to the class
-        entity.GetComponent<EntityClass>().scriptableEntity = scriptableEntity;
-        //svae the position as it can be used later
-        entity.GetComponent<EntityClass>().originalCombatPos = spawn;
-
-        entity.transform.SetParent(this.gameObject.transform.Find("Enemies"));
-
-        //assign the entity to formation
-        enemyFormation.Add(entity);
-
-        //reassign them
-        RearrangeFormation(enemyFormation);
-
-        return entity;
-    }
 
     public int GetFormationIndex(List<GameObject> formation)
     {
@@ -1199,7 +1416,7 @@ public class Combat : MonoBehaviour
         {
             entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
         }
-      
+
 
     }
 
@@ -1324,7 +1541,7 @@ public class Combat : MonoBehaviour
         if (adjustNumberMode == SystemManager.AdjustNumberModes.ATTACK)
         {
 
-            CalculateReceivedEntityDamage(entityClass,adjustNumber,bypassShield);
+            CalculateReceivedEntityDamage(entityClass, adjustNumber, bypassShield);
 
             UpdateEntityDamageVisuals(entityClass);
 
@@ -1421,7 +1638,7 @@ public class Combat : MonoBehaviour
                 //make the bar blue
                 entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
             }
-  
+
 
         }
 
@@ -1438,7 +1655,7 @@ public class Combat : MonoBehaviour
         Destroy(numberOnScreenPrefab, 1f);
 
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit,null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit, null));
 
         //if the target reach to 0
         yield return StartCoroutine(CheckIfEntityIsDead(entityClass));
@@ -1464,23 +1681,23 @@ public class Combat : MonoBehaviour
 
             if (entityClass.gameObject.tag == "Player")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath,null));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath, null));
                 charactersAlive -= 1;
             }
             else if (entityClass.gameObject.tag == "Enemy")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath,null));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath, null));
                 //enemiesAlive -= 1;
             }
 
-            if (SystemManager.Instance.GetPlayerTagsList().Contains(entityClass.gameObject.tag))
-            {
-                characterFormation.Remove(entityClass.gameObject);
-            }
-            else
-            {
-                enemyFormation.Remove(entityClass.gameObject);
-            }
+            //if (SystemManager.Instance.GetPlayerTagsList().Contains(entityClass.gameObject.tag))
+            //{
+            //    characterFormation.Remove(entityClass.gameObject);
+            //}
+            //else
+            //{
+            //    enemyFormation.Remove(entityClass.gameObject);
+            //}
 
             EntityDeadDestroy(entityClass.gameObject);
 
@@ -1510,15 +1727,15 @@ public class Combat : MonoBehaviour
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.SHIELD)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue); 
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorLightBlue);
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.ARMOR)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange); 
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorOrange);
         }
         else if (adjustNumberMode == SystemManager.AdjustNumberModes.COUNTER)
         {
-            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed); 
+            colorToChange = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
         }
 
         return colorToChange;
@@ -1552,7 +1769,7 @@ public class Combat : MonoBehaviour
             {
 
                 //check if the buff has value to return
-                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
 
                 //check if it has value then it modifies stats
                 if (result.HasValue)
@@ -1621,7 +1838,7 @@ public class Combat : MonoBehaviour
             {
 
                 //check if the buff has value to return
-                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
 
                 //check if it has value then it modifies stats
                 if (result.HasValue)
@@ -1656,7 +1873,7 @@ public class Combat : MonoBehaviour
         }
         catch (Exception ex)
         {
-           // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
+            // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
 
             return 0;
         }
@@ -1681,6 +1898,7 @@ public class Combat : MonoBehaviour
             // Get character attack, debuff, and buff percentages
             int increaseStatValueInt = 0;
             float increaseStatValueFloat = 0;
+            int fixedAmount = -1;
 
 
             //get all buffs
@@ -1691,7 +1909,7 @@ public class Combat : MonoBehaviour
             {
 
                 //check if the buff has value to return
-                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, null, scriptableCard);
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
 
                 //check if it has value then it modifies stats
                 if (result.HasValue)
@@ -1716,10 +1934,64 @@ public class Combat : MonoBehaviour
 
             }
 
-            // Calculate combined attack
-            int combinedVar = startingDmg + increaseStatValueInt;
-            int resultVar = combinedVar;
-            resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
+            if (target != null)
+            {
+                //get all buffs
+                List<BuffDebuffClass> buffDebuffClassListTarget = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(target);
+
+                //then loop
+                foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassListTarget)
+                {
+
+                    //check if the buff has value to return
+                    var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
+
+                    //check if it has value then it modifies stats
+                    if (result.HasValue)
+                    {
+                        var value = result.Value;
+                        // use value
+
+                        if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ATTACK)
+                        {
+
+                            if (value.statModifiedType == SystemManager.StatModifiedType.TARGETNORMAL)
+                            {
+                                increaseStatValueInt += value.statIncreaseInt;
+                            }
+                            else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETPERCENTAGE)
+                            {
+                                increaseStatValueFloat += value.statIncreaseFloat;
+                            }
+                            else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETFIXEDAMOUNT)
+                            {
+                                //we always get the lowest amount
+                                if (fixedAmount == -1 || fixedAmount > value.statIncreaseInt)
+                                {
+                                    fixedAmount = value.statIncreaseInt;
+                                }
+
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            int resultVar = 0;
+            if (fixedAmount != -1)
+            {
+                resultVar = fixedAmount;
+            }
+            else
+            {
+                // Calculate combined attack
+                int combinedVar = startingDmg + increaseStatValueInt;
+                resultVar = combinedVar;
+                resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
+            }
+
 
 
             return resultVar;
@@ -1786,7 +2058,7 @@ public class Combat : MonoBehaviour
         {
             entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
         }
-       
+
 
         if (entityAnimator != null)
         {
@@ -1820,7 +2092,7 @@ public class Combat : MonoBehaviour
 
     public IEnumerator AttackBlindlyEnemy(ScriptableCard scriptableCard, int damageAmount, GameObject entityUsedCardGlobal, GameObject realTarget, int multiHits, float multiHitDuration = 2, bool pierce = false)
     {
-        int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+
 
         //if dead mark is as dead
         //Combat.Instance.CheckIfEntityIsDeadAfterCard(realTarget, (calculatedDmg * multiHits));
@@ -1836,7 +2108,7 @@ public class Combat : MonoBehaviour
         {
 
             realTarget = AIManager.Instance.GetRandomTarget(entityUsedCardGlobal);
-
+            int calculatedDmg = Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
 
             //if target dies during multi attack then stop
             if (realTarget == null)
@@ -1906,83 +2178,48 @@ public class Combat : MonoBehaviour
     }
 
 
+    public List<EntityClass> ScriptableToEntityClass(List<ScriptableEntity> scriptableEntities)
+    {
+        List<EntityClass> entityClasses = new List<EntityClass>();
 
-    public List<GameObject> SummonEntity(GameObject entityUsedCard, List<ScriptableEntity> scriptableEntities, EntityCustomClass entityCustomClass = null)
+        foreach (ScriptableEntity scriptableEntity in scriptableEntities)
+        {
+            EntityClass entityCustomClass = new EntityClass();
+            entityCustomClass.scriptableEntity = scriptableEntity;
+            entityClasses.Add(entityCustomClass);
+        }
+
+        return entityClasses;
+    }
+
+
+    public IEnumerator SummonEntity(GameObject entityUsedCard, List<EntityClass> entityClasses)
     {
 
         List<GameObject> summonedEntities = new List<GameObject>();
 
-        foreach (ScriptableEntity summonInCard in scriptableEntities)
+        foreach (EntityClass entityClass in entityClasses)
         {
-
+            ScriptableEntity summonInCard = entityClass.scriptableEntity;
 
             GameObject summon;
             //get all targets
             if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
             {
+                //allow to activate coroutine on scriptable object
+                MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
-                GameObject[] summons = GameObject.FindGameObjectsWithTag("PlayerSummon");
-
-                //check if it reach the limit
-                if (summons.Length >= Combat.Instance.maxPlayerSummons)
-                {
-                    return null;
-                }
-                else
-                {
-                    summon = Combat.Instance.InstantiateCharacter(summonInCard);
-
-                    summon.tag = "PlayerSummon";
-
-                    //allow to activate coroutine on scriptable object
-                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
-                                                                       //hit at least one time if its 0
-
-                    // Start the coroutine for each hit
-                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity(entityCustomClass));
-
-
-                    //initialize 
-                    summon.GetComponent<AIBrain>().GenerateIntend();
-
-                    summonedEntities.Add(summon);
-                }
-
-
+                // Start the coroutine for each hit
+                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "PlayerSummon", entityClass));
             }
             else
             {
 
-                GameObject[] summons = GameObject.FindGameObjectsWithTag("EnemySummon");
+                //allow to activate coroutine on scriptable object
+                MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
-                //check if it reach the limit
-                if (enemyFormation.Count >= Combat.Instance.maxEnemies)
-                {
-                    return null;
-                }
-                else
-                {
-                    //enemiesAlive++;
-
-                    summon = Combat.Instance.InstantiateEnemies(summonInCard);
-
-                    summon.tag = "EnemySummon";
-
-                    //initialize the stats
-                    //allow to activate coroutine on scriptable object
-                    MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
-                                                                       //hit at least one time if its 0
-
-                    // Start the coroutine for each hit
-                    runner.StartCoroutine(summon.GetComponent<EntityClass>().InititializeEntity(entityCustomClass));
-
-
-                    //initialize 
-                    summon.GetComponent<AIBrain>().GenerateIntend();
-
-                    summonedEntities.Add(summon);
-                }
-
+                // Start the coroutine for each hit
+                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "EnemySummon", entityClass));
 
             }
 
@@ -1990,11 +2227,13 @@ public class Combat : MonoBehaviour
 
         }
 
-        return summonedEntities;
+        yield return null;
 
 
 
     }
+
+
 
     public void ModifyMana(int modifyMana)
     {
@@ -2044,8 +2283,7 @@ public class Combat : MonoBehaviour
         //play music
         AudioManager.Instance.PlayMusic("Combat_1");
 
-        //clear all lists
-        yield return StartCoroutine(ClearLists());
+
 
         //destroy any previous characters
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(this.gameObject.transform.Find("Characters").gameObject));
@@ -2144,6 +2382,8 @@ public class Combat : MonoBehaviour
         //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnLoot));
 
     }
+
+
 
 
 

@@ -22,7 +22,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum SaveLoadModes { SAVE, LOAD }
     public SaveLoadModes saveLoadMode = SaveLoadModes.SAVE;
 
-    public enum AbilityModes { NONE, TARGET, CHOICE, SHIELDCHOICE }
+    public enum AbilityModes { NONE, TARGET, CHOICE, SHIELDCHOICE, MOVEHERO }
     public AbilityModes abilityMode = AbilityModes.NONE;
 
     public enum CombatTurns { playerStartTurn, playerTurn, playerEndTurn, enemyStartTurn, enemyTurn, enemyEndTurn }
@@ -62,10 +62,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum CardThrow { DISCARD, BANISH, DECK }
 
-    public enum StatModifiedType { NORMAL,PERCENTAGE }
+    public enum StatModifiedType { NORMAL,PERCENTAGE, TARGETNORMAL, TARGETPERCENTAGE, TARGETFIXEDAMOUNT }
     public enum StatModifiedAttribute { ATTACK, DEFENCE, ARMOR}
 
-    public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon }
+    public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon, CompanionPos, PlayerPos, EnemyPos }
 
     public enum EntityMode { NORMAL, FROZEN, PARALYZED, BURNED, DEAD }
 
@@ -549,6 +549,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     }
 
+
     // Function to get objects that have all specified tags
     public List<GameObject> FindGameObjectsWithTags(List<string> tags)
     {
@@ -562,6 +563,9 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
         foreach (string tag in tags)
         {
+
+            //if tag is then we need to enable them
+
             //find 
             GameObject[] gameobjectsFound = GameObject.FindGameObjectsWithTag(tag);
 

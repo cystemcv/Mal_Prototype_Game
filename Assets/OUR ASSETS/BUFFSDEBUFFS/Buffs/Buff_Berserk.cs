@@ -5,12 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Buff_Berserk", menuName = "Buffs/Buff_Berserk")]
 public class Buff_Berserk : ScriptableBuffDebuff
 {
-    public override bool OnCharacterTurnStart(GameObject target)
-    {
 
-        //activated
-        return true;
-    }
 
     public override StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)
     {

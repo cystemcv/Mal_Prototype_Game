@@ -37,11 +37,15 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
         //adjust the hp bar
         UI_Combat.Instance.UpdateHealthBarSmoothly(entityUsedCardClass.health, entityUsedCardClass.maxHealth, entityUsedCardClass.slider);
 
-        EntityCustomClass entityCustomClass = new EntityCustomClass();
-        entityCustomClass.currHealth = hp;
-        entityCustomClass.maxHealth = hp;
 
-        Combat.Instance.SummonEntity(entityUsedCard, scriptableEntities, entityCustomClass);
+
+
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+
+
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
     }
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
@@ -63,7 +67,10 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
         entityCustomClass.currHealth = hp;
         entityCustomClass.maxHealth = hp;
 
-        Combat.Instance.SummonEntity(entityUsedCard, scriptableEntities, entityCustomClass);
+        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+                                                           //hit at least one time if its 0
+
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
 
 
 
