@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Monster_Card_EvilGlare", menuName = "Card/Monster/Monster_Card_EvilGlare")]
-public class Monster_Card_EvilGlare : ScriptableCard
+[CreateAssetMenu(fileName = "Monster_Card_GentleGrab", menuName = "Card/Monster/Monster_Card_GentleGrab")]
+public class Monster_Card_GentleGrab : ScriptableCard
 {
     private GameObject realTarget;
-    public ScriptableBuffDebuff weaken;
-    public int weakenTurns = 0;
+    public ScriptableBuffDebuff root;
+    public int rootAmount = 3;
 
     public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(weaken) + " for " + weakenTurns + " to target";
+        customDesc += "Add " + rootAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(root) + " to target";
 
         return customDesc;
     }
@@ -26,7 +26,8 @@ public class Monster_Card_EvilGlare : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root,  rootAmount);
+
     }
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
@@ -37,7 +38,7 @@ public class Monster_Card_EvilGlare : ScriptableCard
 
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root,  rootAmount);
     }
 
 }

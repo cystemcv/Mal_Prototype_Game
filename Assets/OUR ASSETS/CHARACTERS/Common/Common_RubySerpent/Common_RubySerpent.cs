@@ -19,7 +19,7 @@ public class Common_RubySerpent : ScriptableCard
 
         int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
         customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an Enemy on Odd Turn Number!<br>";
-        customDesc += "Add x" + burnAmount + " <color=yellow>" + burn.nameID   + "</color> to an Enemy on Even Turn Number!<br>";
+        customDesc += "Add x" + burnAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to an Enemy on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
 
         return customDesc;
@@ -58,7 +58,7 @@ public class Common_RubySerpent : ScriptableCard
         }
         else
         {
-            BuffSystemManager.Instance.AddBuffDebuff(realTarget, burn, burnAmount, 0);
+            BuffSystemManager.Instance.AddBuffDebuff(realTarget, burn, burnAmount);
         }
     }
 

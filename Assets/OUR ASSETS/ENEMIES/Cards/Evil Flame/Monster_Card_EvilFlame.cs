@@ -21,7 +21,7 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
         int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
         customDesc += multiHits + "X" + " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies";
-        customDesc += "<br>Add 1 burn to each enemy";
+        customDesc += "<br>Add 1 " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to each enemy";
 
         return customDesc;
     }
@@ -65,7 +65,7 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
         foreach (GameObject target in targets)
         {
-            runner.StartCoroutine(BuffSystemManager.Instance.AddBuffDebuffIE(target, burn, buffValue, 0));
+            runner.StartCoroutine(BuffSystemManager.Instance.AddBuffDebuffIE(target, burn, buffValue));
 
         }
      

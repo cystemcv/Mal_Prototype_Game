@@ -15,7 +15,7 @@ public class BuffDebuffClass : MonoBehaviour
 
     public bool infiniteDuration = false;
 
-    public void CreateBuffOnTarget(ScriptableBuffDebuff scriptableBuffDebuff, GameObject target,int buffDebuffValue, int turnsAvailabeP)
+    public void CreateBuffOnTarget(ScriptableBuffDebuff scriptableBuffDebuff, GameObject target,int value)
     {
         //create the debuff
         //buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
@@ -29,6 +29,14 @@ public class BuffDebuffClass : MonoBehaviour
         //add icon
         this.gameObject.transform.Find("Icon").GetComponent<Image>().sprite = scriptableBuffDebuff.icon;
 
+        if (scriptableBuffDebuff.infiniteDuration)
+        {
+            gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+        }
+        else
+        {
+            gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+        }
 
     }
 
@@ -58,7 +66,6 @@ public class BuffDebuffClass : MonoBehaviour
     public void UpdateBuffDebuffUI()
     {
         gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = turnsAvailable.ToString();
-        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
     }
 
     public void UpdateBuffDebuffUI_InfiniteDuration()

@@ -22,7 +22,7 @@ public class Buff_TemporaryDefence : ScriptableBuffDebuff
 
     }
 
-    public override void OnApplyBuff(GameObject target, int value, int turnsValue)
+    public override void OnApplyBuff(GameObject target, int value)
     {
         target.GetComponent<EntityClass>().defence += value;
     }

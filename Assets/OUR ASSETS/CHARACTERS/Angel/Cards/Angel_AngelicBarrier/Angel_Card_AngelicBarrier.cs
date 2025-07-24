@@ -20,8 +20,8 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + buffValue + " <color=yellow>" + defence.nameID + "</color>";
-        customDesc += "\nAdd " + buffValueTemp + " <color=yellow>" + tempDefence.nameID + "</color> for " + buffTurnsTemp + " turns";
+        customDesc += "Add " +  buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
+        customDesc += "\nAdd " + buffValueTemp + " " + BuffSystemManager.Instance.GetBuffDebuffColor(tempDefence) + " for " + buffTurnsTemp + " turns";
         return customDesc;
     }
 
@@ -32,10 +32,10 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
        
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValue, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValue);
 
         //temp 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, tempDefence, buffValueTemp, buffTurnsTemp);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, tempDefence, buffTurnsTemp);
 
     }
 
@@ -46,10 +46,10 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, defence, buffValue, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, defence, buffValue);
 
         //temp strength
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, tempDefence, buffValueTemp, buffTurnsTemp);
+        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, tempDefence, buffValueTemp);
     }
 
 

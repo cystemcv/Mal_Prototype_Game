@@ -11,7 +11,7 @@ public class Status_Card_Burn : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add 1 Burn to the Hero when drawn";
+        customDesc += "Add 1 " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to the Hero when drawn";
 
         return customDesc;
     }
@@ -23,7 +23,7 @@ public class Status_Card_Burn : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance;
         GameObject target = GameObject.FindGameObjectWithTag("Player");
         //add burn status to player
-        runner.StartCoroutine(BuffSystemManager.Instance.AddBuffDebuffIE(target, burn, 1, 0));
+        runner.StartCoroutine(BuffSystemManager.Instance.AddBuffDebuffIE(target, burn, 1));
 
     }
 

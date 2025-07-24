@@ -19,8 +19,8 @@ public class Angel_Card_Berserk : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add <color=yellow>" + berserk.nameID + "</color> for " + berserkTurns + " turns";
-        customDesc += "\nAdd <color=yellow>" + frail.nameID + "</color> for " + frailTurn + " turns";
+        customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(berserk) + " for " + berserkTurns + " turns";
+        customDesc += "\nAdd " + BuffSystemManager.Instance.GetBuffDebuffColor(frail) + " for " + frailTurn + " turns";
         return customDesc;
     }
 
@@ -31,10 +31,10 @@ public class Angel_Card_Berserk : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
        
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, berserk, 0, berserkTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, berserk,  berserkTurns);
 
         //temp 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, frail, 0, frailTurn);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, frail,  frailTurn);
 
     }
 
@@ -44,10 +44,10 @@ public class Angel_Card_Berserk : ScriptableCard
 
         base.OnPlayCard(cardScript, entityUsedCard);
 
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, berserk, 0, berserkTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, berserk, berserkTurns);
 
         //temp 
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, frail, 0, frailTurn);
+        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, frail,  frailTurn);
 
     }
 

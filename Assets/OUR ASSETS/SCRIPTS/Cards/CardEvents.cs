@@ -37,14 +37,20 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public stateOfEvent currentEvent;
 
     private RectTransform rectTransform;
-    private Canvas canvas;
+    public Canvas canvas;
     private CanvasGroup canvasGroup;
 
 
     private bool canActivate = false;
     private bool isDragging = false;
 
-    private bool isPointerInside = false;
+    public bool isPointerInside = false;
+
+
+
+    public GraphicRaycaster graphicRaycaster;
+    public PointerEventData pointerEventData;
+    public EventSystem eventSystem;
 
     void Start()
     {
@@ -53,8 +59,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         //originalPos = transform.position;
 
         rectTransform = GetComponent<RectTransform>();
-        canvas = GetComponentInParent<Canvas>();
-        //canvasGroup = GetComponent<CanvasGroup>();
+        canvas = this.transform.parent.parent.GetComponentInParent<Canvas>();
+
+        graphicRaycaster = canvas.GetComponent<GraphicRaycaster>();
+        eventSystem = EventSystem.current;
+
     }
 
     void Update()
@@ -62,6 +71,43 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         try
         {
             DeckManager.Instance.UpdateCardUI(this.gameObject);
+
+            //if (isPointerInside && !isDragging)
+            //{
+            //    PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            //    {
+            //        position = Input.mousePosition
+            //    };
+
+            //    List<RaycastResult> results = new List<RaycastResult>();
+            //    EventSystem.current.RaycastAll(pointerData, results);
+
+            //    foreach (var result in results)
+            //    {
+            //        //Debug.Log("Hit: " + result.gameObject.name);
+            //        if (result.gameObject == gameObject || result.gameObject.transform.IsChildOf(transform))
+            //        {
+            //            // Scale up the hovered card
+            //            scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
+
+            //            //// Move the card slightly up in world space
+            //            //float targetY = transform.position.y + hoverHeight;
+            //            float targetY = HandManager.Instance.centerObject.transform.position.y + hoverHeight;
+            //            localMoveTween = LeanTween.moveY(gameObject, targetY, transitionTime);
+
+            //            //save and then make the angle 0
+            //            //saveRotation = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+            //            gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+
+            //            gameObject.GetComponent<Canvas>().sortingOrder = 999;
+
+            //            HandManager.Instance.PushNeightbourCards(this.gameObject);
+            //        }
+            //    }
+            //}
+
+
+     
         }
         catch(Exception ex)
         {
@@ -69,12 +115,18 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         }
     }
 
+
     #region EVENTS
 
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (isPointerInside) return; // Prevent duplicate calls
+        if (!UI_Combat.Instance.uiCombatEnable)
+        {
+            return;
+        }
+
+       // if (isPointerInside) return; // Prevent duplicate calls
 
         isPointerInside = true;
 
@@ -134,6 +186,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData eventData)
     {
 
+        if (!UI_Combat.Instance.uiCombatEnable)
+        {
+            return;
+        }
+
         isPointerInside = false;
 
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
@@ -154,11 +211,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if ( SystemManager.Instance.combatTurn != SystemManager.CombatTurns.playerTurn)
+
+        if (!UI_Combat.Instance.uiCombatEnable)
         {
             return;
         }
-
 
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
@@ -180,6 +237,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnDrag(PointerEventData eventData)
     {
 
+        if (!UI_Combat.Instance.uiCombatEnable)
+        {
+            return;
+        }
+
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnDrag_TargetMode(eventData);
@@ -191,6 +253,11 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
+
+        if (!UI_Combat.Instance.uiCombatEnable)
+        {
+            return;
+        }
 
 
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
@@ -274,6 +341,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (isDragging)
         {
+
+            isPointerInside = true;
+
 
             Vector2 screenPoint = eventData.position;
 

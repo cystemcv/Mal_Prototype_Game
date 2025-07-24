@@ -20,8 +20,8 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + buffValue + " <color=yellow>" + righteous.nameID + "</color> ." +
-            "\nDouble this amount if there is no other <color=yellow>" + righteous.nameID + "</color>";
+        customDesc += "Add " + buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(righteous) +
+            "\nDouble this amount if there is no other " + BuffSystemManager.Instance.GetBuffDebuffColor(righteous);
 
         return customDesc;
     }
@@ -44,7 +44,7 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
         }
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, righteous, buffValueFinal, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, righteous, buffValueFinal);
     }
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
@@ -61,7 +61,7 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
         }
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, righteous, buffValueFinal, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, righteous, buffValueFinal);
     }
 
 

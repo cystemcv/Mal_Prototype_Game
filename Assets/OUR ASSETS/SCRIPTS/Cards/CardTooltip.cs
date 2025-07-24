@@ -42,7 +42,7 @@ public class CardTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         foreach (ScriptableBuffDebuff scriptableBuffDebuff in scriptableCard.scriptableBuffDebuffs)
         {
-            this.gameObject.GetComponent<TooltipContent>().description += "<color=yellow>" + scriptableBuffDebuff.nameID + "</color> : " + scriptableBuffDebuff.description + "<br>";
+            this.gameObject.GetComponent<TooltipContent>().description += BuffSystemManager.Instance.GetBuffDebuffColor(scriptableBuffDebuff) + " : " + scriptableBuffDebuff.description + "<br>";
         }
     }
 

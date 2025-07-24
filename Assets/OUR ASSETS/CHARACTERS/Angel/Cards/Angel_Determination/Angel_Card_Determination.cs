@@ -19,8 +19,8 @@ public class Angel_Card_Determination : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + buffValueStrength + " <color=yellow>" + strength.nameID + "</color>";
-        customDesc += "\nAdd " + buffValuedDefence + " <color=yellow>" + defence.nameID + "</color>";
+        customDesc += "Add " + buffValueStrength + " " + BuffSystemManager.Instance.GetBuffDebuffColor(strength);
+        customDesc += "\nAdd " + buffValuedDefence + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
         return customDesc;
     }
 
@@ -31,10 +31,10 @@ public class Angel_Card_Determination : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength);
 
         //defence
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence);
 
 
     }
@@ -47,10 +47,10 @@ public class Angel_Card_Determination : ScriptableCard
 
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength);
 
         //defence
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence);
     }
 
 

@@ -21,7 +21,7 @@ public class Monster_Card_IceCrown : ScriptableCard
             dmg = buffDebuffClass.tempVariable;
         }
 
-        customDesc += "Deal Double Damage (" + 2 * dmg + ") from <color=yellow>" + counter.nameID + "</color> stacks to target";
+        customDesc += "Deal Double Damage (" + 2 * dmg + ") from " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " stacks to target";
 
         return customDesc;
     }

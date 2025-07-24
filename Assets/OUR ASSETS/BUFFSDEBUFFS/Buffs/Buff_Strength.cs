@@ -7,7 +7,7 @@ public class Buff_Strength : ScriptableBuffDebuff
 {
 
 
-    public override void OnApplyBuff(GameObject target, int value, int turnsValue)
+    public override void OnApplyBuff(GameObject target, int value)
     {
        
     }

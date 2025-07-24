@@ -13,7 +13,7 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + counterAmount + " <color=yellow>" + counter.nameID + "</color> to target";
+        customDesc += "Add " + counterAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " to target";
 
         return customDesc;
     }
@@ -26,7 +26,7 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount);
 
     }
 
@@ -38,7 +38,7 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
 
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount);
     }
 
 }

@@ -13,7 +13,7 @@ public class Monster_Card_MonsterCells : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + buffTurns + " <color=yellow>" + buff.nameID + "</color> to target";
+        customDesc += "Add " + buffTurns + " " + BuffSystemManager.Instance.GetBuffDebuffColor(buff) + " to target";
 
         return customDesc;
     }
@@ -25,7 +25,7 @@ public class Monster_Card_MonsterCells : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, 0, buffTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, buffTurns);
     }
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
@@ -35,7 +35,7 @@ public class Monster_Card_MonsterCells : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, 0, buffTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, buffTurns);
     }
 
 }

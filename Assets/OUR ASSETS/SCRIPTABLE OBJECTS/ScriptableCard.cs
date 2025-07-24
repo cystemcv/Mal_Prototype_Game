@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using System;
 using System.Linq;
+using Michsky.MUIP;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Card/Master")]
 public class ScriptableCard : ScriptableObject // Not sure if cards will be made from here or specialized for each class. Possibly change to abstract class later
@@ -23,6 +24,26 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public SystemManager.CardType cardTypeSecondary = SystemManager.CardType.None;
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public SystemManager.Rarity cardRarity = SystemManager.Rarity.Common;
+
+    [BoxGroup("TARGETING")]
+    [HorizontalGroup("TARGETING/Row", Width = 20), HideLabel]
+    public bool toggle1;
+
+    [BoxGroup("TARGETING")]
+    [HorizontalGroup("TARGETING/Row", Width = 20), HideLabel]
+    public bool toggle2;
+
+    [BoxGroup("TARGETING")]
+    [HorizontalGroup("TARGETING/Row", Width = 20), HideLabel]
+    public bool toggle3;
+
+    [BoxGroup("TARGETING")]
+    [HorizontalGroup("TARGETING/Row", Width = 20), HideLabel]
+    public bool toggle4;
+
+    [BoxGroup("TARGETING")]
+    [HorizontalGroup("TARGETING/Row", Width = 20), HideLabel]
+    public bool toggle5;
 
     [Title("SETTINGS")]
     public List<SystemManager.EntityTag> targetEntityTagList;
@@ -115,11 +136,24 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     public virtual void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
+        //remove tooltips
+        if (cardScript.gameObject != null)
+        {
+            cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
+        }
+
+
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
     }
 
     public virtual void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
+        //remove tooltips
+        //if (cardScript.gameObject != null)
+        //{
+        //    cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
+        //}
+
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
     }
 

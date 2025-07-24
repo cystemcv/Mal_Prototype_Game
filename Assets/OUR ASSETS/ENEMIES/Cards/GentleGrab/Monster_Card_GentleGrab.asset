@@ -9,22 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5173aacc7ddafc43b742abe9ff1525d, type: 3}
-  m_Name: Angel_Card_HolySlash
+  m_Script: {fileID: 11500000, guid: c720542be02bcfb439e78618d2b16132, type: 3}
+  m_Name: Monster_Card_GentleGrab
   m_EditorClassIdentifier: 
-  cardArt: {fileID: 21300000, guid: 78ed93ea7373931409eeb3569a60a7e4, type: 3}
-  cardName: Holy Slash
-  mainClass: 6
-  cardType: 0
+  cardArt: {fileID: 21300000, guid: 09e18b4d2a3e9dd44b87c1d9c26e5991, type: 3}
+  cardName: GentleGrab
+  mainClass: 0
+  cardType: 2
   cardTypeSecondary: 7
-  cardRarity: 0
+  cardRarity: 2
   toggle1: 0
   toggle2: 0
   toggle3: 0
   toggle4: 0
   toggle5: 0
-  targetEntityTagList: 010000000300000006000000
-  waitOnQueueTimer: 0.6
+  targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
   cannotDiscard: 0
   cannorRemoveFromDeck: 0
   discardCardAtEndTurn: 1
@@ -32,14 +32,14 @@ MonoBehaviour:
   scriptableBuffDebuffs: []
   primaryManaCost: 2
   cardDesc: 
-  abilityEffect: {fileID: 309019412560960090, guid: 3adb3033cc8bd174581a171c8da46854, type: 3}
+  abilityEffect: {fileID: 0}
   abilityEffectLifetime: 0.6
   abilityEffectYaxis: 0
-  entityAnimation: 0
-  cardSoundEffect: {fileID: 8300000, guid: 60cb752bcd86f9c4cbc64f956edc6058, type: 3}
+  entityAnimation: 2
+  cardSoundEffect: {fileID: 8300000, guid: 1739ff78014ab3f44a5757aede3c7ea9, type: 3}
   cardFlavor: 
   cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
-  damageAmount: 12
-  multiHits: 1
+  root: {fileID: 11400000, guid: 3375345acdffbcc43a04ee99408ceda4, type: 2}
+  rootAmount: 3

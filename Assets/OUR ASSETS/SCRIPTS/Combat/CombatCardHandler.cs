@@ -152,7 +152,7 @@ public class CombatCardHandler : MonoBehaviour
                 UI_Combat.Instance.cardLineRendererArrow.SetActive(true);
                 UI_Combat.Instance.moveHeroText.SetActive(true);
 
-                UI_Combat.Instance.moveHeroText.transform.position = new Vector3(hero.transform.position.x + 1, hero.transform.position.y, hero.transform.position.z);
+                UI_Combat.Instance.moveHeroText.transform.position = new Vector3(hero.transform.position.x + 0.5f, hero.transform.position.y, hero.transform.position.z);
                 // ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity);
 
 
@@ -464,7 +464,8 @@ public class CombatCardHandler : MonoBehaviour
                 posClicked.entityOccupiedPos = targetClicked;
                 posHero.entityOccupiedPos = null;
 
-                targetClicked.transform.position = posClicked.position.transform.position;
+                //targetClicked.transform.position = posClicked.position.transform.position;
+                StartCoroutine(MoveEntity(targetClicked, posClicked.position.transform.position.x, 0.2f));
             }
             else
             {
@@ -473,8 +474,10 @@ public class CombatCardHandler : MonoBehaviour
                 posClicked.entityOccupiedPos = targetClicked;
                 posHero.entityOccupiedPos = clickedEntity;
 
-                targetClicked.transform.position = posClicked.position.transform.position;
-                clickedEntity.transform.position = posHero.position.transform.position;
+                //targetClicked.transform.position = posClicked.position.transform.position;
+                //clickedEntity.transform.position = posHero.position.transform.position;
+                StartCoroutine(MoveEntity(targetClicked, posClicked.position.transform.position.x, 0.2f));
+                StartCoroutine(MoveEntity(clickedEntity, posHero.position.transform.position.x, 0.2f));
             }
 
             //remove line renderer
@@ -495,6 +498,18 @@ public class CombatCardHandler : MonoBehaviour
             posClicked = null;
 
         }
+    }
+
+    public IEnumerator MoveEntity(GameObject entity, float moveToX, float moveSpeed)
+    {
+        UI_Combat.Instance.DisableCombatUI();
+        LeanTween.moveX(entity, moveToX, moveSpeed);
+
+        yield return new WaitForSeconds(moveSpeed);
+        UI_Combat.Instance.EnableCombatUI();
+
+
+        yield return null;
     }
 
     public void HitMoveHero()
@@ -522,6 +537,15 @@ public class CombatCardHandler : MonoBehaviour
                 return;
             }
 
+
+            //check if the target is root
+            BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(hit.collider.gameObject,"Root");
+
+            if (buffDebuffClass != null)
+            {
+                NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.ERROR, buffDebuffClass.scriptableBuffDebuff.nameID, buffDebuffClass.scriptableBuffDebuff.description );
+                return;
+            }
 
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.MOVEHERO;
 

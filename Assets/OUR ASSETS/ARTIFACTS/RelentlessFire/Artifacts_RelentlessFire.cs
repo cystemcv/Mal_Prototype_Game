@@ -44,11 +44,11 @@ public class Artifacts_RelentlessFire : ScriptableItem
         GameObject target = GameObject.FindGameObjectWithTag("Player");
 
         //increase strength
-        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, relentless, 0);
+        EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, relentless);
         entityClass.attack += relentless;
 
         //increase defence
-        entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, defenceAbility, relentless, 0);
+        entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, defenceAbility, relentless);
         entityClass.defence += relentless;
 
     }

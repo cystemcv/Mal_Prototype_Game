@@ -18,7 +18,7 @@ public class Angel_Card_RainCloud : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add " + buffValue + " <color=yellow>" + wet.nameID + "</color>";
+        customDesc += "Add " + buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(wet);
 
         return customDesc;
     }
@@ -30,7 +30,7 @@ public class Angel_Card_RainCloud : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue);
     }
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
@@ -40,7 +40,7 @@ public class Angel_Card_RainCloud : ScriptableCard
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue, 0);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue);
     }
 
 

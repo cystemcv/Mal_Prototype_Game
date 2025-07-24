@@ -13,6 +13,7 @@ public class UI_Combat : MonoBehaviour
 
     //variables
 
+    public bool uiCombatEnable = false;
     public GameObject manaInfo;
     public GameObject deckInfo;
     public GameObject discardInfo;
@@ -94,7 +95,7 @@ public class UI_Combat : MonoBehaviour
     public void RemovePlayedCardUI(PlayedCard playedCard)
     {
         playedCard.playedCardUI.GetComponent<Animator>().SetTrigger("End");
-        Destroy(playedCard.playedCardUI,1f);
+        Destroy(playedCard.playedCardUI, 1f);
     }
 
 
@@ -161,8 +162,8 @@ public class UI_Combat : MonoBehaviour
     void Update()
     {
 
-        
-  
+
+
 
         //deckInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.combatDeck.Count.ToString();
         //discardInfo.transform.Find("Text").GetComponent<TMP_Text>().text = DeckManager.Instance.discardedPile.Count.ToString();
@@ -199,7 +200,7 @@ public class UI_Combat : MonoBehaviour
         ItemManager.Instance.HideInventory();
 
 
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f,true,true);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
     }
 
     public void BackToMainMenu()
@@ -209,7 +210,7 @@ public class UI_Combat : MonoBehaviour
 
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,false,false);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, false, false);
     }
 
     public void ActivateCompanionAbility()
@@ -257,5 +258,28 @@ public class UI_Combat : MonoBehaviour
         targets.AddRange(targetPosList);
     }
 
+
+    public void DisableCombatUI()
+    {
+        uiCombatEnable = false;
+        manaInfo.GetComponent<ButtonManager>().Interactable(false); 
+        deckInfo.GetComponent<ButtonManager>().Interactable(false); 
+        discardInfo.GetComponent<ButtonManager>().Interactable(false); 
+        banishedInfo.GetComponent<ButtonManager>().Interactable(false);
+        endTurnButton.GetComponent<ButtonManager>().Interactable(false);
+        companionAbilityButton.GetComponent<ButtonManager>().Interactable(false);
+
+    }
+
+    public void EnableCombatUI()
+    {
+        uiCombatEnable = true;
+        manaInfo.GetComponent<ButtonManager>().Interactable(true); 
+        deckInfo.GetComponent<ButtonManager>().Interactable(true); 
+        discardInfo.GetComponent<ButtonManager>().Interactable(true);
+        banishedInfo.GetComponent<ButtonManager>().Interactable(true);
+        endTurnButton.GetComponent<ButtonManager>().Interactable(true);
+        companionAbilityButton.GetComponent<ButtonManager>().Interactable(true);
+    }
 
 }

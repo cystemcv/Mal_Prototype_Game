@@ -18,7 +18,7 @@ public class Common_SapphireSerpent : ScriptableCard
 
     
         customDesc += "Draw " + drawAmount + " on Odd Turn Number!<br>";
-        customDesc += "Add <color=yellow>" + wet.nameID + "</color> to all enemies on Even Turn Number!<br>";
+        customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(wet) + " to all enemies on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
 
         return customDesc;
@@ -66,7 +66,7 @@ public class Common_SapphireSerpent : ScriptableCard
 
             foreach (GameObject target in targets)
             {
-                BuffSystemManager.Instance.AddBuffDebuff(target, wet, 1, 0);
+                BuffSystemManager.Instance.AddBuffDebuff(target, wet, 1);
             }
       
 

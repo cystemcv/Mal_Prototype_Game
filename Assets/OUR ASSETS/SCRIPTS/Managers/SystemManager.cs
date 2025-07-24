@@ -111,6 +111,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorGreen = "25FF00";
     public string colorGrey = "363636";
     public string colorOrange = "e07b00";
+    public string colorDiscordRed = "FF5555";
+    public string colorSkyBlue = "00CCFF";
 
     //completely transparent
     public string colorTransparent = "FFFFFF00";

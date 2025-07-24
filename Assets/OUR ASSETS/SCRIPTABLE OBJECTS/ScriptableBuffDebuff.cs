@@ -58,7 +58,7 @@ public class ScriptableBuffDebuff : ScriptableObject
 
     }
 
-    public virtual void OnApplyBuff(GameObject target, int value, int turnsValue)
+    public virtual void OnApplyBuff(GameObject target, int value)
     {
 
     }

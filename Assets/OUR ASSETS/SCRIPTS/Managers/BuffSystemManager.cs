@@ -67,7 +67,7 @@ public class BuffSystemManager : MonoBehaviour
 
     //}
 
-    public EntityClass AddBuffDebuff(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int buffDebuffValue, int turnsValue)
+    public EntityClass AddBuffDebuff(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int value)
     {
 
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
@@ -83,27 +83,27 @@ public class BuffSystemManager : MonoBehaviour
             buffdebuffPrefabLocal.transform.localScale = new Vector3(1, 1, 1);
             buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
-            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, buffDebuffValue, turnsValue);
+            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, value);
 
             //first time it gets created it should not increase the stacks just the turns
             if (!buffDebuffClass.infiniteDuration)
             {
-                buffDebuffClass.tempVariable = buffDebuffValue;
+                buffDebuffClass.tempVariable = value;
             }
         }
 
         //increase the value of the buff
         if (!buffDebuffClass.infiniteDuration)
         {
-            buffDebuffClass.ModifyTurnsAvailable(turnsValue);
+            buffDebuffClass.ModifyTurnsAvailable(value);
         }
         else if (buffDebuffClass.infiniteDuration)
         {
-            buffDebuffClass.ModifyValueAvailable(buffDebuffValue);
+            buffDebuffClass.ModifyValueAvailable(value);
         }
 
         //activate the buff
-        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, buffDebuffValue, turnsValue);
+        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, value);
 
         //get the buffed class
         EntityClass entityClass = target.GetComponent<EntityClass>();
@@ -112,7 +112,7 @@ public class BuffSystemManager : MonoBehaviour
 
     }
 
-    public IEnumerator AddBuffDebuffIE(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int buffDebuffValue, int turnsValue)
+    public IEnumerator AddBuffDebuffIE(GameObject target, ScriptableBuffDebuff scriptableBuffDebuff, int value)
     {
 
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
@@ -128,27 +128,27 @@ public class BuffSystemManager : MonoBehaviour
             buffdebuffPrefabLocal.transform.localScale = new Vector3(1, 1, 1);
             buffDebuffClass = buffdebuffPrefabLocal.GetComponent<BuffDebuffClass>();
 
-            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, buffDebuffValue, turnsValue);
+            buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, value);
 
             //first time it gets created it should not increase the stacks just the turns
             if (!buffDebuffClass.infiniteDuration)
             {
-                buffDebuffClass.tempVariable = buffDebuffValue;
+                buffDebuffClass.tempVariable = value;
             }
         }
 
         //increase the value of the buff
         if (!buffDebuffClass.infiniteDuration)
         {
-            buffDebuffClass.ModifyTurnsAvailable(turnsValue);
+            buffDebuffClass.ModifyTurnsAvailable(value);
         }
         else if (buffDebuffClass.infiniteDuration)
         {
-            buffDebuffClass.ModifyValueAvailable(buffDebuffValue);
+            buffDebuffClass.ModifyValueAvailable(value);
         }
 
         //activate the buff
-        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, buffDebuffValue, turnsValue);
+        buffDebuffClass.scriptableBuffDebuff.OnApplyBuff(target, value);
 
         //get the buffed class
         EntityClass entityClass = target.GetComponent<EntityClass>();
@@ -357,5 +357,18 @@ public class BuffSystemManager : MonoBehaviour
 
         yield return null;
 
+    }
+
+    public string GetBuffDebuffColor(ScriptableBuffDebuff scriptableBuffDebuff)
+    {
+        if (scriptableBuffDebuff.infiniteDuration)
+        {
+            return "<color=#" + SystemManager.Instance.colorSkyBlue + ">" + scriptableBuffDebuff.nameID + "</color>";
+        }
+        else
+        {
+            return "<color=#" + SystemManager.Instance.colorDiscordRed + ">" + scriptableBuffDebuff.nameID + "</color>";
+        }
+       
     }
 }
