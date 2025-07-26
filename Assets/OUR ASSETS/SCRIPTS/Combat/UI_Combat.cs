@@ -62,6 +62,7 @@ public class UI_Combat : MonoBehaviour
     public GameObject playedCardPrefab;
 
 
+    public GameObject targettingPrefab;
 
     private void Awake()
     {

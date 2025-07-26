@@ -183,6 +183,8 @@ public class CombatCardHandler : MonoBehaviour
 
         ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite));
 
+    
+
 
         // Check if the ray intersects with any colliders
         if (hit.collider != null && CardCanTargetEntity(hit.collider.gameObject))
@@ -190,9 +192,34 @@ public class CombatCardHandler : MonoBehaviour
 
             ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
 
+            List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(hit.collider.gameObject, targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard);
+
+            foreach (CombatPosition combatPosition in combatPositionList)
+            {
+                combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(true);
+            }
+
+        }
+        else
+        {
+            ResetAllTargeting();
         }
 
     }
+
+    public void ResetAllTargeting()
+    {
+        foreach (CombatPosition combatPosition in Combat.Instance.characterCombatPositions)
+        {
+            combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(false);
+        }
+
+        foreach (CombatPosition combatPosition in Combat.Instance.enemiesCombatPositions)
+        {
+            combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(false);
+        }
+    }
+
 
     public void CheckHitMoveHero()
     {
@@ -208,20 +235,22 @@ public class CombatCardHandler : MonoBehaviour
         if (hit.collider != null && (SystemManager.Instance.GetPlayerTagsList().Contains(hit.collider.gameObject.tag) || hit.collider.transform.parent.tag == "PlayerPos"))
         {
 
-            CombatPosition posClicked;
+            CombatPosition posClicked = Combat.Instance.GetCombatPosition(hit.collider.gameObject);
 
-            //if it belongs to the positioning tag
-            if (hit.collider.gameObject.name == "Visual")
-            {
-                posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
-            }
-            else
-            {
-                posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
-            }
+            ////if it belongs to the positioning tag
+            //if (hit.collider.gameObject.name == "Visual")
+            //{
+            //    posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
+            //}
+            //else
+            //{
+            //    posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
+            //}
+
+      
 
             //get hero position
-            CombatPosition posHero = Combat.Instance.FindCombatPositionByEntity(targetClicked);
+            CombatPosition posHero = Combat.Instance.GetCombatPosition(targetClicked);
 
             int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
 
@@ -266,6 +295,8 @@ public class CombatCardHandler : MonoBehaviour
     public void CheckClickTarget()
     {
 
+        //ResetAllTargeting();
+
         if (Input.GetMouseButtonDown(0))
         {
             HitTarget();
@@ -288,6 +319,8 @@ public class CombatCardHandler : MonoBehaviour
 
             //leave from target
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
+
+            ResetAllTargeting();
         }
     }
 
@@ -397,6 +430,8 @@ public class CombatCardHandler : MonoBehaviour
 
             Combat.Instance.HideAllCombatPosVisuals();
 
+            ResetAllTargeting();
+
 
         }
     }
@@ -428,20 +463,20 @@ public class CombatCardHandler : MonoBehaviour
 
             //get the positioning
 
-            CombatPosition posClicked;
+            CombatPosition posClicked = Combat.Instance.GetCombatPosition(hit.collider.gameObject);
 
-            //if it belongs to the positioning tag
-            if (hit.collider.gameObject.name == "Visual")
-            {
-                posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
-            }
-            else
-            {
-                posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
-            }
+            ////if it belongs to the positioning tag
+            //if (hit.collider.gameObject.name == "Visual")
+            //{
+            //    posClicked = Combat.Instance.FindCombatPositionByGameObject(hit.collider.gameObject.transform.parent.gameObject);
+            //}
+            //else
+            //{
+            //    posClicked = Combat.Instance.FindCombatPositionByEntity(hit.collider.gameObject.transform.gameObject);
+            //}
 
             //get hero position
-            CombatPosition posHero = Combat.Instance.FindCombatPositionByEntity(targetClicked);
+            CombatPosition posHero = Combat.Instance.GetCombatPosition(targetClicked);
 
             //check if enough mana
             int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);

@@ -777,6 +777,65 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
 
         cardPrefab.GetComponent<CardScript>().cardQueue = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("Queue").gameObject;
+
+        if (scriptableCard.toggle1)
+        {
+
+            //enable custom filtering
+            GameObject customTargeting = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("CustomTargeting").gameObject;
+            customTargeting.SetActive(true);
+
+            GameObject panel = customTargeting.transform.Find("Panel").gameObject;
+            panel.transform.GetChild(0).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
+
+            if(scriptableCard.toggle2)
+            {
+                panel.transform.GetChild(1).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+            }
+            else
+            {
+                panel.transform.GetChild(1).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+            }
+
+            if (scriptableCard.toggle3)
+            {
+                panel.transform.GetChild(2).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+            }
+            else
+            {
+                panel.transform.GetChild(2).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+            }
+
+            if (scriptableCard.toggle4)
+            {
+                panel.transform.GetChild(3).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+            }
+            else
+            {
+                panel.transform.GetChild(3).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+            }
+
+            if (scriptableCard.toggle5)
+            {
+                panel.transform.GetChild(4).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+            }
+            else
+            {
+                panel.transform.GetChild(4).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+            }
+
+        }
+
+        if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.PlayerPos))
+        {
+          cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("PlayerPos").gameObject.SetActive(true);
+        }
+
+        if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.EnemyPos))
+        {
+            cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("EnemyPos").gameObject.SetActive(true);
+        }
+
         cardPrefab.GetComponent<CardScript>().cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
 
@@ -869,8 +928,7 @@ public class DeckManager : MonoBehaviour
         cardChild.transform.Find("Info").Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
         cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
 
-        //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
-
+    
         //mana cost
         cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
 
@@ -879,23 +937,11 @@ public class DeckManager : MonoBehaviour
             cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
         }
 
-        //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
-
-        //description is based on abilities
         cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character);
-        //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        //{
-        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
-        //}
 
-        ////conditions
-        //foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
-        //{
-        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
-        //}
 
-        //activation should not be visible
-        //cardChild.transform.Find("Activation").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorTransparent);
+        
+
     }
 
 
@@ -909,16 +955,7 @@ public class DeckManager : MonoBehaviour
         //get the character to be used
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character); ;
-        //foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        //{
-        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardAbilityClass.scriptableCardAbility.AbilityDescription(cardScript, cardAbilityClass, character) + "\n";
-        //}
 
-        ////conditions
-        //foreach (CardConditionClass cardConditionClass in scriptableCard.cardConditionClass)
-        //{
-        //    cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text += cardConditionClass.ScriptableCardCondition.ConditionDescription(cardScript, cardConditionClass, character) + "\n";
-        //}
     }
 
     public string GetBonusAttackAsDescription(int cardDmg, int calculatedDmg)

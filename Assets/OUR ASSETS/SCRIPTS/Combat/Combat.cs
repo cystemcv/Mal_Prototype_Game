@@ -37,7 +37,7 @@ public class Combat : MonoBehaviour
     public GameObject characterStartSpawn;
     public GameObject enemyStartSpawn;
 
-    public List<CombatPosition> companionCombatPositions;
+    //public List<CombatPosition> companionCombatPositions;
     public List<CombatPosition> characterCombatPositions;
     public List<CombatPosition> enemiesCombatPositions;
 
@@ -290,6 +290,8 @@ public class Combat : MonoBehaviour
 
         //yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatEnd));
         combatEnded = true;
+
+        UI_Combat.Instance.DisableCombatUI();
 
         //always check characters first, if both lost = game over
         if (CheckIfSpawnPosAreEmpty("Player"))
@@ -1062,23 +1064,16 @@ public class Combat : MonoBehaviour
             combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
         }
 
-        foreach (CombatPosition combatPosition in companionCombatPositions)
-        {
-            combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
-        }
+ 
     }
 
 
 
     public CombatPosition FindCombatPositionByEntity(GameObject clickedEntity)
     {
-        // Search companion positions
-        CombatPosition match = companionCombatPositions
-            .FirstOrDefault(pos => pos.entityOccupiedPos == clickedEntity);
-        if (match != null) return match;
 
         // Search character positions
-        match = characterCombatPositions
+        CombatPosition match = characterCombatPositions
             .FirstOrDefault(pos => pos.entityOccupiedPos == clickedEntity);
         if (match != null) return match;
 
@@ -1091,15 +1086,27 @@ public class Combat : MonoBehaviour
         return null;
     }
 
+    public CombatPosition GetCombatPosition(GameObject target)
+    {
+        CombatPosition combatPosition;
+
+        if (target.name == "Visual")
+        {
+            combatPosition = Combat.Instance.FindCombatPositionByGameObject(target.transform.parent.gameObject);
+        }
+        else
+        {
+            combatPosition = Combat.Instance.FindCombatPositionByEntity(target.transform.gameObject);
+        }
+
+        return combatPosition;
+    }
+
     public CombatPosition FindCombatPositionByGameObject(GameObject clickedPosition)
     {
-        // Search companion positions
-        CombatPosition match = companionCombatPositions
-            .FirstOrDefault(pos => pos.position == clickedPosition);
-        if (match != null) return match;
 
         // Search character positions
-        match = characterCombatPositions
+        CombatPosition match = characterCombatPositions
             .FirstOrDefault(pos => pos.position == clickedPosition);
         if (match != null) return match;
 
@@ -1116,6 +1123,7 @@ public class Combat : MonoBehaviour
     {
         CombatPosition combatPosition = new CombatPosition();
 
+        //last place is reserved for comp
         if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
         {
 
@@ -1137,8 +1145,8 @@ public class Combat : MonoBehaviour
         }
         else
         {
-            //companion
-            combatPosition = companionCombatPositions[0];
+            //companion is on last place and he should always spawn first
+            combatPosition = characterCombatPositions[characterCombatPositions.Count -1];
         }
 
         return combatPosition;
@@ -1156,11 +1164,7 @@ public class Combat : MonoBehaviour
         {
             isFull = enemiesCombatPositions.All(pos => pos.entityOccupiedPos != null);
         }
-        else
-        {
-            //companion
-            isFull = companionCombatPositions.All(pos => pos.entityOccupiedPos != null);
-        }
+ 
 
         return isFull;
     }
@@ -1172,17 +1176,13 @@ public class Combat : MonoBehaviour
 
         if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
         {
-            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos == null);
+            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos == null );
         }
         else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag) || tag == "EnemyPos")
         {
             isFull = enemiesCombatPositions.All(pos => pos.entityOccupiedPos == null);
         }
-        else
-        {
-            //companion
-            isFull = companionCombatPositions.All(pos => pos.entityOccupiedPos == null);
-        }
+
 
         return isFull;
     }
@@ -2400,8 +2400,96 @@ public class Combat : MonoBehaviour
 
     }
 
+    public List<CombatPosition> CheckCardTargets(GameObject target, ScriptableCard scriptableCard)
+    {
+
+        //spawn target on the target
+        //Instantiate(UI_Combat.Instance.targettingPrefab, target.transform.position, Quaternion.identity);
+
+        //ScriptableCard scriptableCard = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard;
+        List<CombatPosition> combatPositionsToCheck = new List<CombatPosition>();
+
+        if (SystemManager.Instance.GetPlayerTagsList().Contains(target.tag) || target.transform.parent.tag == "PlayerPos")
+        {
+            combatPositionsToCheck = Combat.Instance.characterCombatPositions;
+        }
+        else if (SystemManager.Instance.GetEnemyTagsList().Contains(target.tag) || target.transform.parent.tag == "EnemyPos")
+        {
+            combatPositionsToCheck = Combat.Instance.enemiesCombatPositions;
+        }
 
 
+        List<CombatPosition> combatPositions = Combat.Instance.GetCardTargetingCombatPositions(combatPositionsToCheck, scriptableCard, target);
+
+        return combatPositions;
+    }
+
+    public List<CombatPosition> GetCardTargetingCombatPositions(List<CombatPosition> combatPositionsToCheck, ScriptableCard scriptableCard, GameObject target)
+    {
+        List<CombatPosition> combatPositions = new List<CombatPosition>();
+
+        CombatPosition combatPosition = GetCombatPosition(target);
+
+        //add the first clicked position
+        combatPositions.Add(combatPosition);
+
+        //then start the targeting
+        int listIndex = combatPositionsToCheck.IndexOf(combatPosition);
+
+        //ignore the first one
+        if (scriptableCard.toggle1)
+        {
+
+        }
+
+        listIndex = GoThoughListNextIndex(combatPositionsToCheck, listIndex);
+
+        if (scriptableCard.toggle2)
+        {
+            combatPositions.Add(combatPositionsToCheck[listIndex]);
+        }
+
+        listIndex = GoThoughListNextIndex(combatPositionsToCheck, listIndex);
+
+        if (scriptableCard.toggle3)
+        {
+            combatPositions.Add(combatPositionsToCheck[listIndex]);
+        }
+
+        listIndex = GoThoughListNextIndex(combatPositionsToCheck, listIndex);
+
+        if (scriptableCard.toggle4)
+        {
+            combatPositions.Add(combatPositionsToCheck[listIndex]);
+        }
+
+        listIndex = GoThoughListNextIndex(combatPositionsToCheck, listIndex);
+
+        if (scriptableCard.toggle5)
+        {
+            combatPositions.Add(combatPositionsToCheck[listIndex]);
+        }
+
+        return combatPositions;
+
+    }
+
+
+    public int GoThoughListNextIndex(List<CombatPosition> combatPositionsToCheck, int currentIndex)
+    {
+        //go to next index
+        currentIndex++;
+
+        //but loop if it goes over the list index
+        if (currentIndex >= combatPositionsToCheck.Count )
+        {
+            //go back to first index
+            currentIndex = 0;
+        }
+
+        return currentIndex;
+
+    }
 
 
 }
