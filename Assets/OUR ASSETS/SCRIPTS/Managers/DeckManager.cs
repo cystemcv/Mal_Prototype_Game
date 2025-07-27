@@ -786,55 +786,55 @@ public class DeckManager : MonoBehaviour
             customTargeting.SetActive(true);
 
             GameObject panel = customTargeting.transform.Find("Panel").gameObject;
-            panel.transform.GetChild(0).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
+            panel.transform.GetChild(0).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
 
             if(scriptableCard.toggle2)
             {
-                panel.transform.GetChild(1).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+                panel.transform.GetChild(1).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(1).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+                panel.transform.GetChild(1).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle3)
             {
-                panel.transform.GetChild(2).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+                panel.transform.GetChild(2).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(2).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+                panel.transform.GetChild(2).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle4)
             {
-                panel.transform.GetChild(3).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+                panel.transform.GetChild(3).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(3).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+                panel.transform.GetChild(3).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle5)
             {
-                panel.transform.GetChild(4).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorSkyBlue);
+                panel.transform.GetChild(4).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(4).GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
+                panel.transform.GetChild(4).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
             }
 
         }
 
-        if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.PlayerPos))
-        {
-          cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("PlayerPos").gameObject.SetActive(true);
-        }
+        //if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.PlayerPos))
+        //{
+        //  cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("PlayerPos").gameObject.SetActive(true);
+        //}
 
-        if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.EnemyPos))
-        {
-            cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("EnemyPos").gameObject.SetActive(true);
-        }
+        //if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.EnemyPos))
+        //{
+        //    cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("EnemyPos").gameObject.SetActive(true);
+        //}
 
         cardPrefab.GetComponent<CardScript>().cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);

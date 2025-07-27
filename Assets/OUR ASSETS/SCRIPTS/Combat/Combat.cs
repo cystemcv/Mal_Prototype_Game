@@ -25,7 +25,7 @@ public class CombatPosition
 {
     public GameObject position;
     public GameObject entityOccupiedPos;
-    public string hazard;
+    public ScriptableHazard hazard;
 }
 
 public class Combat : MonoBehaviour
@@ -611,6 +611,8 @@ public class Combat : MonoBehaviour
         UIManager.Instance.AnimateTextTypeWriter("Turn:" + Turns, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
 
 
+        yield return StartCoroutine(ActivateHazardsPlayerTurnStart());
+
         //mana should go back to full
         yield return StartCoroutine(RefillMana());
 
@@ -730,9 +732,71 @@ public class Combat : MonoBehaviour
 
         yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd, null));
 
+        yield return StartCoroutine(ActivateHazardsPlayerTurnEnd());
+
         yield return new WaitForSeconds(1f);
 
         yield return null; //skip frame
+
+    }
+
+    public IEnumerator ActivateHazardsPlayerTurnEnd()
+    {
+
+        foreach (CombatPosition combatPosition in characterCombatPositions)
+        {
+            if (combatPosition.hazard != null)
+            {
+                StartCoroutine(combatPosition.hazard.OnTurnEnd(combatPosition));
+            }
+
+            yield return null; //skip frame
+        }
+
+    }
+
+    public IEnumerator ActivateHazardsEnemyTurnEnd()
+    {
+
+        foreach (CombatPosition combatPosition in enemiesCombatPositions)
+        {
+            if (combatPosition.hazard != null)
+            {
+                StartCoroutine(combatPosition.hazard.OnTurnEnd(combatPosition));
+            }
+      
+            yield return null; //skip frame
+        }
+
+    }
+
+    public IEnumerator ActivateHazardsPlayerTurnStart()
+    {
+
+        foreach (CombatPosition combatPosition in characterCombatPositions)
+        {
+            if (combatPosition.hazard != null)
+            {
+                StartCoroutine(combatPosition.hazard.OnTurnStart(combatPosition));
+            }
+
+            yield return null; //skip frame
+        }
+
+    }
+
+    public IEnumerator ActivateHazardsEnemyTurnStart()
+    {
+
+        foreach (CombatPosition combatPosition in enemiesCombatPositions)
+        {
+            if (combatPosition.hazard != null)
+            {
+               StartCoroutine(combatPosition.hazard.OnTurnStart(combatPosition));
+            }
+
+            yield return null; //skip frame
+        }
 
     }
 
@@ -744,6 +808,7 @@ public class Combat : MonoBehaviour
             yield return null; //stops function
         }
 
+        yield return StartCoroutine(ActivateHazardsEnemyTurnStart());
 
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
@@ -792,13 +857,13 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
+        yield return StartCoroutine(ActivateHazardsEnemyTurnEnd());
+
         yield return null;
     }
 
     public IEnumerator SpawnCompanion()
     {
-
-
 
         if (StaticData.staticScriptableCompanion == null)
         {
@@ -2091,13 +2156,15 @@ public class Combat : MonoBehaviour
                 break;
             }
 
-
-            CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
+            if (scriptableCard != null)
+            {
+                CombatManager.Instance.SpawnEffectPrefab(realTarget, scriptableCard);
+            }
 
 
             yield return StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDmg, pierce, SystemManager.AdjustNumberModes.ATTACK));
 
-            if (scriptableCard.cardSoundEffect != null)
+            if (scriptableCard != null && scriptableCard.cardSoundEffect != null)
             {
                 AudioManager.Instance.cardSource.PlayOneShot(scriptableCard.cardSoundEffect);
             }
@@ -2491,5 +2558,40 @@ public class Combat : MonoBehaviour
 
     }
 
+    public void AddHazard(ScriptableHazard scriptableHazard, CombatPosition combatPosition)
+    {
+
+        //can replace hazards
+
+
+        combatPosition.hazard = scriptableHazard;
+
+        //show icon
+        combatPosition.position.transform.Find("Hazard").gameObject.SetActive(true);
+        combatPosition.position.transform.Find("Hazard").GetComponent<TooltipContent>().description = "<color=#" + SystemManager.Instance.colorGolden + ">" + scriptableHazard.hazardName + "</color> : " + scriptableHazard.hazardDescription;
+        combatPosition.position.transform.Find("Hazard").Find("Icon").GetComponent<Image>().sprite = scriptableHazard.hazardIcon;
+
+
+
+    }
+
+
+    public void RemoveHazard(ScriptableHazard scriptableHazard, CombatPosition combatPosition)
+    {
+        combatPosition.hazard = null;
+
+        //show icon
+        combatPosition.position.transform.Find("Hazard").gameObject.SetActive(false);
+    }
+
+    public IEnumerator RemoveHazardIE(ScriptableHazard scriptableHazard, CombatPosition combatPosition)
+    {
+        combatPosition.hazard = null;
+
+        //show icon
+        combatPosition.position.transform.Find("Hazard").gameObject.SetActive(false);
+
+        yield return null;
+    }
 
 }

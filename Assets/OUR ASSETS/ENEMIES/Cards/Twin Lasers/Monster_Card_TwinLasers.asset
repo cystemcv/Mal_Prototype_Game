@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5173aacc7ddafc43b742abe9ff1525d, type: 3}
-  m_Name: Angel_Card_HolySlash
+  m_Script: {fileID: 11500000, guid: f1a05b0351b29bd4a9243e98680c81ce, type: 3}
+  m_Name: Monster_Card_TwinLasers
   m_EditorClassIdentifier: 
-  cardArt: {fileID: 21300000, guid: 78ed93ea7373931409eeb3569a60a7e4, type: 3}
-  cardName: Holy Slash
-  mainClass: 6
+  cardArt: {fileID: 21300000, guid: c91283cc4d336454ca1dc3904711616a, type: 3}
+  cardName: Twin Lasers
+  mainClass: 0
   cardType: 0
   cardTypeSecondary: 7
   cardRarity: 0
@@ -22,25 +22,24 @@ MonoBehaviour:
   toggle2: 0
   toggle3: 1
   toggle4: 0
-  toggle5: 1
-  targetEntityTagList: 010000000300000006000000
-  waitOnQueueTimer: 0.6
+  toggle5: 0
+  targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
   cannotDiscard: 0
   cannorRemoveFromDeck: 0
   discardCardAtEndTurn: 1
-  scriptableKeywords:
-  - {fileID: 11400000, guid: 7def08553f5b84f48989f4bb52f5f6a5, type: 2}
+  scriptableKeywords: []
   scriptableBuffDebuffs: []
   primaryManaCost: 2
   cardDesc: 
-  abilityEffect: {fileID: 309019412560960090, guid: 3adb3033cc8bd174581a171c8da46854, type: 3}
+  abilityEffect: {fileID: 2807260129574566168, guid: be86ce7db97a6e949bff7a3a255f3c1e, type: 3}
   abilityEffectLifetime: 0.6
   abilityEffectYaxis: 0
   entityAnimation: 0
-  cardSoundEffect: {fileID: 8300000, guid: 60cb752bcd86f9c4cbc64f956edc6058, type: 3}
+  cardSoundEffect: {fileID: 8300000, guid: bb247b5a334aa784495c82a9c8930cd7, type: 3}
   cardFlavor: 
   cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
-  damageAmount: 12
-  multiHits: 1
+  damageAmount: 7
+  multiHits: 0

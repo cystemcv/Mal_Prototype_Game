@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Angel_Card_HolySlash", menuName = "Card/Angel/Angel_Card_HolySlash")]
-public class Angel_Card_HolySlash : ScriptableCard
+[CreateAssetMenu(fileName = "Common_Card_Mine", menuName = "Card/Common/Common_Card_Mine")]
+public class Common_Card_Mine : ScriptableCard
 {
 
-    public int damageAmount = 0;
-    public int multiHits = 0;
+    public ScriptableHazard scriptableHazard;
 
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
@@ -16,9 +15,7 @@ public class Angel_Card_HolySlash : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an enemy";
-        customDesc += "\n<color=yellow>" + this.scriptableKeywords[0].keywordName + "</color>";
+        customDesc += "Add a <color=#BF40BF>" + scriptableHazard.hazardName + "</color> to a zone";
 
         return customDesc;
     }
@@ -48,20 +45,14 @@ public class Angel_Card_HolySlash : ScriptableCard
     public void ExecuteCard()
     {
 
-        //then loop
-        if (multiHits <= 0)
-        {
-            multiHits = 1;
-        }
+
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount,1, entityUsedCardGlobal, realTarget, multiHits, 1));
+        CombatPosition combatPosition = Combat.Instance.GetCombatPosition(realTarget);
+
+        Combat.Instance.AddHazard(scriptableHazard, combatPosition);
 
     }
-
-
-
 
 }

@@ -18,6 +18,7 @@ public class CombatCardHandler : MonoBehaviour
     public bool targetCardActivated = false;
     public GameObject targetClicked;
     public CombatPosition posClicked = null;
+    public List<CombatPosition> posClickedTargeting = new List<CombatPosition>();
 
     [Header("VISUAL PREFABS")]
     public GameObject discardEffect;
@@ -382,6 +383,8 @@ public class CombatCardHandler : MonoBehaviour
             //Debug.Log("Mouse clicked on: " + hit.collider.gameObject.name);
             // Add your click handling code here
             targetClicked = hit.collider.gameObject;
+
+            posClickedTargeting = Combat.Instance.CheckCardTargets(targetClicked, targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard);
 
             //if it belongs to the positioning tag
             if (targetClicked.transform.parent.tag == "EnemyPos" ||
