@@ -15,14 +15,14 @@ public class Common_Card_Mine : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
 
-        customDesc += "Add a <color=#BF40BF>" + scriptableHazard.hazardName + "</color> to a zone";
-
+        customDesc += "Add a <color=#" + SystemManager.Instance.colorGolden + ">" + scriptableHazard.hazardName + "</color> to a zone";
+        customDesc += "\n<color=yellow>" + this.scriptableKeywords[0].keywordName + "</color>";
         return customDesc;
     }
 
     public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScript, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -33,19 +33,46 @@ public class Common_Card_Mine : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();
 
     }
 
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+
+        string tag = "";
+        if (SystemManager.Instance.GetEnemyTagsList().Contains(entityUsedCard.tag))
+        {
+            tag = "PlayerPos";
+        }
+        else
+        {
+            tag = "EnemyPos";
+        }
+
+        if (Combat.Instance.CheckIfSpawnPosAreFull(tag))
+        {
+            return;
+        }
+
+        CombatPosition combatPosition = Combat.Instance.GetSpawnPosition(tag);
+        realTarget = combatPosition.position.gameObject.transform.Find("Visual").gameObject;
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+    }
+
     public void ExecuteCard()
     {
 
-
+        if (realTarget == null)
+        {
+            return;
+        }
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 

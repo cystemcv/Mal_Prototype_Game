@@ -64,7 +64,7 @@ public class Ability_GainShieldEveryTurn : ScriptableCardAbility
         //get the buff or debuff to do things
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.scriptableBuffDebuff.nameID);
 
-        Combat.Instance.AdjustTargetHealth(entityUsedCard, target, buffDebuffClass.tempVariable, false, SystemManager.AdjustNumberModes.SHIELD);
+        Combat.Instance.AdjustTargetHealth(entityUsedCard, target, buffDebuffClass.tempValue, false, SystemManager.AdjustNumberModes.SHIELD);
 
 
         return true;

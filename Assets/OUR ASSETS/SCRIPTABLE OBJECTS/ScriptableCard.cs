@@ -58,6 +58,9 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     [Title("BUFFS/DEBUFFS")]
     public List<ScriptableBuffDebuff> scriptableBuffDebuffs = new List<ScriptableBuffDebuff>();
 
+    [Title("HAZARDS")]
+    public List<ScriptableHazard> scriptableHazards = new List<ScriptableHazard>();
+
     [Title("CARD DETAILS")]
     [Range(0, 9)]
     public int primaryManaCost; // Amount of mana of the primary type to spend to play the card
@@ -155,6 +158,11 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         //}
 
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
+    }
+
+    public virtual void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+
     }
 
     public virtual void OnDrawCard(CardScript cardScript)

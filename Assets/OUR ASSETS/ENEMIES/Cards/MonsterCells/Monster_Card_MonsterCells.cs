@@ -30,12 +30,19 @@ public class Monster_Card_MonsterCells : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
         base.OnPlayCard(cardScript, entityUsedCard);
 
         //strength
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, buffTurns);
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
 }

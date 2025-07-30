@@ -55,7 +55,7 @@ public class Ability_IncreaseDefenceInfinite : ScriptableCardAbility
         //get the buff/debuff
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.scriptableBuffDebuff.nameID);
 
-        target.GetComponent<EntityClass>().defence -= buffDebuffClass.tempVariable;
+        target.GetComponent<EntityClass>().defence -= buffDebuffClass.tempValue;
 
 
     }

@@ -19,7 +19,7 @@ public class Debuff_Weaken : ScriptableBuffDebuff
         statModifiedValue.StatModifiedAttribute = SystemManager.StatModifiedAttribute.ATTACK;
         statModifiedValue.statModifiedType = SystemManager.StatModifiedType.TARGETPERCENTAGE;
         statModifiedValue.statIncreaseInt = 0;
-        statModifiedValue.statIncreaseFloat = 50;
+        statModifiedValue.statIncreaseFloat = 30;
 
         return statModifiedValue;
     }

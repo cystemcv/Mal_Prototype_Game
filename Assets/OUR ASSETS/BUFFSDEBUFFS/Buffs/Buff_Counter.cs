@@ -14,10 +14,10 @@ public class Buff_Counter : ScriptableBuffDebuff
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        Debug.Log("caster : " + caster.name + " | " + buffDebuffClass.tempVariable);
-        Debug.Log("target : " + target.name + " | " + buffDebuffClass.tempVariable);
+        Debug.Log("caster : " + caster.name + " | " + buffDebuffClass.tempValue);
+        Debug.Log("target : " + target.name + " | " + buffDebuffClass.tempValue);
 
-        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(target, caster, buffDebuffClass.tempVariable,false,SystemManager.AdjustNumberModes.COUNTER));
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(target, caster, buffDebuffClass.tempValue, false,SystemManager.AdjustNumberModes.COUNTER));
 
     }
 

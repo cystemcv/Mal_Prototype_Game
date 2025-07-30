@@ -36,9 +36,16 @@ public class Monster_Card_GentleGrab : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, root,  rootAmount);
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
 }

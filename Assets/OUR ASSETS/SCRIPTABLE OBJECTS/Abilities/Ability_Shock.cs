@@ -54,10 +54,7 @@ public class Ability_Shock : ScriptableCardAbility
             AIBrain aIBrain = entityUsedCard.GetComponent<AIBrain>();
 
             //get target, if target dies then assign to new target
-            if (aIBrain.targetForCard == null)
-            {
-                aIBrain.ReAssignTargetForCard();
-            }
+     
 
             realTarget = aIBrain.targetForCard;
         }
@@ -154,7 +151,7 @@ public class Ability_Shock : ScriptableCardAbility
                     if (buffDebuff != null)
                     {
 
-                        int count = buffDebuff.tempVariable;
+                        int count = buffDebuff.tempValue;
 
                         while (count > 0 && targetFound != null)
                         {

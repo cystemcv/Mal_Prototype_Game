@@ -20,7 +20,7 @@ public class Buff_Strength : ScriptableBuffDebuff
         StatModifiedValue statModifiedValue = new StatModifiedValue();
         statModifiedValue.StatModifiedAttribute = SystemManager.StatModifiedAttribute.ATTACK;
         statModifiedValue.statModifiedType = SystemManager.StatModifiedType.NORMAL;
-        statModifiedValue.statIncreaseInt = buffDebuffClass.tempVariable;
+        statModifiedValue.statIncreaseInt = buffDebuffClass.tempValue;
         statModifiedValue.statIncreaseFloat = 0;
 
         return statModifiedValue;

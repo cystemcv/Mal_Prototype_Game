@@ -37,14 +37,28 @@ public class Angel_Card_AngelicBlock : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        MonoBehaviour runner = CombatCardHandler.Instance;
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+        if (realTarget == null)
+        {
+            return;
+        }
+
+        MonoBehaviour runner = CombatCardHandler.Instance;
 
         int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
     }
 
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+
+    }
 
 
 }

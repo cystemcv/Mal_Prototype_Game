@@ -25,7 +25,7 @@ public class Monster_Card_TwinLasers : ScriptableCard
 
     public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScript, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -36,9 +36,9 @@ public class Monster_Card_TwinLasers : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         CombatCardHandler.Instance.posClickedTargeting = Combat.Instance.CheckCardTargets(realTarget, cardScript.scriptableCard);
         entityUsedCardGlobal = entityUsedCard;
 
@@ -70,6 +70,16 @@ public class Monster_Card_TwinLasers : ScriptableCard
             }
         }
      
+
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
 
     }
 

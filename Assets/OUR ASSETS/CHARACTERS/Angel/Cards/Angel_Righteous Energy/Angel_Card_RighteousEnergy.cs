@@ -49,9 +49,9 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
-
+      
         base.OnPlayCard(cardScript, entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
         BuffDebuffClass buffDebuff = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, righteous.nameID);
 
@@ -64,7 +64,12 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, righteous, buffValueFinal);
     }
 
-
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+    }
 
 
 

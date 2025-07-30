@@ -36,9 +36,16 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount);
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
 }

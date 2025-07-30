@@ -40,11 +40,18 @@ public class Common_RubySerpent : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();
 
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
     public void ExecuteCard()

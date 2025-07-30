@@ -16,7 +16,7 @@ public class Debuff_Burn : ScriptableBuffDebuff
         //+1 damage on each stack
         BuffDebuffClass buffDebuff = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
 
-        int extraBurn = buffDebuff.tempVariable;
+        int extraBurn = buffDebuff.tempValue;
 
         //deal damage each turn
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, target, burnDamage + extraBurn, false, SystemManager.AdjustNumberModes.ATTACK));

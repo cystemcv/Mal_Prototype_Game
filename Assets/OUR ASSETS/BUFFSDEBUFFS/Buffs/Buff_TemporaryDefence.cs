@@ -17,7 +17,7 @@ public class Buff_TemporaryDefence : ScriptableBuffDebuff
         //get the buff/debuff
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
 
-        target.GetComponent<EntityClass>().defence -= buffDebuffClass.tempVariable;
+        target.GetComponent<EntityClass>().defence -= buffDebuffClass.tempValue;
 
 
     }

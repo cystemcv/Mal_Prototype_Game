@@ -295,13 +295,35 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
         SystemManager.Instance.ChangeTargetEntityColor(SystemManager.Instance.colorVeryLightBlue, this.gameObject);
 
-        //AIBrain aIBrain = this.GetComponent<AIBrain>();
+        // Check if the ray intersects with any colliders
 
-        ////if no ai brain the get continue to the next or deasd
-        //if (aIBrain == null)
-        //{
-        //    return;
-        //}
+        if (SystemManager.Instance.abilityMode != SystemManager.AbilityModes.NONE){
+            return;
+        }
+
+        AIBrain aIBrain = this.GetComponent<AIBrain>();
+
+        //if no ai brain the get continue to the next or deasd
+        if (aIBrain == null)
+        {
+            return;
+        }
+
+        if (this.gameObject.GetComponent<AIBrain>().targetForCard == null)
+        {
+            return;
+        }
+
+        List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(this.gameObject.GetComponent<AIBrain>().targetForCard, this.gameObject.GetComponent<AIBrain>().scriptableCardToUse);
+
+        foreach (CombatPosition combatPosition in combatPositionList)
+        {
+            combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(true);
+        }
+
+
+
+
 
         ////create gameobject on scene and spawn it on the discard spawner
         //UI_Combat.Instance.CheckEnemyCard.SetActive(true);
@@ -338,6 +360,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         UI_Combat.Instance.CheckEnemyCard.SetActive(false);
+
+        CombatCardHandler.Instance.ResetAllTargeting();
 
     }
 

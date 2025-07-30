@@ -14,7 +14,7 @@ public class Buff_Defence : ScriptableBuffDebuff
         StatModifiedValue statModifiedValue = new StatModifiedValue();
         statModifiedValue.StatModifiedAttribute = SystemManager.StatModifiedAttribute.DEFENCE;
         statModifiedValue.statModifiedType = SystemManager.StatModifiedType.NORMAL;
-        statModifiedValue.statIncreaseInt = buffDebuffClass.tempVariable;
+        statModifiedValue.statIncreaseInt = buffDebuffClass.tempValue;
         statModifiedValue.statIncreaseFloat = 0;
 
         return statModifiedValue;

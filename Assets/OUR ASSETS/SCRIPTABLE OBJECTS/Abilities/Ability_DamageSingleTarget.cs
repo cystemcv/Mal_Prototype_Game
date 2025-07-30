@@ -57,10 +57,7 @@ public class Ability_DamageSingleTarget : ScriptableCardAbility
             AIBrain aIBrain = entityUsedCard.GetComponent<AIBrain>();
 
             //get target, if target dies then assign to new target
-            if (aIBrain.targetForCard == null)
-            {
-                aIBrain.ReAssignTargetForCard();
-            }
+     
 
             realTarget = aIBrain.targetForCard;
         }

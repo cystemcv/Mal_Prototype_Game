@@ -113,6 +113,7 @@
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\CounterGloves\Artifacts_CounterGloves.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingOptionalCancel.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\AIManager.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Buffs\Buff_DarkBlade.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Righteous Flame\Angel_Card_RighteousFlame.cs" />
     <Compile Include="Assets\PixelFantasy\PixelTileEngine\Scripts\Popup.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\BetterAxisAlignedLayoutGroup.cs" />
@@ -136,12 +137,14 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Window\WindowManagerButton.cs" />
     <Compile Include="Assets\OUR ASSETS\ENEMIES\AIBrain.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\SizeModifiers\Vector3SizeModifier.cs" />
+    <Compile Include="Assets\OUR ASSETS\HAZARDS\ScriptableHazard.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\PhoenixPotion\Artifacts_PhoenixPotion.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\BetterDropdown.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_PoisonTarget.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_Blind Attack\Angel_Card_BlindAttack.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Utils\DpiManager.cs" />
+    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Characters\EntityExtras.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingIssue2.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Demo\Scripts\Demo_Display.cs" />
     <Compile Include="Assets\OUR ASSETS\ITEMS\ItemChoiceClass.cs" />
@@ -164,6 +167,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerTooltip.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\CollectionScripts\SpriteCollection.cs" />
     <Compile Include="Assets\Sprite Shaders Ultimate\Scripts\UnscaledTimeSSU.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Dark Blade\Monster_Card_DarkBlade.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseDefenceInfinite.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathBezier2d.cs" />
@@ -280,6 +284,7 @@
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseDefenceTimer.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\SizeDeltaSizer.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\ListView\ListViewEditor.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\GentleGrab\Monster_Card_GentleGrab.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopData.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Shop\ShopCard.cs" />
     <Compile Include="Assets\Game2DWaterKit\Demo\Large Water Area\Scripts\Platform.cs" />
@@ -448,6 +453,7 @@
     <Compile Include="Assets\Modern UI Pack\Scripts\Context Menu\ContextMenuSubMenu.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\BetterSlider.cs" />
     <Compile Include="Assets\PixelFantasy\PixelHeroes\Common\Scripts\UI\SliderReset.cs" />
+    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Debuffs\Debuff_Root.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Conditions\CardCondition_CheckHowManySummons.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\QuickSnack\Artifacts_QuickSnack.cs" />
     <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Burn Status\Status_Card_Burn.cs" />
@@ -492,6 +498,7 @@
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\Interfaces\IBetterHorizontalOrVerticalLayoutGroup.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Angel\Cards\Angel_PiercingArrow\Angel_Card_PiercingArrow.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\RegenArmor\Artifacts_RegenArmor.cs" />
+    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Mine\Common_Card_Mine.cs" />
     <Compile Include="Assets\OUR ASSETS\ARTIFACTS\itemAbility_GainExtraLoot.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTABLE OBJECTS\Abilities\Ability_IncreaseAttackTimer.cs" />
@@ -517,6 +524,7 @@
     <Compile Include="Assets\Sprite Shaders Ultimate\Demo\Scripts\Demo_FloatPicker.cs" />
     <Compile Include="Assets\Modern UI Pack\Scripts\UI Manager\UIManagerDropdownItem.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\AnchorOverride.cs" />
+    <Compile Include="Assets\OUR ASSETS\HAZARDS\Hazard_Mine.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Managers\CardListManager.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiLayout\GameObjectActivator.cs" />
     <Compile Include="Assets\LeanTween\Framework\LeanAudio.cs" />
@@ -569,6 +577,7 @@
     <Compile Include="Assets\Game2DWaterKit\Demo\Waterfall + Fake Perspective Effect\Scripts\ObjectsManager.cs" />
     <Compile Include="Assets\48 Particle Effect Pack\Script\csDestroyEffect.cs" />
     <Compile Include="Assets\TheraBytes\BetterUI\Runtime\Scripts\BetterUiElements\BetterInputField.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Twin Lasers\Monster_Card_TwinLasers.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\Cards\CardListCardEvents.cs" />
     <Compile Include="Assets\OUR ASSETS\COMPANION\Thief\Upgrades\ThiefMastery\Thief_ThiefMastery.cs" />
     <Compile Include="Assets\LeanTween\Testing\TestingSceneSwitching.cs" />
@@ -624,13 +633,8 @@
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralBasic.cs" />
     <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Boomerang\Common_Card_Boomerang.cs" />
     <Compile Include="Assets\OUR ASSETS\SCRIPTS\UI\UI_EventButton.cs" />
-    <Compile Include="Assets\OUR ASSETS\SCRIPTS\Characters\EntityExtras.cs" />
-    <Compile Include="Assets\OUR ASSETS\BUFFSDEBUFFS\Debuffs\Debuff_Root.cs" />
-    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\GentleGrab\Monster_Card_GentleGrab.cs" />
-    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\Twin Lasers\Monster_Card_TwinLasers.cs" />
-    <Compile Include="Assets\OUR ASSETS\HAZARDS\ScriptableHazard.cs" />
-    <Compile Include="Assets\OUR ASSETS\HAZARDS\Hazard_Mine.cs" />
-    <Compile Include="Assets\OUR ASSETS\CHARACTERS\Common\Common_Mine\Common_Card_Mine.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\ChargedBeam\Monster_Card_ChargedBeam.cs" />
+    <Compile Include="Assets\OUR ASSETS\ENEMIES\Cards\VampiricTouch\Monster_Card_VampiricTouch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TheraBytes\BetterUI\Runtime\Resources\Materials\HueSaturationBrightness.shader" />

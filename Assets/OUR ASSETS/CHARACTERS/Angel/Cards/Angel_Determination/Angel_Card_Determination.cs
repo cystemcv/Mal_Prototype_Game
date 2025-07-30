@@ -41,10 +41,16 @@ public class Angel_Card_Determination : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
+   
 
         base.OnPlayCard(cardScript, entityUsedCard);
 
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
+
+        if (realTarget == null)
+        {
+            return;
+        }
 
         //strength
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength);
@@ -54,7 +60,15 @@ public class Angel_Card_Determination : ScriptableCard
     }
 
 
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
 
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+
+    }
 
 
 

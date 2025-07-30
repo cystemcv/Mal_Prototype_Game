@@ -23,13 +23,16 @@ MonoBehaviour:
   toggle3: 0
   toggle4: 0
   toggle5: 0
-  targetEntityTagList: 010000000300000006000000
+  targetEntityTagList: 06000000
   waitOnQueueTimer: 0.5
   cannotDiscard: 0
   cannorRemoveFromDeck: 0
   discardCardAtEndTurn: 1
-  scriptableKeywords: []
+  scriptableKeywords:
+  - {fileID: 11400000, guid: 7def08553f5b84f48989f4bb52f5f6a5, type: 2}
   scriptableBuffDebuffs: []
+  scriptableHazards:
+  - {fileID: 11400000, guid: f38743bd3b51efa4daf800bced7bf76d, type: 2}
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 0}

@@ -28,9 +28,8 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
     public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScript, entityUsedCard);
 
-        realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();
@@ -39,9 +38,8 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();

@@ -1,3 +1,4 @@
+using Michsky.MUIP;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,8 +11,7 @@ public class BuffDebuffClass : MonoBehaviour
     public GameObject targetWithDebuff;
     public ScriptableBuffDebuff scriptableBuffDebuff;
 
-    public int turnsAvailable;
-    public int tempVariable = 0;
+    public int tempValue = 0;
 
     public bool infiniteDuration = false;
 
@@ -38,6 +38,9 @@ public class BuffDebuffClass : MonoBehaviour
             gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDiscordRed);
         }
 
+        //add tooltip
+        this.gameObject.GetComponent<TooltipContent>().description = BuffSystemManager.Instance.GetBuffDebuffColor(scriptableBuffDebuff) + " : " + scriptableBuffDebuff.description;
+
     }
 
 
@@ -48,7 +51,7 @@ public class BuffDebuffClass : MonoBehaviour
             return;
         }
 
-        this.turnsAvailable += turnsAvailable;
+        this.tempValue += turnsAvailable;
         UpdateBuffDebuffUI();
     }
 
@@ -59,18 +62,18 @@ public class BuffDebuffClass : MonoBehaviour
             return;
         }
 
-        tempVariable += valueAvailable;
+        tempValue += valueAvailable;
         UpdateBuffDebuffUI_InfiniteDuration();
     }
 
     public void UpdateBuffDebuffUI()
     {
-        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = turnsAvailable.ToString();
+        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = tempValue.ToString();
     }
 
     public void UpdateBuffDebuffUI_InfiniteDuration()
     {
-        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = tempVariable.ToString();
+        gameObject.transform.Find("TEXT").GetComponent<TMP_Text>().text = tempValue.ToString();
     }
 
     public void CheckIfExpired()
@@ -81,7 +84,7 @@ public class BuffDebuffClass : MonoBehaviour
             return;
         }
 
-        if (turnsAvailable <= 0)
+        if (tempValue <= 0)
         {
             scriptableBuffDebuff.OnExpireBuffDebuff(targetWithDebuff);
             Destroy(this.gameObject);

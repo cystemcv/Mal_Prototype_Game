@@ -35,8 +35,7 @@ public class Common_Card_ConfusionSong : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
-        entityUsedCardGlobal = entityUsedCard;
+        entityUsedCardGlobal = GameObject.FindGameObjectWithTag("Player");
 
         ExecuteCard();
     }
@@ -45,13 +44,8 @@ public class Common_Card_ConfusionSong : ScriptableCard
     {
 
 
-
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        if (entityUsedCardGlobal == null)
-        {
-            entityUsedCardGlobal = GameObject.FindGameObjectWithTag("Player");
-        }
 
         List<GameObject> targets = AIManager.Instance.GetAllTargets(entityUsedCardGlobal);
 

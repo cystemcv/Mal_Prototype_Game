@@ -39,7 +39,7 @@ public class Common_SapphireSerpent : ScriptableCard
     {
         base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+ 
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();

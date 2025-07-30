@@ -82,20 +82,31 @@ public class AIBrain : MonoBehaviour
             return;
         }
 
-        //get the list of gameobjects on the scene
-        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobjectOppossite(this.gameObject);
-
-        int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
-        //assign a target for card
-        targetForCard = gameobjectsFound[indexForTargetForCard];
-
-        //test
         scriptableEntity = this.gameObject.GetComponent<EntityClass>().scriptableEntity;
 
         scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
 
+        CardScript cardScript = new CardScript();
+        cardScript.scriptableCard = scriptableCardToUse;
+        //assign a target for card
+        scriptableCardToUse.OnAiPlayTarget(cardScript, this.gameObject);
+
         SpawnAIIntend(scriptableCardToUse);
 
+    }
+
+    public void SpawnAIIntend(ScriptableCard scriptableCard)
+    {
+
+        if (intend == null)
+        {
+            intend = SystemManager.Instance.SpawnPrefab(UI_Combat.Instance.displayCardName, this.gameObject, "DisplayCardName", this.gameObject.GetComponent<EntityClass>().scriptableEntity.spawnIntend);
+            //set parent of 
+        }
+
+        intend.SetActive(true);
+        TMP_Text cardText = intend.transform.Find("CardText").GetComponent<TMP_Text>();
+        cardText.text = scriptableCard.cardName;
     }
 
     public ScriptableCard GetAICardFromCommand(ScriptableEntity.AICommand aICommand)
@@ -118,33 +129,9 @@ public class AIBrain : MonoBehaviour
         return scriptableCard;
     }
 
-    public void SpawnAIIntend(ScriptableCard scriptableCard)
-    {
 
-        if (intend == null)
-        {
-            intend = SystemManager.Instance.SpawnPrefab(UI_Combat.Instance.displayCardName, this.gameObject, "DisplayCardName", this.gameObject.GetComponent<EntityClass>().scriptableEntity.spawnIntend);
-            //set parent of 
-        }
 
-        intend.SetActive(true);
-        TMP_Text cardText = intend.transform.Find("CardText").GetComponent<TMP_Text>();
-        cardText.text = scriptableCard.cardName;
-    }
 
-    public void ReAssignTargetForCard()
-    {
-        List<GameObject> gameobjectsFound = SystemManager.Instance.GetObjectsWithTagsFromGameobjectOppossite(this.gameObject);
-
-        if (gameobjectsFound.Count == 0)
-        {
-            return;
-        }
-
-        int indexForTargetForCard = Random.Range(0, gameobjectsFound.Count);
-        //assign a target for card
-        targetForCard = gameobjectsFound[indexForTargetForCard];
-    }
 
     public void PlayCardOnlyAbilities(ScriptableCard scriptableCard)
     {
@@ -202,46 +189,6 @@ public class AIBrain : MonoBehaviour
     }
 
 
-    public string GetCardDamageInString(ScriptableCard scriptableCard, GameObject entity)
-    {
-
-        string damageText = "";
-        int count = 0;
-
-        foreach (CardAbilityClass cardAbilityClass in scriptableCard.cardAbilityClass)
-        {
-
-            if (cardAbilityClass.scriptableCardAbility.abilityType == SystemManager.AbilityType.ATTACK)
-            {
-
-                if (count != 0)
-                {
-                    damageText += "+";
-                }
-
-                count += 1;
-
-                //check multi hit attack
-                int multiHits = DeckManager.Instance.GetIntValueFromList(1, cardAbilityClass.abilityIntValueList);
-                string multiHitString = (multiHits > 0) ? multiHits + "x" : "";
-                AIBrain aIBrain = entity.GetComponent<AIBrain>();
-
-                GameObject target = null;
-                if (aIBrain != null)
-                {
-                    //damageText += aIBrain.targetForCard.name + " ";
-                    target = aIBrain.targetForCard;
-                }
-
-                damageText += "(" + multiHitString + Combat.Instance.CalculateEntityDmg(DeckManager.Instance.GetIntValueFromList(0, cardAbilityClass.abilityIntValueList), entity, target) + ")";
-            }
-
-
-        }
-
-
-        return damageText;
-    }
 
 
 }

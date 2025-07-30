@@ -18,7 +18,7 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempVariable;
+            dmg = buffDebuffClass.tempValue;
         }
 
         customDesc += "Deal Double Damage (" + 2 * dmg + ") from " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " stacks to target";
@@ -40,7 +40,7 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempVariable;
+            dmg = buffDebuffClass.tempValue;
         }
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, 2 * dmg, false, SystemManager.AdjustNumberModes.ATTACK));
@@ -54,7 +54,7 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(entityUsedCard, counter.nameID);
 
@@ -62,10 +62,17 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempVariable;
+            dmg = buffDebuffClass.tempValue;
         }
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, 2 * dmg, false, SystemManager.AdjustNumberModes.ATTACK));
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
 }

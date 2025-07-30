@@ -24,7 +24,7 @@ public class Angel_Card_PiercingArrow : ScriptableCard
 
     public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScript, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -35,12 +35,22 @@ public class Angel_Card_PiercingArrow : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScript, entityUsedCard);
 
-        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
         ExecuteCard();
+
+    }
+
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
+
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
 
     }
 

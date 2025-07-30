@@ -88,7 +88,7 @@ public class BuffSystemManager : MonoBehaviour
             //first time it gets created it should not increase the stacks just the turns
             if (!buffDebuffClass.infiniteDuration)
             {
-                buffDebuffClass.tempVariable = value;
+                buffDebuffClass.tempValue = value;
             }
         }
 
@@ -133,7 +133,7 @@ public class BuffSystemManager : MonoBehaviour
             //first time it gets created it should not increase the stacks just the turns
             if (!buffDebuffClass.infiniteDuration)
             {
-                buffDebuffClass.tempVariable = value;
+                buffDebuffClass.tempValue = value;
             }
         }
 
@@ -228,7 +228,7 @@ public class BuffSystemManager : MonoBehaviour
         buffDebuffClass.ModifyValueAvailable(valueToDecrease);
 
         //then destroy
-        if (buffDebuffClass.tempVariable <= 0)
+        if (buffDebuffClass.tempValue <= 0)
         {
             Destroy(buffDebuffClass.gameObject);
         }
@@ -274,19 +274,10 @@ public class BuffSystemManager : MonoBehaviour
                     }
 
                 }
-                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
-                {
-                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(character);
-                }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
                 {
                     buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(character);
                 }
-                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
-                {
-                    buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnEnd(character);
-                }
-
 
 
                 //check if destroyed
@@ -309,11 +300,7 @@ public class BuffSystemManager : MonoBehaviour
             foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
             {
                 //activate buffs/debuffs
-                if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerStartTurn)
-                {
-                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnStart(enemy);
-                }
-                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
+             if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyStartTurn)
                 {
                     buffDebuffClass.scriptableBuffDebuff.OnEnemyTurnStart(enemy);
 
@@ -322,10 +309,6 @@ public class BuffSystemManager : MonoBehaviour
                     {
                         buffDebuffClass.ModifyTurnsAvailable(-1);
                     }
-                }
-                else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.playerEndTurn)
-                {
-                    buffDebuffClass.scriptableBuffDebuff.OnCharacterTurnEnd(enemy);
                 }
                 else if (SystemManager.Instance.combatTurn == SystemManager.CombatTurns.enemyEndTurn)
                 {

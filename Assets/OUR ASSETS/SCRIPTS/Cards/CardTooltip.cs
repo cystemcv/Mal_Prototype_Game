@@ -44,6 +44,11 @@ public class CardTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         {
             this.gameObject.GetComponent<TooltipContent>().description += BuffSystemManager.Instance.GetBuffDebuffColor(scriptableBuffDebuff) + " : " + scriptableBuffDebuff.description + "<br>";
         }
+
+        foreach (ScriptableHazard scriptableHazard in scriptableCard.scriptableHazards)
+        {
+            this.gameObject.GetComponent<TooltipContent>().description += "<color=#" + SystemManager.Instance.colorGolden + ">" + scriptableHazard.hazardName + "</color> : " + scriptableHazard.hazardDescription + "<br>";
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)

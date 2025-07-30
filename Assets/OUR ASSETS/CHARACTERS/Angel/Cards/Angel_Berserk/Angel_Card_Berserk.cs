@@ -40,9 +40,16 @@ public class Angel_Card_Berserk : ScriptableCard
 
     public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
+
 
         base.OnPlayCard(cardScript, entityUsedCard);
+
+        realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
+
+        if (realTarget == null)
+        {
+            return;
+        }
 
         BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, berserk, berserkTurns);
 
@@ -51,7 +58,15 @@ public class Angel_Card_Berserk : ScriptableCard
 
     }
 
+    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScript, entityUsedCard);
 
+        realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+
+    }
 
 
 

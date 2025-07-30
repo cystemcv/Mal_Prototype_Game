@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2167905789628067779}
   - component: {fileID: 2167905789628067778}
   - component: {fileID: -1266957869653399066}
+  - component: {fileID: -5705386657858020174}
   m_Layer: 0
   m_Name: BuffDebuffPrefab
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -95,9 +96,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetWithDebuff: {fileID: 0}
   scriptableBuffDebuff: {fileID: 0}
-  turnsAvailable: 0
-  tempVariable: 0
+  tempValue: 0
   infiniteDuration: 0
+--- !u!114 &-5705386657858020174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2167905789628067776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81a9e081a4afa64dae6b9d42bc38c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  description: 
+  delay: 0
+  tooltipRect: {fileID: 0}
+  descriptionText: {fileID: 0}
+  forceToUpdate: 0
+  useIn3D: 0
+  tooltipAnimator: {fileID: 0}
 --- !u!1 &4141458324517392949
 GameObject:
   m_ObjectHideFlags: 0

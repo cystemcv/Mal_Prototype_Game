@@ -17,7 +17,7 @@ public class Buff_TemporaryStrength : ScriptableBuffDebuff
         //get the buff/debuff
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
 
-        target.GetComponent<EntityClass>().attack -= buffDebuffClass.tempVariable;
+        target.GetComponent<EntityClass>().attack -= buffDebuffClass.tempValue;
 
 
     }
