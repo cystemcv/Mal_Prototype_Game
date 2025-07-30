@@ -322,8 +322,20 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
 
+        CardScript cardScript = new CardScript();
+        cardScript.scriptableCard = this.gameObject.GetComponent<AIBrain>().scriptableCardToUse;
 
+        GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
 
+        SystemManager.Instance.DestroyAllChildren(aiCardParent);
+
+        aiCardParent.transform.localScale = new Vector3(1f, 1f, 1); 
+
+        GameObject aiCard = DeckManager.Instance.InitializeCardPrefab(cardScript, aiCardParent, false,false);
+
+        aiCardParent.transform.position = new Vector3(this.gameObject.transform.position.x,
+            aiCardParent.transform.position.y, 
+            aiCardParent.transform.position.z);
 
         ////create gameobject on scene and spawn it on the discard spawner
         //UI_Combat.Instance.CheckEnemyCard.SetActive(true);
@@ -359,7 +371,9 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        UI_Combat.Instance.CheckEnemyCard.SetActive(false);
+        GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
+
+        SystemManager.Instance.DestroyAllChildren(aiCardParent);
 
         CombatCardHandler.Instance.ResetAllTargeting();
 

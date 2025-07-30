@@ -75,6 +75,13 @@ public class ScriptableBuffDebuff : ScriptableObject
 
     }
 
+    public virtual StatModifiedValue? OnModifyStats_Target(GameObject caster, GameObject target, ScriptableCard scriptableCard)
+    {
+
+        return null;
+
+    }
+
 
 
 }

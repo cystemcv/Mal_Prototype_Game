@@ -12,7 +12,7 @@ public class Buff_SuperArmor : ScriptableBuffDebuff
        
     }
 
-    public override StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)
+    public override StatModifiedValue? OnModifyStats_Target(GameObject caster, GameObject target, ScriptableCard scriptableCard)
     {
 
         StatModifiedValue statModifiedValue = new StatModifiedValue();

@@ -85,11 +85,6 @@ public class BuffSystemManager : MonoBehaviour
 
             buffDebuffClass.CreateBuffOnTarget(scriptableBuffDebuff, target, value);
 
-            //first time it gets created it should not increase the stacks just the turns
-            if (!buffDebuffClass.infiniteDuration)
-            {
-                buffDebuffClass.tempValue = value;
-            }
         }
 
         //increase the value of the buff

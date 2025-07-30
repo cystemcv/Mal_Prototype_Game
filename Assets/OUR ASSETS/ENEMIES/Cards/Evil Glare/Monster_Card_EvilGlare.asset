@@ -18,6 +18,11 @@ MonoBehaviour:
   cardType: 2
   cardTypeSecondary: 7
   cardRarity: 1
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0100000003000000
   waitOnQueueTimer: 0.5
   cannotDiscard: 0
@@ -26,6 +31,7 @@ MonoBehaviour:
   scriptableKeywords: []
   scriptableBuffDebuffs:
   - {fileID: 11400000, guid: 4ac421f19b5273c4ba1edbf186e9a318, type: 2}
+  scriptableHazards: []
   primaryManaCost: 2
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -38,4 +44,4 @@ MonoBehaviour:
   unlockable: 0
   cardConditionClass: []
   weaken: {fileID: 11400000, guid: 4ac421f19b5273c4ba1edbf186e9a318, type: 2}
-  weakenTurns: 4
+  weakenTurns: 2

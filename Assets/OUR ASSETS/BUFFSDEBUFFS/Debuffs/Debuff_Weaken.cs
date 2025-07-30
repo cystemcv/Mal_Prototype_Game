@@ -12,7 +12,9 @@ public class Debuff_Weaken : ScriptableBuffDebuff
         return true;
     }
 
-    public override StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)
+
+
+    public override StatModifiedValue? OnModifyStats_Target(GameObject caster, GameObject target, ScriptableCard scriptableCard)
     {
 
         StatModifiedValue statModifiedValue = new StatModifiedValue();

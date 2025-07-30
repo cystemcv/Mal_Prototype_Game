@@ -1975,8 +1975,7 @@ public class Combat : MonoBehaviour
             return startingDmg;
         }
 
-        try
-        {
+    
             // Get character attack, debuff, and buff percentages
             int increaseStatValueInt = 0;
             float increaseStatValueFloat = 0;
@@ -2026,7 +2025,7 @@ public class Combat : MonoBehaviour
                 {
 
                     //check if the buff has value to return
-                    var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
+                    var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats_Target(entity, target, scriptableCard);
 
                     //check if it has value then it modifies stats
                     if (result.HasValue)
@@ -2077,13 +2076,7 @@ public class Combat : MonoBehaviour
 
 
             return resultVar;
-        }
-        catch (Exception ex)
-        {
-            // Debug.LogError("Error Calculating Entity Damage : " + " : ERROR MSG : " + ex.Message);
-
-            return 0;
-        }
+ 
     }
 
     public void PlayerEndTurnButton()

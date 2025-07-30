@@ -19,7 +19,7 @@ public class Debuff_Frail : ScriptableBuffDebuff
         statModifiedValue.StatModifiedAttribute = SystemManager.StatModifiedAttribute.DEFENCE;
         statModifiedValue.statModifiedType = SystemManager.StatModifiedType.PERCENTAGE;
         statModifiedValue.statIncreaseInt = 0;
-        statModifiedValue.statIncreaseFloat = -50;
+        statModifiedValue.statIncreaseFloat = -25;
 
         return statModifiedValue;
     }
