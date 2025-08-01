@@ -8,13 +8,14 @@ using UnityEngine;
 public class Artifacts_CounterGloves : ScriptableItem
 {
     [Title("UNIQUE ITEM ABILITY")]
-    public int dmgDone = 1;
+    public int counterAmount = 1;
+    public ScriptableBuffDebuff counter;
 
     public override void Activate(ClassItemData classItem, CardScript cardScript)
     {
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        character.GetComponent<EntityClass>().counterDamage += dmgDone;
+        BuffSystemManager.Instance.AddBuffDebuff(character, counter, counterAmount);
 
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
     }

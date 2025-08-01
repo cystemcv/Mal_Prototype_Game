@@ -139,11 +139,11 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
     public virtual void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
     {
-        //remove tooltips
-        if (cardScript.gameObject != null)
-        {
-            cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
-        }
+        ////remove tooltips
+        //if (cardScript.gameObject != null)
+        //{
+        //    cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
+        //}
 
 
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);

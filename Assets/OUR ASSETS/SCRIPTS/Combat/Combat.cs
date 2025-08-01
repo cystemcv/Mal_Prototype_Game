@@ -85,6 +85,7 @@ public class Combat : MonoBehaviour
 
     public SystemManager.BattleGroundType battleGroundType;
 
+    private string codeMode = "";
     public int ManaAvailable
     {
         get { return manaAvailable; }
@@ -435,7 +436,7 @@ public class Combat : MonoBehaviour
 
     public IEnumerator InitializeCombat(string code = "")
     {
-
+        codeMode = code;
         UI_Combat.Instance.DisableCombatUI();
 
         //hide the dungeon generato
@@ -1014,7 +1015,7 @@ public class Combat : MonoBehaviour
         if (!isFakeEventPlanet)
         {
             //check if starting battle
-            if (CustomDungeonGenerator.Instance.basicFightsFought < CustomDungeonGenerator.Instance.basicFightsFoughtMax)
+            if (CustomDungeonGenerator.Instance.basicFightsFought < CustomDungeonGenerator.Instance.basicFightsFoughtMax && codeMode != "EVENT")
             {
                 scriptableEntities = scriptablePlanet.scriptableBasicEntities;
                 CustomDungeonGenerator.Instance.basicFightsFought++;
@@ -2328,7 +2329,8 @@ public class Combat : MonoBehaviour
     public IEnumerator InitializeEvent()
     {
 
-        UI_Combat.Instance.endTurnButton.GetComponent<ButtonManager>().Interactable(false);
+
+        UI_Combat.Instance.DisableCombatUI();
 
         //hide the dungeon generato
         if (StaticData.staticDungeonParent != null)

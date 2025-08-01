@@ -16,6 +16,7 @@ MonoBehaviour:
   mainClass: 0
   distanceFromAnotherUnit: 4
   unitsWorth: 2
+  startingArtifacts: []
   entityName: Emerald Serpent
   entityPrefab: {fileID: 1251432799634289391, guid: 335e839b1b8c46c4f9f4a3f4b168f323, type: 3}
   entityImage: {fileID: 950310536, guid: 1dcb56bcbcf7f064b9518666767f05f5, type: 3}
@@ -23,7 +24,18 @@ MonoBehaviour:
   entityDescription: 
   entityChoose: {fileID: 0}
   summonTurns: 3
+  entitySpaceShipPrefab: {fileID: 0}
+  entitySpaceShipImage: {fileID: 0}
+  entityAnimator: {fileID: 0}
+  spaceShipAnimator: {fileID: 0}
   spawnIntend: {x: 0, y: 1.5, z: 0}
+  aICommandsInitialize:
+    aICommandType: 0
+    aiScriptableCards: []
+  aICommands:
+  - aICommandType: 0
+    aiScriptableCards:
+    - {fileID: 11400000, guid: bb683aadd7227e247835bbd3d65f950e, type: 2}
   strength: 0
   defence: 0
   maxHealth: 220

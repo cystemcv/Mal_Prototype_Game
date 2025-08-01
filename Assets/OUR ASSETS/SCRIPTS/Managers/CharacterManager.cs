@@ -25,6 +25,26 @@ public class CharacterManager : MonoBehaviour
 
     }
 
+    public void Start()
+    {
+
+        List<ScriptableItem> scriptableItems = new List<ScriptableItem>();
+        if (StaticData.staticCharacter == null)
+        {
+            scriptableItems = CharacterManager.Instance.characterList[0].startingArtifacts;
+        }
+        else
+        {
+            scriptableItems = StaticData.staticCharacter.startingArtifacts;
+        }
+
+        foreach (ScriptableItem scriptableItem in scriptableItems)
+        {
+            ClassItemData classItemData = new ClassItemData(scriptableItem,1);
+            StaticData.artifactItemList.Add(classItemData);  
+        }
+    }
+
 
     public void ProceedWithAnimationAndSound(GameObject entityPlayAnimation, ScriptableCard scriptableCard)
     {

@@ -24,17 +24,46 @@ namespace Michsky.MUIP
         TooltipManager tpManager;
         [HideInInspector] public Animator tooltipAnimator;
 
+        // internal state
+        private Coroutine showCoroutine;
+        private Coroutine widthCalcCoroutine;
+        private bool isPointerOver = false;
+        private static readonly int InHash = Animator.StringToHash("In");
+        private static readonly int OutHash = Animator.StringToHash("Out");
+
+        private CanvasGroup tooltipCanvasGroup;
+
+        void Awake()
+        {
+            if (tooltipRect != null)
+                tooltipCanvasGroup = tooltipRect.GetComponent<CanvasGroup>();
+            if (tooltipCanvasGroup == null && tooltipRect != null)
+                tooltipCanvasGroup = tooltipRect.AddComponent<CanvasGroup>();
+        }
+
+        private void SetTooltipVisible(bool visible)
+        {
+            if (tooltipRect == null || tooltipCanvasGroup == null) return;
+
+            tooltipCanvasGroup.alpha = visible ? 1f : 0f;
+            tooltipCanvasGroup.interactable = visible;
+            tooltipCanvasGroup.blocksRaycasts = visible;
+        }
+
         void Start()
         {
             if (tooltipRect == null || descriptionText == null)
             {
                 try
                 {
-                    tooltipRect = GameObject.Find("Tooltip Rect");
+                    tooltipRect = GameObject.Find("Tooltip").transform.Find("Tooltip Rect").gameObject;
                     descriptionText = tooltipRect.transform.GetComponentInChildren<TextMeshProUGUI>();
                 }
-
-                catch { Debug.LogError("<b>[Tooltip Content]</b> Tooltip Rect is missing.", this); return; }
+                catch
+                {
+                    Debug.LogError("<b>[Tooltip Content]</b> Tooltip Rect is missing.", this);
+                    return;
+                }
             }
 
             if (tooltipRect != null)
@@ -43,66 +72,203 @@ namespace Michsky.MUIP
                 tooltipAnimator = tooltipRect.GetComponentInParent<Animator>();
             }
 
-            if (tpManager.contentLE == null)
+            if (tpManager != null && tpManager.contentLE == null && descriptionText != null)
                 tpManager.contentLE = descriptionText.GetComponent<LayoutElement>();
         }
 
-        public IEnumerator ProcessEnter()
+        public void OnPointerEnter(PointerEventData eventData)
         {
-
-            yield return new WaitForSecondsRealtime(0.05f);
-
-            if (tooltipRect == null || description == "")
-               yield return null;
-
-            descriptionText.text = description;
-          
-            tpManager.allowUpdate = true;
-            tpManager.currentTooltip = this;
-         
-            CheckForContentWidth();
-
-            StopCoroutine("DisableAnimator");
-            tooltipAnimator.gameObject.SetActive(false);
-            tooltipAnimator.gameObject.SetActive(true);
-
-            if (delay == 0) { tooltipAnimator.Play("In"); }
-            else { StartCoroutine("ShowTooltip"); }
-
-            if (forceToUpdate == true)
-                StartCoroutine("UpdateLayoutPosition");
+            isPointerOver = true;
+            StartEnter();
         }
 
-        public void ProcessExit()
+        public void OnPointerExit(PointerEventData eventData)
         {
-            if (tooltipRect == null)
-                return;
-
-            if (delay != 0)
-            {
-                StopCoroutine("ShowTooltip");
-
-                if (tooltipAnimator.GetCurrentAnimatorStateInfo(0).IsName("In"))
-                    tooltipAnimator.Play("Out");
-            }
-
-            else { tooltipAnimator.Play("Out"); }
-
-            tpManager.allowUpdate = false;
+            isPointerOver = false;
+            StartExit();
         }
-
-        public void OnPointerEnter(PointerEventData eventData) { StartCoroutine("ProcessEnter"); }
-        public void OnPointerExit(PointerEventData eventData) { ProcessExit(); }
 
 #if !UNITY_IOS && !UNITY_ANDROID
-        public void OnMouseEnter() { if (useIn3D == true) { ProcessEnter(); } }
-        public void OnMouseExit() { if (useIn3D == true) { ProcessExit(); } }
+        public void OnMouseEnter() { if (useIn3D) { isPointerOver = true; StartEnter(); } }
+        public void OnMouseExit() { if (useIn3D) { isPointerOver = false; StartExit(); } }
 #endif
 
-        public void CheckForContentWidth() { LayoutElementCreator(); StartCoroutine("CalculateContentWidth"); }
-
-        private void LayoutElementCreator()
+        private void StartEnter()
         {
+            // Cancel any pending hide
+            if (showCoroutine != null)
+            {
+                StopCoroutine(showCoroutine);
+                showCoroutine = null;
+            }
+
+            showCoroutine = StartCoroutine(ProcessEnterRoutine());
+        }
+
+        private void StartExit()
+        {
+            // Cancel pending show
+            if (showCoroutine != null)
+            {
+                StopCoroutine(showCoroutine);
+                showCoroutine = null;
+            }
+
+            ProcessExitImmediate();
+        }
+
+        public void HideTooltip()
+        {
+            isPointerOver = false;
+
+            if (tpManager != null)
+            {
+                if (tpManager.currentTooltip == this)
+                    tpManager.currentTooltip = null;
+
+                tpManager.allowUpdate = false;
+            }
+
+            if (tooltipAnimator != null)
+                tooltipAnimator.Play("Out", 0, 0f);
+
+            if (descriptionText != null)
+                descriptionText.text = string.Empty;
+
+            if (tooltipRect != null)
+                SetTooltipVisible(false);
+        }
+
+
+        private IEnumerator ProcessEnterRoutine()
+        {
+            yield return new WaitForSecondsRealtime(0.05f);
+
+            if (!isPointerOver)
+                yield break;
+
+            // If description is empty/whitespace, explicitly hide any lingering tooltip and bail out.
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                HideTooltip();
+                if (tooltipRect != null)
+                    SetTooltipVisible(false);
+                yield break;
+            }
+
+            if (tooltipRect == null)
+                yield break;
+
+            // Set content
+            descriptionText.text = description;
+
+            if (tpManager != null)
+            {
+                tpManager.allowUpdate = true;
+                tpManager.currentTooltip = this;
+
+                if (tpManager.contentLE == null)
+                    CreateLayoutElementIfNeeded();
+
+                tpManager.contentLE.preferredWidth = tpManager.preferredWidth;
+                tpManager.contentLE.enabled = false;
+            }
+
+            CheckForContentWidth();
+
+            if (tooltipAnimator != null)
+            {
+                tooltipAnimator.gameObject.SetActive(false);
+                tooltipAnimator.gameObject.SetActive(true);
+            }
+
+            if (delay <= 0f)
+            {
+                PlayIn();
+            }
+            else
+            {
+                yield return new WaitForSecondsRealtime(delay);
+                if (!isPointerOver)
+                    yield break;
+
+                PlayIn();
+            }
+
+            if (forceToUpdate)
+                StartCoroutine(UpdateLayoutPosition());
+        }
+
+
+        private void ProcessExitImmediate()
+        {
+            if (tooltipRect == null || tooltipAnimator == null)
+                return;
+
+            // Play out animation (optional)
+            tooltipAnimator.Play("Out", 0, 0f);
+
+            // Stop any pending show coroutine to avoid race conditions
+            if (showCoroutine != null)
+            {
+                StopCoroutine(showCoroutine);
+                showCoroutine = null;
+            }
+
+            if (tpManager != null)
+            {
+                tpManager.allowUpdate = false;
+                if (tpManager.currentTooltip == this)
+                    tpManager.currentTooltip = null;
+            }
+
+            if (descriptionText != null)
+                descriptionText.text = string.Empty;
+
+            // Hide tooltip instantly by CanvasGroup alpha
+            SetTooltipVisible(false);
+
+            // Reset tooltip position off-screen (or to a fixed safe position)
+            RectTransform rt = tooltipRect.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchoredPosition = new Vector2(-10000, -10000);  // move far off-screen
+            }
+        }
+
+
+
+
+        private void PlayIn()
+        {
+            if (tooltipAnimator == null || tooltipRect == null) return;
+
+            tooltipRect.SetActive(true);
+            tooltipAnimator.Play("In", 0, 0f);
+        }
+
+        private void PlayOut()
+        {
+            if (tooltipAnimator == null || tooltipRect == null) return;
+
+            tooltipAnimator.Play("Out", 0, 0f);
+            // immediately hide to avoid ghosting; if you want the out animation to be visible, delay this by the clip length.
+            SetTooltipVisible(false);
+        }
+
+        public void CheckForContentWidth()
+        {
+            CreateLayoutElementIfNeeded();
+            if (widthCalcCoroutine != null)
+                StopCoroutine(widthCalcCoroutine);
+            widthCalcCoroutine = StartCoroutine(CalculateContentWidth());
+        }
+
+        private void CreateLayoutElementIfNeeded()
+        {
+            if (tpManager == null || descriptionText == null)
+                return;
+
             if (tpManager.contentLE == null)
             {
                 descriptionText.gameObject.AddComponent<LayoutElement>();
@@ -113,11 +279,15 @@ namespace Michsky.MUIP
             tpManager.contentLE.enabled = false;
         }
 
-        IEnumerator CalculateContentWidth()
+        private IEnumerator CalculateContentWidth()
         {
             yield return new WaitForSecondsRealtime(0.05f);
+
+            if (descriptionText == null || tpManager == null || tpManager.contentLE == null)
+                yield break;
+
             float tempWidth = descriptionText.GetComponent<RectTransform>().sizeDelta.x;
-     
+
             if (tempWidth >= tpManager.preferredWidth + 1)
                 tpManager.contentLE.enabled = true;
 
@@ -125,27 +295,39 @@ namespace Michsky.MUIP
             tpManager.contentLE.preferredWidth = tpManager.preferredWidth;
         }
 
-        IEnumerator ShowTooltip()
-        {
-            yield return new WaitForSecondsRealtime(delay);
-
-            if (description == "")
-            {
-                yield return null;
-            }
-            else
-            {
-                tooltipAnimator.Play("In");
-                StopCoroutine("ShowTooltip");
-            }
-            
-   
-        }
-
         IEnumerator UpdateLayoutPosition()
         {
             yield return new WaitForSecondsRealtime(0.05f);
-            LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipAnimator.gameObject.GetComponent<RectTransform>());
+            if (tooltipAnimator != null)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(tooltipAnimator.gameObject.GetComponent<RectTransform>());
+            }
+        }
+
+        public void ProcessExit()
+        {
+            isPointerOver = false;
+            StartExit(); // cancels pending show and runs exit logic
+        }
+
+        // Optional: if object or tooltip gets disabled, ensure state resets
+        void OnDisable()
+        {
+            isPointerOver = false;
+            if (showCoroutine != null)
+            {
+                StopCoroutine(showCoroutine);
+                showCoroutine = null;
+            }
+
+            if (widthCalcCoroutine != null)
+            {
+                StopCoroutine(widthCalcCoroutine);
+                widthCalcCoroutine = null;
+            }
+
+            if (tpManager != null)
+                tpManager.allowUpdate = false;
         }
     }
 }

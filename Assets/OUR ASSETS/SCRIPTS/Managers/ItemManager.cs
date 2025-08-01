@@ -290,7 +290,7 @@ public class ItemManager : MonoBehaviour
             if (item.scriptableItem.initializationType == activationType)
             {
                 item.scriptableItem.Initialiaze(item, cardScript);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 
@@ -299,7 +299,7 @@ public class ItemManager : MonoBehaviour
             if (item.scriptableItem.activationType == activationType)
             {
                 item.scriptableItem.Activate(item, cardScript);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 
@@ -308,7 +308,7 @@ public class ItemManager : MonoBehaviour
             if (item.scriptableItem.expiredType == activationType)
             {
                 item.scriptableItem.Expired(item, cardScript);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 

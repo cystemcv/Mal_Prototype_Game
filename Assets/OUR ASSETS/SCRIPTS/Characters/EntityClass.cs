@@ -327,15 +327,23 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
 
-        SystemManager.Instance.DestroyAllChildren(aiCardParent);
+        //SystemManager.Instance.DestroyAllChildren(aiCardParent);
 
         aiCardParent.transform.localScale = new Vector3(1f, 1f, 1); 
 
         GameObject aiCard = DeckManager.Instance.InitializeCardPrefab(cardScript, aiCardParent, false,false);
+        aiCard.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
         aiCardParent.transform.position = new Vector3(this.gameObject.transform.position.x,
             aiCardParent.transform.position.y, 
             aiCardParent.transform.position.z);
+
+        // Get reference to the CanvasGroup
+        aiCard.AddComponent<CanvasGroup>();
+        CanvasGroup canvasGroup = aiCard.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0f; 
+        // Fade in (to visible)
+        LeanTween.alphaCanvas(canvasGroup, 1f, 0.25f); // fade to full alpha in 0.5 seconds
 
         ////create gameobject on scene and spawn it on the discard spawner
         //UI_Combat.Instance.CheckEnemyCard.SetActive(true);
@@ -373,7 +381,15 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
 
-        SystemManager.Instance.DestroyAllChildren(aiCardParent);
+        //SystemManager.Instance.DestroyAllChildren(aiCardParent);
+
+        GameObject aiCard = aiCardParent.transform.GetChild(0).gameObject;
+        aiCard.transform.parent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS");
+        Destroy(aiCard,1f);
+
+        CanvasGroup canvasGroup = aiCard.GetComponent<CanvasGroup>();
+        // Fade out (to invisible)
+        LeanTween.alphaCanvas(canvasGroup, 0f, 0.25f); // fade to 0 alpha in 0.5 seconds
 
         CombatCardHandler.Instance.ResetAllTargeting();
 

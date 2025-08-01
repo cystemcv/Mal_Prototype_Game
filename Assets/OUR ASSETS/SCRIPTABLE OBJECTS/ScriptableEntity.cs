@@ -14,6 +14,9 @@ public class ScriptableEntity : ScriptableObject
     public float distanceFromAnotherUnit = 0f;
     public int unitsWorth = 1;
 
+    [Header("CHARACTER SPECIFIC")]
+    public List<ScriptableItem> startingArtifacts = new List<ScriptableItem>();
+
     [Header("COMMON")]
     public string entityName;
     public GameObject entityPrefab;
