@@ -12,9 +12,9 @@ public class Monster_Card_Claw : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
         customDesc += "Pierce " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an enemy";
@@ -22,9 +22,9 @@ public class Monster_Card_Claw : ScriptableCard
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        //base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -33,9 +33,9 @@ public class Monster_Card_Claw : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        //base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
@@ -44,9 +44,9 @@ public class Monster_Card_Claw : ScriptableCard
 
     }
 
-    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }

@@ -193,7 +193,7 @@ public class CombatCardHandler : MonoBehaviour
 
             ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
 
-            List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(hit.collider.gameObject, targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard);
+            List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(hit.collider.gameObject, targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard);
 
             foreach (CombatPosition combatPosition in combatPositionList)
             {
@@ -384,7 +384,7 @@ public class CombatCardHandler : MonoBehaviour
             // Add your click handling code here
             targetClicked = hit.collider.gameObject;
 
-            posClickedTargeting = Combat.Instance.CheckCardTargets(targetClicked, targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard);
+            posClickedTargeting = Combat.Instance.CheckCardTargets(targetClicked, targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard);
 
             //if it belongs to the positioning tag
             if (targetClicked.transform.parent.tag == "EnemyPos" ||
@@ -406,24 +406,25 @@ public class CombatCardHandler : MonoBehaviour
 
             //put it on the list
             PlayedCard playedCard = new PlayedCard();
-            playedCard.timer = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.waitOnQueueTimer;
+            playedCard.timer = targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.waitOnQueueTimer;
             playedCard.target = CombatCardHandler.Instance.targetClicked;
-            playedCard.scriptableCard = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard;
+            playedCard.scriptableCard = targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard;
+            playedCard.cardScriptData = targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData;
             playedCard.cardScript = targetUIElement.gameObject.GetComponent<CardScript>();
             playedCard.cardObject = targetUIElement.gameObject;
 
             //decrease available mana
-            Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
+            Combat.Instance.ManaAvailable -= playedCard.cardScriptData.primaryManaCost;
 
             //DeckManager.Instance.PlayerPlayedCard(targetUIElement.gameObject.GetComponent<CardScript>());
             Combat.Instance.playedCardList.Add(playedCard);
 
 
             //save the cardScript temp
-            CardScript tempCardScript = new CardScript();
-            tempCardScript = playedCard.cardScript;
+            CardScriptData tempCardScriptData = new CardScriptData();
+            tempCardScriptData = playedCard.cardScriptData;
             //remove from hand and add it to the played card
-            DeckManager.Instance.RemovePlayedCardFromHand(tempCardScript);
+            DeckManager.Instance.RemovePlayedCardFromHand(tempCardScriptData);
 
             playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
 
@@ -615,7 +616,7 @@ public class CombatCardHandler : MonoBehaviour
         if (System.Enum.TryParse(target.tag, out SystemManager.EntityTag entityTag))
         {
             // Check if the parsed EntityTag is in the targetEntityTag list
-            if (targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEntityTagList.Contains(entityTag))
+            if (targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.targetEntityTagList.Contains(entityTag))
             {
 
                 canTarget = true;
@@ -629,7 +630,7 @@ public class CombatCardHandler : MonoBehaviour
     public void ChangeTargetMaterial(Material customMaterial)
     {
 
-        List<SystemManager.EntityTag> cardEntityTags = targetUIElement.gameObject.GetComponent<CardScript>().scriptableCard.targetEntityTagList;
+        List<SystemManager.EntityTag> cardEntityTags = targetUIElement.gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.targetEntityTagList;
 
         foreach (SystemManager.EntityTag cardEntityTag in cardEntityTags)
         {

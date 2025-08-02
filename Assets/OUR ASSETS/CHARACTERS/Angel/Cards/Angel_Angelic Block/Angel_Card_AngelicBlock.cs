@@ -10,9 +10,9 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
     private GameObject realTarget;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmount, calculatedShield) + " shield to character";
@@ -20,9 +20,9 @@ public class Angel_Card_AngelicBlock : ScriptableCard
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
@@ -33,9 +33,9 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
@@ -50,9 +50,9 @@ public class Angel_Card_AngelicBlock : ScriptableCard
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
     }
 
-    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
 
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 

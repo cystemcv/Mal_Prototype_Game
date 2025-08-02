@@ -12,19 +12,19 @@ public class Angel_Card_RighteousLight : ScriptableCard
     private GameObject entityUsedCardGlobal;
 
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Draw " + drawCards + " cards from deck";
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
   
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
@@ -35,11 +35,11 @@ public class Angel_Card_RighteousLight : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0

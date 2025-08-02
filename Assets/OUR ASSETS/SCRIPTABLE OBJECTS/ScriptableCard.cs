@@ -132,15 +132,15 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     }
 
 
-    public virtual string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public virtual string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         return cardDesc;
     }
 
-    public virtual void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public virtual void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         ////remove tooltips
-        //if (cardScript.gameObject != null)
+        //if (cardScriptData.gameObject != null)
         //{
         //    cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
         //}
@@ -149,10 +149,10 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
     }
 
-    public virtual void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public virtual void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         //remove tooltips
-        //if (cardScript.gameObject != null)
+        //if (cardScriptData.gameObject != null)
         //{
         //    cardScript.gameObject.GetComponent<TooltipContent>().ProcessExit();
         //}
@@ -160,27 +160,27 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
         CharacterManager.Instance.ProceedWithAnimationAndSound(entityUsedCard, this);
     }
 
-    public virtual void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public virtual void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
 
     }
 
-    public virtual void OnDrawCard(CardScript cardScript)
+    public virtual void OnDrawCard(CardScriptData cardScriptData)
     {
 
     }
 
-    public virtual void OnInitializeCard(CardScript cardScript)
+    public virtual void OnInitializeCard(CardScriptData cardScriptData)
     {
 
     }
 
-    public virtual void OnDelayEffect(CardScript cardScript)
+    public virtual void OnDelayEffect(CardScriptData cardScriptData)
     {
 
     }
 
-    public virtual void OnCardCondition(CardScript cardScript, GameObject entityUsedCard)
+    public virtual void OnCardCondition(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
 
     }

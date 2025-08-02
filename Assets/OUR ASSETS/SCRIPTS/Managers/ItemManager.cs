@@ -276,20 +276,20 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType, CardScript cardScript)
+    public IEnumerator ActivateItemList(SystemManager.ActivationType activationType, CardScriptData cardScriptData)
     {
         //use all lists of items
-        yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList, cardScript));
-        yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScript));
+        yield return StartCoroutine(ActivateItems(activationType, StaticData.companionItemList, cardScriptData));
+        yield return StartCoroutine(ActivateItems(activationType, StaticData.artifactItemList, cardScriptData));
     }
 
-    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItemData> classItems, CardScript cardScript)
+    public IEnumerator ActivateItems(SystemManager.ActivationType activationType, List<ClassItemData> classItems, CardScriptData cardScriptData)
     {
         foreach (var item in classItems)
         {
             if (item.scriptableItem.initializationType == activationType)
             {
-                item.scriptableItem.Initialiaze(item, cardScript);
+                item.scriptableItem.Initialiaze(item, cardScriptData);
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -298,7 +298,7 @@ public class ItemManager : MonoBehaviour
         {
             if (item.scriptableItem.activationType == activationType)
             {
-                item.scriptableItem.Activate(item, cardScript);
+                item.scriptableItem.Activate(item, cardScriptData);
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -307,7 +307,7 @@ public class ItemManager : MonoBehaviour
         {
             if (item.scriptableItem.expiredType == activationType)
             {
-                item.scriptableItem.Expired(item, cardScript);
+                item.scriptableItem.Expired(item, cardScriptData);
                 yield return new WaitForSeconds(0.05f);
             }
         }

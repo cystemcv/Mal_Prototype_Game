@@ -10,42 +10,42 @@ public class Thief_Card_Steal : ScriptableCard
 
     private GameObject realTarget;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Steal a monster card and add it to your hand, forcing the enemy to advance to the next turn card!";
 
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        StealCard(cardScript, entityUsedCard);
+        StealCard(cardScriptData, entityUsedCard);
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
 
-        StealCard(cardScript, entityUsedCard);
+        StealCard(cardScriptData, entityUsedCard);
 
     }
 
-    public override void OnInitializeCard(CardScript cardScript)
+    public override void OnInitializeCard(CardScriptData cardScriptData)
     {
 
 
     }
 
-    public void StealCard(CardScript cardScript, GameObject entityUsedCard)
+    public void StealCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
 
         //get the card
         //generate cardScript
-        CardScript cardScriptTemp = new CardScript();
+        CardScriptData cardScriptDataTemp = new CardScriptData();
         //get a random card from enemies
 
         AIBrain aIBrain = null;
@@ -65,15 +65,15 @@ public class Thief_Card_Steal : ScriptableCard
         }
 
 
-        cardScriptTemp.scriptableCard = aIBrain.scriptableCardToUse;
+        cardScriptDataTemp.scriptableCard = aIBrain.scriptableCardToUse;
 
-        Debug.Log("cardScriptTemp.scriptableCard : ", cardScriptTemp.scriptableCard);
+        Debug.Log("cardScriptTemp.scriptableCard : ", cardScriptDataTemp.scriptableCard);
 
         //add it to the hand
-        DeckManager.Instance.handCards.Add(cardScriptTemp);
+        DeckManager.Instance.handCards.Add(cardScriptDataTemp);
 
         //instantiate the card
-        DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UI_Combat.Instance.HAND, true, false);
+        DeckManager.Instance.InitializeCardPrefab(cardScriptDataTemp, UI_Combat.Instance.HAND, true, false);
 
         //rearrange hand
         HandManager.Instance.SetHandCards();

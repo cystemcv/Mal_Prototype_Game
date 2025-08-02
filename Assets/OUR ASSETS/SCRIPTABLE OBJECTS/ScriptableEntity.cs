@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,9 +74,24 @@ public class ScriptableEntity : ScriptableObject
     [Serializable]
     public class AICommand
     {
-
         public SystemManager.AICommandType aICommandType;
         public List<ScriptableCard> aiScriptableCards;
 
+        [HorizontalGroup("CardValue"), LabelText("Min"), OnValueChanged(nameof(OnMinChanged))]
+        public int modifiedCardValueMin = 0;
+
+        [HorizontalGroup("CardValue"), LabelText("Max"), ShowIf(nameof(ShowMax)), MinValue(nameof(modifiedCardValueMin))]
+        public int modifiedCardValueMax = 0;
+
+        private bool ShowMax() => modifiedCardValueMin != 0;
+
+        private void OnMinChanged()
+        {
+            // Ensure max is never below min
+            if (modifiedCardValueMax < modifiedCardValueMin)
+            {
+                modifiedCardValueMax = modifiedCardValueMin;
+            }
+        }
     }
 }

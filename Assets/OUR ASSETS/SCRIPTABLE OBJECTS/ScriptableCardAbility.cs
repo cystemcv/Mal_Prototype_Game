@@ -54,12 +54,12 @@ public class ScriptableCardAbility : ScriptableObject
     //    }
     //}
 
-    public virtual string AbilityDescription(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entity)
+    public virtual string AbilityDescription(CardScriptData cardScriptData, CardAbilityClass cardAbilityClass, GameObject entity)
     {
         return (abilityName.Trim() != "") ? "<color=blue>" + abilityName + "</color> : " : "";
     }
 
-    public virtual void OnPlayCard(CardScript cardScript, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
+    public virtual void OnPlayCard(CardScriptData cardScriptData, CardAbilityClass cardAbilityClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
 
 
@@ -116,12 +116,12 @@ public class ScriptableCardAbility : ScriptableObject
 
 
 
-    public virtual void OnDiscardCard(CardScript cardScript)
+    public virtual void OnDiscardCard(CardScriptData cardScriptData)
     {
 
     }
 
-    public virtual void OnBanishedCard(CardScript cardScript)
+    public virtual void OnBanishedCard(CardScriptData cardScriptData)
     {
 
     }

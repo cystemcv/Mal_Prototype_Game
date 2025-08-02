@@ -6,13 +6,13 @@ using static ScriptableCard;
 public class ScriptableCardCondition : ScriptableObject
 {
 
-    public virtual string ConditionDescription(CardScript cardScript, CardConditionClass cardConditionClass, GameObject entity)
+    public virtual string ConditionDescription(CardScriptData cardScriptData, CardConditionClass cardConditionClass, GameObject entity)
     {
         return  "";
     }
 
 
-    public virtual bool OnPlayCard(CardScript cardScript, CardConditionClass cardConditionClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
+    public virtual bool OnPlayCard(CardScriptData cardScriptData, CardConditionClass cardConditionClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
 
         return true;

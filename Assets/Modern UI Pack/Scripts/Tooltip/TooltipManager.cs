@@ -105,13 +105,13 @@ namespace Michsky.MUIP
             if (currentTooltip == null)
                 return; // nothing to show/update
 
-            if (currentTooltip == null || string.IsNullOrWhiteSpace(currentTooltip.description))
-            {
-                // ensure tooltip is hidden if somehow still active
-                if (tooltipObject != null && tooltipObject.activeSelf)
-                    tooltipObject.SetActive(false);
-                return;
-            }
+            //if (currentTooltip == null || string.IsNullOrWhiteSpace(currentTooltip.description))
+            //{
+            //    // ensure tooltip is hidden if somehow still active
+            //    if (tooltipObject != null && tooltipObject.activeSelf)
+            //        tooltipObject.SetActive(false);
+            //    return;
+            //}
 
             UpdatePosition();
         }

@@ -12,9 +12,9 @@ public class Angel_Card_RighteousFlame : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
         customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies";
@@ -22,9 +22,9 @@ public class Angel_Card_RighteousFlame : ScriptableCard
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -33,9 +33,9 @@ public class Angel_Card_RighteousFlame : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;

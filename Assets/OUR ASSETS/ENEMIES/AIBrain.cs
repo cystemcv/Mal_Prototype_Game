@@ -86,10 +86,10 @@ public class AIBrain : MonoBehaviour
 
         scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
 
-        CardScript cardScript = new CardScript();
-        cardScript.scriptableCard = scriptableCardToUse;
+        CardScriptData cardScriptData = new CardScriptData();
+        cardScriptData.scriptableCard = scriptableCardToUse;
         //assign a target for card
-        scriptableCardToUse.OnAiPlayTarget(cardScript, this.gameObject);
+        scriptableCardToUse.OnAiPlayTarget(cardScriptData, this.gameObject);
 
         SpawnAIIntend(scriptableCardToUse);
 
@@ -143,7 +143,7 @@ public class AIBrain : MonoBehaviour
     IEnumerator PlayCardCoroutine(ScriptableCard scriptableCard)
     {
 
-        SystemManager.Instance.thereIsActivatedCard = true;
+        //SystemManager.Instance.thereIsActivatedCard = true;
 
         GameObject entity = this.gameObject;
 
@@ -156,13 +156,13 @@ public class AIBrain : MonoBehaviour
 
 
         //create new cardscript
-        CardScript cardScript = new CardScript();
-        cardScript.scriptableCard = scriptableCard;
+        CardScriptData cardScriptData = new CardScriptData();
+        cardScriptData.scriptableCard = scriptableCard;
 
         //activate effect
-        cardScript.scriptableCard.OnAiPlayCard(cardScript, entity);
+        cardScriptData.scriptableCard.OnAiPlayCard(cardScriptData, entity);
 
-        yield return new WaitForSeconds(cardScript.scriptableCard.abilityEffectLifetime);
+        yield return new WaitForSeconds(cardScriptData.scriptableCard.abilityEffectLifetime);
         //yield return new WaitForSeconds(10f);
 
 
@@ -182,7 +182,7 @@ public class AIBrain : MonoBehaviour
 
 
         //card ended
-        SystemManager.Instance.thereIsActivatedCard = false;
+        //SystemManager.Instance.thereIsActivatedCard = false;
 
 
 

@@ -13,7 +13,7 @@ public class Artifacts_AngelicShield : ScriptableItem
 
     private int shieldAdded = 10;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
@@ -27,14 +27,15 @@ public class Artifacts_AngelicShield : ScriptableItem
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, shieldAdded, false, SystemManager.AdjustNumberModes.SHIELD));
 
+        ItemManager.Instance.AddItemOnActivateOrder(this, "+" + shieldAdded + " shield", false);
         //decrease it
         shieldAdded -= shieldDescrease;
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Next turn shield +" + shieldAdded, false);
+    
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
     {
         shieldAdded = shieldMax;
     }

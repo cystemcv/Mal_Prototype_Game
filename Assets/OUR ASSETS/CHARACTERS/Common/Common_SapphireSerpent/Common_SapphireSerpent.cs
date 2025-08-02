@@ -12,9 +12,9 @@ public class Common_SapphireSerpent : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
     
         customDesc += "Draw " + drawAmount + " on Odd Turn Number!<br>";
@@ -24,9 +24,9 @@ public class Common_SapphireSerpent : ScriptableCard
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -35,9 +35,9 @@ public class Common_SapphireSerpent : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
  
         entityUsedCardGlobal = entityUsedCard;

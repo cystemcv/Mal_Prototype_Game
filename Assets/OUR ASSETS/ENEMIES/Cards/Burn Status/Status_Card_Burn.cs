@@ -7,18 +7,18 @@ public class Status_Card_Burn : ScriptableCard
 {
     public ScriptableBuffDebuff burn;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Add 1 " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to the Hero when drawn";
 
         return customDesc;
     }
 
-    public override void OnDrawCard(CardScript cardScript)
+    public override void OnDrawCard(CardScriptData cardScriptData)
     {
-        base.OnDrawCard(cardScript);
+        base.OnDrawCard(cardScriptData);
 
         MonoBehaviour runner = CombatCardHandler.Instance;
         GameObject target = GameObject.FindGameObjectWithTag("Player");

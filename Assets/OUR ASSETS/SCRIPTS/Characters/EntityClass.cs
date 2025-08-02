@@ -322,8 +322,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
 
-        CardScript cardScript = new CardScript();
-        cardScript.scriptableCard = this.gameObject.GetComponent<AIBrain>().scriptableCardToUse;
+        CardScriptData cardScriptData = new CardScriptData();
+        cardScriptData.scriptableCard = this.gameObject.GetComponent<AIBrain>().scriptableCardToUse;
 
         GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
 
@@ -331,7 +331,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         aiCardParent.transform.localScale = new Vector3(1f, 1f, 1); 
 
-        GameObject aiCard = DeckManager.Instance.InitializeCardPrefab(cardScript, aiCardParent, false,false);
+        GameObject aiCard = DeckManager.Instance.InitializeCardPrefab(cardScriptData, aiCardParent, false,false);
         aiCard.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
         aiCardParent.transform.position = new Vector3(this.gameObject.transform.position.x,

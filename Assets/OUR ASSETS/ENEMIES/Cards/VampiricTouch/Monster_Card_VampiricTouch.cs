@@ -12,20 +12,24 @@ public class Monster_Card_VampiricTouch : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
-    {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+    private int finalDmg = 0;
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an enemy";
-        customDesc += "\nHeal " + damageAmount;
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
+    {
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
+
+        finalDmg = AIManager.Instance.ReturnAIDmg(damageAmount, entityUsedCard);
+
+        int calculatedDamage = (Combat.Instance == null) ? finalDmg : Combat.Instance.CalculateEntityDmg(finalDmg, entityUsedCard, realTarget);
+        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(finalDmg, calculatedDamage) + " to an enemy";
+        customDesc += "\nHeal " + finalDmg;
 
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        //base.OnPlayCard(cardScript, entityUsedCard);
+        //base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
@@ -34,9 +38,9 @@ public class Monster_Card_VampiricTouch : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        //base.OnAiPlayCard(cardScript, entityUsedCard);
+        //base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
@@ -45,9 +49,9 @@ public class Monster_Card_VampiricTouch : ScriptableCard
 
     }
 
-    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
@@ -64,8 +68,8 @@ public class Monster_Card_VampiricTouch : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance;
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount,1, entityUsedCardGlobal, realTarget, multiHits, 1));
-        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entityUsedCardGlobal, damageAmount,false,SystemManager.AdjustNumberModes.HEAL));
+        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, finalDmg, 1, entityUsedCardGlobal, realTarget, multiHits, 1));
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entityUsedCardGlobal, finalDmg, false,SystemManager.AdjustNumberModes.HEAL));
     }
 
 

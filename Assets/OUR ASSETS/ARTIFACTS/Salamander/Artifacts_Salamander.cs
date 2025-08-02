@@ -19,11 +19,11 @@ public class Artifacts_Salamander : ScriptableItem
 
     
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         //check if mana of card is 3
-        if (cardScript.scriptableCard.primaryManaCost != cardActivationCost)
+        if (cardScriptData.scriptableCard.primaryManaCost != cardActivationCost)
         {
             return;
         }

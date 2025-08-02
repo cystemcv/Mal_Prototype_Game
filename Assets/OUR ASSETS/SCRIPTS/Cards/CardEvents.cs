@@ -121,10 +121,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (!UI_Combat.Instance.uiCombatEnable)
-        {
-            return;
-        }
+
 
        // if (isPointerInside) return; // Prevent duplicate calls
 
@@ -186,10 +183,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData eventData)
     {
 
-        if (!UI_Combat.Instance.uiCombatEnable)
-        {
-            return;
-        }
+
 
         isPointerInside = false;
 
@@ -363,10 +357,10 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             //check activation
             canActivate = HandManager.Instance.CheckActivation(rectTransform);
 
-            if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= Combat.Instance.manaAvailable && SystemManager.Instance.thereIsActivatedCard == false
-                && gameObject.GetComponent<CardScript>().scriptableCard.cardType != SystemManager.CardType.Curse)
+            if (canActivate && gameObject.GetComponent<CardScript>().cardScriptData.primaryManaCost <= Combat.Instance.manaAvailable /*&& SystemManager.Instance.thereIsActivatedCard == false*/
+                && gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType != SystemManager.CardType.Curse)
             {
-                ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
+                ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard;
 
                 //check if there is more than 1 target
                 List<string> tagList = new List<string>();
@@ -409,7 +403,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
 
         //if it cancel drag
-        if (isDragging == false || SystemManager.Instance.thereIsActivatedCard == true || gameObject.GetComponent<CardScript>().scriptableCard.cardType == SystemManager.CardType.Curse)
+        if (isDragging == false /*|| SystemManager.Instance.thereIsActivatedCard == true*/ || gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType == SystemManager.CardType.Curse)
         {
             //reset everything
             //remove line renderer
@@ -432,9 +426,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
 
 
-        ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().scriptableCard;
+        ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard;
 
-        if (canActivate && gameObject.GetComponent<CardScript>().primaryManaCost <= Combat.Instance.manaAvailable)
+        if (canActivate && gameObject.GetComponent<CardScript>().cardScriptData.primaryManaCost <= Combat.Instance.manaAvailable)
         {
 
             // Scale down the card
@@ -482,20 +476,21 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                 playedCard.timer = scriptableCard.waitOnQueueTimer;
                 playedCard.target = CombatCardHandler.Instance.targetClicked;
                 playedCard.scriptableCard = scriptableCard;
+                playedCard.cardScriptData = gameObject.GetComponent<CardScript>().cardScriptData;
                 playedCard.cardScript = gameObject.GetComponent<CardScript>();
                 playedCard.cardObject = this.gameObject;
 
                 //decrease available mana
-                Combat.Instance.ManaAvailable -= playedCard.cardScript.primaryManaCost;
+                Combat.Instance.ManaAvailable -= playedCard.cardScriptData.primaryManaCost;
 
                 //add it on the list
                 Combat.Instance.playedCardList.Add(playedCard);
 
                 //save the cardScript temp
-                CardScript tempCardScript = new CardScript();
-                tempCardScript = playedCard.cardScript;
+                CardScriptData tempCardScriptData = new CardScriptData();
+                tempCardScriptData = playedCard.cardScriptData;
                 //remove from hand and add it to the played card
-                DeckManager.Instance.RemovePlayedCardFromHand(tempCardScript);
+                DeckManager.Instance.RemovePlayedCardFromHand(tempCardScriptData);
 
                 playedCard.playedCardUI = UI_Combat.Instance.AddPlayedCardUI(playedCard);
 
@@ -540,7 +535,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>());
+            DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>().cardScriptData);
         }
     }
 
@@ -582,7 +577,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
 
             //add the chosen shield (this is not scaleable)
-            Combat.Instance.AdjustTargetHealth(null, CombatCardHandler.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
+            Combat.Instance.AdjustTargetHealth(null, CombatCardHandler.Instance.targetClicked, this.gameObject.GetComponent<CardScript>().cardScriptData.tempValue , false, SystemManager.AdjustNumberModes.SHIELD);
 
             //destroy children of the choice parent
             SystemManager.Instance.DestroyAllChildren(UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject);

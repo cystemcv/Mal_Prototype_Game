@@ -14,7 +14,7 @@ public class itemAbility_GainExtraLoot : ScriptableItem
 
     public List<ExtraItemProperties> itemExtraPropertiesList;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
         // Check if only one random item should be chosen
         if (methodToUse == MethodToUse.CHOOSERANDOM)

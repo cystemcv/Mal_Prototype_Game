@@ -11,7 +11,7 @@ public class StaticData : MonoBehaviour
         public int score;  // The score weight for this stat
     }
 
-    public static List<CardScript> staticMainDeck = new List<CardScript>();
+    public static List<CardScriptData> staticMainDeck = new List<CardScriptData>();
 
     public static ScriptableEntity staticCharacter;
     public static ScriptableCompanion staticScriptableCompanion;
@@ -27,7 +27,7 @@ public class StaticData : MonoBehaviour
     public static List<CraftingRecipesData> craftingRecipesDataList = new List<CraftingRecipesData>();
 
     // Variables needed for artifacts
-    public static CardScript artifact_CardScript;
+    public static CardScriptData artifact_CardScript;
 
     // JSON strings for combat and run stats (now including value & score)
     private static string combatJsonData = @"{

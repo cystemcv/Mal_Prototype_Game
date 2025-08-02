@@ -14,7 +14,7 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
     private int cardsPlayed = 0;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
        if(StaticData.artifact_CardScript.scriptableCard.cardType == SystemManager.CardType.Attack)
@@ -48,7 +48,7 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
     }
 
-    public override void Expired(ClassItemData classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
     {
         cardsPlayed = 0;
     }

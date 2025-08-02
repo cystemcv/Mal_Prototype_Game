@@ -16,20 +16,20 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
     public ScriptableBuffDebuff defence;
     public ScriptableBuffDebuff tempDefence;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Add " +  buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
         customDesc += "\nAdd " + buffValueTemp + " " + BuffSystemManager.Instance.GetBuffDebuffColor(tempDefence) + " for " + buffTurnsTemp + " turns";
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
        
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValue);
@@ -39,11 +39,11 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
     
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
@@ -60,9 +60,9 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
     }
 
 
-    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
 
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 

@@ -11,13 +11,13 @@ public class Artifacts_CounterGloves : ScriptableItem
     public int counterAmount = 1;
     public ScriptableBuffDebuff counter;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
         BuffSystemManager.Instance.AddBuffDebuff(character, counter, counterAmount);
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "Added +3 " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " to hero", false);
     }
 
 

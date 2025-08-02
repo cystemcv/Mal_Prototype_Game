@@ -23,16 +23,29 @@ public class CardTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
 
         CardScript cardScript = this.gameObject.GetComponent<CardScript>();
+        CardScriptData cardScriptData = new CardScriptData();
         CardListCardEvents cardListCardEvents = this.gameObject.GetComponent<CardListCardEvents>();
         ScriptableCard scriptableCard = null;
 
-        if (cardScript != null)
+        if (cardScript == null)
         {
-            scriptableCard = cardScript.scriptableCard;
+            return;
         }
-        else if (cardListCardEvents != null)
+
+        cardScriptData = cardScript.cardScriptData;
+
+        //if (cardScriptData != null)
+        //{
+            scriptableCard = cardScriptData.scriptableCard;
+        //}
+        //else if (cardListCardEvents != null)
+        //{
+        //    scriptableCard = cardListCardEvents.scriptableCard;
+        //}
+
+        if (scriptableCard == null)
         {
-            scriptableCard = cardListCardEvents.scriptableCard;
+            return;
         }
 
         foreach (ScriptableKeywords scriptableKeyword in scriptableCard.scriptableKeywords)

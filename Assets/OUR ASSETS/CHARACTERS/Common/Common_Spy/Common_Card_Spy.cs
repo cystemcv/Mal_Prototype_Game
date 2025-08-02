@@ -11,31 +11,31 @@ public class Common_Card_Spy : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    public CardScript globalCardScript;
+    public CardScriptData globalCardScript;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Play top " + playTopCards + " cards from deck";
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
-        globalCardScript = cardScript;
+        globalCardScript = cardScriptData;
 
         ExecuteCard();
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;
@@ -64,10 +64,10 @@ public class Common_Card_Spy : ScriptableCard
         }
 
 
-        DeckManager.Instance.savedPlayedCardScript = globalCardScript;
+        DeckManager.Instance.savedPlayedCard.cardScriptData = globalCardScript;
 
         //destroy the prefab
-        if (DeckManager.Instance.savedPlayedCardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+        if (DeckManager.Instance.savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
         {
           DeckManager.Instance.DestroyPlayedCard(SystemManager.CardThrow.BANISH);
         }

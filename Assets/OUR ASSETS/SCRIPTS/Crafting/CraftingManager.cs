@@ -363,10 +363,10 @@ public class CraftingManager : MonoBehaviour
 
     public void CreateRecipeCard(CraftingRecipesData data, GameObject craftingReward)
     {
-        CardScript cardScript = new CardScript();
-        cardScript.scriptableCard = data.scriptableCard;
+        CardScriptData cardScriptData = new CardScriptData();
+        cardScriptData.scriptableCard = data.scriptableCard;
         //instantiate the card
-        GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScript, craftingReward, false, false);
+        GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, craftingReward, false, false);
 
         //do extra stuff on card
         Destroy(card.GetComponent<CanvasScaler>());

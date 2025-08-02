@@ -12,9 +12,9 @@ public class Angel_Card_ThunderCloud : ScriptableCard
     private GameObject entityUsedCardGlobal;
 
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
         int calculatedDmg = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, null);
 
         customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDmg) + " to an enemy for every <color=yellow>Wet</color>. Remove each " +
@@ -22,11 +22,11 @@ public class Angel_Card_ThunderCloud : ScriptableCard
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
 
         ////allow to activate coroutine on scriptable object
@@ -39,11 +39,11 @@ public class Angel_Card_ThunderCloud : ScriptableCard
 
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard); ;
 
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         ////allow to activate coroutine on scriptable object
         //MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
@@ -70,7 +70,7 @@ public class Angel_Card_ThunderCloud : ScriptableCard
     //    }
 
     //    // Use ability on each hit
-    //    base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
+    //    base.OnPlayCard(cardScriptData, cardAbilityClass, entityUsedCard, controlBy);
 
     //    base.SpawnEffectPrefab(realTarget, cardAbilityClass);
 
@@ -87,7 +87,7 @@ public class Angel_Card_ThunderCloud : ScriptableCard
     //        //then go throught all other enemies with debuff and strike them too
 
     //        // Use ability on each hit
-    //        base.OnPlayCard(cardScript, cardAbilityClass, entityUsedCard, controlBy);
+    //        base.OnPlayCard(cardScriptData, cardAbilityClass, entityUsedCard, controlBy);
     //        List<GameObject> targetsFound = new List<GameObject>();
 
     //        //get all targets

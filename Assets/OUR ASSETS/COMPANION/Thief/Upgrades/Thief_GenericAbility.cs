@@ -8,7 +8,7 @@ public class Thief_GenericAbility : ScriptableItem
 
 
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
 

@@ -9,18 +9,18 @@ public class Monster_Card_EvilGlare : ScriptableCard
     public ScriptableBuffDebuff weaken;
     public int weakenTurns = 0;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(weaken) + " for " + weakenTurns + " to target";
 
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
@@ -29,9 +29,9 @@ public class Monster_Card_EvilGlare : ScriptableCard
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
@@ -40,9 +40,9 @@ public class Monster_Card_EvilGlare : ScriptableCard
         BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
     }
 
-    public override void OnAiPlayTarget(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayTarget(cardScript, entityUsedCard);
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }

@@ -605,9 +605,9 @@ public class UIManager : MonoBehaviour
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in StaticData.staticMainDeck)
+        foreach (CardScriptData cardScriptData in StaticData.staticMainDeck)
         {
-            scriptableCardList.Add(cardScript.scriptableCard);
+            scriptableCardList.Add(cardScriptData.scriptableCard);
         }
 
         ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Deck", CadList_DoNothing);
@@ -618,9 +618,9 @@ public class UIManager : MonoBehaviour
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in DeckManager.Instance.combatDeck)
+        foreach (CardScriptData cardScriptData in DeckManager.Instance.combatDeck)
         {
-            scriptableCardList.Add(cardScript.scriptableCard);
+            scriptableCardList.Add(cardScriptData.scriptableCard);
         }
 
         ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Remaining Deck", CadList_DoNothing);
@@ -636,9 +636,9 @@ public class UIManager : MonoBehaviour
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in DeckManager.Instance.discardedPile)
+        foreach (CardScriptData cardScriptData in DeckManager.Instance.discardedPile)
         {
-            scriptableCardList.Add(cardScript.scriptableCard);
+            scriptableCardList.Add(cardScriptData.scriptableCard);
         }
 
         ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Discarded Cards", CadList_DoNothing);
@@ -649,9 +649,9 @@ public class UIManager : MonoBehaviour
 
         List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
 
-        foreach (CardScript cardScript in DeckManager.Instance.banishedPile)
+        foreach (CardScriptData cardScriptData in DeckManager.Instance.banishedPile)
         {
-            scriptableCardList.Add(cardScript.scriptableCard);
+            scriptableCardList.Add(cardScriptData.scriptableCard);
         }
 
         ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Banished Cards", CadList_DoNothing);
@@ -738,10 +738,10 @@ public class UIManager : MonoBehaviour
 
         foreach (ScriptableCard scriptableCard in this.scriptableCardList)
         {
-            CardScript cardScript = new CardScript();
-            cardScript.scriptableCard = scriptableCard;
+            CardScriptData cardScriptData = new CardScriptData();
+            cardScriptData.scriptableCard = scriptableCard;
             //instantiate the card
-            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScript, cardListGOContent, false, false);
+            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, cardListGOContent, false, false);
 
             //do extra stuff on card
             Destroy(card.GetComponent<CanvasScaler>());

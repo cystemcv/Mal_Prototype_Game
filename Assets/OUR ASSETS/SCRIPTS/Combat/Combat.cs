@@ -16,6 +16,7 @@ public class PlayedCard
     public GameObject target;
     public ScriptableCard scriptableCard;
     public CardScript cardScript;
+    public CardScriptData cardScriptData;
     public GameObject cardObject;
     public GameObject playedCardUI;
 }
@@ -81,7 +82,7 @@ public class Combat : MonoBehaviour
     public event OnManaChange onManaChange;
 
     public List<PlayedCard> playedCardList = new List<PlayedCard>();
-    public List<CardScript> discardEffectCardList = new List<CardScript>();
+    public List<CardScriptData> discardEffectCardList = new List<CardScriptData>();
 
     public SystemManager.BattleGroundType battleGroundType;
 
@@ -186,9 +187,9 @@ public class Combat : MonoBehaviour
             {
 
                 //save the cardscript
-                DeckManager.Instance.savedPlayedCardScript = playedCardList[0].cardScript;
+                DeckManager.Instance.savedPlayedCard = playedCardList[0].cardScript;
 
-                DeckManager.Instance.PlayerPlayedCard(playedCardList[0].cardScript);
+                DeckManager.Instance.PlayerPlayedCard(playedCardList[0].cardScriptData);
 
                 playedCardList[0].isPlaying = true;
 
@@ -261,13 +262,14 @@ public class Combat : MonoBehaviour
 
     public void UpdateCardAfterManaChange(GameObject cardPrefab)
     {
-        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
+        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().cardScriptData.scriptableCard;
         CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        CardScriptData cardScriptData = cardScript.cardScriptData;
         TMP_Text cardManaCostText = cardPrefab.transform.GetChild(0).transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>();
 
 
         //check the mana cost of each
-        if (manaAvailable < cardScript.primaryManaCost)
+        if (manaAvailable < cardScriptData.primaryManaCost)
         {
             //cannot be played
             cardManaCostText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
@@ -602,7 +604,7 @@ public class Combat : MonoBehaviour
         }
 
 
-
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         //start player turn
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.playerStartTurn;
 
@@ -647,9 +649,9 @@ public class Combat : MonoBehaviour
     public IEnumerator ActivateDelayedCardEffects()
     {
 
-        foreach (CardScript cardScript in discardEffectCardList)
+        foreach (CardScriptData cardScriptData in discardEffectCardList)
         {
-            cardScript.scriptableCard.OnDelayEffect(cardScript);
+            cardScriptData.scriptableCard.OnDelayEffect(cardScriptData);
 
         }
 
@@ -1426,7 +1428,7 @@ public class Combat : MonoBehaviour
 
         //initialize the combat deck
         DeckManager.Instance.combatDeck.Clear();
-        DeckManager.Instance.combatDeck = new List<CardScript>(StaticData.staticMainDeck);
+        DeckManager.Instance.combatDeck = new List<CardScriptData>(StaticData.staticMainDeck);
         DeckManager.Instance.ShuffleDeck(DeckManager.Instance.combatDeck);
 
 

@@ -12,7 +12,7 @@ public class Artifacts_RainTotem : ScriptableItem
     public int amount = 1;
     public int startTurn = 3;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         if (Combat.Instance.turns < startTurn)
@@ -31,7 +31,7 @@ public class Artifacts_RainTotem : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
     }

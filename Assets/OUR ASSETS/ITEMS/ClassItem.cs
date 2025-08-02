@@ -415,12 +415,12 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             }
 
             //generate cardScript
-            CardScript cardScriptTemp = new CardScript();
-            cardScriptTemp.scriptableCard = filteredCardList[randomIndex];
+            CardScriptData cardScriptDataTemp = new CardScriptData();
+            cardScriptDataTemp.scriptableCard = filteredCardList[randomIndex];
 
 
             //generate the card and parent it
-            DeckManager.Instance.InitializeCardPrefab(cardScriptTemp, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject, false, true);
+            DeckManager.Instance.InitializeCardPrefab(cardScriptDataTemp, UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject, false, true);
         }
 
     }

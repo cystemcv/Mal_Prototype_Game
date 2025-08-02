@@ -234,4 +234,21 @@ public class AIManager : MonoBehaviour
 
     }
 
+    public int ReturnAIDmg(int originalDmg,GameObject entityUsedCard)
+    {
+        int finalDmg = originalDmg;
+
+        if(entityUsedCard.GetComponent<AIBrain>() != null){
+            AIBrain aIBrain = entityUsedCard.GetComponent<AIBrain>();
+
+            if (aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMin != 0)
+            {
+                finalDmg = Random.Range(aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMin, aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMax);
+            }
+           
+        }
+
+        return finalDmg;
+    }
+
 }

@@ -8,33 +8,33 @@ public class Monster_Card_FlameAura : ScriptableCard
 
     public ScriptableCard statusBurn;
 
-    public override string OnCardDescription(CardScript cardScript, GameObject entityUsedCard)
+    public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        string customDesc = base.OnCardDescription(cardScript, entityUsedCard);
+        string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         customDesc += "Add 3 Status Burn Cards to the Hero Deck and shuffle it";
 
         return customDesc;
     }
 
-    public override void OnPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnPlayCard(cardScript, entityUsedCard);
-        PlayCard(cardScript, entityUsedCard);
+        base.OnPlayCard(cardScriptData, entityUsedCard);
+        PlayCard(cardScriptData, entityUsedCard);
     }
 
-    public override void OnAiPlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
-        base.OnAiPlayCard(cardScript, entityUsedCard);
-        PlayCard(cardScript, entityUsedCard);
+        base.OnAiPlayCard(cardScriptData, entityUsedCard);
+        PlayCard(cardScriptData, entityUsedCard);
     }
 
-    public void PlayCard(CardScript cardScript, GameObject entityUsedCard)
+    public void PlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         //add the cards
         for (int i=0;i<3;i++)
         {
-            CardScript burnCard = new CardScript();
+            CardScriptData burnCard = new CardScriptData();
             burnCard.scriptableCard = statusBurn;
             DeckManager.Instance.AddCardOnCombatDeck(burnCard);
         }

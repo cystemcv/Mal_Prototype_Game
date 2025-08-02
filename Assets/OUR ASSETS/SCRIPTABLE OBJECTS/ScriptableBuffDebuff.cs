@@ -23,12 +23,12 @@ public class ScriptableBuffDebuff : ScriptableObject
     }
 
 
-    public virtual void OnDiscardCard(CardScript cardScript)
+    public virtual void OnDiscardCard(CardScriptData cardScriptData)
     {
 
     }
 
-    public virtual void OnBanishedCard(CardScript cardScript)
+    public virtual void OnBanishedCard(CardScriptData cardScriptData)
     {
 
     }

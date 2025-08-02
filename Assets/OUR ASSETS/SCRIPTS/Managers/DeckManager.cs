@@ -12,19 +12,19 @@ public class DeckManager : MonoBehaviour
     public static DeckManager Instance;
 
     //combat deck
-    public List<CardScript> combatDeck;
+    public List<CardScriptData> combatDeck;
 
     //Discarded Cards
-    public List<CardScript> discardedPile;
+    public List<CardScriptData> discardedPile;
 
     //Banished Cards (Out of Play)
-    public List<CardScript> banishedPile;
+    public List<CardScriptData> banishedPile;
 
     //Hand Cards 
-    public List<CardScript> handCards;
+    public List<CardScriptData> handCards;
 
 
-    public CardScript savedPlayedCardScript;
+    public CardScript savedPlayedCard;
     public LTDescr savedtweenCardPlayed;
 
     [Header("FAN SHAPE")]
@@ -74,9 +74,9 @@ public class DeckManager : MonoBehaviour
         {
 
             //add cards to the deck
-            CardScript cardScript = new CardScript();
-            cardScript.scriptableCard = scriptableCard;
-            StaticData.staticMainDeck.Add(cardScript);
+            CardScriptData cardScriptData = new CardScriptData();
+            cardScriptData.scriptableCard = scriptableCard;
+            StaticData.staticMainDeck.Add(cardScriptData);
 
         }
 
@@ -86,11 +86,11 @@ public class DeckManager : MonoBehaviour
     }
 
 
-    public void ShuffleDeck(List<CardScript> list)
+    public void ShuffleDeck(List<CardScriptData> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
-            CardScript temp = list[i];
+            CardScriptData temp = list[i];
             int randomIndex = UnityEngine.Random.Range(i, list.Count);
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
@@ -112,27 +112,27 @@ public class DeckManager : MonoBehaviour
             FillUpDeckFromDiscardPile();
 
             //put the top 1 card from deck on hand
-            CardScript cardScript = combatDeck[0];
+            CardScriptData cardScriptData = combatDeck[0];
 
             //if it passes the max hand limit the discard it, otherwise add it to the hand
             if (handCards.Count >= HandManager.Instance.maxHandCardsLimit)
             {
 
                 //discard it
-                discardedPile.Add(cardScript);
+                discardedPile.Add(cardScriptData);
 
-                HandFullSpawnCardFunction(cardScript);
+                HandFullSpawnCardFunction(cardScriptData);
             }
             else
             {
 
                 //add it to the hand
-                handCards.Add(cardScript);
+                handCards.Add(cardScriptData);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true, false);
+                InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false);
 
-                cardScript.scriptableCard.OnDrawCard(cardScript);
+                cardScriptData.scriptableCard.OnDrawCard(cardScriptData);
 
                 //rearrange hand
                 HandManager.Instance.SetHandCards();
@@ -159,15 +159,15 @@ public class DeckManager : MonoBehaviour
         if (combatDeck.Count != 0)
         {
 
-            CardScript cardScript = combatDeck[index];
+            CardScriptData cardScriptData = combatDeck[index];
 
             //Debug.Log("inside : " + cardScript.changedMana);
 
             //add it to the hand
-            handCards.Add(cardScript);
+            handCards.Add(cardScriptData);
 
             //instantiate the card
-            InitializeCardPrefab(cardScript, UI_Combat.Instance.HAND, true, false);
+            InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -178,28 +178,28 @@ public class DeckManager : MonoBehaviour
     }
 
 
-    public void DiscardCardFromHand(CardScript cardScript)
+    public void DiscardCardFromHand(CardScriptData cardScriptData)
     {
         //add it to the discard pile
-        discardedPile.Add(cardScript);
+        discardedPile.Add(cardScriptData);
 
         //remove the card based on the index
-        int index = handCards.FindIndex(item => item.cardID == cardScript.cardID);
+        int index = handCards.FindIndex(item => item.cardID == cardScriptData.cardID);
         handCards.RemoveAt(index);
 
         //destroy the prefab
-        DestroyCardPrefab(cardScript, SystemManager.CardThrow.DISCARD);
+        DestroyCardPrefab(cardScriptData, SystemManager.CardThrow.DISCARD);
 
 
 
     }
 
-    public void RemovePlayedCardFromHand(CardScript cardScript)
+    public void RemovePlayedCardFromHand(CardScriptData cardScriptData)
     {
 
 
         //remove the card based on the index
-        int index = handCards.FindIndex(item => item.cardID == cardScript.cardID);
+        int index = handCards.FindIndex(item => item.cardID == cardScriptData.cardID);
         handCards.RemoveAt(index);
 
 
@@ -210,13 +210,13 @@ public class DeckManager : MonoBehaviour
         foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
         {
             //get the cardscript so we can compare the scriptable objects
-            CardScript cardScriptFromGameObject = cardPrefab.GetComponent<CardScript>();
+            CardScriptData cardScriptDataFromGameObject = cardPrefab.GetComponent<CardScript>().cardScriptData;
 
             //if they are equal then we destroy it
-            if (cardScriptFromGameObject.cardID == cardScript.cardID)
+            if (cardScriptDataFromGameObject.cardID == cardScriptData.cardID)
             {
                 //find the index of the card we are discarding
-                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardScript.cardID);
+                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardScriptData.cardID == cardScriptData.cardID);
 
                 cardToDelete = cardPrefab;
 
@@ -228,30 +228,30 @@ public class DeckManager : MonoBehaviour
         //remove it from the gameobject list
         HandManager.Instance.cardsInHandList.RemoveAt(index);
 
-        //parent it
-        cardScript.gameObject.transform.SetParent(UI_Combat.Instance.CARDPLAYED.transform);
+        ////parent it
+        //cardPrefab.gameObject.transform.SetParent(UI_Combat.Instance.CARDPLAYED.transform);
 
-        //deactivate events
-        cardScript.gameObject.GetComponent<CardEvents>().enabled = false;
+        ////deactivate events
+        //cardPrefab.gameObject.GetComponent<CardEvents>().enabled = false;
 
         //move the card
-        savedtweenCardPlayed = LeanTween.move(cardScript.gameObject, UI_Combat.Instance.CARDPLAYED.transform, 0.2f);
+        savedtweenCardPlayed = LeanTween.move(cardToDelete.gameObject, UI_Combat.Instance.CARDPLAYED.transform, 0.2f);
 
         //save the cardscript
         //savedPlayedCardScript = cardScript;
     }
 
-    public void BanishCardFromHand(CardScript cardScript)
+    public void BanishCardFromHand(CardScriptData cardScriptData)
     {
         //add it to the discard pile
-        banishedPile.Add(cardScript);
+        banishedPile.Add(cardScriptData);
 
         //remove the card based on the index
-        int index = handCards.FindIndex(item => item.cardID == cardScript.cardID);
+        int index = handCards.FindIndex(item => item.cardID == cardScriptData.cardID);
         handCards.RemoveAt(index);
 
         //destroy the prefab
-        DestroyCardPrefab(cardScript, SystemManager.CardThrow.BANISH);
+        DestroyCardPrefab(cardScriptData, SystemManager.CardThrow.BANISH);
 
 
 
@@ -259,7 +259,7 @@ public class DeckManager : MonoBehaviour
 
     public void DiscardWholeHand()
     {
-        //foreach(CardScript handCard in handCards)
+        //foreach(cardScriptData handCard in handCards)
         //{
         //    DiscardCardFromHand(handCard);
         //}
@@ -292,11 +292,11 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void PlayerPlayedCard(CardScript cardScript)
+    public void PlayerPlayedCard(CardScriptData cardScriptData)
     {
         //save the cardScript temp
-        CardScript tempCardScript = new CardScript();
-        tempCardScript = cardScript;
+        CardScriptData tempCardScriptData = new CardScriptData();
+        tempCardScriptData = cardScriptData;
 
 
 
@@ -306,15 +306,15 @@ public class DeckManager : MonoBehaviour
 
 
         //activate all card abilities
-        PlayerPlayCardActivate(tempCardScript);
+        PlayerPlayCardActivate(tempCardScriptData);
 
     }
 
 
-    //public void PlayCard(CardScript cardScript)
+    //public void PlayCard(CardScriptData cardScriptData)
     //{
     //    //check if the card has any abilities to be played
-    //    if (cardScript.scriptableCard.cardAbilityClass.Count == 0)
+    //    if (cardScriptData.scriptableCard.cardAbilityClass.Count == 0)
     //    {
     //        return;
     //    }
@@ -347,7 +347,7 @@ public class DeckManager : MonoBehaviour
 
     //}
 
-    //public bool CheckCardOnlyConditions(CardScript cardScript)
+    //public bool CheckCardOnlyConditions(CardScriptData cardScriptData)
     //{
     //    bool condition = false;
     //    //get the player
@@ -368,7 +368,7 @@ public class DeckManager : MonoBehaviour
     //        }
 
     //        // Wait for 2 seconds
-    //        if (cardConditionClass.ScriptableCardCondition.OnPlayCard(cardScript, cardConditionClass, entity, SystemManager.ControlBy.PLAYER))
+    //        if (cardConditionClass.ScriptableCardCondition.OnPlayCard(cardScriptData, cardConditionClass, entity, SystemManager.ControlBy.PLAYER))
     //        {
     //            condition = true;
     //            break;
@@ -385,25 +385,25 @@ public class DeckManager : MonoBehaviour
     //}
 
 
-    public void PlayerPlayCardActivate(CardScript cardScript)
+    public void PlayerPlayCardActivate(CardScriptData cardScriptData)
     {
 
-        StartCoroutine(PlayerPlayCardActivateCoroutine(cardScript));
+        StartCoroutine(PlayerPlayCardActivateCoroutine(cardScriptData));
 
     }
 
-    IEnumerator PlayerPlayCardActivateCoroutine(CardScript cardScript)
+    IEnumerator PlayerPlayCardActivateCoroutine(CardScriptData cardScriptData)
     {
         //get the player
         GameObject entity = GameObject.FindGameObjectWithTag("Player");
-        cardScript.scriptableCard.OnPlayCard(cardScript, entity);
+        cardScriptData.scriptableCard.OnPlayCard(cardScriptData, entity);
 
-        CardPlayedStaticVariables(cardScript);
+        CardPlayedStaticVariables(cardScriptData);
 
-        if (savedPlayedCardScript != null)
+        if (savedPlayedCard != null)
         {
             //destroy the prefab
-            if (savedPlayedCardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
             {
                 DestroyPlayedCard(SystemManager.CardThrow.BANISH);
             }
@@ -414,35 +414,35 @@ public class DeckManager : MonoBehaviour
 
         }
 
-        StaticData.artifact_CardScript = cardScript;
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard,cardScript));
+        StaticData.artifact_CardScript = cardScriptData;
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayCard, cardScriptData));
 
         yield return null;
     }
 
 
-    public void CardPlayedStaticVariables(CardScript cardScript)
+    public void CardPlayedStaticVariables(CardScriptData cardScriptData)
     {
 
         StaticData.IncrementStat(StaticData.combatStats, "Cards_Played", 1);
         StaticData.IncrementStat(StaticData.combatStats, "Total_Cards_Played", 1);
 
-        if (cardScript.scriptableCard.primaryManaCost == 0)
+        if (cardScriptData.scriptableCard.primaryManaCost == 0)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Zero_Mana_Cost_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Zero_Mana_Cost_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.primaryManaCost == 1)
+        else if (cardScriptData.scriptableCard.primaryManaCost == 1)
         {
             StaticData.IncrementStat(StaticData.combatStats, "One_Mana_Cost_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_One_Mana_Cost_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.primaryManaCost == 2)
+        else if (cardScriptData.scriptableCard.primaryManaCost == 2)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Two_Mana_Cost_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Two_Mana_Cost_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.primaryManaCost == 3)
+        else if (cardScriptData.scriptableCard.primaryManaCost == 3)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Three_Mana_Cost_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Three_Mana_Cost_Cards_Played", 1);
@@ -453,22 +453,22 @@ public class DeckManager : MonoBehaviour
             StaticData.IncrementStat(StaticData.combatStats, "Total_Four_And_Above_Mana_Cost_Cards_Played", 1);
         }
 
-        if (cardScript.scriptableCard.cardType == SystemManager.CardType.Attack)
+        if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Attack)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Attack_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Attack_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Skill)
+        else if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Skill)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Skill_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Skill_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+        else if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Focus_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Focus_Cards_Played", 1);
         }
-        else if (cardScript.scriptableCard.cardType == SystemManager.CardType.Magic)
+        else if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Magic)
         {
             StaticData.IncrementStat(StaticData.combatStats, "Magic_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Magic_Cards_Played", 1);
@@ -478,14 +478,14 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    //public void PlayCardOnlyAbilities(CardScript cardScript)
+    //public void PlayCardOnlyAbilities(CardScriptData cardScriptData)
     //{
 
-    //    StartCoroutine(PlayCardCoroutine(cardScript));
+    //    StartCoroutine(PlayCardCoroutine(cardScriptData));
 
     //}
 
-    //IEnumerator PlayCardCoroutine(CardScript cardScript)
+    //IEnumerator PlayCardCoroutine(CardScriptData cardScriptData)
     //{
 
     //    SystemManager.Instance.thereIsActivatedCard = true;
@@ -507,11 +507,11 @@ public class DeckManager : MonoBehaviour
     //        }
 
     //        // Wait for 2 seconds
-    //        cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScript, cardAbilityClass, entity, SystemManager.ControlBy.PLAYER);
+    //        cardAbilityClass.scriptableCardAbility.OnPlayCard(cardScriptData, cardAbilityClass, entity, SystemManager.ControlBy.PLAYER);
 
 
     //        //check to reset mana to the original cost if neeeded
-    //        if (cardScript.resetManaCost)
+    //        if (cardScriptData.resetManaCost)
     //        {
     //            cardScript.primaryManaCost = cardScript.scriptableCard.primaryManaCost;
     //            cardScript.resetManaCost = false;
@@ -547,7 +547,7 @@ public class DeckManager : MonoBehaviour
     //    {
     //        //destroy the prefab
     //        DestroyPlayedCard(SystemManager.CardThrow.DISCARD);
-    //        //DiscardCardFromHand(cardScript);
+    //        //DiscardCardFromHand(cardScriptData);
     //    }
 
     //}
@@ -569,16 +569,16 @@ public class DeckManager : MonoBehaviour
         }
 
 
-        CardScript cardScript = combatDeck[index];
-        HandFullSpawnCardFunction(cardScript);
+        CardScriptData cardScriptData = combatDeck[index];
+        HandFullSpawnCardFunction(cardScriptData);
 
         //save card
-        savedPlayedCardScript = cardScript;
+        savedPlayedCard.cardScriptData = cardScriptData;
 
         //get card targets 
         List<string> tagsInCard = new List<string>();
 
-        foreach (SystemManager.EntityTag entityTag in cardScript.scriptableCard.targetEntityTagList)
+        foreach (SystemManager.EntityTag entityTag in cardScriptData.scriptableCard.targetEntityTagList)
         {
             tagsInCard.Add(entityTag.ToString());
         }
@@ -596,21 +596,21 @@ public class DeckManager : MonoBehaviour
 
         //get the player
         GameObject entity = GameObject.FindGameObjectWithTag("Player");
-        cardScript.scriptableCard.OnPlayCard(cardScript, entity);
+        cardScriptData.scriptableCard.OnPlayCard(cardScriptData, entity);
 
-        if (savedPlayedCardScript.scriptableCard != null)
+        if (savedPlayedCard.cardScriptData.scriptableCard != null)
         {
             //destroy the prefab
-            if (savedPlayedCardScript.scriptableCard.cardType == SystemManager.CardType.Focus)
+            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
             {
                 combatDeck.RemoveAt(index);
-                banishedPile.Add(savedPlayedCardScript);
+                banishedPile.Add(savedPlayedCard.cardScriptData);
 
             }
             else
             {
                 combatDeck.RemoveAt(index);
-                discardedPile.Add(savedPlayedCardScript);
+                discardedPile.Add(savedPlayedCard.cardScriptData);
             }
 
         }
@@ -633,12 +633,12 @@ public class DeckManager : MonoBehaviour
         ////play the card
         //PlayCard(handCards[randomIndex]);
 
-        CardScript cardScript = handCards[randomIndex];
+        CardScriptData cardScriptData = handCards[randomIndex];
 
-        HandFullSpawnCardFunction(cardScript);
+        HandFullSpawnCardFunction(cardScriptData);
 
         //save card
-        savedPlayedCardScript = cardScript;
+        savedPlayedCard.cardScriptData = cardScriptData;
 
 
 
@@ -657,7 +657,7 @@ public class DeckManager : MonoBehaviour
         }
         else
         {
-            Combat.Instance.ManaAvailable -= cardScript.scriptableCard.primaryManaCost;
+            Combat.Instance.ManaAvailable -= cardScriptData.scriptableCard.primaryManaCost;
         }
 
         if (Combat.Instance.ManaAvailable <= 0)
@@ -666,8 +666,8 @@ public class DeckManager : MonoBehaviour
         }
 
         //call the discard function
-        DiscardCardFromHand(cardScript);
-        PlayerPlayCardActivate(cardScript);
+        DiscardCardFromHand(cardScriptData);
+        PlayerPlayCardActivate(cardScriptData);
 
     }
 
@@ -710,10 +710,10 @@ public class DeckManager : MonoBehaviour
             //randomize list
 
             //add to deck and remove from discard pile
-            foreach (CardScript cardScript in discardedPile)
+            foreach (CardScriptData cardScriptData in discardedPile)
             {
 
-                combatDeck.Add(cardScript);
+                combatDeck.Add(cardScriptData);
             }
 
             //clear the discarded pile
@@ -733,16 +733,16 @@ public class DeckManager : MonoBehaviour
 
         //CardScript cardScript = new CardScript();
 
-        CardScript cardScript = new CardScript();
-        cardScript.scriptableCard = scriptableCard;
-        StaticData.staticMainDeck.Add(cardScript);
+        CardScriptData cardScriptData = new CardScriptData();
+        cardScriptData.scriptableCard = scriptableCard;
+        StaticData.staticMainDeck.Add(cardScriptData);
 
 
     }
 
-    public void AddCardOnCombatDeck(CardScript cardScript)
+    public void AddCardOnCombatDeck(CardScriptData cardScriptData)
     {
-        DeckManager.Instance.combatDeck.Add(cardScript);
+        DeckManager.Instance.combatDeck.Add(cardScriptData);
     }
 
     public void RemoveCardFromDeck(ScriptableCard card, int character)
@@ -752,14 +752,14 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public GameObject InitializeCardPrefab(CardScript cardScript, GameObject parent, bool addToHand, bool normalUI)
+    public GameObject InitializeCardPrefab(CardScriptData cardScriptData, GameObject parent, bool addToHand, bool normalUI)
     {
 
         //instantiate the prefab 
         // Instantiate at position (0, 0, 0) and zero rotation.
         GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, parent.transform.position, Quaternion.identity);
         //get the scriptable object
-        ScriptableCard scriptableCard = cardScript.scriptableCard;
+        ScriptableCard scriptableCard = cardScriptData.scriptableCard;
 
         //disable scripts not needed
         cardPrefab.GetComponent<CardScript>().enabled = true;
@@ -771,12 +771,16 @@ public class DeckManager : MonoBehaviour
         cardPrefab.GetComponent<CustomButton>().enabled = false;
 
         //add the scriptable card object to the prefab class to reference
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-        cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
-        cardPrefab.GetComponent<CardScript>().changedMana = cardScript.changedMana;
-        cardPrefab.GetComponent<CardScript>().resetManaCost = cardScript.resetManaCost;
+        CardScriptData cardScriptDataOnCard = new CardScriptData();
 
-        cardPrefab.GetComponent<CardScript>().cardQueue = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("Queue").gameObject;
+        cardScriptDataOnCard.scriptableCard = scriptableCard;
+        cardScriptDataOnCard.cardID = cardScriptData.cardID;
+        cardScriptDataOnCard.changedMana = cardScriptData.changedMana;
+        cardScriptDataOnCard.resetManaCost = cardScriptData.resetManaCost;
+
+        cardScriptDataOnCard.cardQueue = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("Queue").gameObject;
+
+        cardPrefab.GetComponent<CardScript>().cardScriptData = cardScriptDataOnCard;
 
         if (scriptableCard.toggle1)
         {
@@ -836,12 +840,12 @@ public class DeckManager : MonoBehaviour
         //    cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("EnemyPos").gameObject.SetActive(true);
         //}
 
-        cardPrefab.GetComponent<CardScript>().cardQueue.SetActive(false);
+        cardPrefab.GetComponent<CardScript>().cardScriptData.cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
 
-        if (cardScript.changedMana == false)
+        if (cardScriptData.changedMana == false)
         {
-            cardPrefab.GetComponent<CardScript>().primaryManaCost = scriptableCard.primaryManaCost;
+            cardPrefab.GetComponent<CardScript>().cardScriptData.primaryManaCost = scriptableCard.primaryManaCost;
         }
 
 
@@ -894,9 +898,9 @@ public class DeckManager : MonoBehaviour
 
     public void UpdateCardUI(GameObject cardPrefab)
     {
-        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-
-        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+       
+        CardScriptData cardScriptData = cardPrefab.GetComponent<CardScript>().cardScriptData;
+        ScriptableCard scriptableCard = cardScriptData.scriptableCard;
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
@@ -930,14 +934,14 @@ public class DeckManager : MonoBehaviour
 
     
         //mana cost
-        cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScript.primaryManaCost.ToString();
+        cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = cardScriptData.primaryManaCost.ToString();
 
         if (scriptableCard.cardRarity == SystemManager.Rarity.Curse)
         {
             cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
         }
 
-        cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character);
+        cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScriptData, character);
 
 
         
@@ -948,13 +952,13 @@ public class DeckManager : MonoBehaviour
     public void UpdateCardDescription(GameObject cardPrefab)
     {
 
-        ScriptableCard scriptableCard = cardPrefab.GetComponent<CardScript>().scriptableCard;
-        CardScript cardScript = cardPrefab.GetComponent<CardScript>();
+        CardScriptData cardScriptData = cardPrefab.GetComponent<CardScript>().cardScriptData;
+        ScriptableCard scriptableCard = cardScriptData.scriptableCard;
         Transform cardChild = cardPrefab.transform.GetChild(0);
 
         //get the character to be used
         GameObject character = GameObject.FindGameObjectWithTag("Player");
-        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScript, character); ;
+        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScriptData, character); ;
 
     }
 
@@ -1012,17 +1016,17 @@ public class DeckManager : MonoBehaviour
     //    }
     //}
 
-    public void HandFullSpawnCardFunction(CardScript cardScript)
+    public void HandFullSpawnCardFunction(CardScriptData cardScriptData)
     {
         //create gameobject on scene and spawn it on the discard spawner
         GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UI_Combat.Instance.handFullSpawnCard.transform.position, Quaternion.identity);
         cardPrefab.transform.parent = UI_Combat.Instance.handFullSpawnCard.transform;
         cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
-        ScriptableCard scriptableCard = cardScript.scriptableCard;
+        ScriptableCard scriptableCard = cardScriptData.scriptableCard;
 
         //add the scriptable card object to the prefab class to reference
-        cardPrefab.GetComponent<CardScript>().scriptableCard = scriptableCard;
-        cardPrefab.GetComponent<CardScript>().cardID = cardScript.cardID;
+        cardPrefab.GetComponent<CardScript>().cardScriptData.scriptableCard = scriptableCard;
+        cardPrefab.GetComponent<CardScript>().cardScriptData.cardID = cardScriptData.cardID;
 
         //make the local scale 1,1,1
         cardPrefab.transform.localScale = new Vector3(1, 1, 1);
@@ -1060,30 +1064,30 @@ public class DeckManager : MonoBehaviour
         if (cardThrow == SystemManager.CardThrow.DISCARD)
         {
             //add it to the discard pile
-            discardedPile.Add(savedPlayedCardScript);
+            discardedPile.Add(savedPlayedCard.cardScriptData);
 
-            cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            cardSoul = Instantiate(CombatCardHandler.Instance.discardEffect, savedPlayedCard.gameObject.transform.position, Quaternion.identity);
             //and assign the target
             cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.discardInfo;
         }
         else if (cardThrow == SystemManager.CardThrow.BANISH)
         {
             //add it to the banished pile
-            banishedPile.Add(savedPlayedCardScript);
+            banishedPile.Add(savedPlayedCard.cardScriptData);
 
-            cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, savedPlayedCardScript.gameObject.transform.position, Quaternion.identity);
+            cardSoul = Instantiate(CombatCardHandler.Instance.banishEffect, savedPlayedCard.gameObject.transform.position, Quaternion.identity);
             //and assign the target
             cardSoul.GetComponent<EffectGoToTarget>().target = UI_Combat.Instance.banishedInfo;
         }
 
         //destroy it as we do not need it anymore
-        Destroy(savedPlayedCardScript.gameObject);
+        Destroy(savedPlayedCard.gameObject);
 
         //rearrange hand
         HandManager.Instance.SetHandCards();
     }
 
-    public void DestroyCardPrefab(CardScript cardScript, SystemManager.CardThrow cardThrow)
+    public void DestroyCardPrefab(CardScriptData cardScriptData, SystemManager.CardThrow cardThrow)
     {
 
         int index = -1;
@@ -1093,13 +1097,13 @@ public class DeckManager : MonoBehaviour
         foreach (GameObject cardPrefab in HandManager.Instance.cardsInHandList)
         {
             //get the cardscript so we can compare the scriptable objects
-            CardScript cardScriptFromGameObject = cardPrefab.GetComponent<CardScript>();
+            CardScriptData cardScriptDataFromGameObject = cardPrefab.GetComponent<CardScript>().cardScriptData;
 
             //if they are equal then we destroy it
-            if (cardScriptFromGameObject.cardID == cardScript.cardID)
+            if (cardScriptDataFromGameObject.cardID == cardScriptData.cardID)
             {
                 //find the index of the card we are discarding
-                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardScript.cardID);
+                index = HandManager.Instance.cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardScriptData.cardID == cardScriptData.cardID);
 
                 cardToDelete = cardPrefab;
 
@@ -1144,14 +1148,14 @@ public class DeckManager : MonoBehaviour
     {
         SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
 
-        CardScript tempCardScript = new CardScript();
-        tempCardScript.scriptableCard = scriptableCard;
+        CardScriptData tempCardScriptData = new CardScriptData();
+        tempCardScriptData.scriptableCard = scriptableCard;
 
-        AddCardToList(tempCardScript);
+        AddCardToList(tempCardScriptData);
 
     }
 
-    public void AddCardToList(CardScript cardScript)
+    public void AddCardToList(CardScriptData cardScriptData)
     {
 
         if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.Hand)
@@ -1163,25 +1167,25 @@ public class DeckManager : MonoBehaviour
             }
 
             //add to deck then draw it
-            combatDeck.Add(cardScript);
+            combatDeck.Add(cardScriptData);
 
             //get the index then draw it
-            int combatDeckIndex = combatDeck.FindIndex(card => card.cardID == cardScript.cardID);
+            int combatDeckIndex = combatDeck.FindIndex(card => card.cardID == cardScriptData.cardID);
 
             DeckManager.Instance.GetCardFromCombatDeckToHand(combatDeckIndex);
 
         }
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.discardPile)
         {
-            discardedPile.Add(cardScript);
+            discardedPile.Add(cardScriptData);
         }
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.combatDeck)
         {
-            combatDeck.Add(cardScript);
+            combatDeck.Add(cardScriptData);
         }
         else if (SystemManager.Instance.addCardTo == SystemManager.AddCardTo.mainDeck)
         {
-            StaticData.staticMainDeck.Add(cardScript);
+            StaticData.staticMainDeck.Add(cardScriptData);
 
         }
 

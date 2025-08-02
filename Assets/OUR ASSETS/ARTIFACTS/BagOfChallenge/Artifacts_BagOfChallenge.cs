@@ -11,7 +11,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     private bool playedCard = false;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         if (playedCard)
@@ -30,7 +30,7 @@ public class Artifacts_BagOfChallenge : ScriptableItem
             //get random item
             int randomItem = Random.Range(0, scriptableItems.Count);
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Extra " + scriptableItems[randomItem].itemName, false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, "Extra " + scriptableItems[randomItem].itemName, false);
 
             // Default behavior if needed
             ClassItemData classItemTemp = new ClassItemData(scriptableItems[randomItem], classItem.tempValue);
@@ -45,17 +45,17 @@ public class Artifacts_BagOfChallenge : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
     {
         playedCard = false;
     }
 
-    public override void Expired(ClassItemData classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
     {
         if(Combat.Instance.turns == 1)
         {
             playedCard = true;
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed! No Extra Items!" , true);
+            ItemManager.Instance.AddItemOnActivateOrder(this, "No Extra Items!" , true);
         }
       
     }

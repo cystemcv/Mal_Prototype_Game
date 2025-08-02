@@ -338,10 +338,10 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
         foreach (ShopData shopCardData in cardList)
         {
-            CardScript cardScript = new CardScript();
-            cardScript.scriptableCard = shopCardData.scriptableCard;
+            CardScriptData cardScriptData = new CardScriptData();
+            cardScriptData.scriptableCard = shopCardData.scriptableCard;
             //instantiate the card
-            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScript, UIManager.Instance.shopUI.transform.Find("CardList").gameObject, false, false);
+            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, UIManager.Instance.shopUI.transform.Find("CardList").gameObject, false, false);
 
             //do extra stuff on card
             Destroy(card.GetComponent<CanvasScaler>());

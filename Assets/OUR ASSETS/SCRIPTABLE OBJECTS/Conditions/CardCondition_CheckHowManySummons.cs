@@ -7,7 +7,7 @@ using static ScriptableCard;
 public class CardCondition_CheckHowManySummons : ScriptableCardCondition
 {
 
-    public override string ConditionDescription(CardScript cardScript, CardConditionClass cardConditionClass, GameObject entity)
+    public override string ConditionDescription(CardScriptData cardScriptData, CardConditionClass cardConditionClass, GameObject entity)
     {
 
         string message = "<color=yellow>Requires at least " + cardConditionClass.abilityIntValueList[0] + " summons!</color>";
@@ -16,7 +16,7 @@ public class CardCondition_CheckHowManySummons : ScriptableCardCondition
 
     }
 
-    public override bool OnPlayCard(CardScript cardScript, CardConditionClass cardConditionClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
+    public override bool OnPlayCard(CardScriptData cardScriptData, CardConditionClass cardConditionClass, GameObject entityUsedCard, SystemManager.ControlBy controlBy)
     {
         List<string> tag = new List<string>();
         tag.Add("PlayerSummon");

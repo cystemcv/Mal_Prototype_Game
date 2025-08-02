@@ -87,7 +87,7 @@ public class HandManager : MonoBehaviour
 
         if (cardRef != null)
         {
-            index =cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardRef.GetComponent<CardScript>().cardID);
+            index =cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardScriptData.cardID == cardRef.GetComponent<CardScript>().cardScriptData.cardID);
         }
         else
         {
@@ -185,7 +185,7 @@ public class HandManager : MonoBehaviour
         AdjustCenterObject();
 
 
-        int index = cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardID == cardRef.GetComponent<CardScript>().cardID); //FindCardIndex(cardRef.GetComponent<CardScript>());
+        int index = cardsInHandList.FindIndex(item => item.GetComponent<CardScript>().cardScriptData.cardID == cardRef.GetComponent<CardScript>().cardScriptData.cardID); //FindCardIndex(cardRef.GetComponent<CardScript>());
   
         //The angle is based on how far the card is from the midpoint of the hand.
         //Note that the midpoint will either be a whole number or x.5
@@ -249,7 +249,7 @@ public class HandManager : MonoBehaviour
 
     
 
-    //public int FindCardIndex(CardScript cardScript)
+    //public int FindCardIndex(CardScriptData cardScriptData)
     //{
 
     //    // Iterate through the list of cards to find the index of the specified card

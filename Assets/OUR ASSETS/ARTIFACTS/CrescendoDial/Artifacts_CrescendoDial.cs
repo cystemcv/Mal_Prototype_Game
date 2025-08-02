@@ -19,7 +19,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
     public int combo = 0;
     public int maxCombo = 2;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
@@ -30,7 +30,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
 
             if (combo > 0)
             {
-                ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Failed Combo!", true);
+                ItemManager.Instance.AddItemOnActivateOrder(this, "Failed Combo! Restarted combo back to 0!", true);
             }
 
             //reset combo
@@ -42,7 +42,8 @@ public class Artifacts_CrescendoDial : ScriptableItem
         {
 
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!",false);
+            ItemManager.Instance.AddItemOnActivateOrder(this,  "Succesful Combo! Added +"+ strengthValue.ToString() + BuffSystemManager.Instance.GetBuffDebuffColor(strengthAbility) +
+                ", +"+ defenceValue.ToString() + BuffSystemManager.Instance.GetBuffDebuffColor(defenceAbility) + ", heal +" + healValue, false);
 
             GameObject target = GameObject.FindGameObjectWithTag("Player");
 
@@ -72,13 +73,13 @@ public class Artifacts_CrescendoDial : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
     {
         combo = 0;
     }
 
 
-    public override void Expired(ClassItemData classItem, CardScript cardScript)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
     {
         combo = 0;
     }

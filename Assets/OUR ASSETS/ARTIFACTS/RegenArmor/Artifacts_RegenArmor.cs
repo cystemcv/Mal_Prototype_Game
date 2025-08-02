@@ -12,7 +12,7 @@ public class Artifacts_RegenArmor : ScriptableItem
     public int regenOnTurn = 2;
     public int regenMultiplierArmor = 4;
 
-    public override void Activate(ClassItemData classItem, CardScript cardScript)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
         if (Combat.Instance.turns != regenOnTurn)
@@ -42,7 +42,7 @@ public class Artifacts_RegenArmor : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScript cardScript)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
     }
