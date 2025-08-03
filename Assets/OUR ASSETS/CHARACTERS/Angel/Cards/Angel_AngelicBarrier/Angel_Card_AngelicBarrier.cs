@@ -16,9 +16,12 @@ public class Angel_Card_AngelicBarrier : ScriptableCard
     public ScriptableBuffDebuff defence;
     public ScriptableBuffDebuff tempDefence;
 
+
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
+
 
         customDesc += "Add " +  buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
         customDesc += "\nAdd " + buffValueTemp + " " + BuffSystemManager.Instance.GetBuffDebuffColor(tempDefence) + " for " + buffTurnsTemp + " turns";

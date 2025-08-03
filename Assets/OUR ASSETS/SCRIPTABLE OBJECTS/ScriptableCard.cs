@@ -51,6 +51,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public bool cannotDiscard = false;
     public bool cannorRemoveFromDeck = false;
     public bool discardCardAtEndTurn = true;
+    public int scalingLevelCardValue = 0;
 
     [Title("KEYWORDS")]
     public List<ScriptableKeywords> scriptableKeywords = new List<ScriptableKeywords>();
@@ -184,6 +185,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     {
 
     }
+
 
 
 }

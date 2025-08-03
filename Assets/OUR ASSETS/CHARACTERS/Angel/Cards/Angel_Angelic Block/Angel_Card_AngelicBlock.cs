@@ -10,13 +10,19 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
     private GameObject realTarget;
 
+    private int shieldAmountScaling = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmount, calculatedShield) + " shield to character";
+        //scaling
+        shieldAmountScaling = shieldAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
 
+        int calculatedShield = (Combat.Instance == null) ? shieldAmountScaling : Combat.Instance.CalculateEntityShield(shieldAmountScaling, entityUsedCard, realTarget);
+        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmountScaling, calculatedShield) + " shield to character";
+
+   
         return customDesc;
     }
 
@@ -28,7 +34,10 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        //scaling
+        shieldAmountScaling = shieldAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedShield = (Combat.Instance == null) ? shieldAmountScaling : Combat.Instance.CalculateEntityShield(shieldAmountScaling, entityUsedCard, realTarget);
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
 
     }
@@ -46,7 +55,10 @@ public class Angel_Card_AngelicBlock : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
-        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
+        //scaling
+        shieldAmountScaling = shieldAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedShield = (Combat.Instance == null) ? shieldAmountScaling : Combat.Instance.CalculateEntityShield(shieldAmountScaling, entityUsedCard, realTarget);
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
     }
 

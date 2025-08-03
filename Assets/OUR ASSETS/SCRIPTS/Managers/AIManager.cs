@@ -234,7 +234,7 @@ public class AIManager : MonoBehaviour
 
     }
 
-    public int ReturnAIDmg(int originalDmg,GameObject entityUsedCard)
+    public int ReturnAICardLevel(int originalDmg,GameObject entityUsedCard)
     {
         int finalDmg = originalDmg;
 

@@ -25,6 +25,8 @@ public class AIBrain : MonoBehaviour
     public ScriptableEntity scriptableEntity;
     public ScriptableCard scriptableCardToUse;
 
+    public int getCardLevel = 0;
+
     public void ExecuteCommand()
     {
 
@@ -88,6 +90,9 @@ public class AIBrain : MonoBehaviour
 
         CardScriptData cardScriptData = new CardScriptData();
         cardScriptData.scriptableCard = scriptableCardToUse;
+        getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax);
+        cardScriptData.scalingLevelValue = getCardLevel;
+
         //assign a target for card
         scriptableCardToUse.OnAiPlayTarget(cardScriptData, this.gameObject);
 
@@ -158,6 +163,7 @@ public class AIBrain : MonoBehaviour
         //create new cardscript
         CardScriptData cardScriptData = new CardScriptData();
         cardScriptData.scriptableCard = scriptableCard;
+        cardScriptData.scalingLevelValue = getCardLevel;
 
         //activate effect
         cardScriptData.scriptableCard.OnAiPlayCard(cardScriptData, entity);

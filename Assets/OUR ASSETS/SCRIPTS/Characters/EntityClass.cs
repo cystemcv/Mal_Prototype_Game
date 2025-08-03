@@ -329,7 +329,9 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         //SystemManager.Instance.DestroyAllChildren(aiCardParent);
 
-        aiCardParent.transform.localScale = new Vector3(1f, 1f, 1); 
+        aiCardParent.transform.localScale = new Vector3(1f, 1f, 1);
+
+        cardScriptData.scalingLevelValue = aIBrain.getCardLevel;
 
         GameObject aiCard = DeckManager.Instance.InitializeCardPrefab(cardScriptData, aiCardParent, false,false);
         aiCard.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);

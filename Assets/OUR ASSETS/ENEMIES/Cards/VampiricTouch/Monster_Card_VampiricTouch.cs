@@ -18,7 +18,7 @@ public class Monster_Card_VampiricTouch : ScriptableCard
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        finalDmg = AIManager.Instance.ReturnAIDmg(damageAmount, entityUsedCard);
+   
 
         int calculatedDamage = (Combat.Instance == null) ? finalDmg : Combat.Instance.CalculateEntityDmg(finalDmg, entityUsedCard, realTarget);
         customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(finalDmg, calculatedDamage) + " to an enemy";

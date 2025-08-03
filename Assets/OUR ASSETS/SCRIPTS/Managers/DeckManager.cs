@@ -777,6 +777,7 @@ public class DeckManager : MonoBehaviour
         cardScriptDataOnCard.cardID = cardScriptData.cardID;
         cardScriptDataOnCard.changedMana = cardScriptData.changedMana;
         cardScriptDataOnCard.resetManaCost = cardScriptData.resetManaCost;
+        cardScriptDataOnCard.scalingLevelValue = cardScriptData.scalingLevelValue;
 
         cardScriptDataOnCard.cardQueue = cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("Queue").gameObject;
 
@@ -929,6 +930,8 @@ public class DeckManager : MonoBehaviour
 
         //for example
         cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
+        cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text += ShowCardLevel(cardPrefab.GetComponent<CardScript>().cardScriptData);
+
         cardChild.transform.Find("Info").Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
         cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
 
@@ -1085,6 +1088,18 @@ public class DeckManager : MonoBehaviour
 
         //rearrange hand
         HandManager.Instance.SetHandCards();
+    }
+
+    public string ShowCardLevel(CardScriptData cardScriptData)
+    {
+        string text = "";
+
+        if (cardScriptData.scalingLevelValue != 0)
+        {
+            text = " Lv" + cardScriptData.scalingLevelValue;
+        }
+
+        return text;
     }
 
     public void DestroyCardPrefab(CardScriptData cardScriptData, SystemManager.CardThrow cardThrow)
