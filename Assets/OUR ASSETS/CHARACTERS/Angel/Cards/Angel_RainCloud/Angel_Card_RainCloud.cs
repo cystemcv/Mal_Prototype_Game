@@ -13,12 +13,16 @@ public class Angel_Card_RainCloud : ScriptableCard
 
     public ScriptableBuffDebuff wet;
 
+    private int scalingBuff = 0;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(wet);
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingBuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(wet);
 
         return customDesc;
     }
@@ -29,16 +33,21 @@ public class Angel_Card_RainCloud : ScriptableCard
 
         base.OnPlayCard(cardScriptData, entityUsedCard);
 
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, scalingBuff);
     }
 
     public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         base.OnPlayCard(cardScriptData, entityUsedCard);
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, buffValue);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, wet, scalingBuff);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)

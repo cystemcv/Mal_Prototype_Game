@@ -9,11 +9,16 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
     public ScriptableBuffDebuff counter;
     public int counterAmount = 3;
 
+    private int scalingBuff = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + counterAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " to target";
+        //scaling
+        scalingBuff = counterAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingBuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " to target";
 
         return customDesc;
     }
@@ -26,7 +31,10 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount);
+        //scaling
+        scalingBuff = counterAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, scalingBuff);
 
     }
 
@@ -38,7 +46,10 @@ public class Monster_Card_ReflectingMirror : ScriptableCard
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, counterAmount);
+        //scaling
+        scalingBuff = counterAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, counter, scalingBuff);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)

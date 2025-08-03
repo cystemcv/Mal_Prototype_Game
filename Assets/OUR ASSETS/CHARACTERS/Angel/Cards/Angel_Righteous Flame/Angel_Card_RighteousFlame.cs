@@ -12,12 +12,17 @@ public class Angel_Card_RighteousFlame : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies";
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
+        customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to all enemies";
 
         return customDesc;
     }
@@ -29,7 +34,7 @@ public class Angel_Card_RighteousFlame : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -40,10 +45,10 @@ public class Angel_Card_RighteousFlame : ScriptableCard
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -55,9 +60,12 @@ public class Angel_Card_RighteousFlame : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance;
 
         List<GameObject> targets = AIManager.Instance.GetAllTargets(entityUsedCardGlobal);
-        
+
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackAllEnemy(this,damageAmount,entityUsedCardGlobal, targets, multiHits, 2));
+        runner.StartCoroutine(Combat.Instance.AttackAllEnemy(this, scalingDmg, entityUsedCardGlobal, targets, multiHits, 2));
 
     }
 

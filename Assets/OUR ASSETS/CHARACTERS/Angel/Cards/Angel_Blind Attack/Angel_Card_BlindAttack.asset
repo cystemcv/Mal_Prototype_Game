@@ -16,9 +16,22 @@ MonoBehaviour:
   cardName: Blind Attack
   mainClass: 6
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 
   waitOnQueueTimer: 0.6
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 309019412560960090, guid: e660c3331124323449b311ca4abb85e9, type: 3}
@@ -27,8 +40,8 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: b00cc7caa56a94d4ab211a4ddc6ee186, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   damageAmount: 3
   multiHits: 2
+  scalingHits: 0

@@ -15,12 +15,19 @@ public class Angel_Card_Determination : ScriptableCard
     public ScriptableBuffDebuff strength;
     public ScriptableBuffDebuff defence;
 
+    private int cardScalingStrength = 0;
+    private int cardScalingDefence = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + buffValueStrength + " " + BuffSystemManager.Instance.GetBuffDebuffColor(strength);
-        customDesc += "\nAdd " + buffValuedDefence + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
+        //scaling
+        cardScalingStrength = buffValueStrength + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingDefence = buffValuedDefence + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + cardScalingStrength + " " + BuffSystemManager.Instance.GetBuffDebuffColor(strength);
+        customDesc += "\nAdd " + cardScalingDefence + " " + BuffSystemManager.Instance.GetBuffDebuffColor(defence);
         return customDesc;
     }
 
@@ -30,11 +37,15 @@ public class Angel_Card_Determination : ScriptableCard
 
         base.OnPlayCard(cardScriptData, entityUsedCard);
 
+        //scaling
+        cardScalingStrength = buffValueStrength + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingDefence = buffValuedDefence + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, cardScalingStrength);
 
         //defence
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, cardScalingDefence);
 
 
     }
@@ -52,11 +63,15 @@ public class Angel_Card_Determination : ScriptableCard
             return;
         }
 
+        //scaling
+        cardScalingStrength = buffValueStrength + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingDefence = buffValuedDefence + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, buffValueStrength);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, strength, cardScalingStrength);
 
         //defence
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, buffValuedDefence);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, defence, cardScalingDefence);
     }
 
 

@@ -8,6 +8,8 @@ public class Monster_Card_IceCrown : ScriptableCard
     private GameObject realTarget;
     public ScriptableBuffDebuff counter;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
@@ -16,9 +18,12 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         int dmg = 0;
 
+        //scaling
+        scalingDmg =  (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempValue;
+            dmg = buffDebuffClass.tempValue + scalingDmg;
         }
 
         customDesc += "Deal Double Damage (" + 2 * dmg + ") from " + BuffSystemManager.Instance.GetBuffDebuffColor(counter) + " stacks to target";
@@ -38,9 +43,12 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         int dmg = 0;
 
+        //scaling
+        scalingDmg = (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempValue;
+            dmg = buffDebuffClass.tempValue + scalingDmg;
         }
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, 2 * dmg, false, SystemManager.AdjustNumberModes.ATTACK));
@@ -60,9 +68,12 @@ public class Monster_Card_IceCrown : ScriptableCard
 
         int dmg = 0;
 
+        //scaling
+        scalingDmg = (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         if (buffDebuffClass != null)
         {
-            dmg = buffDebuffClass.tempValue;
+            dmg = buffDebuffClass.tempValue + scalingDmg;
         }
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCard, realTarget, 2 * dmg, false, SystemManager.AdjustNumberModes.ATTACK));

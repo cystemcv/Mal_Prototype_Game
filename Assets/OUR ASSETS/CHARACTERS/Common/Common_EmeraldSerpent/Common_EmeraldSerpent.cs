@@ -12,14 +12,21 @@ public class Common_EmeraldSerpent : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingShield = 0;
+    private int scalingArmor = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        int calculatedArmor =  (Combat.Instance == null) ? armorAmount : Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCard, realTarget);
-        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(armorAmount, calculatedArmor) + " armor to character on Odd Turn Number!<br>";
-        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(shieldAmount, calculatedShield) + " shield to character on Even Turn Number!<br>";
+        //scaling
+        scalingShield = shieldAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        scalingArmor = armorAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        int calculatedShield = (Combat.Instance == null) ? scalingShield : Combat.Instance.CalculateEntityShield(scalingShield, entityUsedCard, realTarget);
+        int calculatedArmor =  (Combat.Instance == null) ? scalingArmor : Combat.Instance.CalculateEntityArmor(scalingArmor, entityUsedCard, realTarget);
+        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(scalingArmor, calculatedArmor) + " armor to character on Odd Turn Number!<br>";
+        customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(scalingShield, calculatedShield) + " shield to character on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
 
         return customDesc;
@@ -32,7 +39,7 @@ public class Common_EmeraldSerpent : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -43,7 +50,7 @@ public class Common_EmeraldSerpent : ScriptableCard
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -54,21 +61,24 @@ public class Common_EmeraldSerpent : ScriptableCard
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
+        //scaling
+        scalingShield = shieldAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        scalingArmor = armorAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
 
         if (IsOdd(Combat.Instance.turns))
         {
-            int calculatedArmor = (Combat.Instance == null) ? armorAmount : Combat.Instance.CalculateEntityArmor(armorAmount, entityUsedCardGlobal, realTarget);
+            int calculatedArmor = (Combat.Instance == null) ? scalingArmor : Combat.Instance.CalculateEntityArmor(scalingArmor, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedArmor, false, SystemManager.AdjustNumberModes.ARMOR));
         }
         else
         {
-            int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCardGlobal, realTarget);
+            int calculatedShield = (Combat.Instance == null) ? scalingShield : Combat.Instance.CalculateEntityShield(scalingShield, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, entityUsedCardGlobal, calculatedShield, false, SystemManager.AdjustNumberModes.SHIELD));
         }
     }

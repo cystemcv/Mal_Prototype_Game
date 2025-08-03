@@ -16,9 +16,22 @@ MonoBehaviour:
   cardName: Righteous Light
   mainClass: 6
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 
   waitOnQueueTimer: 0.4
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -27,7 +40,6 @@ MonoBehaviour:
   entityAnimation: 2
   cardSoundEffect: {fileID: 8300000, guid: 5deffa47a1153724586e57ab3e2c20b0, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   drawCards: 2

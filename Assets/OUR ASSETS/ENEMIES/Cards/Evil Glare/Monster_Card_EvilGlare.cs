@@ -9,11 +9,17 @@ public class Monster_Card_EvilGlare : ScriptableCard
     public ScriptableBuffDebuff weaken;
     public int weakenTurns = 0;
 
+
+    private int scalingDebuff = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(weaken) + " for " + weakenTurns + " to target";
+        //scaling
+        scalingDebuff = weakenTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingDebuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(weaken);
 
         return customDesc;
     }
@@ -26,7 +32,10 @@ public class Monster_Card_EvilGlare : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
+        //scaling
+        scalingDebuff = weakenTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, scalingDebuff);
     }
 
     public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
@@ -37,7 +46,10 @@ public class Monster_Card_EvilGlare : ScriptableCard
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, weakenTurns);
+        //scaling
+        scalingDebuff = weakenTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, weaken, scalingDebuff);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)

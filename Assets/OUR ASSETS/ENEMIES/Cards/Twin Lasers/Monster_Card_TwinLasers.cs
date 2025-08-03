@@ -13,12 +13,17 @@ public class Monster_Card_TwinLasers : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to targets";
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
+        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to targets";
    
         return customDesc;
     }
@@ -30,7 +35,7 @@ public class Monster_Card_TwinLasers : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -42,10 +47,10 @@ public class Monster_Card_TwinLasers : ScriptableCard
         CombatCardHandler.Instance.posClickedTargeting = Combat.Instance.CheckCardTargets(realTarget, cardScriptData.scriptableCard);
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -59,13 +64,15 @@ public class Monster_Card_TwinLasers : ScriptableCard
         List<CombatPosition> targets = CombatCardHandler.Instance.posClickedTargeting;
 
         // Start the coroutine for each hit
-      
+
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
 
         foreach (CombatPosition target in targets)
         {
             if(target.entityOccupiedPos != null)
             {
-                runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount, 1, entityUsedCardGlobal, target.entityOccupiedPos, multiHits, 2));
+                runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, scalingDmg, 1, entityUsedCardGlobal, target.entityOccupiedPos, multiHits, 2));
                 //runner.StartCoroutine(BuffSystemManager.Instance.AddBuffDebuffIE(target, burn, buffValue));
             }
         }

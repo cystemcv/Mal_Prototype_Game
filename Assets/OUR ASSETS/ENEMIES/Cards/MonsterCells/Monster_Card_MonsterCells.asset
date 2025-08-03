@@ -18,14 +18,22 @@ MonoBehaviour:
   cardType: 2
   cardTypeSecondary: 7
   cardRarity: 3
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0000000002000000
   waitOnQueueTimer: 0.5
   cannotDiscard: 0
   cannorRemoveFromDeck: 0
   discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  allowScaling: 1
   scriptableKeywords: []
   scriptableBuffDebuffs:
   - {fileID: 11400000, guid: 43b7960422fa2b34b8634418257cb096, type: 2}
+  scriptableHazards: []
   primaryManaCost: 3
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -34,7 +42,6 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: 21896ba3ac38b4ae99d5dca706ab412d, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   buff: {fileID: 11400000, guid: 43b7960422fa2b34b8634418257cb096, type: 2}

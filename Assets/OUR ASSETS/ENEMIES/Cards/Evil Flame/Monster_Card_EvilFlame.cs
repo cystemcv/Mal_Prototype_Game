@@ -15,12 +15,17 @@ public class Monster_Card_EvilFlame : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += multiHits + "X" + " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies";
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
+        customDesc += multiHits + "X" + " Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to all enemies";
         customDesc += "<br>Add 1 " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to each enemy";
 
         return customDesc;
@@ -32,7 +37,7 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -42,10 +47,10 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -58,8 +63,11 @@ public class Monster_Card_EvilFlame : ScriptableCard
 
         List<GameObject> targets = AIManager.Instance.GetAllTargets(entityUsedCardGlobal);
 
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackAllEnemy(this, damageAmount, entityUsedCardGlobal, targets, multiHits, 2));
+        runner.StartCoroutine(Combat.Instance.AttackAllEnemy(this, scalingDmg, entityUsedCardGlobal, targets, multiHits, 2));
 
         foreach (GameObject target in targets)
         {

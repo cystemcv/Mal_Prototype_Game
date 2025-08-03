@@ -12,12 +12,17 @@ public class Angel_Card_BlindAttack : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingHits = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
+        //scaling
+        scalingHits = multiHits + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to random enemy";
+        customDesc += scalingHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to random enemy";
 
         return customDesc;
     }
@@ -29,7 +34,7 @@ public class Angel_Card_BlindAttack : ScriptableCard
         //realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -39,11 +44,11 @@ public class Angel_Card_BlindAttack : ScriptableCard
 
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -54,8 +59,11 @@ public class Angel_Card_BlindAttack : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
+        //scaling
+        scalingHits = multiHits + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackBlindlyEnemy(this, damageAmount, entityUsedCardGlobal, realTarget, multiHits, 2));
+        runner.StartCoroutine(Combat.Instance.AttackBlindlyEnemy(this, damageAmount, entityUsedCardGlobal, realTarget, scalingHits, 2));
 
     }
 

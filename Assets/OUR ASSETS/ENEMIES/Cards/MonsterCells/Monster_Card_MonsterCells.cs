@@ -9,11 +9,16 @@ public class Monster_Card_MonsterCells : ScriptableCard
     public int buffTurns = 1;
     private GameObject realTarget;
 
+    private int scalingBuff = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + buffTurns + " " + BuffSystemManager.Instance.GetBuffDebuffColor(buff) + " to target";
+        //scaling
+        scalingBuff = buffTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingBuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(buff) + " to target";
 
         return customDesc;
     }
@@ -24,8 +29,11 @@ public class Monster_Card_MonsterCells : ScriptableCard
 
         base.OnPlayCard(cardScriptData, entityUsedCard);
 
+        //scaling
+        scalingBuff = buffTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, buffTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, scalingBuff);
     }
 
     public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
@@ -34,8 +42,11 @@ public class Monster_Card_MonsterCells : ScriptableCard
 
         base.OnPlayCard(cardScriptData, entityUsedCard);
 
+        //scaling
+        scalingBuff = buffTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //strength
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, buffTurns);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, buff, scalingBuff);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)

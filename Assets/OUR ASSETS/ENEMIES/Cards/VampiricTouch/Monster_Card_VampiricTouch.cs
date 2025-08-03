@@ -12,17 +12,19 @@ public class Monster_Card_VampiricTouch : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
-    private int finalDmg = 0;
+
+    private int scalingDmg = 0;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-   
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
 
-        int calculatedDamage = (Combat.Instance == null) ? finalDmg : Combat.Instance.CalculateEntityDmg(finalDmg, entityUsedCard, realTarget);
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(finalDmg, calculatedDamage) + " to an enemy";
-        customDesc += "\nHeal " + finalDmg;
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
+        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to an enemy";
+        customDesc += "\nHeal " + scalingDmg;
 
         return customDesc;
     }
@@ -34,7 +36,7 @@ public class Monster_Card_VampiricTouch : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -45,7 +47,7 @@ public class Monster_Card_VampiricTouch : ScriptableCard
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -56,7 +58,7 @@ public class Monster_Card_VampiricTouch : ScriptableCard
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -67,9 +69,12 @@ public class Monster_Card_VampiricTouch : ScriptableCard
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, finalDmg, 1, entityUsedCardGlobal, realTarget, multiHits, 1));
-        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entityUsedCardGlobal, finalDmg, false,SystemManager.AdjustNumberModes.HEAL));
+        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, scalingDmg, 1, entityUsedCardGlobal, realTarget, multiHits, 1));
+        runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, entityUsedCardGlobal, scalingDmg, false,SystemManager.AdjustNumberModes.HEAL));
     }
 
 

@@ -142,6 +142,12 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
+            if (aIBrain.justSpawned)
+            {
+                aIBrain.justSpawned = false;
+                continue;
+            }
+
             //generate new intends
             aIBrain.GenerateIntend();
         }

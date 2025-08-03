@@ -26,6 +26,9 @@ public class AIBrain : MonoBehaviour
     public ScriptableCard scriptableCardToUse;
 
     public int getCardLevel = 0;
+    public int entityLevel = 0;
+
+    public bool justSpawned = false;
 
     public void ExecuteCommand()
     {
@@ -90,17 +93,17 @@ public class AIBrain : MonoBehaviour
 
         CardScriptData cardScriptData = new CardScriptData();
         cardScriptData.scriptableCard = scriptableCardToUse;
-        getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax);
+        getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin + entityLevel, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax + entityLevel);
         cardScriptData.scalingLevelValue = getCardLevel;
 
         //assign a target for card
         scriptableCardToUse.OnAiPlayTarget(cardScriptData, this.gameObject);
 
-        SpawnAIIntend(scriptableCardToUse);
+        SpawnAIIntend(scriptableCardToUse, cardScriptData);
 
     }
 
-    public void SpawnAIIntend(ScriptableCard scriptableCard)
+    public void SpawnAIIntend(ScriptableCard scriptableCard, CardScriptData cardScriptData)
     {
 
         if (intend == null)
@@ -112,6 +115,9 @@ public class AIBrain : MonoBehaviour
         intend.SetActive(true);
         TMP_Text cardText = intend.transform.Find("CardText").GetComponent<TMP_Text>();
         cardText.text = scriptableCard.cardName;
+        cardText.text += DeckManager.Instance.ShowCardLevel(cardScriptData);
+
+
     }
 
     public ScriptableCard GetAICardFromCommand(ScriptableEntity.AICommand aICommand)

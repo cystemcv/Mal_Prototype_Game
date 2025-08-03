@@ -16,9 +16,22 @@ MonoBehaviour:
   cardName: Multi Slash
   mainClass: 6
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0100000003000000
   waitOnQueueTimer: 1
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 6142085872116355299, guid: 9123e7d24207a3d4cac4465f40e3315b, type: 3}
@@ -27,7 +40,6 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: 60cb752bcd86f9c4cbc64f956edc6058, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   damageAmount: 2

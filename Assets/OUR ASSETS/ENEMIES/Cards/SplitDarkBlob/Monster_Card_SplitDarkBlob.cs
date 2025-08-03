@@ -12,6 +12,7 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
 
     public List<ScriptableEntity> scriptableEntities;
 
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
@@ -45,7 +46,7 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
 
 
 
-        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities), cardScriptData));
     }
 
     public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
@@ -70,7 +71,7 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
-        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities)));
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities), cardScriptData));
 
 
 

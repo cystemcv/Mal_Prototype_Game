@@ -16,9 +16,22 @@ MonoBehaviour:
   cardName: Unkown Help
   mainClass: 6
   cardType: 3
+  cardTypeSecondary: 7
   cardRarity: 1
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 00000000
   waitOnQueueTimer: 0.6
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -27,18 +40,5 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 0}
   cardFlavor: 
-  cardAbilityClass:
-  - scriptableCardAbility: {fileID: 11400000, guid: 97bdd1187b1816647bf8f3721151c846, type: 2}
-    waitForAbility: 0.2
-    abilityEffect: {fileID: 7161673021670805805, guid: 657ad4895752e9349949f0f6365d189f, type: 3}
-    abilityEffectLifetime: 0.2
-    abilityEffectYaxis: 0
-    entityAnimation: 2
-    entitySound: 4
-    abilityIntValueList: 0300000002000000
-    abilityStringValueList: []
-    abilityBoolValueList: 
-    abilityFloatValueList: []
-    summonList: []
   unlockable: 0
   cardConditionClass: []

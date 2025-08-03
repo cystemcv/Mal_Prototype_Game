@@ -13,11 +13,16 @@ public class Common_Card_SeaMine : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
 
         int finalDamage = calculatedDamage * multiplyAmountGlobal;
 
@@ -44,7 +49,7 @@ public class Common_Card_SeaMine : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -55,7 +60,7 @@ public class Common_Card_SeaMine : ScriptableCard
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -66,7 +71,7 @@ public class Common_Card_SeaMine : ScriptableCard
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -84,8 +89,11 @@ public class Common_Card_SeaMine : ScriptableCard
             multiplyDamage = multiplyAmountGlobal;
         }
 
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         // Start the coroutine for each hit
-        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, damageAmount, multiplyDamage , entityUsedCardGlobal, realTarget, multiHits, 1));
+        runner.StartCoroutine(Combat.Instance.AttackSingleTargetEnemy(this, scalingDmg, multiplyDamage , entityUsedCardGlobal, realTarget, multiHits, 1));
 
     }
 

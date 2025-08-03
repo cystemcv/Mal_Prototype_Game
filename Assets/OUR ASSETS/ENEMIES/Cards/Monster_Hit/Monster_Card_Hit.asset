@@ -16,8 +16,23 @@ MonoBehaviour:
   cardName: Hit
   mainClass: 0
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  allowScaling: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 0
   cardDesc: 
   abilityEffect: {fileID: 4263225088543263113, guid: 3b98201c4fa3354478d2d4cb566b15ee, type: 3}
@@ -26,7 +41,6 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: 7dd5155b4bc7b1f4d853b4e90c3ddb88, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   damageAmount: 4

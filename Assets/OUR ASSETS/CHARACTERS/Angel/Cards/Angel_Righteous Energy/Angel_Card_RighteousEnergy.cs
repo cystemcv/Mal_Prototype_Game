@@ -14,13 +14,16 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
     public ScriptableBuffDebuff righteous;
 
     private int buffValueFinal = 0;
-
+    private int scalingBuff = 0;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + buffValue + " " + BuffSystemManager.Instance.GetBuffDebuffColor(righteous) +
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingBuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(righteous) +
             "\nDouble this amount if there is no other " + BuffSystemManager.Instance.GetBuffDebuffColor(righteous);
 
         return customDesc;
@@ -34,13 +37,16 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
 
         BuffDebuffClass buffDebuff = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, righteous.nameID);
 
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         if (buffDebuff == null)
         {
-            buffValueFinal = buffValue * 2;
+            buffValueFinal = scalingBuff * 2;
         }
         else
         {
-            buffValueFinal = buffValue;
+            buffValueFinal = scalingBuff;
         }
 
         //strength
@@ -55,9 +61,12 @@ public class Angel_Card_RighteousEnergy : ScriptableCard
 
         BuffDebuffClass buffDebuff = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(realTarget, righteous.nameID);
 
+        //scaling
+        scalingBuff = buffValue + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         if (buffDebuff == null)
         {
-            buffValueFinal = buffValue * 2;
+            buffValueFinal = scalingBuff * 2;
         }
 
         //strength

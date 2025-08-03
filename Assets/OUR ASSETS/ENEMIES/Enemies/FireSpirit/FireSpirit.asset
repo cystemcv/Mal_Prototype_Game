@@ -37,6 +37,11 @@ MonoBehaviour:
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
+    - {fileID: 11400000, guid: 8b3e89b9226639d4d8a2f13cbd27acb9, type: 2}
+    modifiedCardValueMin: 5
+    modifiedCardValueMax: 9
+  - aICommandType: 0
+    aiScriptableCards:
     - {fileID: 11400000, guid: c08f695f51ef41c4fa9d6cbcf6b5a5ad, type: 2}
     modifiedCardValueMin: 0
     modifiedCardValueMax: 0
@@ -47,8 +52,8 @@ MonoBehaviour:
     modifiedCardValueMax: 0
   strength: 0
   defence: 0
-  maxHealth: 15
-  currHealth: 15
+  maxHealth: 400
+  currHealth: 400
   maxMana: 0
   currMana: 0
   maxLevel: 0

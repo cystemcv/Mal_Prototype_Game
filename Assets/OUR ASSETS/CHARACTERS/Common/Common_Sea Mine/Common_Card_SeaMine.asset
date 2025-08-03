@@ -16,9 +16,23 @@ MonoBehaviour:
   cardName: Sea Mine
   mainClass: 2
   cardType: 0
+  cardTypeSecondary: 7
   cardRarity: 1
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0100000003000000
   waitOnQueueTimer: 0.6
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  allowScaling: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
   abilityEffect: {fileID: 5694424264161215736, guid: 0a386e8bc613e574d976b03a2165587d, type: 3}
@@ -27,7 +41,6 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: f4e2ebb3fc9557344a25a4474d98d1ae, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   damageAmount: 4

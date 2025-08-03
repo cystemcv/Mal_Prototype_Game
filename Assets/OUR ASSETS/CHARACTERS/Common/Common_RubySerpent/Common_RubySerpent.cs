@@ -13,13 +13,21 @@ public class Common_RubySerpent : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+    private int scalingDebuff = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
-        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to an Enemy on Odd Turn Number!<br>";
-        customDesc += "Add x" + burnAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to an Enemy on Even Turn Number!<br>";
+
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        scalingDebuff = burnAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
+        customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to an Enemy on Odd Turn Number!<br>";
+        customDesc += "Add x" + scalingDebuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to an Enemy on Even Turn Number!<br>";
         customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
 
         return customDesc;
@@ -32,7 +40,7 @@ public class Common_RubySerpent : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -43,7 +51,7 @@ public class Common_RubySerpent : ScriptableCard
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -54,18 +62,22 @@ public class Common_RubySerpent : ScriptableCard
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
         MonoBehaviour runner = CombatCardHandler.Instance;
 
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        scalingDebuff = burnAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
         if (IsOdd(Combat.Instance.turns))
         {
-            int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCardGlobal, realTarget);
+            int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCardGlobal, realTarget);
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(entityUsedCardGlobal, realTarget, calculatedDamage, false, SystemManager.AdjustNumberModes.ATTACK));
         }
         else
         {
-            BuffSystemManager.Instance.AddBuffDebuff(realTarget, burn, burnAmount);
+            BuffSystemManager.Instance.AddBuffDebuff(realTarget, burn, scalingDebuff);
         }
     }
 

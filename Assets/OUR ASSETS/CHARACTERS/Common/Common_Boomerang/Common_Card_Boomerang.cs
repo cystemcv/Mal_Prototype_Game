@@ -16,13 +16,18 @@ public class Common_Card_Boomerang : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDmg = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        int calculatedDamage = (Combat.Instance == null) ? damageAmount : Combat.Instance.CalculateEntityDmg(damageAmount, entityUsedCard, realTarget);
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
         int selfCalculatedDamage = (Combat.Instance == null) ? selfDamageAmount : Combat.Instance.CalculateEntityDmg(selfDamageAmount, entityUsedCard, realTarget);
-        customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(damageAmount, calculatedDamage) + " to all enemies<br>";
+        customDesc += multiHits + "X" +  " Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to all enemies<br>";
         customDesc += selfMultiHits + "X" + " Deal " + DeckManager.Instance.GetCalculatedValueString(selfDamageAmount, selfCalculatedDamage) + " to all allies";
 
         return customDesc;
@@ -35,7 +40,7 @@ public class Common_Card_Boomerang : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -45,7 +50,7 @@ public class Common_Card_Boomerang : ScriptableCard
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
@@ -55,7 +60,7 @@ public class Common_Card_Boomerang : ScriptableCard
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         //then loop
@@ -69,11 +74,11 @@ public class Common_Card_Boomerang : ScriptableCard
 
         
         // Start the coroutine for each hit
-        runner.StartCoroutine(ExecuteCoroutine());
+        runner.StartCoroutine(ExecuteCoroutine(cardScriptData));
 
     }
 
-    public IEnumerator ExecuteCoroutine()
+    public IEnumerator ExecuteCoroutine(CardScriptData cardScriptData)
     {
 
         Animator entityAnimator = entityUsedCardGlobal.transform.Find("model").GetComponent<Animator>();
@@ -83,18 +88,21 @@ public class Common_Card_Boomerang : ScriptableCard
             entityAnimator.SetTrigger(this.entityAnimation.ToString());
         }
 
+        //scaling
+        scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         List<GameObject> targets = AIManager.Instance.GetAllTargets(entityUsedCardGlobal);
-        yield return DealDmg(this, damageAmount, entityUsedCardGlobal, targets, 1, 2);
+        yield return DealDmg(this, scalingDmg, entityUsedCardGlobal, targets, 1, 2);
 
         yield return new WaitForSeconds(0.5f);
 
-        yield return DealDmg(this, damageAmount, entityUsedCardGlobal, targets, 1, 2);
+        yield return DealDmg(this, scalingDmg, entityUsedCardGlobal, targets, 1, 2);
 
         yield return new WaitForSeconds(0.5f);
 
         targets.Clear();
         targets = AIManager.Instance.GetAllAllies(entityUsedCardGlobal);
-        yield return DealDmg(this, damageAmount, entityUsedCardGlobal, targets, 1, 2);
+        yield return DealDmg(this, scalingDmg, entityUsedCardGlobal, targets, 1, 2);
 
         yield return new WaitForSeconds(0.5f);
     }

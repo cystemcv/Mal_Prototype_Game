@@ -16,9 +16,23 @@ MonoBehaviour:
   cardName: Blue Mana
   mainClass: 3
   cardType: 5
+  cardTypeSecondary: 7
   cardRarity: 4
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 
   waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 0
+  allowScaling: 0
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 0
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -27,7 +41,6 @@ MonoBehaviour:
   entityAnimation: 0
   cardSoundEffect: {fileID: 8300000, guid: 2a90a3d685970b54db37f691e11f2e2a, type: 3}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   reduceMana: 1

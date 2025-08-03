@@ -6,13 +6,19 @@ using UnityEngine;
 public class Monster_Card_FlameAura : ScriptableCard
 {
 
+    public int howManyBurnCards = 0;
     public ScriptableCard statusBurn;
+
+    private int scalingBurnCards = 0;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add 3 Status Burn Cards to the Hero Deck and shuffle it";
+        //scaling
+        scalingBurnCards = howManyBurnCards + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingBurnCards + " Status Burn Cards to the Hero Deck and shuffle it";
 
         return customDesc;
     }
@@ -31,8 +37,12 @@ public class Monster_Card_FlameAura : ScriptableCard
 
     public void PlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
+
+        //scaling
+        scalingBurnCards = howManyBurnCards + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
         //add the cards
-        for (int i=0;i<3;i++)
+        for (int i=0;i< scalingBurnCards; i++)
         {
             CardScriptData burnCard = new CardScriptData();
             burnCard.scriptableCard = statusBurn;

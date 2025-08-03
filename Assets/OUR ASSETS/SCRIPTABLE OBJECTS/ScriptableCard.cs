@@ -52,6 +52,7 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
     public bool cannorRemoveFromDeck = false;
     public bool discardCardAtEndTurn = true;
     public int scalingLevelCardValue = 0;
+    public bool allowScaling = true;
 
     [Title("KEYWORDS")]
     public List<ScriptableKeywords> scriptableKeywords = new List<ScriptableKeywords>();
@@ -81,40 +82,10 @@ public class ScriptableCard : ScriptableObject // Not sure if cards will be made
 
 
 
-
-    [FoldoutGroup("ABILITIES")]
-    [RequiredListLength(0, 3)]
-    public List<CardAbilityClass> cardAbilityClass;
-
-
-
-
     [Title("UNLOCKABLES")]
     public bool unlockable = false;//available from start = false, unlockable = true
 
-    [Serializable]
-    public class CardAbilityClass
-    {
-        [Title("ABILITY"), GUIColor("orange")]
-        public ScriptableCardAbility scriptableCardAbility;
-        [Title("ABILITY TIME")]
-        public float waitForAbility = 0.2f;
-        [Title("ABILITY VISUALS")]
-        public GameObject abilityEffect;
-        public float abilityEffectLifetime = 0.2f;
-        public float abilityEffectYaxis = 0f;
-        public SystemManager.EntityAnimation entityAnimation = SystemManager.EntityAnimation.MeleeAttack;
-        public SystemManager.EntitySound entitySound = SystemManager.EntitySound.Generic;
-        [Title("ABILITY VALUES")]
-        public List<int> abilityIntValueList;
-        public List<string> abilityStringValueList;
-        public List<bool> abilityBoolValueList;
-        public List<float> abilityFloatValueList;
-        [Title("SUMMONS")]
-        public List<ScriptableEntity> summonList;
 
-
-    }
 
     [FoldoutGroup("CONDITIONS")]
     [RequiredListLength(0, 3)]

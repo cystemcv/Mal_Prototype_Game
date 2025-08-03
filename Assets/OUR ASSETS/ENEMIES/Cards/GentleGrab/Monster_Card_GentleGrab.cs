@@ -9,11 +9,16 @@ public class Monster_Card_GentleGrab : ScriptableCard
     public ScriptableBuffDebuff root;
     public int rootAmount = 3;
 
+    private int scalingDebuff = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + rootAmount + " " + BuffSystemManager.Instance.GetBuffDebuffColor(root) + " to target";
+        //scaling
+        scalingDebuff = rootAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + scalingDebuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(root) + " to target";
 
         return customDesc;
     }
@@ -26,7 +31,10 @@ public class Monster_Card_GentleGrab : ScriptableCard
 
         realTarget = CombatCardHandler.Instance.targetClicked;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root,  rootAmount);
+        //scaling
+        scalingDebuff = rootAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root, scalingDebuff);
 
     }
 
@@ -38,7 +46,10 @@ public class Monster_Card_GentleGrab : ScriptableCard
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root,  rootAmount);
+        //scaling
+        scalingDebuff = rootAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, root, scalingDebuff);
     }
 
     public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)

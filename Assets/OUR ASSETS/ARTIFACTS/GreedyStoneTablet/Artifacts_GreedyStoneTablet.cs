@@ -29,10 +29,10 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
             float waitAbilitiesTime = 0f;
 
-            foreach (CardAbilityClass scriptableCardAbility in StaticData.artifact_CardScript.scriptableCard.cardAbilityClass)
-            {
-                waitAbilitiesTime += scriptableCardAbility.waitForAbility;
-            }
+            //foreach (CardAbilityClass scriptableCardAbility in StaticData.artifact_CardScript.scriptableCard.cardAbilityClass)
+            //{
+            //    waitAbilitiesTime += scriptableCardAbility.waitForAbility;
+            //}
 
             waitAbilitiesTime += 0.05f;
 

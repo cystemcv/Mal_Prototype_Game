@@ -15,12 +15,19 @@ public class Angel_Card_Berserk : ScriptableCard
     public ScriptableBuffDebuff berserk;
     public ScriptableBuffDebuff frail;
 
+    private int cardScalingBerserk = 0;
+    private int cardScalingFrail = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Add " + BuffSystemManager.Instance.GetBuffDebuffColor(berserk) + " for " + berserkTurns + " turns";
-        customDesc += "\nAdd " + BuffSystemManager.Instance.GetBuffDebuffColor(frail) + " for " + frailTurn + " turns";
+        //scaling
+        cardScalingBerserk = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingFrail = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        customDesc += "Add " + cardScalingBerserk + " " + BuffSystemManager.Instance.GetBuffDebuffColor(berserk);
+        customDesc += "\nAdd " + cardScalingFrail + " " + BuffSystemManager.Instance.GetBuffDebuffColor(frail);
         return customDesc;
     }
 
@@ -30,11 +37,14 @@ public class Angel_Card_Berserk : ScriptableCard
 
         base.OnPlayCard(cardScriptData, entityUsedCard);
 
-       
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, berserk,  berserkTurns);
+        //scaling
+        cardScalingBerserk = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingFrail = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, berserk, cardScalingBerserk);
 
         //temp 
-        BuffSystemManager.Instance.AddBuffDebuff(realTarget, frail,  frailTurn);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, frail, cardScalingFrail);
 
     }
 
@@ -51,10 +61,14 @@ public class Angel_Card_Berserk : ScriptableCard
             return;
         }
 
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, berserk, berserkTurns);
+        //scaling
+        cardScalingBerserk = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+        cardScalingFrail = berserkTurns + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
+
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, berserk, cardScalingBerserk);
 
         //temp 
-        BuffSystemManager.Instance.AddBuffDebuff(entityUsedCard, frail,  frailTurn);
+        BuffSystemManager.Instance.AddBuffDebuff(realTarget, frail, cardScalingFrail);
 
     }
 
@@ -65,6 +79,8 @@ public class Angel_Card_Berserk : ScriptableCard
         realTarget = AIManager.Instance.GetRandomAlly(entityUsedCard);
 
         entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
+
+
 
     }
 

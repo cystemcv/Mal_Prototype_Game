@@ -11,12 +11,16 @@ public class Angel_Card_RighteousLight : ScriptableCard
     private GameObject realTarget;
     private GameObject entityUsedCardGlobal;
 
+    private int scalingDraw = 0;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Draw " + drawCards + " cards from deck";
+        //scaling
+        scalingDraw = drawCards + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        customDesc += "Draw " + scalingDraw + " cards from deck";
         return customDesc;
     }
 
@@ -30,7 +34,10 @@ public class Angel_Card_RighteousLight : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
-        runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(drawCards, 0));
+        //scaling
+        scalingDraw = drawCards + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(scalingDraw, 0));
 
 
     }
@@ -44,7 +51,10 @@ public class Angel_Card_RighteousLight : ScriptableCard
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
-        runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(drawCards, 0));
+        //scaling
+        scalingDraw = drawCards + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(scalingDraw, 0));
     }
 
 

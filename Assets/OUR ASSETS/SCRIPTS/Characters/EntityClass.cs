@@ -309,18 +309,15 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
-        if (this.gameObject.GetComponent<AIBrain>().targetForCard == null)
+        if (this.gameObject.GetComponent<AIBrain>().targetForCard != null)
         {
-            return;
+            List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(this.gameObject.GetComponent<AIBrain>().targetForCard, this.gameObject.GetComponent<AIBrain>().scriptableCardToUse);
+
+            foreach (CombatPosition combatPosition in combatPositionList)
+            {
+                combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(true);
+            }
         }
-
-        List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(this.gameObject.GetComponent<AIBrain>().targetForCard, this.gameObject.GetComponent<AIBrain>().scriptableCardToUse);
-
-        foreach (CombatPosition combatPosition in combatPositionList)
-        {
-            combatPosition.position.transform.Find("TargetingPrefab").gameObject.SetActive(true);
-        }
-
 
         CardScriptData cardScriptData = new CardScriptData();
         cardScriptData.scriptableCard = this.gameObject.GetComponent<AIBrain>().scriptableCardToUse;

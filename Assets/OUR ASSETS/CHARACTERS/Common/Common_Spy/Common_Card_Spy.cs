@@ -13,11 +13,15 @@ public class Common_Card_Spy : ScriptableCard
 
     public CardScriptData globalCardScript;
 
+    private int scalingPlayTopCards = 0;
+
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
-        customDesc += "Play top " + playTopCards + " cards from deck";
+        scalingPlayTopCards = playTopCards + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        customDesc += "Play top " + scalingPlayTopCards + " cards from deck";
         return customDesc;
     }
 
@@ -29,7 +33,7 @@ public class Common_Card_Spy : ScriptableCard
         entityUsedCardGlobal = entityUsedCard;
         globalCardScript = cardScriptData;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -40,24 +44,27 @@ public class Common_Card_Spy : ScriptableCard
         realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
 
 
         // Start the coroutine for each hit
-        runner.StartCoroutine(PlayTopCards());
+        runner.StartCoroutine(PlayTopCards(cardScriptData));
 
     }
 
-    public IEnumerator PlayTopCards()
+    public IEnumerator PlayTopCards(CardScriptData cardScriptData)
     {
-        for(int i=0; i<playTopCards; i++)
+
+        scalingPlayTopCards = playTopCards + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+
+        for (int i=0; i< scalingPlayTopCards; i++)
         {
             DeckManager.Instance.PlayCardFromCombatDeck(0);
             yield return new WaitForSeconds(1f);

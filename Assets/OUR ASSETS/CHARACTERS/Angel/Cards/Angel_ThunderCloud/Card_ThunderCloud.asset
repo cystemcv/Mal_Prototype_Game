@@ -16,23 +16,29 @@ MonoBehaviour:
   cardName: Thunder Cloud
   mainClass: 6
   cardType: 1
+  cardTypeSecondary: 7
   cardRarity: 2
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 1
   cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 0
+  cardSoundEffect: {fileID: 0}
   cardFlavor: 
-  cardAbilityClass:
-  - scriptableCardAbility: {fileID: 11400000, guid: 35cb2cfbb5056f34f85be29b30ac38e3, type: 2}
-    waitForAbility: 0.6
-    abilityEffect: {fileID: 7590789933968546338, guid: 134cd100b7271044189bfc7b3fe29e24, type: 3}
-    abilityEffectLifetime: 0.6
-    abilityEffectYaxis: 1
-    entityAnimation: 2
-    entitySound: 5
-    abilityIntValueList: 04000000
-    abilityStringValueList: []
-    abilityBoolValueList: 
-    abilityFloatValueList: []
-    summonList: []
   unlockable: 0
   cardConditionClass: []
