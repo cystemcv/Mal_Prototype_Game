@@ -63,7 +63,7 @@ public class Artifacts_KnightArmor : ScriptableItem
 
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, remainder, false, SystemManager.AdjustNumberModes.ARMOR));
 
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Added Armor +" + remainder, false);
+            ItemManager.Instance.AddItemOnActivateOrder(this,  "Added Armor +" + remainder, false);
         }
 
         armorRegenActivated = false;
@@ -86,7 +86,7 @@ public class Artifacts_KnightArmor : ScriptableItem
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, armorMax, false, SystemManager.AdjustNumberModes.ARMOR));
 
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Added Armor +" + armorMax, false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + "Added Armor +" + armorMax, false);
     }
 
 

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +9,19 @@ public class ScriptableScaling : ScriptableObject
 {
 
     public int maxSteps = 30;
-    public int maxScalingLevel = 10;
 
-    [RequiredListLength(10, 10)]
-    public List<int> scalingHealth = new List<int>();
-    [RequiredListLength(10, 10)]
-    public List<int> scalingAttack = new List<int>();
-    [RequiredListLength(10, 10)]
-    public List<int> scalingDefence = new List<int>();
+
+
+    public List<ScalingLevelBuffDebuff> scalingLevelBuffDebuffs = new List<ScalingLevelBuffDebuff>();
+
+    [Serializable]
+    public class ScalingLevelBuffDebuff
+    {
+        public ScriptableBuffDebuff scriptableBuffDebuff = new ScriptableBuffDebuff();
+        public bool targetEnemySide = true;
+        public int scalingValue;
+
+    }
 }
+
+

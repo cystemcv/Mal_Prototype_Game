@@ -128,7 +128,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             DeckManager.Instance.BuildStartingDeck();
         }
 
-        if (scalingLevel < scriptableScaling.maxScalingLevel)
+        if (scalingLevel < scriptableScaling.scalingLevelBuffDebuffs.Count)
         {
             UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
         }
@@ -1515,14 +1515,14 @@ public class CustomDungeonGenerator : MonoBehaviour
             }
 
 
-            if (stepsTaken >= scriptableScaling.maxSteps && scalingLevel < scriptableScaling.maxScalingLevel)
+            if (stepsTaken >= scriptableScaling.maxSteps && scalingLevel < scriptableScaling.scalingLevelBuffDebuffs.Count)
             {
                 stepsTaken = 0;
                 scalingLevel += 1;
             }
 
 
-            if (scalingLevel < scriptableScaling.maxScalingLevel)
+            if (scalingLevel < scriptableScaling.scalingLevelBuffDebuffs.Count)
             {
                 UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
             }

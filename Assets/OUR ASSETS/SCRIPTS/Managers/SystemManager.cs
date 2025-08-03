@@ -63,7 +63,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum CardThrow { DISCARD, BANISH, DECK }
 
     public enum StatModifiedType { NORMAL,PERCENTAGE, TARGETNORMAL, TARGETPERCENTAGE, TARGETFIXEDAMOUNT }
-    public enum StatModifiedAttribute { ATTACK, DEFENCE, ARMOR}
+    public enum StatModifiedAttribute { ATTACK, DEFENCE, ARMOR, MAXHEALTH}
 
     public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon, CompanionPos, PlayerPos, EnemyPos }
 

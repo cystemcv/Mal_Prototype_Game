@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ScriptableCard;
+using static ScriptableScaling;
 
 public class PlayedCard
 {
@@ -698,7 +699,7 @@ public class Combat : MonoBehaviour
         //{
         //UI_Combat.Instance.endTurnButton.GetComponent<Animator>().SetTrigger("EnemyEnd");
 
-  
+
         //}
 
         yield return new WaitForSeconds(0.4f);
@@ -767,7 +768,7 @@ public class Combat : MonoBehaviour
             {
                 StartCoroutine(combatPosition.hazard.OnTurnEnd(combatPosition));
             }
-      
+
             yield return null; //skip frame
         }
 
@@ -795,7 +796,7 @@ public class Combat : MonoBehaviour
         {
             if (combatPosition.hazard != null)
             {
-               StartCoroutine(combatPosition.hazard.OnTurnStart(combatPosition));
+                StartCoroutine(combatPosition.hazard.OnTurnStart(combatPosition));
             }
 
             yield return null; //skip frame
@@ -873,7 +874,7 @@ public class Combat : MonoBehaviour
             StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
         }
         CardScriptData cardScriptData = new CardScriptData();
-        StartCoroutine(InstantiateEntity(null, StaticData.staticScriptableCompanion, "Companion", null,cardScriptData));
+        StartCoroutine(InstantiateEntity(null, StaticData.staticScriptableCompanion, "Companion", null, cardScriptData));
 
         yield return null; // Wait for a frame 
 
@@ -986,6 +987,29 @@ public class Combat : MonoBehaviour
         if (entity.GetComponent<EntityClass>() != null)
         {
             yield return StartCoroutine(entity.GetComponent<EntityClass>().InititializeEntity());
+        }
+
+        //add scaling buff/debuffs
+        for (int i = 0; i < CustomDungeonGenerator.Instance.scalingLevel; i++)
+        {
+
+            if(i >= CustomDungeonGenerator.Instance.scriptableScaling.scalingLevelBuffDebuffs.Count)
+            {
+                break;
+            }
+
+            ScalingLevelBuffDebuff scalingLevelBuffDebuffs = CustomDungeonGenerator.Instance.scriptableScaling.scalingLevelBuffDebuffs[i];
+
+            if (scalingLevelBuffDebuffs.targetEnemySide && (entity.tag == "Enemy" || entity.tag == "EnemySummon"))
+            {
+                BuffSystemManager.Instance.AddBuffDebuff(entity, scalingLevelBuffDebuffs.scriptableBuffDebuff, scalingLevelBuffDebuffs.scalingValue);
+            }
+            else if (!scalingLevelBuffDebuffs.targetEnemySide && (entity.tag == "Player" || entity.tag == "PlayerSummon"))
+            {
+                BuffSystemManager.Instance.AddBuffDebuff(entity, scalingLevelBuffDebuffs.scriptableBuffDebuff, scalingLevelBuffDebuffs.scalingValue);
+            }
+
+
         }
 
 
@@ -1139,7 +1163,7 @@ public class Combat : MonoBehaviour
             combatPosition.position.transform.Find("Visual").gameObject.SetActive(false);
         }
 
- 
+
     }
 
 
@@ -1221,7 +1245,7 @@ public class Combat : MonoBehaviour
         else
         {
             //companion is on last place and he should always spawn first
-            combatPosition = characterCombatPositions[characterCombatPositions.Count -1];
+            combatPosition = characterCombatPositions[characterCombatPositions.Count - 1];
         }
 
         return combatPosition;
@@ -1239,7 +1263,7 @@ public class Combat : MonoBehaviour
         {
             isFull = enemiesCombatPositions.All(pos => pos.entityOccupiedPos != null);
         }
- 
+
 
         return isFull;
     }
@@ -1251,7 +1275,7 @@ public class Combat : MonoBehaviour
 
         if (SystemManager.Instance.GetPlayerTagsList().Contains(tag) || tag == "PlayerPos")
         {
-            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos == null );
+            isFull = characterCombatPositions.All(pos => pos.entityOccupiedPos == null);
         }
         else if (SystemManager.Instance.GetEnemyTagsList().Contains(tag) || tag == "EnemyPos")
         {
@@ -1985,22 +2009,57 @@ public class Combat : MonoBehaviour
             return startingDmg;
         }
 
-    
-            // Get character attack, debuff, and buff percentages
-            int increaseStatValueInt = 0;
-            float increaseStatValueFloat = 0;
-            int fixedAmount = -1;
+
+        // Get character attack, debuff, and buff percentages
+        int increaseStatValueInt = 0;
+        float increaseStatValueFloat = 0;
+        int fixedAmount = -1;
 
 
+        //get all buffs
+        List<BuffDebuffClass> buffDebuffClassList = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(entity);
+
+        //then loop
+        foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
+        {
+
+            //check if the buff has value to return
+            var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
+
+            //check if it has value then it modifies stats
+            if (result.HasValue)
+            {
+                var value = result.Value;
+                // use value
+
+                if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ATTACK)
+                {
+
+                    if (value.statModifiedType == SystemManager.StatModifiedType.NORMAL)
+                    {
+                        increaseStatValueInt += value.statIncreaseInt;
+                    }
+                    else if (value.statModifiedType == SystemManager.StatModifiedType.PERCENTAGE)
+                    {
+                        increaseStatValueFloat += value.statIncreaseFloat;
+                    }
+
+                }
+            }
+
+        }
+
+        if (target != null)
+        {
             //get all buffs
-            List<BuffDebuffClass> buffDebuffClassList = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(entity);
+            List<BuffDebuffClass> buffDebuffClassListTarget = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(target);
 
             //then loop
-            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassList)
+            foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassListTarget)
             {
 
                 //check if the buff has value to return
-                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats(entity, target, scriptableCard);
+                var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats_Target(entity, target, scriptableCard);
 
                 //check if it has value then it modifies stats
                 if (result.HasValue)
@@ -2011,82 +2070,47 @@ public class Combat : MonoBehaviour
                     if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ATTACK)
                     {
 
-                        if (value.statModifiedType == SystemManager.StatModifiedType.NORMAL)
+                        if (value.statModifiedType == SystemManager.StatModifiedType.TARGETNORMAL)
                         {
                             increaseStatValueInt += value.statIncreaseInt;
                         }
-                        else if (value.statModifiedType == SystemManager.StatModifiedType.PERCENTAGE)
+                        else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETPERCENTAGE)
                         {
                             increaseStatValueFloat += value.statIncreaseFloat;
                         }
-
-                    }
-                }
-
-            }
-
-            if (target != null)
-            {
-                //get all buffs
-                List<BuffDebuffClass> buffDebuffClassListTarget = BuffSystemManager.Instance.GetAllBuffDebuffFromTarget(target);
-
-                //then loop
-                foreach (BuffDebuffClass buffDebuffClass in buffDebuffClassListTarget)
-                {
-
-                    //check if the buff has value to return
-                    var result = buffDebuffClass.scriptableBuffDebuff.OnModifyStats_Target(entity, target, scriptableCard);
-
-                    //check if it has value then it modifies stats
-                    if (result.HasValue)
-                    {
-                        var value = result.Value;
-                        // use value
-
-                        if (value.StatModifiedAttribute == SystemManager.StatModifiedAttribute.ATTACK)
+                        else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETFIXEDAMOUNT)
                         {
-
-                            if (value.statModifiedType == SystemManager.StatModifiedType.TARGETNORMAL)
+                            //we always get the lowest amount
+                            if (fixedAmount == -1 || fixedAmount > value.statIncreaseInt)
                             {
-                                increaseStatValueInt += value.statIncreaseInt;
-                            }
-                            else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETPERCENTAGE)
-                            {
-                                increaseStatValueFloat += value.statIncreaseFloat;
-                            }
-                            else if (value.statModifiedType == SystemManager.StatModifiedType.TARGETFIXEDAMOUNT)
-                            {
-                                //we always get the lowest amount
-                                if (fixedAmount == -1 || fixedAmount > value.statIncreaseInt)
-                                {
-                                    fixedAmount = value.statIncreaseInt;
-                                }
-
+                                fixedAmount = value.statIncreaseInt;
                             }
 
                         }
+
                     }
-
                 }
+
             }
+        }
 
-            int resultVar = 0;
-            if (fixedAmount != -1)
-            {
-                resultVar = fixedAmount;
-            }
-            else
-            {
-                // Calculate combined attack
-                int combinedVar = startingDmg + increaseStatValueInt;
-                resultVar = combinedVar;
-                resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
-            }
+        int resultVar = 0;
+        if (fixedAmount != -1)
+        {
+            resultVar = fixedAmount;
+        }
+        else
+        {
+            // Calculate combined attack
+            int combinedVar = startingDmg + increaseStatValueInt;
+            resultVar = combinedVar;
+            resultVar = Mathf.Max(0, Mathf.FloorToInt(resultVar + (combinedVar * (increaseStatValueFloat / 100))));
+        }
 
 
 
-            return resultVar;
- 
+        return resultVar;
+
     }
 
     public void PlayerEndTurnButton()
@@ -2297,7 +2321,7 @@ public class Combat : MonoBehaviour
                 MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
                 // Start the coroutine for each hit
-                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "PlayerSummon", entityClass,cardScriptData));
+                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "PlayerSummon", entityClass, cardScriptData));
             }
             else
             {
@@ -2552,7 +2576,7 @@ public class Combat : MonoBehaviour
         currentIndex++;
 
         //but loop if it goes over the list index
-        if (currentIndex >= combatPositionsToCheck.Count )
+        if (currentIndex >= combatPositionsToCheck.Count)
         {
             //go back to first index
             currentIndex = 0;

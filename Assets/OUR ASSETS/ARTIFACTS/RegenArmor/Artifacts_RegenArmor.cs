@@ -29,12 +29,12 @@ public class Artifacts_RegenArmor : ScriptableItem
         {
             //then increase armor
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, regenAmount * regenMultiplierArmor, false, SystemManager.AdjustNumberModes.ARMOR));
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Armor +" + regenAmount * regenMultiplierArmor, false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, "Armor +" + regenAmount * regenMultiplierArmor, false);
         }
         else
         {
             runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, regenAmount, false, SystemManager.AdjustNumberModes.HEAL));
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Heal +" + regenAmount, false);
+            ItemManager.Instance.AddItemOnActivateOrder(this, "Heal +" + regenAmount, false);
         }
 
 

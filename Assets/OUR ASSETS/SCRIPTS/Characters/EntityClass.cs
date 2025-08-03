@@ -203,14 +203,14 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         defence = scriptableEntity.defence;
 
 
-        //add scaling
-        if (allowScaling)
-        {
-            health += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
-            maxHealth += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
-            attack += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingAttack);
-            defence += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingDefence);
-        }
+        ////add scaling
+        //if (allowScaling)
+        //{
+        //    health += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
+        //    maxHealth += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
+        //    attack += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingAttack);
+        //    defence += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingDefence);
+        //}
 
         //this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
 

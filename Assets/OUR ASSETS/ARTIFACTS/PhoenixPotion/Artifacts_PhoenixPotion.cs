@@ -32,12 +32,13 @@ public class Artifacts_PhoenixPotion : ScriptableItem
         MonoBehaviour runner = CombatCardHandler.Instance;
 
         triggered = true;
+        
+        int heal = (character.GetComponent<EntityClass>().maxHealth * hpToHealPerc) / 100;
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "Revived and healed for +" + heal, false);
 
         runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, 
-            (character.GetComponent<EntityClass>().maxHealth * hpToHealPerc) / 100
-            , false, SystemManager.AdjustNumberModes.HEAL));
+            heal, false, SystemManager.AdjustNumberModes.HEAL));
 
 
     }

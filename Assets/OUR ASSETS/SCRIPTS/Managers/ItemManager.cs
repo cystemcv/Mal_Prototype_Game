@@ -608,7 +608,7 @@ public class ItemManager : MonoBehaviour
         }
 
         // Destroy excess children first
-        while (parentObj.transform.childCount > 22)
+        while (parentObj.transform.childCount > 42)
         {
             // Destroy the oldest child
             DestroyImmediate(parentObj.transform.GetChild(0).gameObject);
@@ -630,6 +630,12 @@ public class ItemManager : MonoBehaviour
             ? SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed)
             : SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorGreen);
         newItem.GetComponent<Image>().color = itemColor;
+
+        if (!failed)
+        {
+            //spawn in random position
+        }
+
     }
 
 

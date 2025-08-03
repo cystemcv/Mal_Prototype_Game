@@ -24,7 +24,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
         triggered = true;
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "Heal +" + hpToHeal, false);
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
@@ -37,7 +37,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
     public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
     {
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired!", true);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "Expired Cannot heal anymore!", true);
         triggered = false;
     }
 

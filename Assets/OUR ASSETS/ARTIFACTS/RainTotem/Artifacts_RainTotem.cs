@@ -27,7 +27,7 @@ public class Artifacts_RainTotem : ScriptableItem
             BuffSystemManager.Instance.AddBuffDebuff(entity, scriptableBuffDebuff, amount);
         }
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! 1 <color=yellow>wet</color> for all enemies!", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "Added 1 <color=yellow>wet</color> for all enemies!", false);
 
     }
 

@@ -9,7 +9,7 @@ public class Buff_Strength : ScriptableBuffDebuff
 
     public override void OnApplyBuff(GameObject target, int value)
     {
-       
+
     }
 
     public override StatModifiedValue? OnModifyStats(GameObject caster, GameObject target, ScriptableCard scriptableCard)

@@ -14,7 +14,7 @@ public class Artifacts_ManaOrb : ScriptableItem
     public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
     {
 
-        ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated!", false);
+        ItemManager.Instance.AddItemOnActivateOrder(this, "+" + extraMana + " mana", false);
 
         Combat.Instance.manaMaxAvailable += 1;
     }
@@ -29,7 +29,7 @@ public class Artifacts_ManaOrb : ScriptableItem
 
         if (Combat.Instance.turns == expireOnTurn)
         {
-            ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Expired!", true);
+            ItemManager.Instance.AddItemOnActivateOrder(this, "-" + extraMana + " mana", true);
             Combat.Instance.manaMaxAvailable -= 1;
             Combat.Instance.ManaAvailable = 0;
         }
