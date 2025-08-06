@@ -22,7 +22,7 @@ public class Angel_Card_PiercingArrow : ScriptableCard
         scalingDmg = damageAmount + (scalingLevelCardValue * cardScriptData.scalingLevelValue);
 
         int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
-        customDesc += "<color=yellow>Pierce</color> " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to an enemy";
+        customDesc += DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to an enemy";
 
         return customDesc;
     }

@@ -27,7 +27,7 @@ public class Common_EmeraldSerpent : ScriptableCard
         int calculatedArmor =  (Combat.Instance == null) ? scalingArmor : Combat.Instance.CalculateEntityArmor(scalingArmor, entityUsedCard, realTarget);
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(scalingArmor, calculatedArmor) + " armor to character on Odd Turn Number!<br>";
         customDesc += "Add " + DeckManager.Instance.GetCalculatedValueString(scalingShield, calculatedShield) + " shield to character on Even Turn Number!<br>";
-        customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
+
 
         return customDesc;
     }

@@ -6,6 +6,7 @@ using TMPro;
 using System.Linq;
 using System;
 using static ScriptableCard;
+using Michsky.MUIP;
 
 public class DeckManager : MonoBehaviour
 {
@@ -404,6 +405,9 @@ public class DeckManager : MonoBehaviour
 
         if (savedPlayedCard != null)
         {
+            //remove all the tooltips
+            savedPlayedCard.GetComponent<TooltipContent>().StartExit();
+
             //destroy the prefab
             if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
             {
@@ -949,7 +953,17 @@ public class DeckManager : MonoBehaviour
         cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScriptData, character);
 
 
-        
+        if (scriptableCard.scriptableKeywords.Count > 0)
+        {
+            cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text += "\n";
+        }
+
+        foreach (ScriptableKeywords scriptableKeyword in scriptableCard.scriptableKeywords)
+        {
+            cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text += "<color=yellow>" + scriptableKeyword.keywordName + "</color> ";
+        }
+
+
 
     }
 

@@ -105,7 +105,7 @@ namespace Michsky.MUIP
             showCoroutine = StartCoroutine(ProcessEnterRoutine());
         }
 
-        private void StartExit()
+        public void StartExit()
         {
             // Cancel pending show
             if (showCoroutine != null)

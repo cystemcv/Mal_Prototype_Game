@@ -24,6 +24,10 @@ public class CombatCardHandler : MonoBehaviour
     public GameObject discardEffect;
     public GameObject banishEffect;
 
+    //public bool moveHeroUsedPerTurnClicked = false;
+    public int manaToDrain = 0;
+    public int moveExtraMana = 0;
+
     private void Awake()
     {
 
@@ -41,6 +45,11 @@ public class CombatCardHandler : MonoBehaviour
 
     public void Update()
     {
+
+        if (!UI_Combat.Instance.uiCombatEnable)
+        {
+            return;
+        }
 
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.TARGET)
         {
@@ -253,12 +262,25 @@ public class CombatCardHandler : MonoBehaviour
             //get hero position
             CombatPosition posHero = Combat.Instance.GetCombatPosition(targetClicked);
 
-            int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+            manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+
+            //ClassItemData SwiftBoots = ItemManager.Instance.GetItemByScriptableName("Swift Boots", StaticData.artifactItemList);
+
+            //then it has extra mana
+            if (moveExtraMana > 0)
+            {
+                manaToDrain -= moveExtraMana;
+            }
+
+            if (manaToDrain <= 0)
+            {
+                manaToDrain = 0;
+            }
 
             TMP_Text manaMoveText = UI_Combat.Instance.moveHeroText.transform.Find("TEXT").GetComponent<TMP_Text>();
             manaMoveText.text = manaToDrain.ToString();
 
-            if (Combat.Instance.ManaAvailable < Combat.Instance.GetStepsBetweenPositions(posHero, posClicked))
+            if (Combat.Instance.ManaAvailable < manaToDrain)
             {
                 manaMoveText.color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
                 ChangeLineAndArrowColor(SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed));
@@ -483,7 +505,44 @@ public class CombatCardHandler : MonoBehaviour
             CombatPosition posHero = Combat.Instance.GetCombatPosition(targetClicked);
 
             //check if enough mana
-            int manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+            manaToDrain = Combat.Instance.GetStepsBetweenPositions(posHero, posClicked);
+
+            //ClassItemData SwiftBoots = ItemManager.Instance.GetItemByScriptableName("Swift Boots", StaticData.artifactItemList);
+
+            //manaToDrain 2
+            //moveExtraMana 2 3 - 2 = -1 / 0 (but i need to reduce exra mana by 1)
+            //then it has extra mana
+            if (moveExtraMana > 0)
+            {
+                int reduceExtraMoveMana = 0;
+                if (moveExtraMana > manaToDrain)
+                {
+                    //reduce only the mana that extended
+                    reduceExtraMoveMana = Mathf.Abs(manaToDrain - moveExtraMana);
+                }
+                else
+                {
+                    //reduce full the extra mana
+                    reduceExtraMoveMana = moveExtraMana;
+                }
+
+                //reduce the mana to drain for the player
+                manaToDrain -= moveExtraMana;
+
+                //remove the extra mana used
+                moveExtraMana -= reduceExtraMoveMana;
+
+                if (moveExtraMana <= 0)
+                {
+                    moveExtraMana = 0;
+                }
+
+            }
+
+            if (manaToDrain <= 0)
+            {
+                manaToDrain = 0;
+            }
 
             if (Combat.Instance.ManaAvailable < manaToDrain)
             {

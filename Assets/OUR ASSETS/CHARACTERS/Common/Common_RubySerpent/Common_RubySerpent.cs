@@ -28,8 +28,7 @@ public class Common_RubySerpent : ScriptableCard
         int calculatedDamage = (Combat.Instance == null) ? scalingDmg : Combat.Instance.CalculateEntityDmg(scalingDmg, entityUsedCard, realTarget);
         customDesc += "Deal " + DeckManager.Instance.GetCalculatedValueString(scalingDmg, calculatedDamage) + " to an Enemy on Odd Turn Number!<br>";
         customDesc += "Add x" + scalingDebuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(burn) + " to an Enemy on Even Turn Number!<br>";
-        customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
-
+ 
         return customDesc;
     }
 

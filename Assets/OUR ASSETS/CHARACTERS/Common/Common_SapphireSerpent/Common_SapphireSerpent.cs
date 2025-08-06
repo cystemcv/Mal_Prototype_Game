@@ -25,7 +25,7 @@ public class Common_SapphireSerpent : ScriptableCard
 
         customDesc += "Draw " + scalingDraw + " on Odd Turn Number!<br>";
         customDesc += "Add " + scalingDebuff + " " + BuffSystemManager.Instance.GetBuffDebuffColor(wet) + " to all enemies on Even Turn Number!<br>";
-        customDesc += "<color=yellow>" + scriptableKeywords[0].keywordName + "</color>";
+
 
         return customDesc;
     }
