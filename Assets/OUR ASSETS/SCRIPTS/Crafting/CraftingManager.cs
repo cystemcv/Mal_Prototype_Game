@@ -153,7 +153,7 @@ public class CraftingManager : MonoBehaviour
 
             allowedClasses.Add(StaticData.staticCharacter.mainClass);
 
-            List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, allowedRarities, null, 7, true);
+            List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, allowedRarities, null, null, 7, true);
             craftingRecipesData.scriptableCard = cardList[0];
         }
 

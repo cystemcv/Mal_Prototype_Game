@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static SystemManager;
@@ -80,7 +81,8 @@ public class CardListManager : MonoBehaviour
         List<MainClass> allowedMainClasses = null,
         List<CardType> allowedCardTypes = null,
         List<Rarity> allowedCardRarities = null,
-        int? allowedPrimaryManaCost = null)
+        int? allowedPrimaryManaCost = null,
+        string cardNameKeyword = null)
     {
         return CardListManager.Instance.cardPoolLists
             .Where(pool =>
@@ -90,9 +92,13 @@ public class CardListManager : MonoBehaviour
             .Where(card =>
                 (allowedCardTypes == null || allowedCardTypes.Count == 0 || allowedCardTypes.Contains(card.cardType)) &&
                 (allowedCardRarities == null || allowedCardRarities.Count == 0 || allowedCardRarities.Contains(card.cardRarity)) &&
-                (!allowedPrimaryManaCost.HasValue || card.primaryManaCost == allowedPrimaryManaCost.Value))
+                (!allowedPrimaryManaCost.HasValue || card.primaryManaCost == allowedPrimaryManaCost.Value) &&
+                (string.IsNullOrEmpty(cardNameKeyword) ||
+                 (card.cardName != null &&
+                  card.cardName.IndexOf(cardNameKeyword, StringComparison.OrdinalIgnoreCase) >= 0)))
             .ToList();
     }
+
 
 
     public List<ScriptableCard> ChooseCards(
@@ -100,6 +106,7 @@ public class CardListManager : MonoBehaviour
         List<CardType> allowedCardTypes = null,
         List<Rarity> allowedCardRarities = null,
         int? allowedPrimaryManaCost = null,
+        string cardNameKeyword = null,
         int? numberOfCards = null,
         bool allowDuplicates = false)
     {
@@ -107,7 +114,8 @@ public class CardListManager : MonoBehaviour
             allowedMainClasses,
             allowedCardTypes,
             allowedCardRarities,
-            allowedPrimaryManaCost);
+            allowedPrimaryManaCost,
+            cardNameKeyword);
 
         if (allCards.Count == 0 || !numberOfCards.HasValue || numberOfCards.Value <= 0)
             return allCards;
@@ -124,13 +132,38 @@ public class CardListManager : MonoBehaviour
         }
         else
         {
-            // Shuffle and take up to numberOfCards without duplicates
             result = allCards.OrderBy(_ => UnityEngine.Random.value)
                              .Take(numberOfCards.Value)
                              .ToList();
         }
 
         return result;
+    }
+
+
+    public void OpenCardListChoice(List<ScriptableCard> scriptableCards)
+    {
+        //display screen
+        UIManager.Instance.ChooseGroupUI.SetActive(true);
+        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
+
+        //change the mode
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;
+
+        //where to add card
+        SystemManager.Instance.addCardTo = SystemManager.AddCardTo.Hand;
+
+        GameObject parent = UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject;
+
+        SystemManager.Instance.DestroyAllChildren(parent);
+
+        foreach (ScriptableCard scriptableCard in scriptableCards)
+        {
+            CardScriptData cardScriptData = new CardScriptData();
+            cardScriptData.scriptableCard = scriptableCard;
+
+            GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, parent, false, true);
+        }
     }
 
 

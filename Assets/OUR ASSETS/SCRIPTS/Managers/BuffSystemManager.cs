@@ -220,6 +220,11 @@ public class BuffSystemManager : MonoBehaviour
 
         BuffDebuffClass buffDebuffClass = GetBuffDebuffClassFromTarget(target, buffDebuffNameID);
 
+        if (buffDebuffClass == null)
+        {
+            return;
+        }
+
         buffDebuffClass.ModifyValueAvailable(valueToDecrease);
 
         //then destroy
@@ -246,7 +251,7 @@ public class BuffSystemManager : MonoBehaviour
     {
 
         //get all characters
-        GameObject[] characters = GameObject.FindGameObjectsWithTag("Player");
+        List<GameObject> characters = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
 
         foreach (GameObject character in characters)
         {
@@ -284,7 +289,7 @@ public class BuffSystemManager : MonoBehaviour
         }
 
         //get all enemies
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<GameObject> enemies = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
 
         foreach (GameObject enemy in enemies)
         {
@@ -331,6 +336,23 @@ public class BuffSystemManager : MonoBehaviour
             BuffDebuffClass buffDebuffClass = buffdebufPRefab;
 
             buffDebuffClass.scriptableBuffDebuff.OnGettingHit(caster, target, 0, 0);
+        }
+
+        yield return null;
+
+    }
+
+    public IEnumerator ActivateBuffsDebuffs_OnPlayCard(CardScriptData cardScriptData,GameObject caster, GameObject target)
+    {
+
+
+        List<BuffDebuffClass> buffDebuffClassList = GetAllBuffDebuffFromTarget(caster);
+
+        foreach (BuffDebuffClass buffdebufPRefab in buffDebuffClassList)
+        {
+            BuffDebuffClass buffDebuffClass = buffdebufPRefab;
+
+            buffDebuffClass.scriptableBuffDebuff.OnPlayCard(cardScriptData, caster, target);
         }
 
         yield return null;

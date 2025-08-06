@@ -398,6 +398,8 @@ public class DeckManager : MonoBehaviour
         GameObject entity = GameObject.FindGameObjectWithTag("Player");
         cardScriptData.scriptableCard.OnPlayCard(cardScriptData, entity);
 
+        yield return StartCoroutine(BuffSystemManager.Instance.ActivateBuffsDebuffs_OnPlayCard(cardScriptData, entity, null));
+
         CardPlayedStaticVariables(cardScriptData);
 
         if (savedPlayedCard != null)

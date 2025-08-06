@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b48e63e0c3db9408661bc7e5e3f807, type: 3}
+  m_Name: Buff_Honor
+  m_EditorClassIdentifier: 
+  nameID: Honor
+  icon: {fileID: 21300000, guid: 57b1e029849897b42b3b4e77a69140bf, type: 3}
+  description: Add 1 Righteous whenever a 2 mana cost card or above is played
+  isBuff: 1
+  infiniteDuration: 1
+  righteous: {fileID: 11400000, guid: ad2f292ac115c1c4180b36d17d764ef5, type: 2}
+  buffValue: 1

@@ -485,7 +485,7 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.GetChild(0).gameObject));
 
         //spawn the companion
-        yield return StartCoroutine(SpawnCompanion());
+        //yield return StartCoroutine(SpawnCompanion());
 
         //spawn the characters
         yield return StartCoroutine(SpawnCharacters());

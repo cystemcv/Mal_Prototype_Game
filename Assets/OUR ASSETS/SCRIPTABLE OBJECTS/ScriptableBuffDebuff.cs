@@ -22,7 +22,10 @@ public class ScriptableBuffDebuff : ScriptableObject
         public float statIncreaseFloat;
     }
 
+    public virtual void OnPlayCard(CardScriptData cardScriptData, GameObject caster, GameObject target)
+    {
 
+    }
     public virtual void OnDiscardCard(CardScriptData cardScriptData)
     {
 
