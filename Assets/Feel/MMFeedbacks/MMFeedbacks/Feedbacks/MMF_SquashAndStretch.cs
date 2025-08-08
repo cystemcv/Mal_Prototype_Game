@@ -369,6 +369,8 @@ namespace MoreMountains.Feedbacks
 			_coroutine = null;
 		}
 		
+	
+
 		/// <summary>
 		/// On restore, we restore our initial state
 		/// </summary>

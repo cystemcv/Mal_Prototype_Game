@@ -1601,6 +1601,8 @@ public class Combat : MonoBehaviour
         //flash enemy when directly hit
         StartCoroutine(FlashEntityAfterHit(entityClass.gameObject));
 
+        FeedbackManager.Instance.PlayOnTarget(entityClass.transform, FeedbackManager.Instance.mm_Hit_Prefab);
+
         //make the bar red
         entityClass.fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 

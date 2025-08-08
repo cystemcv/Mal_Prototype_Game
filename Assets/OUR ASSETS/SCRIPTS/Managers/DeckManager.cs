@@ -837,15 +837,6 @@ public class DeckManager : MonoBehaviour
 
         }
 
-        //if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.PlayerPos))
-        //{
-        //  cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("PlayerPos").gameObject.SetActive(true);
-        //}
-
-        //if (scriptableCard.targetEntityTagList.Contains(SystemManager.EntityTag.EnemyPos))
-        //{
-        //    cardPrefab.transform.Find("Panel").Find("UtilityFront").Find("EnemyPos").gameObject.SetActive(true);
-        //}
 
         cardPrefab.GetComponent<CardScript>().cardScriptData.cardQueue.SetActive(false);
         //Debug.Log("cardPrefab.GetComponent<CardScript>().changedMana : " + cardPrefab.GetComponent<CardScript>().changedMana);
@@ -859,10 +850,6 @@ public class DeckManager : MonoBehaviour
         //set it as a child of the parent
         cardPrefab.transform.SetParent(parent.transform);
 
-
-
-        //use the scriptable object to fill the art, text (title,desc,mana cost,etc)
-        //for text USE TEXT MESH PRO
 
         if (normalUI)
         {
@@ -878,12 +865,7 @@ public class DeckManager : MonoBehaviour
             cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
         }
 
-
         UpdateCardUI(cardPrefab);
-
-
-
-
 
         //add it to the hand list
         if (addToHand)
@@ -896,8 +878,6 @@ public class DeckManager : MonoBehaviour
         {
             Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
         }
-
-
 
         return cardPrefab;
 
@@ -967,6 +947,51 @@ public class DeckManager : MonoBehaviour
 
     }
 
+    public void UpdateCardArtifactUI(ClassItemData classItemData, GameObject cardPrefab)
+    {
+
+        ScriptableItem scriptableItem = classItemData.scriptableItem;
+        Transform cardChild = cardPrefab.transform.GetChild(0);
+
+        //get the character to be used
+        GameObject character = GameObject.FindGameObjectWithTag("Player");
+
+        if (scriptableItem.itemRarity == SystemManager.Rarity.Common)
+        {
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+        }
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Rare)
+        {
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+        }
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Epic)
+        {
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+        }
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Legendary)
+        {
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+        }
+        else if (scriptableItem.itemRarity == SystemManager.Rarity.Curse)
+        {
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
+        }
+
+        //for example
+        cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text = scriptableItem.itemName;
+
+        cardChild.transform.Find("Info").Find("CardImageIcon").gameObject.SetActive(true);
+        cardChild.transform.Find("Info").Find("CardImageIcon").GetComponent<Image>().sprite = scriptableItem.Icon;
+        cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().text = scriptableItem.itemCategory.ToString();
+
+        cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
+ 
+        cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableItem.itemDescription;
+
+
+
+    }
+
 
     public void UpdateCardDescription(GameObject cardPrefab)
     {
@@ -978,6 +1003,62 @@ public class DeckManager : MonoBehaviour
         //get the character to be used
         GameObject character = GameObject.FindGameObjectWithTag("Player");
         cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScriptData, character); ;
+
+    }
+
+    public GameObject InitializeCardArtifactPrefab(ClassItemData classItemData, GameObject parent, bool addToHand, bool normalUI)
+    {
+
+        //instantiate the prefab 
+        // Instantiate at position (0, 0, 0) and zero rotation.
+        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, parent.transform.position, Quaternion.identity);
+        //get the scriptable object
+        ScriptableItem scriptableItem = classItemData.scriptableItem;
+
+        //disable scripts not needed
+        cardPrefab.GetComponent<CardScript>().enabled = false;
+        cardPrefab.GetComponent<CardEvents>().enabled = false;
+
+        //enable scripts needed
+        cardPrefab.GetComponent<CardListCardEvents>().enabled = false;
+        cardPrefab.GetComponent<Button>().enabled = false;
+        cardPrefab.GetComponent<CustomButton>().enabled = false;
+
+        ItemChoiceClass itemChoiceClass = cardPrefab.AddComponent<ItemChoiceClass>();
+        itemChoiceClass.classItem = classItemData;
+
+        //set it as a child of the parent
+        cardPrefab.transform.SetParent(parent.transform);
+
+
+        if (normalUI)
+        {
+            cardPrefab.transform.localScale = new Vector3(1.2f, 1.2f, 1);
+        }
+        else
+        {
+            //make the local scale 1,1,1
+            cardPrefab.transform.localScale = new Vector3(1, 1, 1);
+
+            //add sorting 
+            cardPrefab.GetComponent<Canvas>().sortingOrder = 1200;
+        }
+
+        UpdateCardArtifactUI(classItemData, cardPrefab);
+
+        //add it to the hand list
+        if (addToHand)
+        {
+            HandManager.Instance.cardsInHandList.Add(cardPrefab);
+        }
+
+        ////check mana
+        //if (Combat.Instance != null)
+        //{
+        //    Combat.Instance.UpdateCardAfterManaChange(cardPrefab);
+        //}
+
+        return cardPrefab;
 
     }
 

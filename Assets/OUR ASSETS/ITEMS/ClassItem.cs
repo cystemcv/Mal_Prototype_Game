@@ -230,34 +230,16 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             // Create a ClassItem for the randomly selected item
             ClassItemData itemClassTemp = new ClassItemData(filteredArtifactPool[randomIndex], 1);
 
-            // Instantiate the item prefab
-            GameObject itemPrefab = Instantiate(
-                ItemManager.Instance.itemChoosePrefab,
-                parent.transform.position,
-                Quaternion.identity);
-
-            //set it as a child of the parent
-            itemPrefab.transform.SetParent(parent.transform);
-
-            itemPrefab.transform.localScale = Vector3.one;
-
-
-            //ui
-            itemPrefab.transform.Find("Icon").GetComponent<Image>().sprite = itemClassTemp.scriptableItem.Icon;
+            DeckManager.Instance.InitializeCardArtifactPrefab(itemClassTemp, parent,false,true);
 
             //itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
-            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemName, itemPrefab.transform.Find("Title").GetComponent<TMP_Text>(), 30f));
+            //StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemName, itemPrefab.transform.Find("Title").GetComponent<TMP_Text>(), 30f));
             //itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
-            StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemDescription, itemPrefab.transform.Find("Description").GetComponent<TMP_Text>(), 200f));
-
-            itemPrefab.transform.Find("ItemLevel").gameObject.SetActive(false);
-
-            // Assign the item to the ItemChoiceClass component
-            ItemChoiceClass itemChoiceClass = itemPrefab.AddComponent<ItemChoiceClass>();
-            itemChoiceClass.classItem = itemClassTemp;
+            //StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemDescription, itemPrefab.transform.Find("Description").GetComponent<TMP_Text>(), 200f));
 
 
-            Destroy(itemPrefab.GetComponent<LayoutElement>());
+
+            //Destroy(itemPrefab.GetComponent<LayoutElement>());
 
         }
 
