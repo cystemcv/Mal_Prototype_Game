@@ -309,6 +309,11 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
 
+        if (aIBrain.scriptableEntity.aICommands.Count == 0)
+        {
+            return;
+        }
+
         if (this.gameObject.GetComponent<AIBrain>().targetForCard != null)
         {
             List<CombatPosition> combatPositionList = Combat.Instance.CheckCardTargets(this.gameObject.GetComponent<AIBrain>().targetForCard, this.gameObject.GetComponent<AIBrain>().scriptableCardToUse);
@@ -374,6 +379,11 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
         //if no ai brain the get continue to the next or deasd
         if (aIBrain == null)
+        {
+            return;
+        }
+
+        if (aIBrain.scriptableEntity.aICommands.Count == 0)
         {
             return;
         }

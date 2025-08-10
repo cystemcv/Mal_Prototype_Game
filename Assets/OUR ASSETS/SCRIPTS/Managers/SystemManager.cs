@@ -80,7 +80,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM,RANDOMRECIPEITEM }
 
-    public enum BattleGroundType { WATER, MAGMA, DARK, ELECTRIC, LUSH, SAND };
+    public enum BattleGroundType { WATER, MAGMA, DARK, ELECTRIC, LUSH, SAND, CITY, SPACE, FROZEN };
 
     public enum NotificationOperation { WARNING,ERROR,SUCCESS }
 

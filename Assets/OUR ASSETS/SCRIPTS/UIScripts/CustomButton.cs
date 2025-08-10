@@ -50,8 +50,10 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         FeedbackManager.Instance.PlayOnTarget(this.gameObject.transform, FeedbackManager.Instance.mm_ActivatedUI_Prefab);
 
         // Scale up the hovered card
-        scaleTween = LeanTween.scale(this.gameObject, originalScale * hoverScale, transitionTime);
-
+        if (hoverScale != 1)
+        {
+            scaleTween = LeanTween.scale(this.gameObject, originalScale * hoverScale, transitionTime);
+        }
         //icon.sprite = selectedIcon;
         //animator.SetBool("selectedButton", true);
         AudioManager.Instance.PlaySfx(hoverSoundName, randomPitch);

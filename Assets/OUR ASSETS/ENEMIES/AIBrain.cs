@@ -11,7 +11,7 @@ using static ScriptableCard;
 public class AIBrain : MonoBehaviour
 {
 
- 
+
 
 
     //public List<ScriptableCard> cardScriptList;
@@ -88,16 +88,24 @@ public class AIBrain : MonoBehaviour
         }
 
         scriptableEntity = this.gameObject.GetComponent<EntityClass>().scriptableEntity;
-
-        scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
-
         CardScriptData cardScriptData = new CardScriptData();
-        cardScriptData.scriptableCard = scriptableCardToUse;
-        getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin + entityLevel, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax + entityLevel);
-        cardScriptData.scalingLevelValue = getCardLevel;
 
-        //assign a target for card
-        scriptableCardToUse.OnAiPlayTarget(cardScriptData, this.gameObject);
+        if (scriptableEntity.aICommands.Count != 0)
+        {
+            scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
+
+     
+            cardScriptData.scriptableCard = scriptableCardToUse;
+            getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin + entityLevel, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax + entityLevel);
+            cardScriptData.scalingLevelValue = getCardLevel;
+
+            //assign a target for card
+            scriptableCardToUse.OnAiPlayTarget(cardScriptData, this.gameObject);
+        }
+        else
+        {
+            scriptableCardToUse = null;
+        }
 
         SpawnAIIntend(scriptableCardToUse, cardScriptData);
 
@@ -114,8 +122,18 @@ public class AIBrain : MonoBehaviour
 
         intend.SetActive(true);
         TMP_Text cardText = intend.transform.Find("CardText").GetComponent<TMP_Text>();
-        cardText.text = scriptableCard.cardName;
-        cardText.text += DeckManager.Instance.ShowCardLevel(cardScriptData);
+
+        if (scriptableCardToUse == null)
+        {
+            cardText.text = "";
+        }
+        else
+        {
+            cardText.text = scriptableCard.cardName;
+            cardText.text += DeckManager.Instance.ShowCardLevel(cardScriptData);
+        }
+
+
 
 
     }

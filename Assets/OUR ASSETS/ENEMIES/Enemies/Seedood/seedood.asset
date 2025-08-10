@@ -16,7 +16,8 @@ MonoBehaviour:
   mainClass: 0
   distanceFromAnotherUnit: 2
   unitsWorth: 1
-  entityName: Dark Blob
+  startingArtifacts: []
+  entityName: Seedood
   entityPrefab: {fileID: 2770725649494367896, guid: 58a015c29df587e4d99f9136513d11b9, type: 3}
   entityImage: {fileID: -371976857, guid: 50f00887a076cd24a99c404f35afafaf, type: 3}
   entityIcon: {fileID: 0}
@@ -31,10 +32,14 @@ MonoBehaviour:
   aICommandsInitialize:
     aICommandType: 0
     aiScriptableCards: []
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
     - {fileID: 11400000, guid: fd1a6ce1cdb82a34d97ab0c981c488ec, type: 2}
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 20

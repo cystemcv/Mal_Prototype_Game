@@ -10,6 +10,7 @@ public class AIManager : MonoBehaviour
 {
     public static AIManager Instance;
 
+    public List<ScriptableEntity> scriptableEntities = new List<ScriptableEntity>();
 
 
 
@@ -64,7 +65,11 @@ public class AIManager : MonoBehaviour
             aIBrain.ExecuteCommand();
 
             //loop between them and execute the command
-            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
+            if (scriptableCard != null)
+            {
+                yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
+            }
+  
 
             if (aIBrain.intend != null)
             {

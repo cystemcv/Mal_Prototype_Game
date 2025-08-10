@@ -286,6 +286,14 @@ namespace Michsky.MUIP
             if (notify == true) { SetupDropdown(); }
         }
 
+        public void ClearList( bool notify = false)
+        {
+            items.Clear();
+
+            if (selectedItemIndex > items.Count) { selectedItemIndex = 0; }
+            if (notify == true) { SetupDropdown(); }
+        }
+
         public void UpdateItemLayout()
         {
             if (itemList == null)

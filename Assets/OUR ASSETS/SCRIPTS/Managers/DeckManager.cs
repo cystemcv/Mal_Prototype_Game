@@ -1119,20 +1119,9 @@ public class DeckManager : MonoBehaviour
     public void HandFullSpawnCardFunction(CardScriptData cardScriptData)
     {
         //create gameobject on scene and spawn it on the discard spawner
-        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, UI_Combat.Instance.handFullSpawnCard.transform.position, Quaternion.identity);
-        cardPrefab.transform.parent = UI_Combat.Instance.handFullSpawnCard.transform;
-        cardPrefab.GetComponent<Canvas>().sortingOrder = 1000;
-        ScriptableCard scriptableCard = cardScriptData.scriptableCard;
 
-        //add the scriptable card object to the prefab class to reference
-        cardPrefab.GetComponent<CardScript>().cardScriptData.scriptableCard = scriptableCard;
-        cardPrefab.GetComponent<CardScript>().cardScriptData.cardID = cardScriptData.cardID;
-
-        //make the local scale 1,1,1
-        cardPrefab.transform.localScale = new Vector3(1, 1, 1);
-
-        //update the information on the card prefab
-        UpdateCardUI(cardPrefab);
+        GameObject cardPrefab = DeckManager.Instance.InitializeCardPrefab(cardScriptData, UI_Combat.Instance.handFullSpawnCard, false, false);
+        cardPrefab.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
         //deactivate events
         cardPrefab.GetComponent<CardEvents>().enabled = false;

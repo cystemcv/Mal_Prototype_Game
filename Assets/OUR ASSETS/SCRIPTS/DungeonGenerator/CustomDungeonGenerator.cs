@@ -104,6 +104,8 @@ public class CustomDungeonGenerator : MonoBehaviour
     public GameObject lastHoveredRoom = null;
     public GameObject lastHoveredRoomSecondary = null;
 
+    public List<ScriptableBattleGrounds> scriptableBattleGrounds = new List<ScriptableBattleGrounds>();
+
     private void Awake()
     {
 
