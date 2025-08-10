@@ -563,6 +563,8 @@ public class Combat : MonoBehaviour
             yield return null; //stops function
         }
 
+   
+
         yield return StartCoroutine(EnemyTurnStart());
 
         if (combatEnded)
@@ -818,8 +820,16 @@ public class Combat : MonoBehaviour
         {
             yield return null; //stops function
         }
+        //TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[0]);
+        TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[0]);
+        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
+
+        TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[1]);
+        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
+
 
         yield return StartCoroutine(ActivateHazardsEnemyTurnStart());
+        //TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[0]);
 
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
         SystemManager.Instance.combatTurn = SystemManager.CombatTurns.enemyStartTurn;
