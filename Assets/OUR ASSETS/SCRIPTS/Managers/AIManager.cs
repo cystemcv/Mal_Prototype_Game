@@ -109,6 +109,11 @@ public class AIManager : MonoBehaviour
                 continue;
             }
 
+            if (entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards.Count == 0)
+            {
+                continue;
+            }
+
             ScriptableCard scriptableCard = entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards[0];
             float totalAbilitiesWaitTime = 0;
 

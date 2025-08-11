@@ -38,6 +38,17 @@ public class TutorialManager : MonoBehaviour
 
     public void StartTutorial(TutorialData tutorial)
     {
+
+        //check if already played
+
+        if (DataPersistenceManager.Instance.tutorialsSeen.Contains(tutorial.tutorialName))
+        {
+            return;
+        }
+
+        DataPersistenceManager.Instance.tutorialsSeen.Add(tutorial.tutorialName);
+        DataPersistenceManager.Instance.SaveDataEasy();
+
         tutorialPanel.SetActive(true);
         AudioManager.Instance.PlaySfx("UI_Modal");
         MMF_Player mmInstance =  mm_TutorialOpen_Prefab.GetComponent<MMF_Player>();

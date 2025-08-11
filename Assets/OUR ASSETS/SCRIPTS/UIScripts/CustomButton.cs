@@ -13,6 +13,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public LTDescr scaleTween;
     public float hoverScale = 1.1f;
     private float transitionTime = 0.1f;
+    public bool playFeedbacks = true;
     private Vector3 originalScale;
 
     public Animator animator;
@@ -44,10 +45,10 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-
-
-
-        FeedbackManager.Instance.PlayOnTarget(this.gameObject.transform, FeedbackManager.Instance.mm_ActivatedUI_Prefab);
+        if (playFeedbacks)
+        {
+            FeedbackManager.Instance.PlayOnTarget(this.gameObject.transform, FeedbackManager.Instance.mm_ActivatedUI_Prefab);
+        }
 
         // Scale up the hovered card
         if (hoverScale != 1)

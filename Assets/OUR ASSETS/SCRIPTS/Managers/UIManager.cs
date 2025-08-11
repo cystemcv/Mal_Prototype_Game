@@ -71,13 +71,13 @@ public class UIManager : MonoBehaviour
     public bool enableCloseButton = false;
     public int enableMaxSelection = 0;
     public int enableMinSelection = 0;
-    public List<ScriptableCard> selectedCardList = new List<ScriptableCard>();
+    public List<CardScriptData> selectedCardList = new List<CardScriptData>();
     public enum CardListMode { VIEW, EDIT }
     public CardListMode cardListMode = CardListMode.VIEW;
     public GameObject cardListGO;
     public GameObject cardListGOContent;
     public GameObject cardPrefabScaleWithScreenOverlay;
-    List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
+    List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
 
     public GameObject eventGO;
     public GameObject eventButtonPrefab;
@@ -602,28 +602,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenMainDeckList()
     {
-
-        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
-
-        foreach (CardScriptData cardScriptData in StaticData.staticMainDeck)
-        {
-            scriptableCardList.Add(cardScriptData.scriptableCard);
-        }
-
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Deck", CadList_DoNothing);
+        ShowCardList(StaticData.staticMainDeck, CardListMode.VIEW, true, 0, 0, "Deck", CadList_DoNothing);
     }
 
     public void OpenDeckList()
     {
-
-        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
-
-        foreach (CardScriptData cardScriptData in DeckManager.Instance.combatDeck)
-        {
-            scriptableCardList.Add(cardScriptData.scriptableCard);
-        }
-
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Remaining Deck", CadList_DoNothing);
+        ShowCardList(DeckManager.Instance.combatDeck, CardListMode.VIEW, true, 0, 0, "Remaining Deck", CadList_DoNothing);
     }
 
     private void CadList_DoNothing()
@@ -633,28 +617,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenDiscardList()
     {
-
-        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
-
-        foreach (CardScriptData cardScriptData in DeckManager.Instance.discardedPile)
-        {
-            scriptableCardList.Add(cardScriptData.scriptableCard);
-        }
-
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Discarded Cards", CadList_DoNothing);
+        ShowCardList(DeckManager.Instance.discardedPile, CardListMode.VIEW, true, 0, 0, "Discarded Cards", CadList_DoNothing);
     }
 
     public void OpenBanishedList()
     {
-
-        List<ScriptableCard> scriptableCardList = new List<ScriptableCard>();
-
-        foreach (CardScriptData cardScriptData in DeckManager.Instance.banishedPile)
-        {
-            scriptableCardList.Add(cardScriptData.scriptableCard);
-        }
-
-        ShowCardList(scriptableCardList, CardListMode.VIEW, true, 0, 0, "Banished Cards", CadList_DoNothing);
+        ShowCardList(DeckManager.Instance.banishedPile, CardListMode.VIEW, true, 0, 0, "Banished Cards", CadList_DoNothing);
     }
 
     //-----------------
@@ -666,16 +634,21 @@ public class UIManager : MonoBehaviour
         this.cardListGO.SetActive(false);
     }
 
-    public void ShowCardList(List<ScriptableCard> scriptableCardList, CardListMode cardListMode, bool enableCloseButton, int enableMinSelection, int enableMaxSelection, string title,
+
+
+    public void ShowCardList(List<CardScriptData> cardScriptDataList, CardListMode cardListMode, bool enableCloseButton, int enableMinSelection, int enableMaxSelection, string title,
         Action onConfirmAction)
     {
+        ResetCardList();
 
         this.cardListMode = cardListMode;
         this.enableCloseButton = enableCloseButton;
         this.enableMinSelection = enableMinSelection;
         this.enableMaxSelection = enableMaxSelection;
-        this.scriptableCardList = scriptableCardList;
+        this.cardScriptDataList = cardScriptDataList;
 
+
+        GameObject confirmButtonGO = this.cardListGO.transform.Find("Buttons").Find("btn_Confirm").gameObject;
         //enableMaxSelection_Selected = 0;
         selectedCardList.Clear();
 
@@ -694,7 +667,7 @@ public class UIManager : MonoBehaviour
         }
 
         GameObject selectionText = this.cardListGO.transform.Find("Others").Find("SelectionText").gameObject;
-        GameObject confirmButtonGO = this.cardListGO.transform.Find("Buttons").Find("btn_Confirm").gameObject;
+
 
         if (enableMaxSelection > 0)
         {
@@ -712,13 +685,16 @@ public class UIManager : MonoBehaviour
 
 
         Button confirmButton = confirmButtonGO.GetComponent<Button>();
-
-        // Assign the custom behavior to the Confirm button
-        confirmButton.onClick.RemoveAllListeners(); // Clear previous listeners
+        confirmButton.onClick.RemoveAllListeners();
         confirmButton.onClick.AddListener(() =>
         {
-            onConfirmAction?.Invoke(); // Execute the custom function
-            cardListGO.SetActive(false); // Close the panel after confirming
+            Debug.Log("Confirm button clicked!");
+            if (onConfirmAction == null) Debug.LogWarning("onConfirmAction is null");
+            else
+            {
+                onConfirmAction.Invoke();
+            }
+            cardListGO.SetActive(false);
         });
 
     }
@@ -736,10 +712,10 @@ public class UIManager : MonoBehaviour
 
 
 
-        foreach (ScriptableCard scriptableCard in this.scriptableCardList)
+        foreach (CardScriptData cardScriptData in this.cardScriptDataList)
         {
-            CardScriptData cardScriptData = new CardScriptData();
-            cardScriptData.scriptableCard = scriptableCard;
+            //CardScriptData cardScriptData = new CardScriptData();
+            //cardScriptData.scriptableCard = scriptableCard;
             //instantiate the card
             GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, cardListGOContent, false, false);
 
@@ -756,67 +732,12 @@ public class UIManager : MonoBehaviour
             card.GetComponent<CardListCardEvents>().enabled = true;
             card.GetComponent<Button>().enabled = true;
             card.GetComponent<CustomButton>().enabled = true;
+            card.GetComponent<CustomButton>().playFeedbacks = false;
 
             card.GetComponent<CardListCardEvents>().markedGO = card.transform.GetChild(0).Find("UtilityFront").Find("Marked").gameObject;
             card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
-            card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
-
-            //foreach (Transform card in cardListGOContent.transform)
-            //{
-
-
-            //    if (!card.gameObject.activeSelf)
-            //    {
-
-            //        //then we use it
-            //        card.gameObject.SetActive(true);
-
-            //        card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
-            //        card.GetComponent<CardListCardEvents>().scriptableCard = scriptableCard;
-
-            //        Transform cardChild = card.transform.GetChild(0);
-
-            //        if (scriptableCard.cardRarity == SystemManager.CardRarity.Common)
-            //        {
-            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
-            //        }
-            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Rare)
-            //        {
-            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
-            //        }
-            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Epic)
-            //        {
-            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
-            //        }
-            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Legendary)
-            //        {
-            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
-            //        }
-            //        else if (scriptableCard.cardRarity == SystemManager.CardRarity.Curse)
-            //        {
-            //            cardChild.transform.Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
-            //        }
-
-            //        //for example
-            //        cardChild.transform.Find("TitleBg").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
-            //        cardChild.transform.Find("CardImage").GetComponent<Image>().sprite = scriptableCard.cardArt;
-            //        cardChild.transform.Find("TypeBg").Find("TypeText").GetComponent<TMP_Text>().text = scriptableCard.cardType.ToString();
-
-            //        //cardChild.transform.Find("MainBg").GetComponent<Image>().color = CardListManager.Instance.GetClassColor(scriptableCard.mainClass);
-
-            //        //mana cost
-            //        cardChild.transform.Find("ManaBg").Find("ManaImage").Find("ManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
-            //        //cardChild.transform.Find("ManaBg").Find("SecondaryManaImage").Find("SecondaryManaText").GetComponent<TMP_Text>().text = scriptableCard.primaryManaCost.ToString();
-
-            //        //description is based on abilities
-            //        cardChild.transform.Find("DescriptionBg").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(null, null);
-
-            //        //exit loop
-            //        break;
-            //    }
-
-
-            //}
+            card.GetComponent<CardListCardEvents>().scriptableCard = cardScriptData.scriptableCard;
+            card.GetComponent<CardListCardEvents>().cardScriptData = cardScriptData;
         }
 
 

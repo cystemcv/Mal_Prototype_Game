@@ -751,11 +751,9 @@ public class DeckManager : MonoBehaviour
         DeckManager.Instance.combatDeck.Add(cardScriptData);
     }
 
-    public void RemoveCardFromDeck(ScriptableCard card, int character)
+    public void RemoveCardFromList(CardScriptData cardScriptData, List<CardScriptData> cardScriptDataList)
     {
-
-        // deck.Remove(card);
-
+        cardScriptDataList.RemoveAll(c => c.cardID == cardScriptData.cardID);
     }
 
     public GameObject InitializeCardPrefab(CardScriptData cardScriptData, GameObject parent, bool addToHand, bool normalUI)

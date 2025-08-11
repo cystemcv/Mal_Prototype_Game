@@ -8,6 +8,7 @@ public class CardListCardEvents : MonoBehaviour, IPointerDownHandler
 {
 
     public GameObject markedGO;
+    public CardScriptData cardScriptData;
     public ScriptableCard scriptableCard;
 
     // Start is called before the first frame update
@@ -34,12 +35,12 @@ public class CardListCardEvents : MonoBehaviour, IPointerDownHandler
         if (!markedGO.activeSelf && UIManager.Instance.selectedCardList.Count < UIManager.Instance.enableMaxSelection)
         {
             markedGO.SetActive(true);
-            UIManager.Instance.selectedCardList.Add(scriptableCard);
+            UIManager.Instance.selectedCardList.Add(cardScriptData);
         }
         else if(markedGO.activeSelf)
         {
             markedGO.SetActive(false);
-            UIManager.Instance.selectedCardList.Remove(scriptableCard);
+            DeckManager.Instance.RemoveCardFromList(cardScriptData, UIManager.Instance.selectedCardList);
         }
 
         GameObject selectionText = UIManager.Instance.cardListGO.transform.Find("Others").Find("SelectionText").gameObject;

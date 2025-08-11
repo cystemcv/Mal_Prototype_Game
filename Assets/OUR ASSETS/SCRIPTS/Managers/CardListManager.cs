@@ -190,5 +190,24 @@ public class CardListManager : MonoBehaviour
 
     //    }
 
+    public List<CardScriptData> GetAllCardsFromLibrary()
+    {
+
+        List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
+        //add all cards 
+        foreach (CardPoolList cardPoolList in CardListManager.Instance.cardPoolLists)
+        {
+            foreach (ScriptableCard scriptableCard in cardPoolList.scriptableCards)
+            {
+                CardScriptData cardScriptData = new CardScriptData();
+                cardScriptData.scriptableCard = scriptableCard;
+
+                cardScriptDataList.Add(cardScriptData);
+            }
+        }
+
+        return cardScriptDataList;
+
+    }
 
 }

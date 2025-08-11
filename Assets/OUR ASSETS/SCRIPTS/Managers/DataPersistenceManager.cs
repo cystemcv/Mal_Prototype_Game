@@ -6,6 +6,8 @@ using System.Linq;
 public class DataPersistenceManager : MonoBehaviour
 {
 
+    //everything saved and load should pass from here
+
     [Header("File Paths")]
     [SerializeField] public string fileName;
     [SerializeField] public string fileType;
@@ -18,6 +20,8 @@ public class DataPersistenceManager : MonoBehaviour
 
     public string savefileID = "";
     public bool isLoadScene = false;
+
+    public List<string> tutorialsSeen = new List<string>();
 
     private void Awake()
     {
@@ -33,6 +37,35 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         this.gameData = new GameData();
+    }
+
+    private void Start()
+    {
+        DeleteDataEasy();
+        LoadDataEasy();
+    }
+
+    public void SaveDataEasy()
+    {
+        ES3.Save("tutorialsSeen", tutorialsSeen);
+    }
+
+    public void LoadDataEasy()
+    {
+        if (ES3.KeyExists("tutorialsSeen"))
+        {
+            tutorialsSeen = ES3.Load<List<string>>("tutorialsSeen");
+            Debug.Log("List loaded: " + string.Join(", ", tutorialsSeen));
+        }
+        else
+        {
+            Debug.Log("No saved list found.");
+        }
+    }
+
+    public void DeleteDataEasy()
+    {
+        ES3.DeleteKey("tutorialsSeen");
     }
 
     public void NewGame()

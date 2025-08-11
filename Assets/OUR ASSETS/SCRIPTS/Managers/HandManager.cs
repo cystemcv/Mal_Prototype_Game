@@ -301,4 +301,11 @@ public class HandManager : MonoBehaviour
         return cardScreenPos.y >= activateAreaY;
     }
 
+    public IEnumerator DestroyAllHandCards()
+    {
+        cardsInHandList.Clear();
+        yield return SystemManager.Instance.DestroyAllChildrenIE(UI_Combat.Instance.HAND);
+     
+    }
+
 }

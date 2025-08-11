@@ -40,6 +40,11 @@ public class AIBrain : MonoBehaviour
             return;
         }
 
+        if (scriptableCardToUse == null)
+        {
+            return;
+        }
+
         //play card
         PlayCardOnlyAbilities(scriptableCardToUse);
 

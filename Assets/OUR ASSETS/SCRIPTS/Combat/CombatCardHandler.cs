@@ -46,6 +46,11 @@ public class CombatCardHandler : MonoBehaviour
     public void Update()
     {
 
+        if (CombatManager.Instance.trainingModeUIOpen)
+        {
+            return;
+        }
+
         if (!UI_Combat.Instance.uiCombatEnable)
         {
             return;

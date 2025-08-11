@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Michsky.MUIP;
+using static UIManager;
+using static CardListManager;
 
 public class CombatManager : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class CombatManager : MonoBehaviour
     public GameObject planetClicked;
 
     public bool trainingMode = false;
+    public bool trainingModeUIOpen = false;
     public GameObject trainingOptionsUI;
 
     public GameObject manaSliderUI;
@@ -146,11 +149,13 @@ public class CombatManager : MonoBehaviour
     public void ShowTrainingOptions()
     {
         InitializeOptions();
+        trainingModeUIOpen = true;
         trainingOptionsUI.SetActive(true);
     }
 
     public void HideTrainingOptions()
     {
+        trainingModeUIOpen = false;
         trainingOptionsUI.SetActive(false);
     }
 
@@ -385,6 +390,61 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    public void Training_RemoveCardsFromDeck()
+    {
+
+        UIManager.Instance.ShowCardList(StaticData.staticMainDeck, CardListMode.EDIT, true, 0, StaticData.staticMainDeck.Count, "Remove Cards From Deck", CombatManager.Instance.CardList_RemoveCardsFromDeck);   
+    }
+
+    public void CardList_RemoveCardsFromDeck()
+    {
+
+        Debug.Log("CardList_RemoveCardsFromDeck called");
+
+        if (UIManager.Instance.selectedCardList.Count == 0)
+        {
+            return;
+        }
+
+        //otherwise remove card
+
+        foreach (CardScriptData cardScriptData in UIManager.Instance.selectedCardList)
+        {
+            DeckManager.Instance.RemoveCardFromList(cardScriptData, StaticData.staticMainDeck);
+        }
+
+        StartCoroutine(Combat.Instance.InitializeCombat());
+
+    }
+
+    public void Training_AddCardsToDeck()
+    {
+        List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
+        cardScriptDataList = CardListManager.Instance.GetAllCardsFromLibrary();
+        UIManager.Instance.ShowCardList(cardScriptDataList, CardListMode.EDIT, true, 0, cardScriptDataList.Count, "Add Cards To Deck", CombatManager.Instance.CardList_AddCardsToDeck);
+    }
+
+    public void CardList_AddCardsToDeck()
+    {
+
+        Debug.Log("CardList_AddCardsToDeck called");
+
+        if (UIManager.Instance.selectedCardList.Count == 0)
+        {
+            return;
+        }
+
+        //otherwise remove card
+
+        foreach (CardScriptData cardScriptData in UIManager.Instance.selectedCardList)
+        {
+            DeckManager.Instance.AddCardOnDeck(cardScriptData.scriptableCard,0);
+        }
+
+        StartCoroutine(Combat.Instance.InitializeCombat());
+
+    }
+
     public void Training_SpawnEnemy(int value, int combatPosIndex)
     {
         StartCoroutine(Training_SpawnEnemyIE(value, combatPosIndex));
@@ -434,6 +494,26 @@ public class CombatManager : MonoBehaviour
         //cannot remove player
         if (combatPosition.entityOccupiedPos != null && combatPosition.entityOccupiedPos.tag == "Player")
         {
+            if (combatPosIndex == 0)
+            {
+                SetDropdownByName(heroDropDown1.GetComponent<CustomDropdown>(), "EMPTY");
+            }
+            else if (combatPosIndex == 1)
+            {
+                SetDropdownByName(heroDropDown2.GetComponent<CustomDropdown>(), "EMPTY");
+            }
+            else if (combatPosIndex == 2)
+            {
+                SetDropdownByName(heroDropDown3.GetComponent<CustomDropdown>(), "EMPTY");
+            }
+            else if (combatPosIndex == 3)
+            {
+                SetDropdownByName(heroDropDown4.GetComponent<CustomDropdown>(), "EMPTY");
+            }
+            else if (combatPosIndex == 4)
+            {
+                SetDropdownByName(heroDropDown5.GetComponent<CustomDropdown>(), "EMPTY");
+            }
             NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.WARNING, "WARNING!", "Cannot remove hero! Please change the hero position first!");
             yield return null;
         }

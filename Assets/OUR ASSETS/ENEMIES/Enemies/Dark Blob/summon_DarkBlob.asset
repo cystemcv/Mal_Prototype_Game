@@ -16,6 +16,7 @@ MonoBehaviour:
   mainClass: 0
   distanceFromAnotherUnit: 2
   unitsWorth: 1
+  startingArtifacts: []
   entityName: Dark Blob
   entityPrefab: {fileID: 720290061288894417, guid: 0ca52d0f174f74f4c94fcb819daf6dde, type: 3}
   entityImage: {fileID: 21300000, guid: 1aee269fd85d02947811f9aa0c3bd7be, type: 3}
@@ -30,17 +31,22 @@ MonoBehaviour:
   spawnIntend: {x: 0, y: 1, z: 0}
   aICommandsInitialize:
     aICommandType: 0
-    aiScriptableCards:
-    - {fileID: 11400000, guid: 36547c99a435227428729210c4d0063a, type: 2}
+    aiScriptableCards: []
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
     - {fileID: 11400000, guid: aaf0e2302bd5e1b4a9850c288fd5e3ca, type: 2}
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
   - aICommandType: 1
     aiScriptableCards:
     - {fileID: 11400000, guid: 581eba49868bacd499aa114822c1ebae, type: 2}
     - {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
     - {fileID: 11400000, guid: aaf0e2302bd5e1b4a9850c288fd5e3ca, type: 2}
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 20

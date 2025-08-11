@@ -491,6 +491,8 @@ public class Combat : MonoBehaviour
         battleground = GameObject.FindGameObjectWithTag("BattleGround");
         yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.gameObject));
 
+        yield return StartCoroutine(HandManager.Instance.DestroyAllHandCards());
+
         //spawn the companion
         //yield return StartCoroutine(SpawnCompanion());
 
