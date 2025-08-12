@@ -22,6 +22,11 @@ public class PlayedCard
     public GameObject playedCardUI;
 }
 
+public class EntityResult
+{
+    public GameObject entity;
+}
+
 [Serializable]
 public class CombatPosition
 {
@@ -892,7 +897,7 @@ public class Combat : MonoBehaviour
             StaticData.staticScriptableCompanion = CharacterManager.Instance.companionList[0].Clone();
         }
         CardScriptData cardScriptData = new CardScriptData();
-        StartCoroutine(InstantiateEntity(null, StaticData.staticScriptableCompanion, "Companion", null, cardScriptData, null));
+        StartCoroutine(InstantiateEntity(null, null, StaticData.staticScriptableCompanion, "Companion", null, cardScriptData, null));
 
         yield return null; // Wait for a frame 
 
@@ -916,7 +921,7 @@ public class Combat : MonoBehaviour
         }
 
         CardScriptData cardScriptData = new CardScriptData();
-        StartCoroutine(InstantiateEntity(StaticData.staticCharacter, null, "Player", null, cardScriptData, null));
+        StartCoroutine(InstantiateEntity(null,StaticData.staticCharacter, null, "Player", null, cardScriptData, null));
 
         yield return null; // Wait for a frame 
 
@@ -925,7 +930,7 @@ public class Combat : MonoBehaviour
 
 
 
-    public IEnumerator InstantiateEntity(ScriptableEntity scriptableEntity, ScriptableCompanion scriptableCompanion, string tag, EntityClass modifiedEntityClass, CardScriptData cardScriptData, CombatPosition combatPositionChosen)
+    public IEnumerator InstantiateEntity(EntityResult resultOutput, ScriptableEntity scriptableEntity, ScriptableCompanion scriptableCompanion, string tag, EntityClass modifiedEntityClass, CardScriptData cardScriptData, CombatPosition combatPositionChosen)
     {
 
         //check if available spots
@@ -1042,6 +1047,10 @@ public class Combat : MonoBehaviour
 
         }
 
+        if(resultOutput != null)
+        {
+            resultOutput.entity = entity;
+        }
 
         yield return null;
 
@@ -1090,7 +1099,7 @@ public class Combat : MonoBehaviour
         {
             CardScriptData cardScriptData = new CardScriptData();
             //instantiate our character or characters
-            yield return StartCoroutine(InstantiateEntity(scriptableEntity, null, "Enemy", null, cardScriptData, null));
+            yield return StartCoroutine(InstantiateEntity(null, scriptableEntity, null, "Enemy", null, cardScriptData, null));
 
             yield return null; // Wait for a frame 
         }
@@ -2362,7 +2371,7 @@ public class Combat : MonoBehaviour
                 MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
                 // Start the coroutine for each hit
-                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "PlayerSummon", entityClass, cardScriptData, null));
+                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "PlayerSummon", entityClass, cardScriptData, null));
             }
             else
             {
@@ -2371,7 +2380,7 @@ public class Combat : MonoBehaviour
                 MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
                 // Start the coroutine for each hit
-                yield return runner.StartCoroutine(InstantiateEntity(summonInCard, null, "EnemySummon", entityClass, cardScriptData, null));
+                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "EnemySummon", entityClass, cardScriptData, null));
 
             }
 

@@ -6,6 +6,7 @@ using TMPro;
 using Michsky.MUIP;
 using System.Linq;
 using DG.Tweening;
+using static SystemManager;
 
 public class ItemManager : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class ItemManager : MonoBehaviour
     public GameObject itemChoosePrefab;
     public GameObject itemPrefab;
     public GameObject itemPrefabCrafting;
+
+    //artifact panel
+    public GameObject itemArtifactPrefab;
+    public GameObject artifactPanel;
+    public GameObject itemArtifactPrefabParent;
 
     private void Awake()
     {
@@ -376,7 +382,7 @@ public class ItemManager : MonoBehaviour
             StaticData.inventoryItemList.Add(classItemTemp);
         }
 
-    
+
 
 
     }
@@ -685,7 +691,7 @@ public class ItemManager : MonoBehaviour
         int quantity = 0;
 
         int itemIndex = ItemManager.Instance.GetItemIndexByScriptableName(name, StaticData.inventoryItemList);
-      
+
         if (itemIndex != -1)
         {
             quantity = listOfItems[itemIndex].quantity;
@@ -701,7 +707,7 @@ public class ItemManager : MonoBehaviour
         bool canBuy = false;
 
         int playerGold = ItemManager.Instance.GetItemQuantity("Gold", StaticData.inventoryItemList);
-        
+
         if (playerGold < priceCost)
         {
             canBuy = false;
@@ -716,7 +722,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public List<ScriptableItem> GetItemList(
-    List<ScriptableItem> scriptableItemList, 
+    List<ScriptableItem> scriptableItemList,
     List<SystemManager.ItemCategory> allowedCategories = null,
     List<SystemManager.Rarity> allowedRarities = null)
     {
@@ -734,7 +740,7 @@ public class ItemManager : MonoBehaviour
         int? numberOfItems = null,
         bool allowDuplicates = false)
     {
-        List<ScriptableItem> allItems = GetItemList(scriptableItemList,allowedCategories, allowedRarities);
+        List<ScriptableItem> allItems = GetItemList(scriptableItemList, allowedCategories, allowedRarities);
 
         if (allItems.Count == 0 || !numberOfItems.HasValue || numberOfItems.Value <= 0)
             return allItems;
@@ -758,6 +764,55 @@ public class ItemManager : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void OpenArtifactPanel(bool showItemText = false)
+    {
+
+        SystemManager.Instance.DestroyAllChildren(itemArtifactPrefabParent);
+
+        artifactPanel.SetActive(true);
+
+        //get artifacts
+        var allowedTypes = new List<ItemCategory> { ItemCategory.ARTIFACT };
+        //var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare };
+
+        List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(ItemManager.Instance.artifactPoolList, allowedTypes, null, null, false);
+
+        //the instantiate them
+        foreach (ScriptableItem scriptableItem in itemList)
+        {
+            GameObject itemPrefab = Instantiate(itemArtifactPrefab, itemArtifactPrefabParent.transform);
+            itemPrefab.GetComponent<TooltipContent>().description = "<color=yellow>" + scriptableItem.itemName + " : </color>" + scriptableItem.itemDescription;
+            itemPrefab.transform.Find("Image").GetComponent<Image>().sprite = scriptableItem.Icon;
+
+            ClassItemData classItemData = new ClassItemData(scriptableItem,1);
+            itemPrefab.GetComponent<ClassItem>().classItemData = classItemData;
+            itemPrefab.GetComponent<ClassItem>().artifactPanelItem = true;
+
+            if (showItemText)
+            {
+                if (CheckIfItemExistOnList(StaticData.artifactItemList, scriptableItem) != null)
+                {
+                    itemPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = "ON";
+                }
+                else
+                {
+                    itemPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = "OFF";
+                }
+            }
+        }
+    }
+
+
+    public void CloseArtifactPanel()
+    {
+        artifactPanel.SetActive(false);
+    }
+
+    public void RemoveItemFromList(ClassItemData classItemData, List<ClassItemData> classItemDataList)
+    {
+        classItemDataList.RemoveAll(c => c.itemID == classItemData.itemID);
     }
 
 }

@@ -41,6 +41,7 @@ public class CombatManager : MonoBehaviour
     public GameObject heroDropDown5;
 
     public GameObject battlegroundsDropDown;
+    public GameObject heroDropDown;
 
     private void Awake()
     {
@@ -88,6 +89,8 @@ public class CombatManager : MonoBehaviour
         var cdBattleground = battlegroundsDropDown.GetComponent<CustomDropdown>();
         cdBattleground.onValueChanged.AddListener(value => Training_ChangeBattleGround(value, 0));
 
+        var cdHero = heroDropDown.GetComponent<CustomDropdown>();
+        cdHero.onValueChanged.AddListener(value => Training_ChangeHero(value, 0));
 
         InitializeOptions();
     }
@@ -186,6 +189,7 @@ public class CombatManager : MonoBehaviour
         CustomDropdown heroCustomDropDown5 = heroDropDown5.GetComponent<CustomDropdown>();
 
         CustomDropdown battlegroundsCustomDropDown = battlegroundsDropDown.GetComponent<CustomDropdown>();
+        CustomDropdown heroCustomDropDown = heroDropDown.GetComponent<CustomDropdown>();
 
 
         enemyCustomDropDown1.ClearList();
@@ -201,6 +205,7 @@ public class CombatManager : MonoBehaviour
         heroCustomDropDown5.ClearList();
 
         battlegroundsCustomDropDown.ClearList();
+        heroCustomDropDown.ClearList();
 
         enemyCustomDropDown1.CreateNewItem("EMPTY", null, false);
         enemyCustomDropDown2.CreateNewItem("EMPTY", null, false);
@@ -234,6 +239,12 @@ public class CombatManager : MonoBehaviour
             battlegroundsCustomDropDown.CreateNewItem(scriptableBattleGround.battleGroundType.ToString(), null, false);
         }
 
+        foreach (ScriptableEntity scriptableEntityHero in CharacterManager.Instance.characterList)
+        {
+            heroCustomDropDown.CreateNewItem(scriptableEntityHero.mainClass.ToString(), null, false);
+        }
+        
+
         // Initialize the new items
         enemyCustomDropDown1.SetupDropdown();
         enemyCustomDropDown2.SetupDropdown();
@@ -248,12 +259,17 @@ public class CombatManager : MonoBehaviour
         heroCustomDropDown5.SetupDropdown();
 
         battlegroundsCustomDropDown.SetupDropdown();
+        heroCustomDropDown.SetupDropdown();
 
         if (CombatManager.Instance.scriptablePlanet != null)
         {
             SetDropdownByName(battlegroundsCustomDropDown, CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType.ToString());
         }
 
+        if (StaticData.staticCharacter != null)
+        {
+            SetDropdownByName(heroCustomDropDown, StaticData.staticCharacter.mainClass.ToString());
+        }
 
         //set drop down values
         if (Combat.Instance.enemiesCombatPositions[0].entityOccupiedPos != null)
@@ -311,6 +327,11 @@ public class CombatManager : MonoBehaviour
     {
         Combat.Instance.Turns = int.Parse(turnSliderUI.GetComponent<Slider>().value.ToString());
         UIManager.Instance.AnimateTextTypeWriter("Turn:" + Combat.Instance.Turns, UIManager.Instance.turnText.GetComponent<TMP_Text>(), 4f);
+    }
+
+    public void Training_OpenArtifactPanel()
+    {
+        ItemManager.Instance.OpenArtifactPanel(true);
     }
 
     public void Training_DestroyAllEnemies()
@@ -506,7 +527,7 @@ public class CombatManager : MonoBehaviour
             }
 
             CardScriptData cardScriptData = new CardScriptData();
-            yield return StartCoroutine(Combat.Instance.InstantiateEntity(scriptableEntity, null, "Enemy", null, cardScriptData, combatPosition));
+            yield return StartCoroutine(Combat.Instance.InstantiateEntity(null, scriptableEntity, null, "Enemy", null, cardScriptData, combatPosition));
         }
 
 
@@ -572,7 +593,7 @@ public class CombatManager : MonoBehaviour
                 }
 
                 CardScriptData cardScriptData = new CardScriptData();
-                yield return StartCoroutine(Combat.Instance.InstantiateEntity(scriptableEntity, null, "PlayerSummon", null, cardScriptData, combatPosition));
+                yield return StartCoroutine(Combat.Instance.InstantiateEntity(null, scriptableEntity, null, "PlayerSummon", null, cardScriptData, combatPosition));
             }
 
         }
@@ -596,7 +617,7 @@ public class CombatManager : MonoBehaviour
         bg.transform.SetParent(battleground.transform);
 
         Combat.Instance.battleGroundType = CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType;
-
+        
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (scriptableBattleGround.isSpaceShip)
@@ -613,6 +634,44 @@ public class CombatManager : MonoBehaviour
 
     }
 
+    public void Training_ChangeHero(int value, int combatPosIndex)
+    {
+        StartCoroutine(Training_ChangeHeroIE(value, combatPosIndex));
+    }
+
+    public IEnumerator Training_ChangeHeroIE(int value, int combatPosIndex)
+    {
+        GameObject hero = GameObject.FindGameObjectWithTag("Player");
+        CombatPosition combatPosition = Combat.Instance.GetCombatPosition(hero);
+        Destroy(hero);
+
+        ScriptableEntity scriptableEntity = CharacterManager.Instance.characterList[value];
+        CardScriptData cardScriptData = new CardScriptData();
+        EntityResult entityResult = new EntityResult();
+        yield return StartCoroutine(Combat.Instance.InstantiateEntity(entityResult, scriptableEntity, null, "Player", null, cardScriptData, combatPosition));
+
+        StaticData.staticCharacter = scriptableEntity;
+
+        hero = entityResult.entity;
+
+        int valueBg = battlegroundsDropDown.GetComponent<CustomDropdown>().selectedItemIndex;
+        ScriptableBattleGrounds scriptableBattleGround = CustomDungeonGenerator.Instance.scriptableBattleGrounds[valueBg];
+
+
+        if (scriptableBattleGround.isSpaceShip)
+        {
+            hero.transform.Find("model").GetComponent<Animator>().runtimeAnimatorController = StaticData.staticCharacter.spaceShipAnimator;
+        }
+        else
+        {
+            hero.transform.Find("model").GetComponent<Animator>().runtimeAnimatorController = StaticData.staticCharacter.entityAnimator;
+        }
+
+
+        yield return null; // Wait for a frame 
+
+    }
+    
 
 
     public void SetDropdownByName(CustomDropdown dropdown, string targetName)

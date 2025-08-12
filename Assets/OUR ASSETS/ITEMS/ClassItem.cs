@@ -15,6 +15,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public ClassItemData classItemData;
     public bool stopEvents = false;
     private Tween typeWriterTween;
+    public bool artifactPanelItem = false;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -30,39 +31,47 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             return;
         }
 
+        if (artifactPanelItem)
+        {
+            return;
+        }
+
         if (classItemData.itemIn == SystemManager.ItemIn.INVENTORY)
         {
             //change inventory text
             string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText,30f);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.inventoryText, 30f);
             string itemDesc = classItemData.scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.inventoryTextDescription,200f);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.inventoryTextDescription, 200f);
 
         }
         else if (classItemData.itemIn == SystemManager.ItemIn.ARTIFACTS)
         {
             //change inventory text
             string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText,30f);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.artifactText, 30f);
             string itemDesc = classItemData.scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.artifactTextDescription,200f);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.artifactTextDescription, 200f);
         }
         else if (classItemData.itemIn == SystemManager.ItemIn.COMPANION)
         {
             //change inventory text
             string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText,30f);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.companionText, 30f);
             string itemDesc = classItemData.scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.companionTextDescription,200f);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.companionTextDescription, 200f);
         }
         else if (classItemData.itemIn == SystemManager.ItemIn.LOOT)
         {
             //change inventory text
             string itemText = "x" + classItemData.quantity + " : " + classItemData.scriptableItem.itemName;
-            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText,30f);
+            UIManager.Instance.AnimateTextTypeWriter(itemText, UIManager.Instance.lootText, 30f);
             string itemDesc = classItemData.scriptableItem.itemDescription;
-            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.lootTextDescription,200f);
+            UIManager.Instance.AnimateTextTypeWriter(itemDesc, UIManager.Instance.lootTextDescription, 200f);
         }
+
+
+
 
 
 
@@ -70,10 +79,16 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     }
 
-    
+
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
+        if (artifactPanelItem)
+        {
+            return;
+        }
+
         UIManager.Instance.StopAllTypeWriters();
         ItemManager.Instance.ClearAllText();
 
@@ -109,53 +124,74 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (classItemData.itemIn == SystemManager.ItemIn.INVENTORY)
-        {
 
-        }
-        else if (classItemData.itemIn == SystemManager.ItemIn.LOOT)
-        {
 
-            if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.CARD)
+        if (artifactPanelItem)
+        {
+            if (ItemManager.Instance.CheckIfItemExistOnList(StaticData.artifactItemList, classItemData.scriptableItem) != null)
             {
-                ChooseCardToDeck();
-            }
-            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
-            {
-                AddCompanionItem();
-            }
-            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMCOMPANIONITEM)
-            {
-                AddRandomCompanionItem();
-            }
-            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMARTIFACTITEM)
-            {
-                AddRandomArtifactItem();
-            }
-            else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMRECIPEITEM)
-            {
-                AddRandomRecipeItem();
+                ClassItemData classItemDataFound = ItemManager.Instance.CheckIfItemExistOnList(StaticData.artifactItemList, classItemData.scriptableItem);
+                ItemManager.Instance.RemoveItemFromList(classItemDataFound, StaticData.artifactItemList);
+                this.transform.Find("Text").GetComponent<TMP_Text>().text = "OFF";
             }
             else
             {
-                //add to inventory
-                ItemManager.Instance.AddRemoveInventoryItemInList(this.classItemData);
+                StaticData.artifactItemList.Add(classItemData);
+                this.transform.Find("Text").GetComponent<TMP_Text>().text = "ON";
+            }
+        }
+        else
+        {
 
-                //Remove from loot
-                ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
+
+
+            if (classItemData.itemIn == SystemManager.ItemIn.INVENTORY)
+            {
+
+            }
+            else if (classItemData.itemIn == SystemManager.ItemIn.LOOT)
+            {
+
+                if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.CARD)
+                {
+                    ChooseCardToDeck();
+                }
+                else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.COMPANIONITEM)
+                {
+                    AddCompanionItem();
+                }
+                else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMCOMPANIONITEM)
+                {
+                    AddRandomCompanionItem();
+                }
+                else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMARTIFACTITEM)
+                {
+                    AddRandomArtifactItem();
+                }
+                else if (classItemData.scriptableItem.itemCategory == SystemManager.ItemCategory.RANDOMRECIPEITEM)
+                {
+                    AddRandomRecipeItem();
+                }
+                else
+                {
+                    //add to inventory
+                    ItemManager.Instance.AddRemoveInventoryItemInList(this.classItemData);
+
+                    //Remove from loot
+                    ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
+
+                    ItemManager.Instance.ShowLoot();
+                    ItemManager.Instance.RefreshInventory();
+                }
 
                 ItemManager.Instance.ShowLoot();
-                ItemManager.Instance.RefreshInventory();
+                ItemManager.Instance.ClearAllText();
             }
-
-            ItemManager.Instance.ShowLoot();
-            ItemManager.Instance.ClearAllText();
         }
-
     }
 
 
-    
+
 
     public void AddCompanionItem()
     {
@@ -168,7 +204,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
-  
+
 
 
     }
@@ -183,7 +219,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
-    
+
 
         int itemsToChoose = 3;
 
@@ -192,17 +228,17 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         if (ItemManager.Instance.artifactTestPoolList.Count != 0)
         {
-           filteredArtifactPool = ItemManager.Instance.artifactTestPoolList
-    .Where(scriptableItem => !StaticData.artifactItemList
-        .Any(classItem => classItem.scriptableItem == scriptableItem))
-    .ToList();
+            filteredArtifactPool = ItemManager.Instance.artifactTestPoolList
+     .Where(scriptableItem => !StaticData.artifactItemList
+         .Any(classItem => classItem.scriptableItem == scriptableItem))
+     .ToList();
         }
         else
         {
-             filteredArtifactPool = ItemManager.Instance.artifactPoolList
-    .Where(scriptableItem => !StaticData.artifactItemList
-        .Any(classItem => classItem.scriptableItem == scriptableItem))
-    .ToList();
+            filteredArtifactPool = ItemManager.Instance.artifactPoolList
+   .Where(scriptableItem => !StaticData.artifactItemList
+       .Any(classItem => classItem.scriptableItem == scriptableItem))
+   .ToList();
         }
 
 
@@ -230,7 +266,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             // Create a ClassItem for the randomly selected item
             ClassItemData itemClassTemp = new ClassItemData(filteredArtifactPool[randomIndex], 1);
 
-            DeckManager.Instance.InitializeCardArtifactPrefab(itemClassTemp, parent,false,true);
+            DeckManager.Instance.InitializeCardArtifactPrefab(itemClassTemp, parent, false, true);
 
             //itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
             //StartCoroutine(UIManager.Instance.DelayedTypewriter(itemClassTemp.scriptableItem.itemName, itemPrefab.transform.Find("Title").GetComponent<TMP_Text>(), 30f));
@@ -274,7 +310,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
-     
+
 
         int itemsToChoose = 3;
 
@@ -368,7 +404,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.ShowLoot();
-  
+
         List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;
 
 
