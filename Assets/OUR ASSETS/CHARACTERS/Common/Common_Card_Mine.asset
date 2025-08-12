@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84cb0745ac775fa4baefc563540079c3, type: 3}
+  m_Name: Common_Card_Mine
+  m_EditorClassIdentifier: 
+  cardArt: {fileID: 21300000, guid: 4eaeb9df4dbf3724a897fdcc02f49c56, type: 3}
+  cardName: Mine
+  mainClass: 1
+  cardType: 2
+  cardTypeSecondary: 7
+  cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
+  targetEntityTagList: 06000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 0
+  allowScaling: 0
+  scriptableKeywords:
+  - {fileID: 11400000, guid: 7def08553f5b84f48989f4bb52f5f6a5, type: 2}
+  scriptableBuffDebuffs: []
+  scriptableHazards:
+  - {fileID: 11400000, guid: f38743bd3b51efa4daf800bced7bf76d, type: 2}
+  primaryManaCost: 1
+  cardDesc: 
+  abilityEffect: {fileID: 0}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 2
+  cardSoundEffect: {fileID: 8300000, guid: 83e12bc2a9e7c466f85a0a9056f121ef, type: 3}
+  cardFlavor: 
+  unlockable: 0
+  cardConditionClass: []
+  scriptableHazard: {fileID: 11400000, guid: f38743bd3b51efa4daf800bced7bf76d, type: 2}

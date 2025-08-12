@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22a2ebc97abbe914abd3073686f192bf, type: 3}
+  m_Name: Angel_Card_RighteousHammer
+  m_EditorClassIdentifier: 
+  cardArt: {fileID: 21300000, guid: bbd26c569fa7e974f9f1556a1e379c9d, type: 3}
+  cardName: Righteous Hammer
+  mainClass: 3
+  cardType: 0
+  cardTypeSecondary: 7
+  cardRarity: 2
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
+  targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 0
+  allowScaling: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: ad2f292ac115c1c4180b36d17d764ef5, type: 2}
+  scriptableHazards: []
+  primaryManaCost: 2
+  cardDesc: 
+  abilityEffect: {fileID: 1979890122693365436, guid: 34d03cb5abcccf041ad8ea3eaac64abb, type: 3}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 1
+  entityAnimation: 0
+  cardSoundEffect: {fileID: 8300000, guid: c55ab2eefeaa0a8419cf593f518aedbf, type: 3}
+  cardFlavor: 
+  unlockable: 0
+  cardConditionClass: []
+  damageAmount: 6
+  multiHits: 1

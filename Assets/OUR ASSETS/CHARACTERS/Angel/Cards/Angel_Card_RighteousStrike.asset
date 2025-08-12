@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0cd278833cde064bb4d6e7d36bce428, type: 3}
+  m_Name: Angel_Card_RighteousStrike
+  m_EditorClassIdentifier: 
+  cardArt: {fileID: 21300000, guid: 99843655752a6444bbee979ffd6f04bb, type: 3}
+  cardName: Righteous Strike
+  mainClass: 3
+  cardType: 0
+  cardTypeSecondary: 7
+  cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
+  targetEntityTagList: 0100000003000000
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 5
+  allowScaling: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs:
+  - {fileID: 11400000, guid: ad2f292ac115c1c4180b36d17d764ef5, type: 2}
+  scriptableHazards: []
+  primaryManaCost: 2
+  cardDesc: 
+  abilityEffect: {fileID: 309019412560960090, guid: a57a86a041489f6488857b461a2f4867, type: 3}
+  abilityEffectLifetime: 0.6
+  abilityEffectYaxis: 0
+  entityAnimation: 0
+  cardSoundEffect: {fileID: 8300000, guid: b00cc7caa56a94d4ab211a4ddc6ee186, type: 3}
+  cardFlavor: 
+  unlockable: 0
+  cardConditionClass: []
+  righteous: {fileID: 11400000, guid: ad2f292ac115c1c4180b36d17d764ef5, type: 2}
+  originalDmg: 5

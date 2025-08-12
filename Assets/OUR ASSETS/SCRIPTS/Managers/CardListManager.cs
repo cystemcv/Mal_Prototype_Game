@@ -19,7 +19,9 @@ public class CardListManager : MonoBehaviour
     public Sprite curseBg;
 
     public GameObject cardPrefab;
-
+    public GameObject cardListTabButton;
+    public GameObject cardListTabButtonParent;
+    public List<GameObject> cardListTabButtonList = new List<GameObject>();
 
     //classes card pool
     [FoldoutGroup("CARD POOLS")]
@@ -210,4 +212,36 @@ public class CardListManager : MonoBehaviour
 
     }
 
+    public List<string> GetAllClassCardsFromList(List<CardScriptData> cardScriptList)
+    {
+        var uniqueClasses = cardScriptList
+            .Select(card => card.scriptableCard.mainClass.ToString())  // get all mainClass strings
+            .Distinct()  // keep only unique ones
+            .ToList();   // convert to List<string>
+
+        return uniqueClasses;
+    }
+
+    public List<MainClass> ConvertStringListToMainClassList(List<string> stringList)
+    {
+        return stringList
+            .Select(s => Enum.Parse<MainClass>(s)) // Convert each string to MainClass
+            .ToList();
+    }
+
+    public bool CardExistsInList(List<CardScriptData> list, CardScriptData cardToCheck)
+    {
+        return list.Any(c => c.scriptableCard != null &&
+                             c.scriptableCard.cardName == cardToCheck.scriptableCard.cardName);
+    }
+
+    public CardScriptData FindCardByName(List<CardScriptData> list, CardScriptData cardToCheck)
+    {
+        return list.FirstOrDefault(c => c.scriptableCard != null &&
+                                        c.scriptableCard.cardName == cardToCheck.scriptableCard.cardName);
+    }
+
 }
+
+
+

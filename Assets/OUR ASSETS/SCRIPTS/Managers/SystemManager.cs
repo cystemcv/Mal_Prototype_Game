@@ -47,7 +47,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum EntitySound { Generic, Fire, MeleeHit, SwordSlice, Buff, Debuff }; //Actual classes to be determined
     public EntitySound entitySound;
 
-    public enum MainClass { MONSTER, SUPPORT, COMMON, CURSE, UNKOWN, SUMMON, ANGEL, SUMMONER }; //Actual classes to be determined
+    public enum MainClass { MONSTER, COMMON, CURSE, ANGEL, SUMMONER, STATUS }; //Actual classes to be determined
     public MainClass mainClass;
 
     public enum AbilityType { ATTACK, OTHER }

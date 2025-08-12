@@ -22,7 +22,7 @@ public class CardScriptData : MonoBehaviour
     public GameObject cardQueue;
 
     public int scalingLevelValue = 0;
-
+    public int copiesOfCard = 0;
     public CardScriptData()
     {
         //add an id to this scriptableCard, this is in order to identify it by comparisons

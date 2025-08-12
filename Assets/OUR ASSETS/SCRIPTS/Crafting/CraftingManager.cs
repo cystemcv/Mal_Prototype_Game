@@ -382,8 +382,10 @@ public class CraftingManager : MonoBehaviour
         card.GetComponent<Button>().enabled = true;
         card.GetComponent<CustomButton>().enabled = true;
 
-        card.GetComponent<CardListCardEvents>().markedGO = card.transform.GetChild(0).Find("UtilityFront").Find("Marked").gameObject;
+        card.GetComponent<CardListCardEvents>().markedGO = card.transform.Find("Panel").Find("UtilityFront").Find("Marked").gameObject;
         card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
+        card.GetComponent<CardListCardEvents>().markedNumberGO = card.transform.Find("Panel").Find("UtilityFront").Find("MarkedNumber").gameObject;
+        card.GetComponent<CardListCardEvents>().markedNumberGO.SetActive(false);
         card.GetComponent<CardListCardEvents>().scriptableCard = data.scriptableCard;
     }
 

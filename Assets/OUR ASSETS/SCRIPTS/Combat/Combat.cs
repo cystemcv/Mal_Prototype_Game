@@ -147,6 +147,12 @@ public class Combat : MonoBehaviour
         }
         //at the start of combat
 
+ 
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         if (CombatManager.Instance.ScriptableEvent == null)
         {
             StartCombat();
@@ -155,13 +161,6 @@ public class Combat : MonoBehaviour
         {
             StartEvent();
         }
-
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
 
         //CombatManager.Instance.EnableTrainingMode();
 
@@ -1474,7 +1473,7 @@ public class Combat : MonoBehaviour
     public IEnumerator InitializeCardsAndDecks()
     {
 
-        if (StaticData.staticMainDeck.Count == 0)
+        if (StaticData.staticMainDeck.Count == 0 && !CombatManager.Instance.trainingMode)
         {
             DeckManager.Instance.BuildStartingDeck();
         }

@@ -22,9 +22,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8a4c2b1f6f9bb94b83e5c6eaa7b2b7d, type: 2}
   - {fileID: 11400000, guid: d20aefbf0df5e4745a0895f6301b9ad0, type: 2}
   - {fileID: 11400000, guid: f829ad646a8ff6b4abecf2e799b1807a, type: 2}
-  mainClass: 7
+  mainClass: 4
   distanceFromAnotherUnit: 2
   unitsWorth: 1
+  startingArtifacts: []
   entityName: Lilan
   entityPrefab: {fileID: 4367227256133611183, guid: b2f2225152013a746ad4d04806f68c25, type: 3}
   entityImage: {fileID: 21300000, guid: f3ae95972eb1c764f9ad644505cc6e75, type: 3}
@@ -39,6 +40,12 @@ MonoBehaviour:
   entityAnimator: {fileID: 9100000, guid: e34332934a18f1541973c0243f49d4b4, type: 2}
   spaceShipAnimator: {fileID: 9100000, guid: be7f7517ad754534797dd0ebf047fdb8, type: 2}
   spawnIntend: {x: 0, y: 1, z: 0}
+  aICommandsInitialize:
+    aICommandType: 0
+    aiScriptableCards: []
+    modifiedCardValueMin: 0
+    modifiedCardValueMax: 0
+  aICommands: []
   strength: 0
   defence: 0
   maxHealth: 50

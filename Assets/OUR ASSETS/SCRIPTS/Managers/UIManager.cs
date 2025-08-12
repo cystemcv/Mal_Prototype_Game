@@ -9,8 +9,24 @@ using System;
 using DG.Tweening;
 using System.Linq;
 
+public class OptionsSettings
+{
+    public List<CardScriptData> cardScriptDataList;
+    public UIManager.CardListMode cardListMode;
+    public bool enableCloseButton;
+    public int enableMinSelection;
+    public int enableMaxSelection;
+    public string title;
+    public Action onConfirmAction;
+    public bool allowClassButtons;
+    public bool allowDuplicates = false;
+}
+
 public class UIManager : MonoBehaviour
 {
+
+
+
     public static UIManager Instance;
 
     private Dictionary<TMP_Text, Tweener> activeTweeners = new Dictionary<TMP_Text, Tweener>();
@@ -78,6 +94,7 @@ public class UIManager : MonoBehaviour
     public GameObject cardListGOContent;
     public GameObject cardPrefabScaleWithScreenOverlay;
     List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
+    public bool cardScriptAllowDuplicates = false;
 
     public GameObject eventGO;
     public GameObject eventButtonPrefab;
@@ -602,27 +619,63 @@ public class UIManager : MonoBehaviour
 
     public void OpenMainDeckList()
     {
-        ShowCardList(StaticData.staticMainDeck, CardListMode.VIEW, true, 0, 0, "Deck", CadList_DoNothing);
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = StaticData.staticMainDeck;
+        optionsSettings.cardListMode = CardListMode.VIEW;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = 0;
+        optionsSettings.title = "Deck";
+        optionsSettings.onConfirmAction = CardList_DoNothing;
+        optionsSettings.allowClassButtons = false;
+        ShowCardList(optionsSettings);
     }
 
     public void OpenDeckList()
     {
-        ShowCardList(DeckManager.Instance.combatDeck, CardListMode.VIEW, true, 0, 0, "Remaining Deck", CadList_DoNothing);
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = DeckManager.Instance.combatDeck;
+        optionsSettings.cardListMode = CardListMode.VIEW;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = 0;
+        optionsSettings.title = "Remaining Deck";
+        optionsSettings.onConfirmAction = CardList_DoNothing;
+        optionsSettings.allowClassButtons = false;
+        ShowCardList(optionsSettings);
     }
 
-    private void CadList_DoNothing()
+    private void CardList_DoNothing()
     {
         Debug.Log("Does nothing");
     }
 
     public void OpenDiscardList()
     {
-        ShowCardList(DeckManager.Instance.discardedPile, CardListMode.VIEW, true, 0, 0, "Discarded Cards", CadList_DoNothing);
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = DeckManager.Instance.discardedPile;
+        optionsSettings.cardListMode = CardListMode.VIEW;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = 0;
+        optionsSettings.title = "Discarded Cards";
+        optionsSettings.onConfirmAction = CardList_DoNothing;
+        optionsSettings.allowClassButtons = false;
+        ShowCardList(optionsSettings);
     }
 
     public void OpenBanishedList()
     {
-        ShowCardList(DeckManager.Instance.banishedPile, CardListMode.VIEW, true, 0, 0, "Banished Cards", CadList_DoNothing);
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = DeckManager.Instance.banishedPile;
+        optionsSettings.cardListMode = CardListMode.VIEW;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = 0;
+        optionsSettings.title = "Banished Cards";
+        optionsSettings.onConfirmAction = CardList_DoNothing;
+        optionsSettings.allowClassButtons = false;
+        ShowCardList(optionsSettings);
     }
 
     //-----------------
@@ -636,16 +689,18 @@ public class UIManager : MonoBehaviour
 
 
 
-    public void ShowCardList(List<CardScriptData> cardScriptDataList, CardListMode cardListMode, bool enableCloseButton, int enableMinSelection, int enableMaxSelection, string title,
-        Action onConfirmAction)
+    public void ShowCardList(OptionsSettings optionsSettings)
     {
+        cardScriptAllowDuplicates = optionsSettings.allowDuplicates;
         ResetCardList();
 
-        this.cardListMode = cardListMode;
-        this.enableCloseButton = enableCloseButton;
-        this.enableMinSelection = enableMinSelection;
-        this.enableMaxSelection = enableMaxSelection;
-        this.cardScriptDataList = cardScriptDataList;
+
+
+        this.cardListMode = optionsSettings.cardListMode;
+        this.enableCloseButton = optionsSettings.enableCloseButton;
+        this.enableMinSelection = optionsSettings.enableMinSelection;
+        this.enableMaxSelection = optionsSettings.enableMaxSelection;
+        this.cardScriptDataList = optionsSettings.cardScriptDataList;
 
 
         GameObject confirmButtonGO = this.cardListGO.transform.Find("Buttons").Find("btn_Confirm").gameObject;
@@ -653,7 +708,7 @@ public class UIManager : MonoBehaviour
         selectedCardList.Clear();
 
         this.cardListGO.SetActive(true);
-        this.cardListGO.transform.Find("Others").Find("Title").GetComponent<TMP_Text>().text = title;
+        this.cardListGO.transform.Find("Others").Find("Title").GetComponent<TMP_Text>().text = optionsSettings.title;
 
         GameObject closeButton = this.cardListGO.transform.Find("Buttons").Find("btn_Close").gameObject;
 
@@ -681,6 +736,13 @@ public class UIManager : MonoBehaviour
             confirmButtonGO.SetActive(false);
         }
 
+        DeleteAllListTabButtons();
+        if (optionsSettings.allowClassButtons)
+        {
+            //create the class buttons and also filter the list 
+            CreateClassButtonsForCardList();
+        }
+
         AssignCardsOnCardList();
 
 
@@ -689,14 +751,75 @@ public class UIManager : MonoBehaviour
         confirmButton.onClick.AddListener(() =>
         {
             Debug.Log("Confirm button clicked!");
-            if (onConfirmAction == null) Debug.LogWarning("onConfirmAction is null");
+            if (optionsSettings.onConfirmAction == null) Debug.LogWarning("onConfirmAction is null");
             else
             {
-                onConfirmAction.Invoke();
+                optionsSettings.onConfirmAction.Invoke();
             }
             cardListGO.SetActive(false);
         });
 
+    }
+
+    public void CreateClassButtonsForCardList()
+    {
+
+        List<string> cardClassesStrings = CardListManager.Instance.GetAllClassCardsFromList(this.cardScriptDataList);
+
+        if (cardClassesStrings.Count == 0)
+        {
+            return;
+        }
+
+        List<SystemManager.MainClass> cardClasses = CardListManager.Instance.ConvertStringListToMainClassList(cardClassesStrings);
+        FillCardListDataByClass(cardClasses[0]);
+
+        CreateCardListTabButtons(cardClasses);
+    }
+
+    public void CreateCardListTabButtons(List<SystemManager.MainClass> cardClasses)
+    {
+        foreach (SystemManager.MainClass mainClass in cardClasses)
+        {
+
+            //instantiate the button
+            GameObject classButton = Instantiate(CardListManager.Instance.cardListTabButton, CardListManager.Instance.cardListTabButtonParent.transform, false);
+
+            //change the text
+            classButton.GetComponent<ButtonManager>().SetText(mainClass.ToString());
+
+            //assign the value
+            classButton.GetComponent<CardListButtonTab>().mainClass = mainClass;
+
+            CardListManager.Instance.cardListTabButtonList.Add(classButton);
+
+        }
+    }
+
+    public void DeleteAllListTabButtons()
+    {
+        SystemManager.Instance.DestroyAllChildren(CardListManager.Instance.cardListTabButtonParent);
+        CardListManager.Instance.cardListTabButtonList.Clear();
+    }
+
+    public void FillCardListDataByClass(SystemManager.MainClass mainClass)
+    {
+        List<SystemManager.MainClass> firstClass = new List<SystemManager.MainClass>();
+        firstClass.Add(mainClass);
+
+        //filter from the first class
+        List<ScriptableCard> scriptableCards = CardListManager.Instance.ChooseCards(firstClass, null, null, null, null, null, true);
+
+        //remove the list
+        this.cardScriptDataList.Clear();
+
+        foreach (ScriptableCard scriptableCard in scriptableCards)
+        {
+            CardScriptData cardScriptData = new CardScriptData();
+            cardScriptData.scriptableCard = scriptableCard;
+
+            this.cardScriptDataList.Add(cardScriptData);
+        }
     }
 
     public void ResetCardList()
@@ -734,10 +857,15 @@ public class UIManager : MonoBehaviour
             card.GetComponent<CustomButton>().enabled = true;
             card.GetComponent<CustomButton>().playFeedbacks = false;
 
-            card.GetComponent<CardListCardEvents>().markedGO = card.transform.GetChild(0).Find("UtilityFront").Find("Marked").gameObject;
+            card.GetComponent<CardListCardEvents>().markedGO = card.transform.Find("Panel").Find("UtilityFront").Find("Marked").gameObject;
             card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
+
+            card.GetComponent<CardListCardEvents>().markedNumberGO = card.transform.Find("Panel").Find("UtilityFront").Find("MarkedNumber").gameObject;
+            card.GetComponent<CardListCardEvents>().markedNumberGO.SetActive(false);
+
             card.GetComponent<CardListCardEvents>().scriptableCard = cardScriptData.scriptableCard;
             card.GetComponent<CardListCardEvents>().cardScriptData = cardScriptData;
+
         }
 
 
@@ -977,7 +1105,7 @@ public class UIManager : MonoBehaviour
 
         //save the cardlist
         GameObject cardList = UIManager.Instance.shopUI.transform.Find("CardList").gameObject;
-        List<ShopData> shopDataList = new List<ShopData>(); 
+        List<ShopData> shopDataList = new List<ShopData>();
         List<ShopCard> shopCardList = cardList.GetComponentsInChildren<ShopCard>(true).ToList();
 
         foreach (ShopCard shopCard in shopCardList)

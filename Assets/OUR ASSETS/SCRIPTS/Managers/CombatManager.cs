@@ -390,10 +390,25 @@ public class CombatManager : MonoBehaviour
 
     }
 
+
+    public void Training_RemoveAllCardsFromDeck()
+    {
+        StaticData.staticMainDeck.Clear();
+        StartCoroutine(Combat.Instance.InitializeCombat());
+    }
+
     public void Training_RemoveCardsFromDeck()
     {
-
-        UIManager.Instance.ShowCardList(StaticData.staticMainDeck, CardListMode.EDIT, true, 0, StaticData.staticMainDeck.Count, "Remove Cards From Deck", CombatManager.Instance.CardList_RemoveCardsFromDeck);   
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = StaticData.staticMainDeck;
+        optionsSettings.cardListMode = CardListMode.EDIT;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = StaticData.staticMainDeck.Count;
+        optionsSettings.title = "Remove Cards From Deck";
+        optionsSettings.onConfirmAction = CombatManager.Instance.CardList_RemoveCardsFromDeck;
+        optionsSettings.allowClassButtons = false;
+        UIManager.Instance.ShowCardList(optionsSettings);   
     }
 
     public void CardList_RemoveCardsFromDeck()
@@ -421,7 +436,18 @@ public class CombatManager : MonoBehaviour
     {
         List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
         cardScriptDataList = CardListManager.Instance.GetAllCardsFromLibrary();
-        UIManager.Instance.ShowCardList(cardScriptDataList, CardListMode.EDIT, true, 0, cardScriptDataList.Count, "Add Cards To Deck", CombatManager.Instance.CardList_AddCardsToDeck);
+
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.cardScriptDataList = cardScriptDataList;
+        optionsSettings.cardListMode = CardListMode.EDIT;
+        optionsSettings.enableCloseButton = true;
+        optionsSettings.enableMinSelection = 0;
+        optionsSettings.enableMaxSelection = 100;
+        optionsSettings.title = "Add Cards To Deck";
+        optionsSettings.onConfirmAction = CombatManager.Instance.CardList_AddCardsToDeck;
+        optionsSettings.allowClassButtons = true;
+        optionsSettings.allowDuplicates = true;
+        UIManager.Instance.ShowCardList(optionsSettings);
     }
 
     public void CardList_AddCardsToDeck()
@@ -438,7 +464,11 @@ public class CombatManager : MonoBehaviour
 
         foreach (CardScriptData cardScriptData in UIManager.Instance.selectedCardList)
         {
-            DeckManager.Instance.AddCardOnDeck(cardScriptData.scriptableCard,0);
+            for (int i=0; i < cardScriptData.copiesOfCard; i++)
+            {
+                DeckManager.Instance.AddCardOnDeck(cardScriptData.scriptableCard, 0);
+            }
+  
         }
 
         StartCoroutine(Combat.Instance.InitializeCombat());
