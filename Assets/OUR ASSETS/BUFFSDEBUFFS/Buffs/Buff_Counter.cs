@@ -14,6 +14,11 @@ public class Buff_Counter : ScriptableBuffDebuff
         BuffDebuffClass buffDebuffClass = BuffSystemManager.Instance.GetBuffDebuffClassFromTarget(target, this.nameID);
         MonoBehaviour runner = CombatCardHandler.Instance;
 
+        if (caster == null || target == null)
+        {
+            return;
+        }
+
         Debug.Log("caster : " + caster.name + " | " + buffDebuffClass.tempValue);
         Debug.Log("target : " + target.name + " | " + buffDebuffClass.tempValue);
 

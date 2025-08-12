@@ -143,11 +143,20 @@ public class CardListManager : MonoBehaviour
     }
 
 
-    public void OpenCardListChoice(List<ScriptableCard> scriptableCards)
+    public void OpenCardListChoice(List<ScriptableCard> scriptableCards, bool showCloseButton = true)
     {
         //display screen
         UIManager.Instance.ChooseGroupUI.SetActive(true);
         UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
+
+        if (showCloseButton)
+        {
+            UIManager.Instance.ChooseGroupUI.transform.Find("btn_Skip").gameObject.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.ChooseGroupUI.transform.Find("btn_Skip").gameObject.SetActive(false);
+        }
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;

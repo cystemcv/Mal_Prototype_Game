@@ -32,12 +32,12 @@ public class Angel_Card_RighteousSearch : ScriptableCard
 
     public void Activate()
     {
-        var allowedClasses = new List<MainClass> { MainClass.COMMON };
+        var allowedClasses = new List<MainClass> { MainClass.COMMON, MainClass.COMMON };
         allowedClasses.Add(StaticData.staticCharacter.mainClass);
 
-        List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, null, null, "Righteous", 3, false);
+        List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(null, null, null, null, "Righteous", 3, false);
 
-        CardListManager.Instance.OpenCardListChoice(cardList);
+        CardListManager.Instance.OpenCardListChoice(cardList,false);
 
     }
 

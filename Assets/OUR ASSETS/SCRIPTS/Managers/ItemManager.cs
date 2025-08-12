@@ -790,6 +790,8 @@ public class ItemManager : MonoBehaviour
             itemPrefab.GetComponent<ClassItem>().classItemData = classItemData;
             itemPrefab.GetComponent<ClassItem>().artifactPanelItem = true;
 
+            itemPrefab.GetComponent<CustomButton>().playFeedbacks = false;
+
             if (showItemText)
             {
                 if (CheckIfItemExistOnList(StaticData.artifactItemList, scriptableItem) != null)

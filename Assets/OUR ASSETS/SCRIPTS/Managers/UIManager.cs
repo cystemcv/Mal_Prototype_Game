@@ -605,6 +605,10 @@ public class UIManager : MonoBehaviour
 
     public void SkipChooseGroupUI()
     {
+        //resume
+        SystemManager.Instance.abilityMode = SystemManager.AbilityModes.NONE;
+
+        SystemManager.Instance.DestroyAllChildren(UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject);
 
         UIManager.Instance.ChooseGroupUI.SetActive(false);
 

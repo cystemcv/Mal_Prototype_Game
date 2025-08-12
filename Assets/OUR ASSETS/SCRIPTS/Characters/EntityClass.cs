@@ -292,10 +292,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
 
-        if (CombatManager.Instance.trainingMode)
-        {
-            return;
-        }
+
 
 
         SystemManager.Instance.ChangeTargetMaterial(SystemManager.Instance.materialTargetEntity, this.gameObject);
