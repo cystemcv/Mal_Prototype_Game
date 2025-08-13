@@ -110,22 +110,22 @@ public class CraftingManager : MonoBehaviour
         bool found = false;
 
 
-        //companion
-        if (randomChance <= 30 && !found)
-        {
-            var allowedTypes = new List<ItemCategory> { ItemCategory.COMPANIONITEM };
-            var allowedRarities = new List<Rarity> {};
-            allowedRarities.Add(rarityCreation.rarity);
+        ////companion
+        //if (randomChance <= 30 && !found)
+        //{
+        //    var allowedTypes = new List<ItemCategory> { ItemCategory.COMPANIONITEM };
+        //    var allowedRarities = new List<Rarity> {};
+        //    allowedRarities.Add(rarityCreation.rarity);
 
-            List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(StaticData.staticScriptableCompanion.companionItemList, allowedTypes, null, 1, false);
+        //    List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(StaticData.staticScriptableCompanion.companionItemList, allowedTypes, null, 1, false);
 
-            if (itemList[0] !=  null)
-            {
-                craftingRecipesData.scriptableItem = itemList[0];
-                found = true;
-            }
+        //    if (itemList[0] !=  null)
+        //    {
+        //        craftingRecipesData.scriptableItem = itemList[0];
+        //        found = true;
+        //    }
        
-        }
+        //}
 
         randomChance = UnityEngine.Random.Range(0, 100);
         //artifact

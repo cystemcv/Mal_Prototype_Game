@@ -11,7 +11,7 @@ public class UI_MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        UIManager.Instance.topPanelCombat.SetActive(false);
     }
 
     // Update is called once per frame
@@ -80,7 +80,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_OptionsMenu");
-        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, false, false);
+        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f, false, false);
     }
 
     //OPTIONS

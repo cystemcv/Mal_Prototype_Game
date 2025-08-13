@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Michsky.MUIP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -673,6 +674,20 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         }
 
         Destroy(spawnPrefabTrue, spawnTimer);
+    }
+
+    public void SetDropdownByName(CustomDropdown dropdown, string targetName)
+    {
+        int index = dropdown.items.FindIndex(i => i.itemName == targetName);
+        if (index != -1)
+        {
+            dropdown.selectedItemIndex = index;
+            dropdown.ChangeDropdownInfo(index); // Refreshes the label/icon visually
+        }
+        else
+        {
+            Debug.LogWarning($"Item '{targetName}' not found in dropdown {dropdown.name}");
+        }
     }
 
 }

@@ -83,6 +83,7 @@ public class UI_Combat : MonoBehaviour
     }
 
 
+
     public GameObject AddPlayedCardUI(PlayedCard playedCard)
     {
 
@@ -148,6 +149,8 @@ public class UI_Combat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        UIManager.Instance.topPanelCombat.SetActive(true);
 
         //cardLineRenderer = this.transform.Find("TARGET LINERENDERER").GetComponent<LineRenderer>();
 

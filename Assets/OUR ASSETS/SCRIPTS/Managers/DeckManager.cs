@@ -66,9 +66,20 @@ public class DeckManager : MonoBehaviour
 
     public void BuildStartingDeck()
     {
+        if (StaticData.staticCharacter == null)
+        {
+            return;
+        }
+
+        if (StaticData.staticCharacter.startingCards == null)
+        {
+            return;
+        }
 
         // Clear the deck before building a new one
         StaticData.staticMainDeck.Clear();
+
+
 
         //loop for each starting card list and add it to our deck
         foreach (ScriptableCard scriptableCard in StaticData.staticCharacter.startingCards)

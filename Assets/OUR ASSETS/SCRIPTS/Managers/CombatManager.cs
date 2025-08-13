@@ -164,6 +164,12 @@ public class CombatManager : MonoBehaviour
 
     public void InitializeOptions()
     {
+
+        if(Combat.Instance == null)
+        {
+            return;
+        }
+
         manaSliderUI.GetComponent<Slider>().value = Combat.Instance.ManaAvailable;
         turnSliderUI.GetComponent<Slider>().value = Combat.Instance.turns;
 
@@ -263,56 +269,56 @@ public class CombatManager : MonoBehaviour
 
         if (CombatManager.Instance.scriptablePlanet != null)
         {
-            SetDropdownByName(battlegroundsCustomDropDown, CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType.ToString());
+            SystemManager.Instance.SetDropdownByName(battlegroundsCustomDropDown, CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType.ToString());
         }
 
         if (StaticData.staticCharacter != null)
         {
-            SetDropdownByName(heroCustomDropDown, StaticData.staticCharacter.mainClass.ToString());
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown, StaticData.staticCharacter.mainClass.ToString());
         }
 
         //set drop down values
         if (Combat.Instance.enemiesCombatPositions[0].entityOccupiedPos != null)
         {
-            SetDropdownByName(enemyCustomDropDown1, Combat.Instance.enemiesCombatPositions[0].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(enemyCustomDropDown1, Combat.Instance.enemiesCombatPositions[0].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.enemiesCombatPositions[1].entityOccupiedPos != null)
         {
-            SetDropdownByName(enemyCustomDropDown2, Combat.Instance.enemiesCombatPositions[1].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(enemyCustomDropDown2, Combat.Instance.enemiesCombatPositions[1].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.enemiesCombatPositions[2].entityOccupiedPos != null)
         {
-            SetDropdownByName(enemyCustomDropDown3, Combat.Instance.enemiesCombatPositions[2].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(enemyCustomDropDown3, Combat.Instance.enemiesCombatPositions[2].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.enemiesCombatPositions[3].entityOccupiedPos != null)
         {
-            SetDropdownByName(enemyCustomDropDown4, Combat.Instance.enemiesCombatPositions[3].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(enemyCustomDropDown4, Combat.Instance.enemiesCombatPositions[3].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.enemiesCombatPositions[4].entityOccupiedPos != null)
         {
-            SetDropdownByName(enemyCustomDropDown5, Combat.Instance.enemiesCombatPositions[4].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(enemyCustomDropDown5, Combat.Instance.enemiesCombatPositions[4].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
 
         //set drop down values
         if (Combat.Instance.characterCombatPositions[0].entityOccupiedPos != null)
         {
-            SetDropdownByName(heroCustomDropDown1, Combat.Instance.characterCombatPositions[0].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown1, Combat.Instance.characterCombatPositions[0].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.characterCombatPositions[1].entityOccupiedPos != null)
         {
-            SetDropdownByName(heroCustomDropDown2, Combat.Instance.characterCombatPositions[1].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown2, Combat.Instance.characterCombatPositions[1].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.characterCombatPositions[2].entityOccupiedPos != null)
         {
-            SetDropdownByName(heroCustomDropDown3, Combat.Instance.characterCombatPositions[2].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown3, Combat.Instance.characterCombatPositions[2].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.characterCombatPositions[3].entityOccupiedPos != null)
         {
-            SetDropdownByName(heroCustomDropDown4, Combat.Instance.characterCombatPositions[3].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown4, Combat.Instance.characterCombatPositions[3].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
         if (Combat.Instance.characterCombatPositions[4].entityOccupiedPos != null)
         {
-            SetDropdownByName(heroCustomDropDown5, Combat.Instance.characterCombatPositions[4].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
+            SystemManager.Instance.SetDropdownByName(heroCustomDropDown5, Combat.Instance.characterCombatPositions[4].entityOccupiedPos.GetComponent<EntityClass>().scriptableEntity.entityName);
         }
 
 
@@ -339,11 +345,11 @@ public class CombatManager : MonoBehaviour
         GameObject combatscene = GameObject.Find("COMBATSCENE");
         SystemManager.Instance.DestroyAllChildren(combatscene.transform.Find("Enemies").gameObject);
 
-        SetDropdownByName(enemyDropDown1.GetComponent<CustomDropdown>(), "EMPTY");
-        SetDropdownByName(enemyDropDown2.GetComponent<CustomDropdown>(), "EMPTY");
-        SetDropdownByName(enemyDropDown3.GetComponent<CustomDropdown>(), "EMPTY");
-        SetDropdownByName(enemyDropDown4.GetComponent<CustomDropdown>(), "EMPTY");
-        SetDropdownByName(enemyDropDown5.GetComponent<CustomDropdown>(), "EMPTY");
+        SystemManager.Instance.SetDropdownByName(enemyDropDown1.GetComponent<CustomDropdown>(), "EMPTY");
+        SystemManager.Instance.SetDropdownByName(enemyDropDown2.GetComponent<CustomDropdown>(), "EMPTY");
+        SystemManager.Instance.SetDropdownByName(enemyDropDown3.GetComponent<CustomDropdown>(), "EMPTY");
+        SystemManager.Instance.SetDropdownByName(enemyDropDown4.GetComponent<CustomDropdown>(), "EMPTY");
+        SystemManager.Instance.SetDropdownByName(enemyDropDown5.GetComponent<CustomDropdown>(), "EMPTY");
 
     }
 
@@ -547,23 +553,23 @@ public class CombatManager : MonoBehaviour
         {
             if (combatPosIndex == 0)
             {
-                SetDropdownByName(heroDropDown1.GetComponent<CustomDropdown>(), "EMPTY");
+                SystemManager.Instance.SetDropdownByName(heroDropDown1.GetComponent<CustomDropdown>(), "EMPTY");
             }
             else if (combatPosIndex == 1)
             {
-                SetDropdownByName(heroDropDown2.GetComponent<CustomDropdown>(), "EMPTY");
+                SystemManager.Instance.SetDropdownByName(heroDropDown2.GetComponent<CustomDropdown>(), "EMPTY");
             }
             else if (combatPosIndex == 2)
             {
-                SetDropdownByName(heroDropDown3.GetComponent<CustomDropdown>(), "EMPTY");
+                SystemManager.Instance.SetDropdownByName(heroDropDown3.GetComponent<CustomDropdown>(), "EMPTY");
             }
             else if (combatPosIndex == 3)
             {
-                SetDropdownByName(heroDropDown4.GetComponent<CustomDropdown>(), "EMPTY");
+                SystemManager.Instance.SetDropdownByName(heroDropDown4.GetComponent<CustomDropdown>(), "EMPTY");
             }
             else if (combatPosIndex == 4)
             {
-                SetDropdownByName(heroDropDown5.GetComponent<CustomDropdown>(), "EMPTY");
+                SystemManager.Instance.SetDropdownByName(heroDropDown5.GetComponent<CustomDropdown>(), "EMPTY");
             }
             NotificationSystemManager.Instance.ShowNotification(SystemManager.NotificationOperation.WARNING, "WARNING!", "Cannot remove hero! Please change the hero position first!");
             yield return null;
@@ -674,17 +680,5 @@ public class CombatManager : MonoBehaviour
     
 
 
-    public void SetDropdownByName(CustomDropdown dropdown, string targetName)
-    {
-        int index = dropdown.items.FindIndex(i => i.itemName == targetName);
-        if (index != -1)
-        {
-            dropdown.selectedItemIndex = index;
-            dropdown.ChangeDropdownInfo(index); // Refreshes the label/icon visually
-        }
-        else
-        {
-            Debug.LogWarning($"Item '{targetName}' not found in dropdown {dropdown.name}");
-        }
-    }
+
 }

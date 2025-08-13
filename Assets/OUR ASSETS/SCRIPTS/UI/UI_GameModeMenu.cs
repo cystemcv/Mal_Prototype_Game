@@ -23,6 +23,11 @@ public class UI_GameModeMenu : MonoBehaviour
 
     }
 
+    public void Start()
+    {
+        UIManager.Instance.topPanelCombat.SetActive(false);
+    }
+
     public void GoToCharacterSelection_MainMode()
     {
         //play audio
