@@ -71,8 +71,7 @@ public class UI_Combat : MonoBehaviour
 
     public GameObject targettingPrefab;
 
-    public Sprite fillBox;
-    public Sprite emptyBox;
+
 
 
     private void Awake()

@@ -92,9 +92,9 @@ MonoBehaviour:
   health: 0
   maxHealth: 0
   shield: 0
-  maxShield: 0
+  maxShield: 999
   armor: 0
-  maxArmor: 0
+  maxArmor: 999
   counterDamage: 0
   allowEntityRotation: 0
   sliderBar: {fileID: 0}
@@ -152,6 +152,9 @@ MonoBehaviour:
   intend: {fileID: 0}
   scriptableEntity: {fileID: 0}
   scriptableCardToUse: {fileID: 0}
+  getCardLevel: 0
+  entityLevel: 0
+  justSpawned: 0
 --- !u!212 &-7426720843667326011
 SpriteRenderer:
   m_ObjectHideFlags: 0

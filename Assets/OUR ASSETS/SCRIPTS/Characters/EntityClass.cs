@@ -234,8 +234,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         fillBar = sliderBar.transform.Find("Fill").gameObject;
 
         //make the healthbar red and hide shield
-        shieldIcon.gameObject.SetActive(false);
-        armorIcon.gameObject.SetActive(false);
+        //shieldIcon.gameObject.SetActive(false);
+        //armorIcon.gameObject.SetActive(false);
         //fillBar.GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
 
         //update based on enemy hp and max hp

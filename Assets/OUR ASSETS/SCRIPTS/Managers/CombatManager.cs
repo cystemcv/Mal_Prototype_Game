@@ -43,6 +43,9 @@ public class CombatManager : MonoBehaviour
     public GameObject battlegroundsDropDown;
     public GameObject heroDropDown;
 
+    public Sprite fillBox;
+    public Sprite emptyBox;
+
     private void Awake()
     {
 
@@ -179,7 +182,7 @@ public class CombatManager : MonoBehaviour
     public void InitializeOptions()
     {
 
-        if(Combat.Instance == null)
+        if (Combat.Instance == null)
         {
             return;
         }
@@ -263,7 +266,7 @@ public class CombatManager : MonoBehaviour
         {
             heroCustomDropDown.CreateNewItem(scriptableEntityHero.mainClass.ToString(), null, false);
         }
-        
+
 
         // Initialize the new items
         enemyCustomDropDown1.SetupDropdown();
@@ -449,7 +452,7 @@ public class CombatManager : MonoBehaviour
         optionsSettings.title = "Remove Cards From Deck";
         optionsSettings.onConfirmAction = CombatManager.Instance.CardList_RemoveCardsFromDeck;
         optionsSettings.allowClassButtons = false;
-        UIManager.Instance.ShowCardList(optionsSettings);   
+        UIManager.Instance.ShowCardList(optionsSettings);
     }
 
     public void CardList_RemoveCardsFromDeck()
@@ -505,11 +508,11 @@ public class CombatManager : MonoBehaviour
 
         foreach (CardScriptData cardScriptData in UIManager.Instance.selectedCardList)
         {
-            for (int i=0; i < cardScriptData.copiesOfCard; i++)
+            for (int i = 0; i < cardScriptData.copiesOfCard; i++)
             {
                 DeckManager.Instance.AddCardOnDeck(cardScriptData.scriptableCard, 0);
             }
-  
+
         }
 
         StartCoroutine(Combat.Instance.InitializeCombat());
@@ -637,7 +640,7 @@ public class CombatManager : MonoBehaviour
         bg.transform.SetParent(battleground.transform);
 
         Combat.Instance.battleGroundType = CombatManager.Instance.scriptablePlanet.planetBattleGround.battleGroundType;
-        
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         if (scriptableBattleGround.isSpaceShip)
@@ -691,7 +694,7 @@ public class CombatManager : MonoBehaviour
         yield return null; // Wait for a frame 
 
     }
-    
+
 
 
 

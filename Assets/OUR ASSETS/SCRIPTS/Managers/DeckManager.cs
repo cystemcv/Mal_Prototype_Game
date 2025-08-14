@@ -806,42 +806,42 @@ public class DeckManager : MonoBehaviour
             customTargeting.SetActive(true);
 
             GameObject panel = customTargeting.transform.Find("Panel").gameObject;
-            panel.transform.GetChild(0).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
+            panel.transform.GetChild(0).GetComponent<Image>().sprite = CombatManager.Instance.fillBox;
 
             if(scriptableCard.toggle2)
             {
-                panel.transform.GetChild(1).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
+                panel.transform.GetChild(1).GetComponent<Image>().sprite = CombatManager.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(1).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
+                panel.transform.GetChild(1).GetComponent<Image>().sprite = CombatManager.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle3)
             {
-                panel.transform.GetChild(2).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
+                panel.transform.GetChild(2).GetComponent<Image>().sprite = CombatManager.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(2).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
+                panel.transform.GetChild(2).GetComponent<Image>().sprite = CombatManager.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle4)
             {
-                panel.transform.GetChild(3).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
+                panel.transform.GetChild(3).GetComponent<Image>().sprite = CombatManager.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(3).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
+                panel.transform.GetChild(3).GetComponent<Image>().sprite = CombatManager.Instance.emptyBox;
             }
 
             if (scriptableCard.toggle5)
             {
-                panel.transform.GetChild(4).GetComponent<Image>().sprite = UI_Combat.Instance.fillBox;
+                panel.transform.GetChild(4).GetComponent<Image>().sprite = CombatManager.Instance.fillBox;
             }
             else
             {
-                panel.transform.GetChild(4).GetComponent<Image>().sprite = UI_Combat.Instance.emptyBox;
+                panel.transform.GetChild(4).GetComponent<Image>().sprite = CombatManager.Instance.emptyBox;
             }
 
         }

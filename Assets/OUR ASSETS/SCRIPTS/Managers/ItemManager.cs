@@ -794,6 +794,7 @@ public class ItemManager : MonoBehaviour
 
             if (showItemText)
             {
+                itemPrefab.transform.Find("Text").gameObject.SetActive(true);
                 if (CheckIfItemExistOnList(StaticData.artifactItemList, scriptableItem) != null)
                 {
                     itemPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = "ON";
@@ -802,6 +803,10 @@ public class ItemManager : MonoBehaviour
                 {
                     itemPrefab.transform.Find("Text").GetComponent<TMP_Text>().text = "OFF";
                 }
+            }
+            else
+            {
+                itemPrefab.transform.Find("Text").gameObject.SetActive(false);
             }
         }
     }

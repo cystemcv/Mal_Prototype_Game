@@ -637,6 +637,7 @@ public class Combat : MonoBehaviour
 
         //remove mana
         yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("Player"));
+        yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("PlayerSummon"));
 
 
         //do the ai logic for each enemy
@@ -852,7 +853,8 @@ public class Combat : MonoBehaviour
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
         //remove shield from all enemies
-        RemoveShieldFromEntitiesBasedOnTag("Enemy");
+        yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("Enemy"));
+        yield return StartCoroutine(RemoveShieldFromEntitiesBasedOnTag("EnemySummon"));
 
         // yield return StartCoroutine(LowerSummonTurns(SystemManager.Instance.GetEnemyTagsList()));
 
@@ -1564,7 +1566,7 @@ public class Combat : MonoBehaviour
         entityClass.shield = 0;
 
         //dont show the icon
-        entityClass.shieldIcon.SetActive(false);
+        //entityClass.shieldIcon.SetActive(false);
 
         //update text on shield
         entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
@@ -1655,7 +1657,7 @@ public class Combat : MonoBehaviour
         if (entityClass.armor > 0)
         {
             //show icon
-            entityClass.armorIcon.SetActive(true);
+            //entityClass.armorIcon.SetActive(true);
             //update text on shield
             entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
             //make the bar blue
@@ -1665,14 +1667,14 @@ public class Combat : MonoBehaviour
         {
             entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
             //hide the icon
-            entityClass.armorIcon.SetActive(false);
+            //entityClass.armorIcon.SetActive(false);
         }
 
         //shield
         if (entityClass.shield > 0)
         {
             //show icon
-            entityClass.shieldIcon.SetActive(true);
+            //entityClass.shieldIcon.SetActive(true);
             //update text on shield
             entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
             //make the bar blue
@@ -1682,7 +1684,7 @@ public class Combat : MonoBehaviour
         {
             entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
             //hide the icon
-            entityClass.shieldIcon.SetActive(false);
+            //entityClass.shieldIcon.SetActive(false);
         }
     }
 
@@ -1755,7 +1757,7 @@ public class Combat : MonoBehaviour
             if (entityClass.shield > 0)
             {
                 //show the icon
-                entityClass.shieldIcon.SetActive(true);
+               // entityClass.shieldIcon.SetActive(true);
 
                 //update text on shield
                 entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();
@@ -1781,7 +1783,7 @@ public class Combat : MonoBehaviour
             if (entityClass.armor > 0)
             {
                 //show the icon
-                entityClass.armorIcon.SetActive(true);
+                //entityClass.armorIcon.SetActive(true);
 
                 //update text on shield
                 entityClass.armorText.GetComponent<TMP_Text>().text = entityClass.armor.ToString();
@@ -1793,7 +1795,7 @@ public class Combat : MonoBehaviour
             if (entityClass.shield > 0)
             {
                 //show the icon
-                entityClass.shieldIcon.SetActive(true);
+                //entityClass.shieldIcon.SetActive(true);
 
                 //update text on shield
                 entityClass.shieldText.GetComponent<TMP_Text>().text = entityClass.shield.ToString();

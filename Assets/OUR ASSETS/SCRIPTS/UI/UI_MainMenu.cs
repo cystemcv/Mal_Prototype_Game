@@ -84,6 +84,12 @@ public class UI_MainMenu : MonoBehaviour
         SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f, true, true);
     }
 
+    public void UIOpenLibrary()
+    {
+        AudioManager.Instance.PlaySfx("UI_goNext");
+        SystemManager.Instance.LoadScene("scene_Library", 0f, true, true);
+    }
+
     //OPTIONS
     public void UIGoToCombat()
     {

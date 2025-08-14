@@ -323,7 +323,7 @@ Transform:
   - {fileID: 5300232970940667828}
   - {fileID: 6216390524558191025}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1268129199673575570
 BoxCollider2D:
@@ -338,7 +338,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.51}
+  m_Offset: {x: 0, y: 0.83}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.28866667}
@@ -349,7 +349,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.33, y: 1.2}
+  m_Size: {x: 1.59, y: 1.53}
   m_EdgeRadius: 0
 --- !u!114 &7379620874927225909
 MonoBehaviour:
@@ -434,13 +434,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7532010e7df2804a88c84842968220d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardScriptList:
-  - {fileID: 11400000, guid: aaf0e2302bd5e1b4a9850c288fd5e3ca, type: 2}
-  - {fileID: 11400000, guid: 581eba49868bacd499aa114822c1ebae, type: 2}
-  - {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
   aiLogicStep: 0
   targetForCard: {fileID: 0}
   intend: {fileID: 0}
+  scriptableEntity: {fileID: 0}
+  scriptableCardToUse: {fileID: 0}
+  getCardLevel: 0
+  entityLevel: 0
+  justSpawned: 0
 --- !u!212 &38645131758165369
 SpriteRenderer:
   m_ObjectHideFlags: 0
