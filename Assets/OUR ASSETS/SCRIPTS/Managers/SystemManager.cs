@@ -417,44 +417,46 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     //loading screen
     public void LoadScene(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
-
         StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime, triggerLoadingStartAnimation, triggerLoadingEndAnimation));
     }
 
-    public IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
+    private IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
+        Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
 
-        //wait for the transition
+        // Trigger start animation
         if (triggerLoadingStartAnimation)
-        {
-            Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
             loadingAnimator.SetTrigger("LoadingStart");
-        }
 
+        // Wait for start animation to fully cover the screen
         yield return new WaitForSeconds(manualLoadingTime);
 
-        //do the async operation
+        // Start loading the scene, but don't activate yet
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        asyncOperation.allowSceneActivation = false;
 
-
-        //check operation if is done
-        while (!asyncOperation.isDone)
-        {
-
+        // Wait until scene is almost loaded
+        while (asyncOperation.progress < 0.9f)
             yield return null;
 
-        }
+        // Small delay to make sure animation looks smooth
+        yield return new WaitForSeconds(0.2f);
 
-        //now the scene is loaded
+        // Activate the scene (this will switch over in one frame)
+        asyncOperation.allowSceneActivation = true;
+
+        // Optionally wait 1 frame so that scene is active
+        yield return null;
+
+        // Play end animation (in the new scene)
         if (triggerLoadingEndAnimation)
         {
-            Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
+            loadingAnimator = LoadingScreen.GetComponent<Animator>();
             loadingAnimator.SetTrigger("LoadingEnd");
+            yield return new WaitForSeconds(manualLoadingTime);
         }
-        //loadingAnimator.SetTrigger("LoadingEnd");
-        yield return new WaitForSeconds(manualLoadingTime);
-
     }
+
 
     public IEnumerator TriggerLoadStartAnimation()
     {

@@ -62,6 +62,9 @@ public class CombatCardHandler : MonoBehaviour
             // Check if the target UI element is available
             if (targetUIElement != null)
             {
+
+                StartCoroutine(TutorialManager.Instance.StartTutorialIE(UI_Combat.Instance.tutorial_targeting));
+
                 // Get the position of the target UI element in screen space
                 //Vector3 targetScreenPosition = targetUIElement.Find("LineRendererStart").position;
                 Vector3 targetScreenPosition = RectTransformUtility.WorldToScreenPoint(CombatCardHandler.Instance.mainCamera, targetUIElement.transform.Find("Panel").Find("UtilityFront").Find("LineRendererStart").position);

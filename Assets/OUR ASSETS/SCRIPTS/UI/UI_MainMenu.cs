@@ -36,7 +36,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu",0f, false, false);
+        SystemManager.Instance.LoadScene("scene_GameModeMenu",0f, true, true);
     }
 
     //LOAD
@@ -50,7 +50,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_LoadSaveMenu");
-        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f,false,false);
+        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, true, true);
     }
 
 
@@ -66,7 +66,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_LoadSaveMenu");
-        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, false, false);
+        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, true, true);
     }
 
     //OPTIONS
@@ -80,7 +80,8 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_OptionsMenu");
-        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f, false, false);
+        //SceneManager.LoadScene("scene_OptionsMenu");
+        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f, true, true);
     }
 
     //OPTIONS
@@ -100,7 +101,7 @@ public class UI_MainMenu : MonoBehaviour
         //open the correct menu
         //SceneManager.LoadSceneAsync("scene_Combat", LoadSceneMode.Additive);
         //SceneManager.LoadScene("scene_Combat");
-        SystemManager.Instance.LoadScene("scene_Combat", 0f, false, false);
+        SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
     }
 
     //EXIT

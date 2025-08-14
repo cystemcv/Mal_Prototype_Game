@@ -41,7 +41,7 @@ public class DataPersistenceManager : MonoBehaviour
 
     private void Start()
     {
-        DeleteDataEasy();
+        //DeleteDataEasy();
         LoadDataEasy();
     }
 

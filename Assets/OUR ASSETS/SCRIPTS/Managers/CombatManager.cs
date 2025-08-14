@@ -61,6 +61,9 @@ public class CombatManager : MonoBehaviour
 
     public void Start()
     {
+
+
+
         // Add int32 (dynamic) events
         var cd1 = enemyDropDown1.GetComponent<CustomDropdown>();
         var cd2 = enemyDropDown2.GetComponent<CustomDropdown>();
@@ -95,6 +98,17 @@ public class CombatManager : MonoBehaviour
         InitializeOptions();
     }
 
+    public void UiTrainingButton()
+    {
+        if (CombatManager.Instance.trainingMode)
+        {
+            UIManager.Instance.topPanelCombat.transform.Find("ShowTrainingButton").gameObject.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.topPanelCombat.transform.Find("ShowTrainingButton").gameObject.SetActive(false);
+        }
+    }
 
     public void SpawnEffectPrefab(GameObject target, ScriptableCard scriptableCard)
     {

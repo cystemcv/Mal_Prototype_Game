@@ -48,7 +48,15 @@ public class UI_OptionsMenu : MonoBehaviour
         DisplayTabController.Instance.SelectScreenMode(false);
         DisplayTabController.Instance.selectScreenResolution.ChangeDropdownInfo(1); //1920x1080
         DisplayTabController.Instance.SelectScreenResolution(false);
+
+        TutorialManager.Instance.allowTutorials = true;
+
+        MiscTabController.Instance.enableTutoralSwitch.isOn = TutorialManager.Instance.allowTutorials; // Changing state manually
+        MiscTabController.Instance.enableTutoralSwitch.UpdateUI(); // Updating UI manually
     }
+
+
+
 
     public void SaveSettings()
     {
@@ -75,6 +83,7 @@ public class UI_OptionsMenu : MonoBehaviour
         PlayerPrefs.SetString("display_sreen_mode", DisplayTabController.Instance.selectScreenMode.selectedText.text);
         PlayerPrefs.SetString("display_sreen_resolution", DisplayTabController.Instance.selectScreenResolution.selectedText.text);
 
+        PlayerPrefs.SetString("allow_tutorials", TutorialManager.Instance.allowTutorials.ToString());
 
     }
 
@@ -103,6 +112,15 @@ public class UI_OptionsMenu : MonoBehaviour
         DisplayTabController.Instance.SelectScreenMode(false);
         SystemManager.Instance.SetDropdownByName(DisplayTabController.Instance.selectScreenResolution, PlayerPrefs.GetString("display_sreen_resolution").ToString());
         DisplayTabController.Instance.SelectScreenResolution(false);
+
+        string storedValue = PlayerPrefs.GetString("allow_tutorials", "true");
+        bool allowTutorials;
+        bool.TryParse(storedValue, out allowTutorials);
+
+        TutorialManager.Instance.allowTutorials = allowTutorials;
+
+        MiscTabController.Instance.enableTutoralSwitch.isOn = TutorialManager.Instance.allowTutorials; // Changing state manually
+        MiscTabController.Instance.enableTutoralSwitch.UpdateUI(); // Updating UI manually
 
         Debug.Log(PlayerPrefs.GetString("display_sreen_mode").ToString());
     }
@@ -143,6 +161,11 @@ public class UI_OptionsMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, false, false);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, true, true);
     }
+
+
+
+
+
 }

@@ -658,6 +658,17 @@ public class Combat : MonoBehaviour
 
         yield return StartCoroutine(ActivateDelayedCardEffects());
 
+        if (Turns ==1)
+        {
+            yield return StartCoroutine(TutorialManager.Instance.StartTutorialIE(UI_Combat.Instance.tutorial_entity));
+            yield return StartCoroutine(TutorialManager.Instance.StartTutorialIE(UI_Combat.Instance.tutorial_enemies));
+        }
+        else if (Turns == 2)
+        {
+            yield return StartCoroutine(TutorialManager.Instance.StartTutorialIE(UI_Combat.Instance.tutorial_positioning));
+        }
+ 
+
 
         yield return null; // Wait for a frame 
     }
@@ -826,12 +837,7 @@ public class Combat : MonoBehaviour
         {
             yield return null; //stops function
         }
-        //TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[0]);
-        TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[0]);
-        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
 
-        TutorialManager.Instance.StartTutorial(TutorialManager.Instance.tutorialDataList[1]);
-        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
 
 
         yield return StartCoroutine(ActivateHazardsEnemyTurnStart());

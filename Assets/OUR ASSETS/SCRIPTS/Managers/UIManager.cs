@@ -119,7 +119,7 @@ public class UIManager : MonoBehaviour
     [Header("GALAXY")]
     public GameObject galaxyScaling;
 
-
+    public GameObject QuickMenu;
 
     public void ToggleActivateOrderVisibility()
     {
@@ -277,7 +277,16 @@ public class UIManager : MonoBehaviour
     }
 
 
+    public void OpenQuickMenu() {
+        QuickMenu.SetActive(true);
+        Time.timeScale = 0f; // Pause game
+    }
 
+    public void CloseQuickMenu()
+    {
+        QuickMenu.SetActive(false);
+        Time.timeScale = 1f; // Resume game
+    }
 
     //open
     public void OpenModal(string title, string desc, UnityEngine.Events.UnityAction function)
@@ -343,27 +352,24 @@ public class UIManager : MonoBehaviour
 
     //}
 
-    //public void GoToMainMenu()
-    //{
-    //    OpenModal("BACK TO MAIN MENU", "Are you sure you want to go back to Main Menu? (Any unsaved changes will be lost!)", GoToMainMenuConfirm);
-    //}
+    public void GoToMainMenu()
+    {
+        OpenModal("BACK TO MAIN MENU", "Are you sure you want to go back to Main Menu? (Any unsaved changes will be lost!)", GoToMainMenuConfirm);
+    }
 
-    //public void GoToMainMenuConfirm()
-    //{
-    //    AudioManager.Instance.PlaySfx("UI_Confirm");
-    //    AudioManager.Instance.PlayMusic("UI_MainMenu");
-    //    modalWindowManager.Close(); // Close window
+    public void GoToMainMenuConfirm()
+    {
 
-    //    //change UI to gameplay
-    //    UIManager.Instance.UICurrentMode = SystemManager.SystemModes.MAINMENU;
 
-    //    //make UI inactive
-    //    SystemManager.Instance.EnableDisable_UIManager(true);
+        UIManager.Instance.CloseQuickMenu();
 
-    //    //load scene
-    //    //SceneManager.LoadScene("scene_MainMenu");
-    //    SystemManager.Instance.LoadScene("scene_MainMenu", 0.2f);
-    //}
+        //make UI inactive
+        //SystemManager.Instance.EnableDisable_UIManager(true);
+
+        //load scene
+        //SceneManager.LoadScene("scene_MainMenu");
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,true,true);
+    }
 
     //public void CloseUIWindow()
     //{

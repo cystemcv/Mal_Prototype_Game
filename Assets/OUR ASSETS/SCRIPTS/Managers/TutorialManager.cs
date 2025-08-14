@@ -27,9 +27,19 @@ public class TutorialManager : MonoBehaviour
     public GameObject mm_TutorialClose_Prefab;
     public bool IsTutorialActive { get; private set; }
 
+    public bool allowTutorials = true;
+
     void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         tutorialPanel.SetActive(false);
 
         mainButton.onClick.AddListener(OnMainButtonClicked);
@@ -40,6 +50,11 @@ public class TutorialManager : MonoBehaviour
     {
 
         //check if already played
+
+        if (!allowTutorials)
+        {
+            return;
+        }
 
         if (DataPersistenceManager.Instance.tutorialsSeen.Contains(tutorial.tutorialName))
         {
@@ -128,5 +143,11 @@ public class TutorialManager : MonoBehaviour
 
     }
 
-   
+    public IEnumerator StartTutorialIE(TutorialData tutorialData)
+    {
+        yield return new WaitForSeconds(0.2f);
+        TutorialManager.Instance.StartTutorial(tutorialData);
+        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
+    }
+
 }

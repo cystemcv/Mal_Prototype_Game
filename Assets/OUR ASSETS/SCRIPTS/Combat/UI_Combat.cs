@@ -9,6 +9,13 @@ public class UI_Combat : MonoBehaviour
 {
     public static UI_Combat Instance;
 
+    [Header("TUTORIALS")]
+    public TutorialData tutorial_entity;
+    public TutorialData tutorial_cards;
+    public TutorialData tutorial_enemies;
+    public TutorialData tutorial_positioning;
+    public TutorialData tutorial_targeting;
+    public TutorialData tutorial_buffsDebuffs;
 
 
     //variables
@@ -163,6 +170,8 @@ public class UI_Combat : MonoBehaviour
         // Set the sorting order to a high value to ensure it renders on top
         material.renderQueue = 999999; // Adjust the value as needed
 
+        CombatManager.Instance.UiTrainingButton();
+
         //manaInfo.GetComponent<ButtonManager>().Interactable(false);
     }
 
@@ -218,7 +227,7 @@ public class UI_Combat : MonoBehaviour
 
         //allo dungeon generation again
         StaticData.staticDungeonParentGenerated = false;
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, false, false);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, true, true);
     }
 
     public void ActivateCompanionAbility()

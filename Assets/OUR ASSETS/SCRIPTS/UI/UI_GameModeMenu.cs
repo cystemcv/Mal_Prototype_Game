@@ -8,6 +8,8 @@ public class UI_GameModeMenu : MonoBehaviour
 
     public static UI_GameModeMenu Instance;
 
+    public List<TutorialData> tutorialDataList = new List<TutorialData>();
+
     private void Awake()
     {
 
@@ -26,6 +28,14 @@ public class UI_GameModeMenu : MonoBehaviour
     public void Start()
     {
         UIManager.Instance.topPanelCombat.SetActive(false);
+        StartCoroutine(StartTutorial());
+    }
+
+    public IEnumerator StartTutorial()
+    {
+        yield return new WaitForSeconds(0.2f);
+        TutorialManager.Instance.StartTutorial(tutorialDataList[0]);
+        yield return new WaitUntil(() => !TutorialManager.Instance.IsTutorialActive);
     }
 
     public void GoToCharacterSelection_MainMode()
@@ -36,9 +46,11 @@ public class UI_GameModeMenu : MonoBehaviour
         //change the mode
         SystemManager.Instance.gameMode = SystemManager.GameMode.MainMode;
 
+        CombatManager.Instance.trainingMode = false;
+
         //open the correct menu
-       // SceneManager.LoadScene("scene_CharacterSelectionMenu");
-        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0f, false, false);
+        // SceneManager.LoadScene("scene_CharacterSelectionMenu");
+        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0f, true, true);
     }
 
 
@@ -53,7 +65,7 @@ public class UI_GameModeMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_CharacterSelectionMenu");
-        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0f,false,false);
+        SystemManager.Instance.LoadScene("scene_CharacterSelectionMenu", 0f, true, true);
     }
 
     public void BackToMainMenu()
@@ -63,7 +75,22 @@ public class UI_GameModeMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,false,false);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, true, true);
     }
 
+    public void GoTo_TrainingMode()
+    {
+        //play audio
+        AudioManager.Instance.PlaySfx("UI_goNext");
+
+        ////build the deck for the scriptable deck
+        //DeckManager.Instance.BuildStartingDeck();
+
+        CombatManager.Instance.trainingMode = true;
+
+
+        //open the correct menu
+        // SceneManager.LoadScene("scene_CharacterSelectionMenu");
+        SystemManager.Instance.LoadScene("scene_Combat", 0f, true, true);
+    }
 }
