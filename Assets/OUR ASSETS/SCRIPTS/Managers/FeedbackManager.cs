@@ -11,6 +11,7 @@ public class FeedbackManager : MonoBehaviour
     public GameObject mm_HoverCard_Prefab;
     public GameObject mm_ClickCard_Prefab;
     public GameObject mm_ActivatedUI_Prefab;
+    public GameObject mm_MovingFast_Prefab;
 
     private void Awake()
     {
@@ -69,4 +70,5 @@ public class FeedbackManager : MonoBehaviour
 
         mmInstance.PlayFeedbacks();
     }
+
 }

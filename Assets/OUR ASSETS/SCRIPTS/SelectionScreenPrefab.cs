@@ -26,30 +26,17 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
     {
 
 
-        if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
-        {
 
             if (scriptableEntity.entityName == StaticData.staticCharacter.entityName)
             {
-                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
+                this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
             }
             else
             {
-                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+                this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }
 
-        }
-        else
-        {
-            if (scriptableCompanion.companionName == StaticData.staticScriptableCompanion.companionName)
-            {
-                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
-            }
-            else
-            {
-                this.gameObject.transform.Find("Background").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-            }
-        }
+
 
     }
 
@@ -58,23 +45,10 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
 
         onHover = true;
 
-
-
-        if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
-        {
-            UI_CharacterSelectionMenu.Instance.characterTitle.GetComponent<TMP_Text>().text = scriptableEntity.entityName;
-            UI_CharacterSelectionMenu.Instance.characterDescription.GetComponent<TMP_Text>().text = scriptableEntity.entityDescription;
-        }
-        else
-        {
-            UI_CharacterSelectionMenu.Instance.companionTitle.GetComponent<TMP_Text>().text = scriptableCompanion.companionName;
-            UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = scriptableCompanion.companionDescription;
-        }
-
-
+        UI_CharacterSelectionMenu.Instance.OnHoverCharacterPanel(scriptableEntity);
 
         AudioManager.Instance.PlaySfx("UI_Confirm");
-        this.gameObject.transform.Find("Highlight").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
+        this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -82,18 +56,9 @@ public class SelectionScreenPrefab : MonoBehaviour, IPointerEnterHandler, IPoint
 
         onHover = false;
 
-        if (typeOfPrefab == SystemManager.SelectionScreenPrefabType.CHARACTER)
-        {
-            UI_CharacterSelectionMenu.Instance.characterTitle.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityName;
-            UI_CharacterSelectionMenu.Instance.characterDescription.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityDescription;
-        }
-        else
-        {
-            UI_CharacterSelectionMenu.Instance.companionTitle.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionName;
-            UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionDescription;
-        }
+        UI_CharacterSelectionMenu.Instance.OnHoverCharacterPanel(StaticData.staticCharacter);
 
-        this.gameObject.transform.Find("Highlight").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+        this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
     }
 
     public void OnPointerClick(PointerEventData eventData)

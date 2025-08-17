@@ -216,7 +216,7 @@ public class UI_Combat : MonoBehaviour
         ItemManager.Instance.HideInventory();
 
 
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, false);
     }
 
     public void BackToMainMenu()

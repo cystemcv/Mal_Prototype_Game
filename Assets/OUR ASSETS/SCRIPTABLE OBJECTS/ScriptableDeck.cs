@@ -8,5 +8,12 @@ public class ScriptableDeck : ScriptableObject // Not sure if cards will be made
 
     //Deck
     public List<CardScript> mainDeck;
+    public List<ScriptableCard> deck;
+
+    public string title = "";
+    public string description = "";
+    public string tooltip = "";
+
+    public bool unlocked = true;
 
 }

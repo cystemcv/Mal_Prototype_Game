@@ -39,6 +39,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public float resistanceDebuffPerc = 0;
     public float resistanceBuffPerc = 0;
 
+
     public int health;
     public int maxHealth;
     public int shield;
@@ -196,9 +197,13 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         yield return StartCoroutine(SpawnUI());
 
         //initialize from SO
-        poisongDmg = scriptableEntity.poisonDmg;
+        //poisongDmg = scriptableEntity.poisonDmg;
         health = scriptableEntity.currHealth;
         maxHealth = scriptableEntity.maxHealth;
+        shield = scriptableEntity.shield;
+        armor = scriptableEntity.armor;
+        maxShield = 999;
+        maxArmor = 999;
         attack = scriptableEntity.strength;
         defence = scriptableEntity.defence;
 

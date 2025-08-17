@@ -27,6 +27,15 @@ public class CharacterManager : MonoBehaviour
 
     public void Start()
     {
+        InitializeCharacterArtifacts();
+
+    }
+
+
+    public void InitializeCharacterArtifacts()
+    {
+
+        StaticData.artifactItemList.Clear();
 
         List<ScriptableItem> scriptableItems = new List<ScriptableItem>();
         if (StaticData.staticCharacter == null)
@@ -40,11 +49,10 @@ public class CharacterManager : MonoBehaviour
 
         foreach (ScriptableItem scriptableItem in scriptableItems)
         {
-            ClassItemData classItemData = new ClassItemData(scriptableItem,1);
-            StaticData.artifactItemList.Add(classItemData);  
+            ClassItemData classItemData = new ClassItemData(scriptableItem, 1);
+            StaticData.artifactItemList.Add(classItemData);
         }
     }
-
 
     public void ProceedWithAnimationAndSound(GameObject entityPlayAnimation, ScriptableCard scriptableCard)
     {

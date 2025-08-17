@@ -52,7 +52,7 @@ public class ItemManager : MonoBehaviour
         foreach (ScriptableItem scriptableItem in scriptableItemTestPoolList)
         {
 
-            int randomTest = UnityEngine.Random.Range(1, 99);
+            int randomTest = UnityEngine.Random.Range(1, 999);
 
             ClassItemData classItem = new ClassItemData(scriptableItem, randomTest);
             StaticData.inventoryItemList.Add(classItem);
@@ -329,11 +329,11 @@ public class ItemManager : MonoBehaviour
 
         }
 
-        foreach (var scriptableItem in StaticData.staticScriptableCompanion.companionItemList)
-        {
-            scriptableItem.GameStart();
+        //foreach (var scriptableItem in StaticData.staticScriptableCompanion.companionItemList)
+        //{
+        //    scriptableItem.GameStart();
 
-        }
+        //}
     }
 
     public ClassItemData SOItemToClass(ScriptableItem scriptableItem)

@@ -12,20 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
   m_Name: class_Summoner
   m_EditorClassIdentifier: 
-  startingCards:
-  - {fileID: 11400000, guid: 8b3e89b9226639d4d8a2f13cbd27acb9, type: 2}
-  - {fileID: 11400000, guid: 1e05e1ca82499314a882791ff3b9d4d9, type: 2}
-  - {fileID: 11400000, guid: cf36049488e7787479c8d0581947fc83, type: 2}
-  - {fileID: 11400000, guid: 6c1f09bd35fa2cb47b9b56ec7215ee4c, type: 2}
-  - {fileID: 11400000, guid: 94319e905ba328247b88056912e8fee4, type: 2}
-  - {fileID: 11400000, guid: 495a6c8b7bb7e2d4fb5c998c77206737, type: 2}
-  - {fileID: 11400000, guid: f8a4c2b1f6f9bb94b83e5c6eaa7b2b7d, type: 2}
-  - {fileID: 11400000, guid: d20aefbf0df5e4745a0895f6301b9ad0, type: 2}
-  - {fileID: 11400000, guid: f829ad646a8ff6b4abecf2e799b1807a, type: 2}
+  startingCards: {fileID: 11400000, guid: 029f7e7b992716940baf12392b3e5bf0, type: 2}
+  startingDecks:
+  - {fileID: 11400000, guid: 029f7e7b992716940baf12392b3e5bf0, type: 2}
+  - {fileID: 11400000, guid: a50c1f6d1d9b19048a5de93c1137fa66, type: 2}
   mainClass: 4
   distanceFromAnotherUnit: 2
   unitsWorth: 1
-  startingArtifacts: []
+  startingArtifacts:
+  - {fileID: 11400000, guid: e3c7d85fbb7de964eb550d179cd50fcd, type: 2}
   entityName: Lilan
   entityPrefab: {fileID: 4367227256133611183, guid: b2f2225152013a746ad4d04806f68c25, type: 3}
   entityImage: {fileID: 21300000, guid: f3ae95972eb1c764f9ad644505cc6e75, type: 3}
@@ -50,6 +45,8 @@ MonoBehaviour:
   defence: 0
   maxHealth: 50
   currHealth: 50
+  shield: 5
+  armor: 5
   maxMana: 0
   currMana: 0
   maxLevel: 0

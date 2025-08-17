@@ -55,7 +55,9 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
 
             ItemManager.Instance.AddRemoveInventoryItemInList(classItemData);
 
-            
+            UIManager.Instance.RefreshEveryShopItem();
+
+
 
         }
         else

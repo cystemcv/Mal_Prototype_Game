@@ -234,6 +234,7 @@ GameObject:
   - component: {fileID: 78357180427084558}
   - component: {fileID: 8819509663095785026}
   - component: {fileID: 2254021451068003270}
+  - component: {fileID: 640721182596324784}
   m_Layer: 0
   m_Name: BossPlanetPrefab
   m_TagString: Untagged
@@ -372,6 +373,7 @@ MonoBehaviour:
   planetType: 0
   roomCleared: 0
   scriptablePlanet: {fileID: 0}
+  usedRest: 0
 --- !u!95 &8819509663095785026
 Animator:
   serializedVersion: 4
@@ -404,3 +406,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e93b62fb609a34992a6e351b6b5bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &640721182596324784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6689757511220281412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877a892f688b9ff43b5c567fceab0aa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverScale: 1.2
+  playFeedbacks: 0
+  animator: {fileID: 0}
+  hoverSoundName: UI_Hover
+  randomPitch: 0

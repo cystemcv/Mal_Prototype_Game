@@ -16,14 +16,25 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     public GameObject listOfCharactersGO;
     public GameObject listOfCompanionsGO;
 
-    public GameObject characterTitle;
-    public GameObject characterDescription;
 
-    public GameObject companionTitle;
-    public GameObject companionDescription;
-
+    [Header("HEROES")]
+    public GameObject characterPanelPrefabParent;
     public GameObject characterPanelPrefab;
 
+    [Header("HEROES PANEL")]
+    public GameObject soIcon;
+    public GameObject soSpaceShipIcon;
+    public GameObject soClass;
+    public GameObject soHP;
+    public GameObject soShield;
+    public GameObject soArmor;
+    public GameObject soArtifactIcon;
+    public GameObject soArtifactTitle;
+    public GameObject soArtifactDescription;
+
+    [Header("STARTING DECKS")]
+    public GameObject startingDeckPanelPrefabParent;
+    public GameObject startingDeckPanelPrefab;
 
     private void Awake()
     {
@@ -40,6 +51,26 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
     }
 
+    public void OnHoverCharacterPanel(ScriptableEntity scriptableEntity)
+    {
+
+        soIcon.GetComponent<Image>().sprite = scriptableEntity.entityImage;
+        soSpaceShipIcon.GetComponent<Image>().sprite = scriptableEntity.entitySpaceShipImage;
+        soClass.GetComponent<TMP_Text>().text = scriptableEntity.mainClass.ToString();
+        soHP.transform.Find("TEXT").GetComponent<TMP_Text>().text = scriptableEntity.currHealth.ToString();
+        soShield.transform.Find("TEXT").GetComponent<TMP_Text>().text = scriptableEntity.shield.ToString();
+        soArmor.transform.Find("TEXT").GetComponent<TMP_Text>().text = scriptableEntity.armor.ToString();
+
+        if (scriptableEntity.startingArtifacts.Count > 0)
+        {
+            soArtifactIcon.GetComponent<Image>().sprite = scriptableEntity.startingArtifacts[0].Icon;
+            soArtifactIcon.transform.Find("Title").GetComponent<TMP_Text>().text = scriptableEntity.startingArtifacts[0].itemName;
+            soArtifactIcon.transform.Find("Description").GetComponent<TMP_Text>().text = scriptableEntity.startingArtifacts[0].itemDescription;
+        }
+
+        InitializeStartingDecks(scriptableEntity);
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -51,8 +82,8 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         //display all characters
         DisplayAllCharacters();
 
-        //display all companions
-        DisplayAllCompanions();
+        ////display all companions
+        //DisplayAllCompanions();
     }
 
 
@@ -62,26 +93,23 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
 
         //destroy all children objects
-        foreach (Transform characterPanel in listOfCharactersGO.transform)
-        {
-            characterPanel.Find("Image").gameObject.SetActive(false);
-           
-        }
+        SystemManager.Instance.DestroyAllChildren(characterPanelPrefabParent);
 
         int count = 0;
 
         foreach (ScriptableEntity scriptableEntity in CharacterManager.Instance.characterList)
         {
 
+            GameObject characterPanel = Instantiate(characterPanelPrefab, characterPanelPrefabParent.transform);
 
             //get ui object
-            GameObject characterPanel = listOfCharactersGO.transform.GetChild(count).gameObject;
+            //GameObject characterPanel = listOfCharactersGO.transform.GetChild(count).gameObject;
 
             characterPanel.transform.Find("Image").GetComponent<Image>().sprite = scriptableEntity.entityImage;
             characterPanel.transform.Find("Image").gameObject.SetActive(true);
 
             //add script
-            characterPanel.AddComponent<SelectionScreenPrefab>();
+            //characterPanel.AddComponent<SelectionScreenPrefab>();
 
             SelectionScreenPrefab selectionScreenPrefab = characterPanel.GetComponent<SelectionScreenPrefab>();
 
@@ -93,54 +121,72 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
             {
                 StaticData.staticCharacter = scriptableEntity.Clone();
 
-                UI_CharacterSelectionMenu.Instance.characterTitle.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityName;
-                UI_CharacterSelectionMenu.Instance.characterDescription.GetComponent<TMP_Text>().text = StaticData.staticCharacter.entityDescription;
+                OnHoverCharacterPanel(StaticData.staticCharacter);
             }
 
             count++;
         }
+
+
+
+
     }
 
-    public void DisplayAllCompanions()
+    public void InitializeStartingDecks(ScriptableEntity scriptableEntity)
     {
 
-        foreach (Transform characterPanel in listOfCompanionsGO.transform)
+        SystemManager.Instance.DestroyAllChildren(startingDeckPanelPrefabParent);
+
+        foreach (ScriptableDeck scriptableDeck in scriptableEntity.startingDecks)
         {
-            characterPanel.Find("Image").gameObject.SetActive(false);
-       
-        }
+            GameObject scriptableDeckPanel = Instantiate(startingDeckPanelPrefab, startingDeckPanelPrefabParent.transform);
 
-        int count = 0;
+            scriptableDeckPanel.transform.Find("TEXT").GetComponent<TMP_Text>().text = scriptableDeck.title;
+            scriptableDeckPanel.GetComponent<SelectionScreenDeckPrefab>().scriptableDeck = scriptableDeck;
 
-
-        foreach (ScriptableCompanion scriptableCompanion in CharacterManager.Instance.companionList)
-        {
-            //generate each character
-            GameObject characterPanel = listOfCompanionsGO.transform.GetChild(count).gameObject;
-
-            characterPanel.transform.Find("Image").GetComponent<Image>().sprite = scriptableCompanion.companionImage;
-            characterPanel.transform.Find("Image").gameObject.SetActive(true);
-
-            //add script
-            characterPanel.AddComponent<SelectionScreenPrefab>();
-
-            SelectionScreenPrefab selectionScreenPrefab = characterPanel.GetComponent<SelectionScreenPrefab>();
-
-            selectionScreenPrefab.typeOfPrefab = SystemManager.SelectionScreenPrefabType.COMPANION;
-            selectionScreenPrefab.scriptableCompanion = scriptableCompanion;
-
-            //first
-            if (count == 0)
-            {
-                StaticData.staticScriptableCompanion = scriptableCompanion.Clone();
-
-                UI_CharacterSelectionMenu.Instance.companionTitle.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionName;
-                UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionDescription;
-            }
-
-            count++;
         }
     }
+
+    //public void DisplayAllCompanions()
+    //{
+
+    //    foreach (Transform characterPanel in listOfCompanionsGO.transform)
+    //    {
+    //        characterPanel.Find("Image").gameObject.SetActive(false);
+       
+    //    }
+
+    //    int count = 0;
+
+
+    //    foreach (ScriptableCompanion scriptableCompanion in CharacterManager.Instance.companionList)
+    //    {
+    //        //generate each character
+    //        GameObject characterPanel = listOfCompanionsGO.transform.GetChild(count).gameObject;
+
+    //        characterPanel.transform.Find("Image").GetComponent<Image>().sprite = scriptableCompanion.companionImage;
+    //        characterPanel.transform.Find("Image").gameObject.SetActive(true);
+
+    //        //add script
+    //        characterPanel.AddComponent<SelectionScreenPrefab>();
+
+    //        SelectionScreenPrefab selectionScreenPrefab = characterPanel.GetComponent<SelectionScreenPrefab>();
+
+    //        selectionScreenPrefab.typeOfPrefab = SystemManager.SelectionScreenPrefabType.COMPANION;
+    //        selectionScreenPrefab.scriptableCompanion = scriptableCompanion;
+
+    //        //first
+    //        if (count == 0)
+    //        {
+    //            StaticData.staticScriptableCompanion = scriptableCompanion.Clone();
+
+    //            UI_CharacterSelectionMenu.Instance.companionTitle.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionName;
+    //            UI_CharacterSelectionMenu.Instance.companionDescription.GetComponent<TMP_Text>().text = StaticData.staticScriptableCompanion.companionDescription;
+    //        }
+
+    //        count++;
+    //    }
+    //}
 
     public void BackToGameModeMenu()
     {
@@ -165,14 +211,20 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     public void ProceedToGame()
     {
 
+        //new game
+        CustomDungeonGenerator.Instance.dungeonIsGenerating = false;
+        StaticData.staticDungeonParentGenerated = false;
+
         //build the deck for the scriptable deck
         DeckManager.Instance.BuildStartingDeck();
+
+        CharacterManager.Instance.InitializeCharacterArtifacts();
 
         //initialize other important things
         ItemManager.Instance.GameStartItems();
 
         //SceneManager.LoadScene("scene_Adventure");
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, false);
 
 
     }

@@ -12,7 +12,7 @@ public class Event_Button_Shop : ScriptableButtonEvent
     [TextArea(1, 20)]
     public string finalWording = "";
 
-   
+
 
     public override void OnButtonClick(GameObject eventButton)
     {
@@ -116,8 +116,6 @@ public class Event_Button_Shop : ScriptableButtonEvent
         foreach (ShopData shopData in itemList)
         {
 
-
-
             //instantiate the artifact
             GameObject item = Instantiate(
       ItemManager.Instance.itemPrefab,
@@ -129,8 +127,7 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
             item.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
 
-            GameObject cardGoldPanel = item.transform.Find("GoldPanel").gameObject;
-            cardGoldPanel.SetActive(true);
+ 
 
             //remove
             Destroy(item.GetComponent<ClassItem>());
@@ -143,37 +140,12 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
             item.transform.Find("Text").GetComponent<TMP_Text>().text = shopData.shopQuantityItem.ToString();
 
-            item.GetComponent<TooltipContent>().description = "<color=yellow>" + shopData.scriptableItem.itemName + "</color> : " +  shopData.scriptableItem.itemDescription;
+            item.GetComponent<TooltipContent>().description = "<color=yellow>" + shopData.scriptableItem.itemName + "</color> : " + shopData.scriptableItem.itemDescription;
 
-
-            if (!shopData.itemAvailable)
-            {
-                item.transform.Find("SoldOut").gameObject.SetActive(true);
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
-            }
-            else
-            {
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = item.GetComponent<ShopItem>().shopData.shopCostItem.ToString();
-
-                if (ItemManager.Instance.CanPlayerBuy(item.GetComponent<ShopItem>().shopData.shopCostItem))
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-                }
-                else
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-                }
-            }
-
-
-
-
+            UIManager.Instance.ItemAvailability(shopData, item);
 
 
         }
-
-
-
 
     }
 
@@ -184,8 +156,8 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
         if (CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopArtifacts.Count <= 0)
         {
-     
-            var allowedTypes = new List<ItemCategory> { ItemCategory.ARTIFACT};
+
+            var allowedTypes = new List<ItemCategory> { ItemCategory.ARTIFACT };
             var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare };
 
             List<ScriptableItem> itemList = ItemManager.Instance.ChooseItems(ItemManager.Instance.artifactPoolList, allowedTypes, null, 3, false);
@@ -200,6 +172,8 @@ public class Event_Button_Shop : ScriptableButtonEvent
                 shopData.scriptableItem = scriptableItem;
 
                 shopArtifactList.Add(shopData);
+
+
 
             }
 
@@ -223,66 +197,32 @@ public class Event_Button_Shop : ScriptableButtonEvent
         foreach (ShopData shopData in artifactsList)
         {
 
+            ClassItemData classItemData = new ClassItemData(shopData.scriptableItem, 0);
 
+            //instantiate the card
+            GameObject artifact = DeckManager.Instance.InitializeCardArtifactPrefab(classItemData, parent, false, false);
 
-            //instantiate the artifact
-            GameObject artifact = Instantiate(
-      ItemManager.Instance.itemChoosePrefab,
-      parent.transform.position,
-      Quaternion.identity);
+            //do extra stuff on card
+            Destroy(artifact.GetComponent<CanvasScaler>());
+            Destroy(artifact.GetComponent<GraphicRaycaster>());
+            Destroy(artifact.GetComponent<Canvas>());
 
-            //set it as a child of the parent
-            artifact.transform.SetParent(parent.transform);
+            //disable scripts not needed
+            artifact.GetComponent<CardScript>().enabled = false;
+            artifact.GetComponent<CardEvents>().enabled = false;
 
-            artifact.transform.localScale = new Vector3(0.65f,0.65f,0.65f);
+            //enable scripts needed
+            artifact.GetComponent<CardListCardEvents>().enabled = false;
+            artifact.GetComponent<Button>().enabled = true;
+            artifact.GetComponent<CustomButton>().enabled = true;
+            artifact.GetComponent<ItemChoiceClass>().enabled = false;
 
-
-            GameObject cardGoldPanel = artifact.transform.Find("GoldPanel").gameObject;
-            cardGoldPanel.SetActive(true);
 
             artifact.AddComponent<ShopArtifact>();
             artifact.GetComponent<ShopArtifact>().shopData = shopData;
 
-            //ui
-            artifact.transform.Find("Icon").GetComponent<Image>().sprite = shopData.scriptableItem.Icon;
 
-            //itemPrefab.transform.Find("Title").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemName;
-            artifact.transform.Find("Title").GetComponent<TMP_Text>().text = shopData.scriptableItem.itemName;
-            //itemPrefab.transform.Find("Description").GetComponent<TMP_Text>().text = itemClassTemp.scriptableItem.itemDescription;
-            artifact.transform.Find("Description").GetComponent<TMP_Text>().text = shopData.scriptableItem.itemDescription;
-
-            artifact.transform.Find("ItemLevel").gameObject.SetActive(false);
-
-            //check if player already own this artifact
-            ClassItemData itemExist = ItemManager.Instance.CheckIfItemExistOnList(StaticData.artifactItemList,shopData.scriptableItem);
-
-            if (itemExist != null)
-            {
-                shopData.itemAvailable = false;
-            }
-
-            if (!shopData.itemAvailable)
-            {
-                artifact.transform.Find("SoldOut").gameObject.SetActive(true);
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
-            }
-            else
-            {
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = artifact.GetComponent<ShopArtifact>().shopData.shopCostItem.ToString();
-
-                if (ItemManager.Instance.CanPlayerBuy(artifact.GetComponent<ShopArtifact>().shopData.shopCostItem))
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-                }
-                else
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-                }
-            }
-
-
-
-
+            UIManager.Instance.ArtifactAvailability(shopData, artifact);
 
 
         }
@@ -291,6 +231,8 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
 
     }
+
+
 
     public void AssignCards()
     {
@@ -336,10 +278,10 @@ public class Event_Button_Shop : ScriptableButtonEvent
     public void AssignCardsOnShop(List<ShopData> cardList)
     {
 
-        foreach (ShopData shopCardData in cardList)
+        foreach (ShopData shopData in cardList)
         {
             CardScriptData cardScriptData = new CardScriptData();
-            cardScriptData.scriptableCard = shopCardData.scriptableCard;
+            cardScriptData.scriptableCard = shopData.scriptableCard;
             //instantiate the card
             GameObject card = DeckManager.Instance.InitializeCardPrefab(cardScriptData, UIManager.Instance.shopUI.transform.Find("CardList").gameObject, false, false);
 
@@ -361,45 +303,18 @@ public class Event_Button_Shop : ScriptableButtonEvent
             card.GetComponent<CardListCardEvents>().markedGO.SetActive(false);
             card.GetComponent<CardListCardEvents>().markedNumberGO = card.transform.Find("Panel").Find("UtilityFront").Find("MarkedNumber").gameObject;
             card.GetComponent<CardListCardEvents>().markedNumberGO.SetActive(false);
-            card.GetComponent<CardListCardEvents>().scriptableCard = shopCardData.scriptableCard;
-
-            GameObject cardGoldPanel = card.transform.GetChild(0).Find("UtilityFront").Find("GoldPanel").gameObject;
-            cardGoldPanel.SetActive(true);
+            card.GetComponent<CardListCardEvents>().scriptableCard = shopData.scriptableCard;
 
             card.AddComponent<ShopCard>();
-            card.GetComponent<ShopCard>().shopData = shopCardData;
+            card.GetComponent<ShopCard>().shopData = shopData;
 
-
-            if (!shopCardData.itemAvailable)
-            {
-                card.transform.GetChild(0).Find("UtilityFront").Find("SoldOut").gameObject.SetActive(true);
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
-            }
-            else
-            {
-                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = card.GetComponent<ShopCard>().shopData.shopCostItem.ToString();
-
-                if (ItemManager.Instance.CanPlayerBuy(card.GetComponent<ShopCard>().shopData.shopCostItem))
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
-                }
-                else
-                {
-                    cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
-                }
-            }
-
-
-
-    
-           
+            UIManager.Instance.CardAvailability(shopData, card);
 
         }
 
-
-
-
     }
+
+
 
     public int GetShopCostCard(ScriptableCard scriptableCard)
     {
@@ -478,6 +393,9 @@ public class Event_Button_Shop : ScriptableButtonEvent
         return goldCost;
 
     }
+
+
+
 
 
 }

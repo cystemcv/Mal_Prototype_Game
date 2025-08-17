@@ -57,6 +57,7 @@ public class CustomDungeonGenerator : MonoBehaviour
     public bool hideRooms = true;
     public bool drawLines = false;
     public bool clickedStart = true;
+    public bool activateAllRooms = false;
 
     [Header("SCRIPT VARIABLES")]
     public List<GameObject> rooms = new List<GameObject>(); // List to store created rooms
@@ -191,7 +192,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded, null);
+            StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded, null));
             UpdateAdventureUI();
         }
 
@@ -201,6 +202,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             StaticData.staticDungeonParent.SetActive(true);
             playerSpaceShip.SetActive(true);
             pathHighlightedLineRenderer.gameObject.SetActive(true);
+            StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
         }
         else
         {
@@ -356,6 +358,23 @@ public class CustomDungeonGenerator : MonoBehaviour
         //end generation 
         yield return StartCoroutine(SetPlayerSpaceship());
 
+        yield return StartCoroutine(ActivateAllPlanets());
+
+        yield return StartCoroutine(SystemManager.Instance.TriggerLoadEndAnimation());
+
+    }
+
+    public IEnumerator ActivateAllPlanets()
+    {
+        if (activateAllRooms)
+        {
+            foreach(GameObject room in rooms)
+            {
+                ActivatePlanet(room);
+            }
+        }
+
+        yield return null;
     }
 
     public IEnumerator SetPlayerSpaceship()
@@ -1478,22 +1497,12 @@ public class CustomDungeonGenerator : MonoBehaviour
 
 
             GameObject targetPlanet = path[i];
-            Vector3 direction = (targetPlanet.transform.position - playerSpaceShip.transform.position).normalized;
 
-            // Calculate desired angle in degrees
-            float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
-            Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
 
-            // Rotate before moving (optional: make it simultaneous)
-            while (Quaternion.Angle(playerSpaceShip.transform.rotation, targetRotation) > 0.1f)
-            {
-                playerSpaceShip.transform.rotation = Quaternion.RotateTowards(
-                    playerSpaceShip.transform.rotation,
-                    targetRotation,
-                    rotationSpeed * Time.deltaTime
-                );
-                yield return null;
-            }
+            yield return StartCoroutine(RotateToTarget(playerSpaceShip,targetPlanet,1000f));
+
+
+            FeedbackManager.Instance.PlayOnTarget(playerSpaceShip.transform, FeedbackManager.Instance.mm_MovingFast_Prefab);
 
             // Move toward target
             while (Vector3.Distance(playerSpaceShip.transform.position, targetPlanet.transform.position) > 0.1f)
@@ -1508,7 +1517,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
             // Snap to exact position and rotation
             playerSpaceShip.transform.position = targetPlanet.transform.position;
-            playerSpaceShip.transform.rotation = targetRotation;
+      
 
             //ignore the first planet
             if (i != 0)
@@ -1554,6 +1563,50 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
         playerSpaceShipMoving = false;
+    }
+
+    private IEnumerator RotateToTarget(GameObject rotateGO,GameObject target, float rotationSpeed)
+    {
+        Vector3 direction = (target.transform.position - rotateGO.transform.position).normalized;
+
+        // Calculate desired angle in degrees
+        float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
+
+        //Rotate before moving(optional: make it simultaneous)
+        while (Quaternion.Angle(rotateGO.transform.rotation, targetRotation) > 0.1f)
+        {
+            rotateGO.transform.rotation = Quaternion.RotateTowards(
+                rotateGO.transform.rotation,
+                targetRotation,
+                rotationSpeed * Time.deltaTime
+            );
+            yield return null;
+        }
+
+        rotateGO.transform.rotation = targetRotation;
+    }
+
+    public void HideCustomDungeonGenerator()
+    {
+        //hide the dungeon generato
+        if (StaticData.staticDungeonParent != null)
+        {
+            StaticData.staticDungeonParent.SetActive(false);
+        }
+        else
+        {
+            StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
+            StaticData.staticDungeonParent.SetActive(false);
+        }
+
+        GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
+        GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
+        if (spaceship)
+        {
+            spaceship.SetActive(false);
+            spaceshipLine.SetActive(false);
+        }
     }
 
     public void ClickedRoom(RoomScript roomScript)

@@ -360,6 +360,8 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenuConfirm()
     {
 
+        //hide the dungeon generator
+        CustomDungeonGenerator.Instance.HideCustomDungeonGenerator();
 
         UIManager.Instance.CloseQuickMenu();
 
@@ -957,7 +959,7 @@ public class UIManager : MonoBehaviour
 
         eventGO.SetActive(false);
 
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, false);
     }
 
 
@@ -1068,5 +1070,118 @@ public class UIManager : MonoBehaviour
 
 
     }
+
+    public void RefreshEveryShopItem()
+    {
+        // Cards
+        GameObject parent = UIManager.Instance.shopUI.transform.Find("CardList").gameObject;
+        foreach (Transform child in parent.transform)
+        {
+            GameObject card = child.gameObject;
+            CardAvailability(card.GetComponent<ShopCard>().shopData, card);
+        }
+
+        // Artifacts
+        parent = UIManager.Instance.shopUI.transform.Find("ArtifactsList").gameObject;
+        foreach (Transform child in parent.transform)
+        {
+            GameObject artifact = child.gameObject;
+            ArtifactAvailability(artifact.GetComponent<ShopArtifact>().shopData, artifact);
+        }
+
+        // Items
+        parent = UIManager.Instance.shopUI.transform.Find("ItemList").gameObject;
+        foreach (Transform child in parent.transform)
+        {
+            GameObject item = child.gameObject;
+            ItemAvailability(item.GetComponent<ShopItem>().shopData, item);
+        }
+    }
+
+    public void CardAvailability(ShopData shopData, GameObject card)
+    {
+        GameObject cardGoldPanel = card.transform.GetChild(0).Find("UtilityFront").Find("GoldPanel").gameObject;
+        cardGoldPanel.SetActive(true);
+
+        if (!shopData.itemAvailable)
+        {
+            card.transform.GetChild(0).Find("UtilityFront").Find("SoldOut").gameObject.SetActive(true);
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
+        }
+        else
+        {
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = card.GetComponent<ShopCard>().shopData.shopCostItem.ToString();
+
+            if (ItemManager.Instance.CanPlayerBuy(card.GetComponent<ShopCard>().shopData.shopCostItem))
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+            }
+            else
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+            }
+        }
+    }
+
+
+    public void ArtifactAvailability(ShopData shopData, GameObject artifact)
+    {
+        GameObject cardGoldPanel = artifact.transform.GetChild(0).Find("UtilityFront").Find("GoldPanel").gameObject;
+        cardGoldPanel.SetActive(true);
+
+        ClassItemData itemExist = ItemManager.Instance.CheckIfItemExistOnList(StaticData.artifactItemList, shopData.scriptableItem);
+
+        if (itemExist != null)
+        {
+            shopData.itemAvailable = false;
+        }
+
+        if (!shopData.itemAvailable)
+        {
+            artifact.transform.GetChild(0).Find("UtilityFront").Find("SoldOut").gameObject.SetActive(true);
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
+        }
+        else
+        {
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = artifact.GetComponent<ShopArtifact>().shopData.shopCostItem.ToString();
+
+            if (ItemManager.Instance.CanPlayerBuy(artifact.GetComponent<ShopArtifact>().shopData.shopCostItem))
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+            }
+            else
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+            }
+        }
+    }
+
+
+    public void ItemAvailability(ShopData shopData, GameObject item)
+    {
+
+        GameObject cardGoldPanel = item.transform.Find("GoldPanel").gameObject;
+        cardGoldPanel.SetActive(true);
+
+        if (!shopData.itemAvailable)
+        {
+            item.transform.Find("SoldOut").gameObject.SetActive(true);
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = "SOLD";
+        }
+        else
+        {
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = item.GetComponent<ShopItem>().shopData.shopCostItem.ToString();
+
+            if (ItemManager.Instance.CanPlayerBuy(item.GetComponent<ShopItem>().shopData.shopCostItem))
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+            }
+            else
+            {
+                cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
+            }
+        }
+    }
+
 
 }

@@ -53,6 +53,8 @@ public class ShopCard : MonoBehaviour, IPointerClickHandler
             //add card on deck
             DeckManager.Instance.AddCardOnDeck(shopData.scriptableCard,0);
 
+            UIManager.Instance.RefreshEveryShopItem();
+
         }
         else
         {

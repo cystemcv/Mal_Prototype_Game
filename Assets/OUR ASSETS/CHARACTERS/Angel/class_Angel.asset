@@ -12,30 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
   m_Name: class_Angel
   m_EditorClassIdentifier: 
-  startingCards:
-  - {fileID: 11400000, guid: d79e41d7cdd79114f8e568f5ac2c356f, type: 2}
-  - {fileID: 11400000, guid: 806586f15ab6e7f4b834a4972cf41445, type: 2}
-  - {fileID: 11400000, guid: c0e1b3e52532c0c4f8a61e241052082f, type: 2}
-  - {fileID: 11400000, guid: 1f2e6a38ea18d844baeb29855e8c1065, type: 2}
-  - {fileID: 11400000, guid: 52377297e2cf43449a521471a5c4636b, type: 2}
-  - {fileID: 11400000, guid: 57772f05863cc164d841a5fe175eced8, type: 2}
-  - {fileID: 11400000, guid: 02bada8ed3b01b24186fc58e2e974af8, type: 2}
-  - {fileID: 11400000, guid: dbaae42cb8798124e80abb9677154050, type: 2}
-  - {fileID: 11400000, guid: b5763856d94354643b78360bb5849346, type: 2}
-  - {fileID: 11400000, guid: 444ca53a864ffe9409f77d2c6ef1323b, type: 2}
-  - {fileID: 11400000, guid: f65bfab0b31aab543bae0111cfc113c6, type: 2}
-  - {fileID: 11400000, guid: 36547c99a435227428729210c4d0063a, type: 2}
-  - {fileID: 11400000, guid: 5a6563c4f9852604d861ff856aadcd14, type: 2}
+  startingCards: {fileID: 11400000, guid: 32135bdfad834814ea0524260a24261d, type: 2}
+  startingDecks:
+  - {fileID: 11400000, guid: 32135bdfad834814ea0524260a24261d, type: 2}
+  - {fileID: 11400000, guid: 5f5bdd632437e3c498e072cbeca228b6, type: 2}
+  - {fileID: 11400000, guid: 5dad679b0cbcd6b45a864c79590b4974, type: 2}
   mainClass: 3
   distanceFromAnotherUnit: 2
   unitsWorth: 1
-  startingArtifacts: []
+  startingArtifacts:
+  - {fileID: 11400000, guid: 0eb0f7bd290dcd045b54cf0278c8906c, type: 2}
   entityName: Katrina
   entityPrefab: {fileID: 7242672514193177272, guid: a5cdb59ab27c1dd44999174370af999a, type: 3}
   entityImage: {fileID: 21300000, guid: 26e6f124f7cff0744941afdd0db4a089, type: 3}
   entityIcon: {fileID: 0}
-  entityDescription: Born in planet XsII2AA, the planet of angels. Katrina is fighting
-    for Justice and order! An all around warrior with balance as her main focus!
+  entityDescription: 
   entityChoose: {fileID: 446749968264874285, guid: b0813d63948367d409d966220275ab6b, type: 3}
   summonTurns: 1
   entitySpaceShipPrefab: {fileID: 0}
@@ -51,8 +42,10 @@ MonoBehaviour:
   aICommands: []
   strength: 0
   defence: 0
-  maxHealth: 50
-  currHealth: 50
+  maxHealth: 70
+  currHealth: 70
+  shield: 0
+  armor: 0
   maxMana: 0
   currMana: 0
   maxLevel: 0

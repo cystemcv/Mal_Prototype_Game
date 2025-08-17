@@ -453,16 +453,8 @@ public class Combat : MonoBehaviour
         codeMode = code;
         UI_Combat.Instance.DisableCombatUI();
 
-        //hide the dungeon generato
-        if (StaticData.staticDungeonParent != null)
-        {
-            StaticData.staticDungeonParent.SetActive(false);
-        }
-        else
-        {
-            StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
-            StaticData.staticDungeonParent.SetActive(false);
-        }
+        //hide the dungeon generator
+        CustomDungeonGenerator.Instance.HideCustomDungeonGenerator();
 
         GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
         GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
@@ -1543,6 +1535,10 @@ public class Combat : MonoBehaviour
     public IEnumerator RemoveShieldFromEntitiesBasedOnTag(string tag)
     {
 
+        if (Turns == 0 || Turns == 1) {
+            yield break;
+        }
+
         GameObject[] characters = GameObject.FindGameObjectsWithTag(tag);
 
         foreach (GameObject character in characters)
@@ -2423,24 +2419,10 @@ public class Combat : MonoBehaviour
 
         UI_Combat.Instance.DisableCombatUI();
 
-        //hide the dungeon generato
-        if (StaticData.staticDungeonParent != null)
-        {
-            StaticData.staticDungeonParent.SetActive(false);
-        }
-        else
-        {
-            StaticData.staticDungeonParent = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("DungeonParent").gameObject;
-            StaticData.staticDungeonParent.SetActive(false);
-        }
+        //hide the dungeon generator
+        CustomDungeonGenerator.Instance.HideCustomDungeonGenerator();
 
-        GameObject spaceship = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceship").gameObject;
-        GameObject spaceshipLine = GameObject.Find("SYSTEM").transform.Find("DUNGEON MANAGER").Find("spaceshipLine").gameObject;
-        if (spaceship)
-        {
-            spaceship.SetActive(false);
-            spaceshipLine.SetActive(false);
-        }
+
 
         //change into combat mode
         SystemManager.Instance.systemMode = SystemManager.SystemModes.COMBAT;
@@ -2463,7 +2445,8 @@ public class Combat : MonoBehaviour
 
         //destroy battleground
         battleground = GameObject.FindGameObjectWithTag("BattleGround");
-        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.GetChild(0).gameObject));
+        yield return StartCoroutine(SystemManager.Instance.DestroyAllChildrenIE(battleground.transform.gameObject));
+
 
         //spawn the characters
         yield return StartCoroutine(SpawnCharacters());

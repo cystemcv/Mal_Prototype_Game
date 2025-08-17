@@ -7,8 +7,12 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "ScriptableEntity", menuName = "Entity/ScriptableEntity")]
 public class ScriptableEntity : ScriptableObject
 {
-    [Header("CARDS")]
-    public List<ScriptableCard> startingCards; //assign the cards you want the class to start building the deck
+    //[Header("CARDS")]
+    //public List<ScriptableCard> startingCards; //assign the cards you want the class to start building the deck
+
+    [Header("STARTING DECKS")]
+    public ScriptableDeck startingCards; //assign the cards you want the class to start building the deck
+    public List<ScriptableDeck> startingDecks; //assign the cards you want the class to start building the deck
 
     [Header("CHARACTER SPECIFIC")]
     public SystemManager.MainClass mainClass; //Actual classes to be determined
@@ -49,6 +53,10 @@ public class ScriptableEntity : ScriptableObject
 
     public int maxHealth;
     public int currHealth; // current health
+
+    public int shield = 0;
+    public int armor = 0;
+
     public int maxMana;
     public int currMana; // current mana
     public int maxLevel;

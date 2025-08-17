@@ -82,7 +82,7 @@ public class DeckManager : MonoBehaviour
 
 
         //loop for each starting card list and add it to our deck
-        foreach (ScriptableCard scriptableCard in StaticData.staticCharacter.startingCards)
+        foreach (ScriptableCard scriptableCard in StaticData.staticCharacter.startingCards.deck)
         {
 
             //add cards to the deck

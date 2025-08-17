@@ -35,8 +35,8 @@ public class ShopArtifact : MonoBehaviour, IPointerClickHandler
         {
 
             //add sold on card
-            this.gameObject.transform.Find("SoldOut").gameObject.SetActive(true);
-            this.gameObject.transform.Find("GoldPanel").Find("Text").GetComponent<TMP_Text>().text = "SOLD";
+            this.gameObject.transform.GetChild(0).Find("UtilityFront").Find("SoldOut").gameObject.SetActive(true);
+            this.gameObject.transform.GetChild(0).Find("UtilityFront").Find("GoldPanel").Find("Text").GetComponent<TMP_Text>().text = "SOLD";
 
             shopData.itemAvailable = false;
 
@@ -53,6 +53,8 @@ public class ShopArtifact : MonoBehaviour, IPointerClickHandler
             //add card on deck
             ClassItemData classItemData = new ClassItemData(shopData.scriptableItem,1);
             StaticData.artifactItemList.Add(classItemData);
+
+            UIManager.Instance.RefreshEveryShopItem();
 
         }
         else
