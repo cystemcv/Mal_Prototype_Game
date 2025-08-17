@@ -98,6 +98,9 @@ public class CustomDungeonGenerator : MonoBehaviour
     List<GameObject> usedBossRooms = new List<GameObject>();
 
     public LineRenderer pathHighlightedLineRenderer;
+    public GameObject circlePrefab; // assign prefab in inspector
+    private GameObject startCircle;
+    private GameObject endCircle;
 
     public GameObject playerSpaceShip;
     public bool playerSpaceShipMoving = false;
@@ -1408,17 +1411,40 @@ public class CustomDungeonGenerator : MonoBehaviour
 
 
 
+    //public void DrawHighlightedPathLine(List<GameObject> path)
+    //{
+
+    //    if (playerSpaceShipMoving)
+    //    {
+    //        return;
+    //    }
+
+    //    if (path == null || path.Count < 2)
+    //    {
+    //        pathHighlightedLineRenderer.positionCount = 0;
+    //        return;
+    //    }
+
+    //    pathHighlightedLineRenderer.positionCount = path.Count;
+
+    //    for (int i = 0; i < path.Count; i++)
+    //    {
+    //        pathHighlightedLineRenderer.SetPosition(i, path[i].transform.position);
+    //    }
+    //}
+
     public void DrawHighlightedPathLine(List<GameObject> path)
     {
-
         if (playerSpaceShipMoving)
-        {
             return;
-        }
 
         if (path == null || path.Count < 2)
         {
             pathHighlightedLineRenderer.positionCount = 0;
+
+            if (startCircle != null) startCircle.SetActive(false);
+            if (endCircle != null) endCircle.SetActive(false);
+
             return;
         }
 
@@ -1428,7 +1454,22 @@ public class CustomDungeonGenerator : MonoBehaviour
         {
             pathHighlightedLineRenderer.SetPosition(i, path[i].transform.position);
         }
+
+        // Create start circle if missing
+        if (startCircle == null)
+            startCircle = Instantiate(circlePrefab, pathHighlightedLineRenderer.transform);
+
+        if (endCircle == null)
+            endCircle = Instantiate(circlePrefab, pathHighlightedLineRenderer.transform);
+
+        // Position them
+        startCircle.transform.position = path[0].transform.position;
+        endCircle.transform.position = path[path.Count - 1].transform.position;
+
+        startCircle.SetActive(true);
+        endCircle.SetActive(true);
     }
+
 
     public List<GameObject> GetShortestVisiblePath(GameObject startRoom, GameObject endRoom)
     {

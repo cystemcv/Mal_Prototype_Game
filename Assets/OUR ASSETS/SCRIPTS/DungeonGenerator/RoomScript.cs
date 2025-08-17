@@ -100,6 +100,7 @@ public class RoomScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         isHovered = false;
         if (!CustomDungeonGenerator.Instance.playerSpaceShipMoving)
         {
+            CustomDungeonGenerator.Instance.lastHoveredRoom = null;
             CustomDungeonGenerator.Instance.DrawHighlightedPathLine(null); // Clear line
         }
 

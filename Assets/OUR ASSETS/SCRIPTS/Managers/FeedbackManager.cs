@@ -73,7 +73,14 @@ public class FeedbackManager : MonoBehaviour
                 }
 
             }
-
+            else if (feedback.Label == "Chromatic Aberration")
+            {
+                    feedback.Active = SystemManager.Instance.options_allow_chromatic_aberration;
+            }
+            else if (feedback.Label == "Lens Distortion")
+            {
+                    feedback.Active = SystemManager.Instance.options_allow_lens_distortion;
+            }
         }
 
         // This is the critical part: re-initialize AFTER assigning

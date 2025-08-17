@@ -160,6 +160,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public Material materialTargetEntity;
     public Material materialMouseOverEntity;
 
+    [Header("OPTIONS")]
+    [HideInInspector] public bool options_allow_lens_distortion = true;
+    [HideInInspector] public bool options_allow_chromatic_aberration = true;
+
     private void Awake()
     {
         if (Instance == null)

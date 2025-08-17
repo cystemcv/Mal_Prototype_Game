@@ -50,9 +50,16 @@ public class UI_OptionsMenu : MonoBehaviour
         DisplayTabController.Instance.SelectScreenResolution(false);
 
         TutorialManager.Instance.allowTutorials = true;
-
         MiscTabController.Instance.enableTutoralSwitch.isOn = TutorialManager.Instance.allowTutorials; // Changing state manually
         MiscTabController.Instance.enableTutoralSwitch.UpdateUI(); // Updating UI manually
+
+        SystemManager.Instance.options_allow_lens_distortion = true;
+        MiscTabController.Instance.enableLensDistortion.isOn = SystemManager.Instance.options_allow_lens_distortion; // Changing state manually
+        MiscTabController.Instance.enableLensDistortion.UpdateUI(); // Updating UI manually
+
+        SystemManager.Instance.options_allow_chromatic_aberration = true;
+        MiscTabController.Instance.enableChromaticAberration.isOn = SystemManager.Instance.options_allow_chromatic_aberration; // Changing state manually
+        MiscTabController.Instance.enableChromaticAberration.UpdateUI(); // Updating UI manually
     }
 
 
@@ -84,7 +91,8 @@ public class UI_OptionsMenu : MonoBehaviour
         PlayerPrefs.SetString("display_sreen_resolution", DisplayTabController.Instance.selectScreenResolution.selectedText.text);
 
         PlayerPrefs.SetString("allow_tutorials", TutorialManager.Instance.allowTutorials.ToString());
-
+        PlayerPrefs.SetString("options_allow_lens_distortion", SystemManager.Instance.options_allow_lens_distortion.ToString());
+        PlayerPrefs.SetString("options_allow_chromatic_aberration", SystemManager.Instance.options_allow_chromatic_aberration.ToString());
     }
 
     public void LoadSettings()
@@ -116,11 +124,27 @@ public class UI_OptionsMenu : MonoBehaviour
         string storedValue = PlayerPrefs.GetString("allow_tutorials", "true");
         bool allowTutorials;
         bool.TryParse(storedValue, out allowTutorials);
-
         TutorialManager.Instance.allowTutorials = allowTutorials;
-
         MiscTabController.Instance.enableTutoralSwitch.isOn = TutorialManager.Instance.allowTutorials; // Changing state manually
         MiscTabController.Instance.enableTutoralSwitch.UpdateUI(); // Updating UI manually
+
+
+        //lens distortion
+        string storedValue_LensDistortion = PlayerPrefs.GetString("options_allow_lens_distortion", "true");
+        bool allowLensDistortion;
+        bool.TryParse(storedValue_LensDistortion, out allowLensDistortion);
+        SystemManager.Instance.options_allow_lens_distortion = allowLensDistortion;
+        MiscTabController.Instance.enableLensDistortion.isOn = allowLensDistortion; // Changing state manually
+        MiscTabController.Instance.enableLensDistortion.UpdateUI(); // Updating UI manually
+
+        //chromatic abberation
+        string storedValue_CA = PlayerPrefs.GetString("options_allow_chromatic_aberration", "true");
+        bool options_allow_chromatic_aberration;
+        bool.TryParse(storedValue_LensDistortion, out options_allow_chromatic_aberration);
+        SystemManager.Instance.options_allow_chromatic_aberration = options_allow_chromatic_aberration;
+        MiscTabController.Instance.enableChromaticAberration.isOn = options_allow_chromatic_aberration; // Changing state manually
+        MiscTabController.Instance.enableChromaticAberration.UpdateUI(); // Updating UI manually
+
 
         Debug.Log(PlayerPrefs.GetString("display_sreen_mode").ToString());
     }

@@ -9,6 +9,8 @@ public class MiscTabController : MonoBehaviour
     public static MiscTabController Instance;
 
     public SwitchManager enableTutoralSwitch;
+    public SwitchManager enableLensDistortion;
+    public SwitchManager enableChromaticAberration;
 
     private void Awake()
     {
@@ -27,6 +29,16 @@ public class MiscTabController : MonoBehaviour
     public void Toggle_AllowTraining()
     {
         TutorialManager.Instance.allowTutorials = !TutorialManager.Instance.allowTutorials;
+    }
+
+    public void Toggle_AllowLensDistortion()
+    {
+        SystemManager.Instance.options_allow_lens_distortion = !SystemManager.Instance.options_allow_lens_distortion;
+    }
+
+    public void Toggle_AllowChromaticAberration()
+    {
+        SystemManager.Instance.options_allow_chromatic_aberration = !SystemManager.Instance.options_allow_chromatic_aberration;
     }
 
     public void ModalOpenResetTutorials()
