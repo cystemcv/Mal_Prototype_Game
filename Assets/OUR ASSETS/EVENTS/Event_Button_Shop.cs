@@ -247,7 +247,7 @@ public class Event_Button_Shop : ScriptableButtonEvent
 
             allowedClasses.Add(StaticData.staticCharacter.mainClass);
 
-            List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, null, null, null, 7, true);
+            List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, null, null, null, 6, true);
 
             //build the shop card list
             foreach (ScriptableCard scriptableCard in cardList)
