@@ -243,6 +243,11 @@ public class BuffSystemManager : MonoBehaviour
     public List<BuffDebuffClass> GetAllBuffDebuffFromTarget(GameObject target)
     {
 
+        if(target == null)
+        {
+            return null;
+        }
+
         GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
 
         BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();

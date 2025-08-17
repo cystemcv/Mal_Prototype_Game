@@ -206,11 +206,6 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerDown(PointerEventData eventData)
     {
 
-        if (!UI_Combat.Instance.uiCombatEnable)
-        {
-            return;
-        }
-
         if (SystemManager.Instance.abilityMode == SystemManager.AbilityModes.NONE)
         {
             OnPointerDown_TargetMode(eventData);
