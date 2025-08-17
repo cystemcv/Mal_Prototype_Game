@@ -194,6 +194,7 @@ public class CraftingManager : MonoBehaviour
 
         //open the UI for crafting
         UIManager.Instance.craftingPanelUI.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(UIManager.Instance.craftingPanelUI.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
 
         //testing crafting
 

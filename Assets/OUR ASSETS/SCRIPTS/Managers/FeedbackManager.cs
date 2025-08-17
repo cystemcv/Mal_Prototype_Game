@@ -12,6 +12,8 @@ public class FeedbackManager : MonoBehaviour
     public GameObject mm_ClickCard_Prefab;
     public GameObject mm_ActivatedUI_Prefab;
     public GameObject mm_MovingFast_Prefab;
+    public GameObject mm_OpenPanel_Prefab;
+    public GameObject mm_ClosePanel_Prefab;
 
     private void Awake()
     {
@@ -61,7 +63,16 @@ public class FeedbackManager : MonoBehaviour
                 }
 
             }
+            else if (feedback.Label == "Scale")
+            {
 
+                var scale = feedback as MMF_Scale;
+                if (scale != null)
+                {
+                    scale.AnimateScaleTarget = target;
+                }
+
+            }
 
         }
 

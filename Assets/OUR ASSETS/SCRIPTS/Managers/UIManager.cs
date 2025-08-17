@@ -279,6 +279,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenQuickMenu() {
         QuickMenu.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(QuickMenu.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
         Time.timeScale = 0f; // Pause game
     }
 
@@ -636,6 +637,7 @@ public class UIManager : MonoBehaviour
         selectedCardList.Clear();
 
         this.cardListGO.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(this.cardListGO.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
         this.cardListGO.transform.Find("Others").Find("Title").GetComponent<TMP_Text>().text = optionsSettings.title;
 
         GameObject closeButton = this.cardListGO.transform.Find("Buttons").Find("btn_Close").gameObject;
@@ -685,9 +687,14 @@ public class UIManager : MonoBehaviour
                 optionsSettings.onConfirmAction.Invoke();
             }
             cardListGO.SetActive(false);
+
+
+
         });
 
     }
+
+
 
     public void CreateClassButtonsForCardList()
     {

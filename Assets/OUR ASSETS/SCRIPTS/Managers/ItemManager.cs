@@ -194,6 +194,7 @@ public class ItemManager : MonoBehaviour
     public void ShowInventory()
     {
         UIManager.Instance.inventoryMain.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(UIManager.Instance.inventoryMain.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
 
         //activate animation
         //UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimation();
@@ -772,6 +773,7 @@ public class ItemManager : MonoBehaviour
         SystemManager.Instance.DestroyAllChildren(itemArtifactPrefabParent);
 
         artifactPanel.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(artifactPanel.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
 
         //get artifacts
         var allowedTypes = new List<ItemCategory> { ItemCategory.ARTIFACT };
