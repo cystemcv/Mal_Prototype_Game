@@ -14,7 +14,7 @@ public class Artifacts_QuickSnack : ScriptableItem
     
     private bool triggered = false;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
         if (Combat.Instance.turns > 1 && !triggered)
@@ -35,7 +35,7 @@ public class Artifacts_QuickSnack : ScriptableItem
 
     }
 
-    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         ItemManager.Instance.AddItemOnActivateOrder(this, "Expired Cannot heal anymore!", true);
         triggered = false;

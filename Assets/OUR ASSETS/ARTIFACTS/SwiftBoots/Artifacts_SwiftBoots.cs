@@ -10,7 +10,7 @@ public class Artifacts_SwiftBoots : ScriptableItem
     [Title("UNIQUE ITEM ABILITY")]
     public int extraMana = 1;
 
-    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         CombatCardHandler.Instance.moveExtraMana -= extraMana;
 
@@ -21,7 +21,7 @@ public class Artifacts_SwiftBoots : ScriptableItem
     }
 
 
-    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         CombatCardHandler.Instance.moveExtraMana += extraMana;
         ItemManager.Instance.AddItemOnActivateOrder(this, "Recharged", false);

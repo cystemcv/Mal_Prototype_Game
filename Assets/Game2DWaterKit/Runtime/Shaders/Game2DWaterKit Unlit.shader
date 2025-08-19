@@ -1,4 +1,4 @@
-﻿Shader "Game2DWaterKit/Built-in Render Pipeline/Unlit/Water"
+﻿Shader "Game2DWaterKit/Custom"
 {
 	Properties {
     	//Water Body Properties
@@ -117,20 +117,21 @@
 	SubShader
 	{
 		Tags {
-		"RenderType"="Opaque"
-		"Queue"="Transparent"
-		"IgnoreProjector"="True"
-		"PreviewType"="Plane"
+			"RenderType" = "Transparent"
+			"Queue" = "Transparent"
+			"IgnoreProjector" = "True"
+			"PreviewType" = "Plane"
 		}
 
-		Stencil
-		{
-			Ref[_SpriteMaskInteractionRef]
-			Comp[_SpriteMaskInteraction]
-		}
+		// Removed stencil test to avoid hiding UI
+		//Stencil
+		//{
+		//    Ref[_SpriteMaskInteractionRef]
+		//    Comp[_SpriteMaskInteraction]
+		//}
 
-		Blend [_SrcBlend] [_DstBlend]
-		ZWrite [_ZWrite]
+		Blend[_SrcBlend][_DstBlend]
+		ZWrite 0 // keep 0 for transparency
 		Cull off
 
 		Pass
@@ -139,9 +140,8 @@
 
 			#pragma vertex vert
 			#pragma fragment frag
-			// make fog work
 			#pragma multi_compile_fog
-		
+
 			#pragma multi_compile _ Water2D_FakePerspective
 			#pragma multi_compile _ Water2D_Refraction
 			#pragma multi_compile _ Water2D_Reflection
@@ -170,14 +170,14 @@
 			#include "UnityCG.cginc"
 			#include "Game2DWaterKitWater.cginc"
 
-			Varyings vert (Attributes v)
+			Varyings vert(Attributes v)
 			{
 				Varyings o = Water2D_Vert(v);
 				UNITY_TRANSFER_FOG(o,o.pos);
 				return o;
 			}
-			
-			half4 frag (Varyings i) : SV_Target
+
+			half4 frag(Varyings i) : SV_Target
 			{
 				half4 c = Water2D_Frag(i);
 				UNITY_APPLY_FOG(i.fogCoord, c);
@@ -188,5 +188,5 @@
 		}
 	}
 
-	CustomEditor "Game2DWaterKit.Game2DWaterShaderGUI"
+		CustomEditor "Game2DWaterKit.Game2DWaterShaderGUI"
 }

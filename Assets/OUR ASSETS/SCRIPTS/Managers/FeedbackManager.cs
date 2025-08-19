@@ -8,7 +8,7 @@ public class FeedbackManager : MonoBehaviour
 
     public GameObject mm_Hit_Prefab;
     public GameObject mm_Death_Prefab;
-    public GameObject mm_HoverCard_Prefab;
+    public GameObject mm_HoverUI_Prefab;
     public GameObject mm_ClickCard_Prefab;
     public GameObject mm_ActivatedUI_Prefab;
     public GameObject mm_MovingFast_Prefab;

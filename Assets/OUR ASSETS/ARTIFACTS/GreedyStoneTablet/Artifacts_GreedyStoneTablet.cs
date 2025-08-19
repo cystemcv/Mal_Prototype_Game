@@ -14,10 +14,10 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
     private int cardsPlayed = 0;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
-       if(StaticData.artifact_CardScript.scriptableCard.cardType == SystemManager.CardType.Attack)
+        if (StaticData.artifact_CardScript.scriptableCard.cardType == SystemManager.CardType.Attack)
         {
             cardsPlayed += 1;
         }
@@ -36,7 +36,7 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
             waitAbilitiesTime += 0.05f;
 
-               MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
+            MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                                //hit at least one time if its 0
 
             runner.StartCoroutine(DeckManager.Instance.DrawMultipleCards(cardsToDraw, waitAbilitiesTime));
@@ -48,12 +48,10 @@ public class Artifacts_GreedyStoneTablet : ScriptableItem
 
     }
 
-    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         cardsPlayed = 0;
     }
-
-
 
 
 }

@@ -195,7 +195,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded, null));
+            StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnAdventureSceneLoaded, null,null));
             UpdateAdventureUI();
         }
 
@@ -1573,15 +1573,8 @@ public class CustomDungeonGenerator : MonoBehaviour
                 scalingLevel += 1;
             }
 
+            SetUpScalingText();
 
-            if (scalingLevel < scriptableScaling.scalingLevelBuffDebuffs.Count)
-            {
-                UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
-            }
-            else
-            {
-                UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "MAXED! (LV:" + scalingLevel + ")";
-            }
 
             // Trigger landing logic at destination
             if (i == path.Count - 1)
@@ -1604,6 +1597,18 @@ public class CustomDungeonGenerator : MonoBehaviour
         }
 
         playerSpaceShipMoving = false;
+    }
+
+    public  void SetUpScalingText()
+    {
+        if (scalingLevel < scriptableScaling.scalingLevelBuffDebuffs.Count)
+        {
+            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "Steps : " + stepsTaken + " / " + scriptableScaling.maxSteps + " (LV:" + scalingLevel + ")";
+        }
+        else
+        {
+            UIManager.Instance.galaxyScaling.GetComponent<TMP_Text>().text = "MAXED! (LV:" + scalingLevel + ")";
+        }
     }
 
     private IEnumerator RotateToTarget(GameObject rotateGO,GameObject target, float rotationSpeed)
@@ -1720,7 +1725,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         else
         {
 
-            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom, null);
+            ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnNonCombatRoom, null,null);
 
             CustomDungeonGenerator.Instance.OnRoomClick(roomScript.gameObject);
 

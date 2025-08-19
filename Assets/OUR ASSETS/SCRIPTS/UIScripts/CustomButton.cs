@@ -47,7 +47,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (playFeedbacks)
         {
-            FeedbackManager.Instance.PlayOnTarget(this.gameObject.transform, FeedbackManager.Instance.mm_ActivatedUI_Prefab);
+            FeedbackManager.Instance.PlayOnTarget(this.gameObject.transform, FeedbackManager.Instance.mm_HoverUI_Prefab);
         }
 
         // Scale up the hovered card

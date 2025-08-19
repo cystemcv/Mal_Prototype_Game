@@ -68,51 +68,16 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Update()
     {
-        try
-        {
-            DeckManager.Instance.UpdateCardUI(this.gameObject);
-
-            //if (isPointerInside && !isDragging)
-            //{
-            //    PointerEventData pointerData = new PointerEventData(EventSystem.current)
-            //    {
-            //        position = Input.mousePosition
-            //    };
-
-            //    List<RaycastResult> results = new List<RaycastResult>();
-            //    EventSystem.current.RaycastAll(pointerData, results);
-
-            //    foreach (var result in results)
-            //    {
-            //        //Debug.Log("Hit: " + result.gameObject.name);
-            //        if (result.gameObject == gameObject || result.gameObject.transform.IsChildOf(transform))
-            //        {
-            //            // Scale up the hovered card
-            //            scaleTween = LeanTween.scale(childObjectVisual, originalScale * hoverScale, transitionTime);
-
-            //            //// Move the card slightly up in world space
-            //            //float targetY = transform.position.y + hoverHeight;
-            //            float targetY = HandManager.Instance.centerObject.transform.position.y + hoverHeight;
-            //            localMoveTween = LeanTween.moveY(gameObject, targetY, transitionTime);
-
-            //            //save and then make the angle 0
-            //            //saveRotation = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
-            //            gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-
-            //            gameObject.GetComponent<Canvas>().sortingOrder = 999;
-
-            //            HandManager.Instance.PushNeightbourCards(this.gameObject);
-            //        }
-            //    }
-            //}
+        //try
+        //{
+        //    DeckManager.Instance.UpdateCardUI(this.gameObject);
 
 
-     
-        }
-        catch(Exception ex)
-        {
-            string error = ex.ToString();
-        }
+        //}
+        //catch(Exception ex)
+        //{
+        //    string error = ex.ToString();
+        //}
     }
 
 

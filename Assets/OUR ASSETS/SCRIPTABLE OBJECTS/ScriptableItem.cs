@@ -25,19 +25,25 @@ public class ScriptableItem : ScriptableObject
     [TextArea] public string itemDescription;
 
     public int maxLevel = 1;
+    public int intValue = 0;
 
     // Abstract method for activation, implemented by derived classes
-    public virtual void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public virtual void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
     }
 
-    public virtual void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
+    public virtual void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
     }
 
-    public virtual void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public virtual void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
+    {
+
+    }
+
+    public virtual void Picked(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
     }

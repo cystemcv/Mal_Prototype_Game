@@ -19,7 +19,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
     public int combo = 0;
     public int maxCombo = 2;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
         MonoBehaviour runner = CombatCardHandler.Instance;
@@ -45,7 +45,7 @@ public class Artifacts_CrescendoDial : ScriptableItem
             ItemManager.Instance.AddItemOnActivateOrder(this,  "Succesful Combo! Added +"+ strengthValue.ToString() + BuffSystemManager.Instance.GetBuffDebuffColor(strengthAbility) +
                 ", +"+ defenceValue.ToString() + BuffSystemManager.Instance.GetBuffDebuffColor(defenceAbility) + ", heal +" + healValue, false);
 
-            GameObject target = GameObject.FindGameObjectWithTag("Player");
+            target = GameObject.FindGameObjectWithTag("Player");
 
             //increase strength
             EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, strengthValue);
@@ -73,13 +73,13 @@ public class Artifacts_CrescendoDial : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         combo = 0;
     }
 
 
-    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         combo = 0;
     }

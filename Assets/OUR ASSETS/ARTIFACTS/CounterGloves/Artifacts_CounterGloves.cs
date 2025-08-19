@@ -11,7 +11,7 @@ public class Artifacts_CounterGloves : ScriptableItem
     public int counterAmount = 1;
     public ScriptableBuffDebuff counter;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 

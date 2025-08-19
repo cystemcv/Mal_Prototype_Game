@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e5102d32066b245a6e46f687737f7e, type: 3}
+  m_Name: Artifacts_SummoningStaff
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: 6b70d9dcade313b47882e2f9942e95ac, type: 3}
+  itemName: Summoning Staff
+  itemCategory: 3
+  itemRarity: 3
+  activationType: 14
+  initializationType: 0
+  expiredType: 0
+  itemDescription: +6 Max HP to summons
+  maxLevel: 1
+  scriptableBuffDebuff: {fileID: 11400000, guid: 5db2f7763780675439362f1dc8f2957e, type: 2}
+  amount: 6

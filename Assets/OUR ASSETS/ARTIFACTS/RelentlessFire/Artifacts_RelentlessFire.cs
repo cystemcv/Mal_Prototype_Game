@@ -15,7 +15,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
     private int relentless = 0;
     public int maxRelentless = 2;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
         relentless += 1;
@@ -27,7 +27,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         if (relentless == 0)
         {
@@ -41,7 +41,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
 
         ItemManager.Instance.AddItemOnActivateOrder(this, this.itemName + " Activated! Relentless : " + relentless , false);
 
-        GameObject target = GameObject.FindGameObjectWithTag("Player");
+        target = GameObject.FindGameObjectWithTag("Player");
 
         //increase strength
         EntityClass entityClass = BuffSystemManager.Instance.AddBuffDebuff(target, strengthAbility, relentless);
@@ -54,7 +54,7 @@ public class Artifacts_RelentlessFire : ScriptableItem
     }
 
 
-    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Expired(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         if (relentless > 0)
         {

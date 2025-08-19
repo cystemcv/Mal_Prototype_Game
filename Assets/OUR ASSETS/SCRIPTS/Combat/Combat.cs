@@ -528,7 +528,7 @@ public class Combat : MonoBehaviour
 
         yield return StartCoroutine(UI_Combat.Instance.OnNotification("COMBAT START", 1));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart, null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnCombatStart, null, null));
 
         StaticData.staticScriptableCompanion.InitializeButton();
 
@@ -647,7 +647,7 @@ public class Combat : MonoBehaviour
         //draw cards
         yield return StartCoroutine(DeckManager.Instance.DrawMultipleCards(HandManager.Instance.turnHandCardsLimit, 0));
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart, null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnStart, null, null));
 
         yield return StartCoroutine(ActivateDelayedCardEffects());
 
@@ -753,7 +753,7 @@ public class Combat : MonoBehaviour
         //loop for all buffs and debuffs
         yield return StartCoroutine(BuffSystemManager.Instance.ActivateAllBuffsDebuffs());
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd, null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerTurnEnd, null,null));
 
         yield return StartCoroutine(ActivateHazardsPlayerTurnEnd());
 
@@ -1051,6 +1051,8 @@ public class Combat : MonoBehaviour
         {
             resultOutput.entity = entity;
         }
+
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityInstantiate, null, entity));
 
         yield return null;
 
@@ -1816,7 +1818,7 @@ public class Combat : MonoBehaviour
         Destroy(numberOnScreenPrefab, 1f);
 
 
-        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit, null));
+        yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEntityGetHit, null, null));
 
         //if the target reach to 0
         yield return StartCoroutine(CheckIfEntityIsDead(entityClass));
@@ -1851,12 +1853,12 @@ public class Combat : MonoBehaviour
 
             if (entityClass.gameObject.tag == "Player")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath, null));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath, null, null));
                 charactersAlive -= 1;
             }
             else if (entityClass.gameObject.tag == "Enemy")
             {
-                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath, null));
+                yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath, null, null));
                 //enemiesAlive -= 1;
             }
 

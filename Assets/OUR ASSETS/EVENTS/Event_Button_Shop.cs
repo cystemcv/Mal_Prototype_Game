@@ -49,6 +49,8 @@ public class Event_Button_Shop : ScriptableButtonEvent
         //open shop ui
         UIManager.Instance.shopUI.SetActive(true);
 
+        UIManager.Instance.shopUI.transform.Find("ShopRatio").GetComponent<TMP_Text>().text = UIManager.Instance.GetRatioPercentage().ToString() + "%";
+
         AddPlayerGold();
 
         AssignCards();
@@ -74,7 +76,7 @@ public class Event_Button_Shop : ScriptableButtonEvent
         //add cards to the shop
         List<ShopData> shopItemList = new List<ShopData>();
 
-        if (CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopArtifacts.Count <= 0)
+        if (CombatManager.Instance.planetClicked.GetComponent<RoomScript>().shopItems.Count <= 0)
         {
 
             var allowedTypes = new List<ItemCategory> { ItemCategory.RESOURCE, ItemCategory.CONSUMABLE };

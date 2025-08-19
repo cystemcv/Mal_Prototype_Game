@@ -12,7 +12,7 @@ public class Artifacts_Detector : ScriptableItem
 
     public bool activated = false;
 
-    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Activate(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
 
 
@@ -50,7 +50,7 @@ public class Artifacts_Detector : ScriptableItem
 
     }
 
-    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData)
+    public override void Initialiaze(ClassItemData classItem, CardScriptData cardScriptData, GameObject target)
     {
         activated = false;
     }

@@ -88,7 +88,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum ActivationType
     {
         None, OnDraw, OnLoot, OnPlayCard, OnCombatStart, OnPlayerTurnStart, OnPlayerTurnEnd, OnEnemyDeath, OnPlayerDeath, OnCombatEnd,
-        OnNonCombatRoom, OnEntityGetHit, OnAdventureSceneLoaded, OnNextGalaxyGeneration
+        OnNonCombatRoom, OnEntityGetHit, OnAdventureSceneLoaded, OnNextGalaxyGeneration, OnEntityInstantiate
     }
 
     //end of enums

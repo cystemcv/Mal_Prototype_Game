@@ -1,4 +1,4 @@
-using Michsky.MUIP;
+﻿using Michsky.MUIP;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -1117,9 +1117,13 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = card.GetComponent<ShopCard>().shopData.shopCostItem.ToString();
 
-            if (ItemManager.Instance.CanPlayerBuy(card.GetComponent<ShopCard>().shopData.shopCostItem))
+            int originalPrice = card.GetComponent<ShopCard>().shopData.shopCostItem;
+            int newPrice = GetRealPrice(originalPrice);
+
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = SetPrices(originalPrice, newPrice);
+
+            if (ItemManager.Instance.CanPlayerBuy(newPrice))
             {
                 cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }
@@ -1130,6 +1134,62 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public int GetRatioPercentage()
+    {
+        int ratioPercentage = 0;
+
+        ClassItemData discountCard = ItemManager.Instance.GetItemByScriptableName("Discount Card", StaticData.artifactItemList);
+        if (discountCard != null)
+        {
+            ratioPercentage += discountCard.scriptableItem.intValue; 
+        }
+
+        ClassItemData premiumDiscountCard = ItemManager.Instance.GetItemByScriptableName("Premium Discount Card", StaticData.artifactItemList);
+        if (premiumDiscountCard != null)
+        {
+            ratioPercentage += premiumDiscountCard.scriptableItem.intValue; 
+        }
+
+        return -1 * ratioPercentage;
+    }
+
+    public string SetPrices(int originalPrice, int newPrice)
+    {
+        if (originalPrice != newPrice)
+        {
+            // Show "200 → 180"
+            return $"{newPrice}";
+        }
+
+        // No discount, just show the single price
+        return originalPrice.ToString();
+    }
+
+    public int GetRealPrice(int originalPrice)
+    {
+        int newPrice = originalPrice;
+        float ratio = 0f;
+
+        ClassItemData discountCard = ItemManager.Instance.GetItemByScriptableName("Discount Card", StaticData.artifactItemList);
+        if (discountCard != null)
+        {
+            ratio += discountCard.scriptableItem.intValue / 100f; // use float division
+        }
+
+        ClassItemData premiumDiscountCard = ItemManager.Instance.GetItemByScriptableName("Premium Discount Card", StaticData.artifactItemList);
+        if (premiumDiscountCard != null)
+        {
+            ratio += premiumDiscountCard.scriptableItem.intValue / 100f; // use float division
+        }
+
+        if (ratio > 0f)
+        {
+            int discount = Mathf.RoundToInt(originalPrice * ratio); // calculate discount
+            newPrice = Mathf.Max(0, originalPrice - discount);     // ensure not negative
+        }
+
+        return newPrice;
+    }
 
     public void ArtifactAvailability(ShopData shopData, GameObject artifact)
     {
@@ -1150,9 +1210,12 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = artifact.GetComponent<ShopArtifact>().shopData.shopCostItem.ToString();
+            int originalPrice = artifact.GetComponent<ShopArtifact>().shopData.shopCostItem;
+            int newPrice = GetRealPrice(originalPrice);
 
-            if (ItemManager.Instance.CanPlayerBuy(artifact.GetComponent<ShopArtifact>().shopData.shopCostItem))
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = SetPrices(originalPrice, newPrice);
+
+            if (ItemManager.Instance.CanPlayerBuy(newPrice))
             {
                 cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }
@@ -1177,9 +1240,12 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = item.GetComponent<ShopItem>().shopData.shopCostItem.ToString();
+            int originalPrice = item.GetComponent<ShopItem>().shopData.shopCostItem;
+            int newPrice = GetRealPrice(originalPrice);
 
-            if (ItemManager.Instance.CanPlayerBuy(item.GetComponent<ShopItem>().shopData.shopCostItem))
+            cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().text = SetPrices(originalPrice, newPrice);
+
+            if (ItemManager.Instance.CanPlayerBuy(newPrice))
             {
                 cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
             }

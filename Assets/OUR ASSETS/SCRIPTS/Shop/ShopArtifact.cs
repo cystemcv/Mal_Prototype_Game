@@ -28,10 +28,12 @@ public class ShopArtifact : MonoBehaviour, IPointerClickHandler
 
     public void BuyItem()
     {
-   
+
+        int originalPrice = shopData.shopCostItem;
+        int newPrice = UIManager.Instance.GetRealPrice(originalPrice);
 
         //if enough gold
-        if (ItemManager.Instance.CanPlayerBuy(shopData.shopCostItem) && shopData.itemAvailable)
+        if (ItemManager.Instance.CanPlayerBuy(newPrice) && shopData.itemAvailable)
         {
 
             //add sold on card
@@ -41,7 +43,7 @@ public class ShopArtifact : MonoBehaviour, IPointerClickHandler
             shopData.itemAvailable = false;
 
             //decrease the gold from player
-            ItemManager.Instance.AddRemoveInventoryItemInListByScriptableName("Gold", shopData.shopCostItem * -1);
+            ItemManager.Instance.AddRemoveInventoryItemInListByScriptableName("Gold", newPrice * -1);
 
             //show the new shop gold
 
