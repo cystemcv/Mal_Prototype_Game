@@ -25,38 +25,31 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
     public override void OnPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         base.OnPlayCard(cardScriptData, entityUsedCard);
-
-
-        EntityClass entityUsedCardClass = entityUsedCard.GetComponent<EntityClass>();
-        //half the hp of the current entity then give the hp to the other summons
-        int hp = entityUsedCardClass.health / 2;
-        entityUsedCardClass.health = hp;
-
-        //update text on hp
-        entityUsedCardClass.healthText.GetComponent<TMP_Text>().text = hp + "/" + entityUsedCardClass.maxHealth;
-
-        //adjust the hp bar
-        UI_Combat.Instance.UpdateHealthBarSmoothly(entityUsedCardClass.health, entityUsedCardClass.maxHealth, entityUsedCardClass.slider);
-
-
-
-
-        MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
-                                                           //hit at least one time if its 0
-
-
-
-        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities), cardScriptData));
+        Execute(cardScriptData, entityUsedCard);
     }
 
     public override void OnAiPlayCard(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         base.OnAiPlayCard(cardScriptData, entityUsedCard);
+        Execute(cardScriptData, entityUsedCard);
+    }
 
+    public void Execute(CardScriptData cardScriptData, GameObject entityUsedCard)
+    {
         EntityClass entityUsedCardClass = entityUsedCard.GetComponent<EntityClass>();
-        //half the hp of the current entity then give the hp to the other summons
-        int hp = entityUsedCardClass.health / 2;
-        entityUsedCardClass.health = hp;
+
+        int hp = 1;
+        if (entityUsedCardClass.health == 1)
+        {
+            hp = 1;
+            entityUsedCardClass.health = hp;
+        }
+        else
+        {
+            //half the hp of the current entity then give the hp to the other summons
+            hp = entityUsedCardClass.health / 2;
+            entityUsedCardClass.health = hp;
+        }
 
         //update text on hp
         entityUsedCardClass.healthText.GetComponent<TMP_Text>().text = hp + "/" + entityUsedCardClass.maxHealth;
@@ -64,17 +57,25 @@ public class Monster_Card_SplitDarkBlob : ScriptableCard
         //adjust the hp bar
         UI_Combat.Instance.UpdateHealthBarSmoothly(entityUsedCardClass.health, entityUsedCardClass.maxHealth, entityUsedCardClass.slider);
 
-        EntityCustomClass entityCustomClass = new EntityCustomClass();
-        entityCustomClass.currHealth = hp;
+        EntityClass entityCustomClass = new EntityClass();
+        entityCustomClass.health = hp;
         entityCustomClass.maxHealth = hp;
 
         MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
                                                            //hit at least one time if its 0
 
-        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, Combat.Instance.ScriptableToEntityClass(scriptableEntities), cardScriptData));
+        List<EntityClass> entityList = Combat.Instance.ScriptableToEntityClass(scriptableEntities);
 
+        //modify entities
+        foreach (EntityClass entityClass in entityList)
+        {
+            entityClass.InititalizeStatsOnly();
+            entityClass.health = hp;
+            entityClass.maxHealth = hp;
+            entityClass.modifiedSummon = true;
+        }
 
-
+        runner.StartCoroutine(Combat.Instance.SummonEntity(entityUsedCard, entityList, cardScriptData));
     }
 
 

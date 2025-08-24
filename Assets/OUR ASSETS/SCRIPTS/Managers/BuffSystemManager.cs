@@ -196,6 +196,39 @@ public class BuffSystemManager : MonoBehaviour
 
     //}
 
+    public List<BuffDebuffClass> GetBuffDebuffClassFromTargets(List<GameObject> targets, string buffDebuffNameID)
+    {
+        List<BuffDebuffClass> buffDebuffClassList = new List<BuffDebuffClass>();
+        buffDebuffClassList.Clear();
+        BuffDebuffClass buffDebuffClass = null;
+
+        if (targets.Count != 0)
+        {
+
+            foreach (GameObject target in targets)
+            {
+                GameObject gridSystem = target.transform.Find("gameobjectUI").Find("BuffDebuffList").GetChild(0).GetChild(0).gameObject;
+                BuffDebuffClass[] gridSystemItems = gridSystem.GetComponentsInChildren<BuffDebuffClass>();
+                List<BuffDebuffClass> gridSystemItemList = gridSystemItems.ToList();
+
+
+                int index = gridSystemItemList.FindIndex(item => item.scriptableBuffDebuff.nameID == buffDebuffNameID);
+
+                if (index != -1)
+                {
+                    buffDebuffClass = gridSystemItemList[index];
+                    buffDebuffClassList.Add(buffDebuffClass);
+                }
+            }
+
+
+        }
+
+
+
+        return buffDebuffClassList;
+    }
+
     public BuffDebuffClass GetBuffDebuffClassFromTarget(GameObject target, string buffDebuffNameID)
     {
         BuffDebuffClass buffDebuffClass = null;

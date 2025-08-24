@@ -5,14 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EntityCustomClass
-{
-    public int currHealth = 0;
-    public int poisonDmg = 0;
-    public int maxHealth = 0;
-    public int strength = 0;
-    public int defence = 0;
-}
+
 
 public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -50,6 +43,8 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     float rotationSpeed = -2000f;  // Degrees per second
     public bool allowEntityRotation = false;
+
+    public bool modifiedSummon = false;
 
 
     //combat
@@ -180,8 +175,19 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     // Update is called once per frame
 
+    public void InititalizeStatsOnly()
+    {
+        health = scriptableEntity.currHealth;
+        maxHealth = scriptableEntity.maxHealth;
+        shield = scriptableEntity.shield;
+        armor = scriptableEntity.armor;
+        maxShield = 999;
+        maxArmor = 999;
+        attack = scriptableEntity.strength;
+        defence = scriptableEntity.defence;
+    }
 
-    public IEnumerator InititializeEntity(EntityCustomClass entityCustomClass = null)
+    public IEnumerator InititializeEntity()
     {
 
         bool allowScaling = false;
@@ -197,33 +203,50 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         yield return StartCoroutine(SpawnUI());
 
         //initialize from SO
-        //poisongDmg = scriptableEntity.poisonDmg;
-        health = scriptableEntity.currHealth;
-        maxHealth = scriptableEntity.maxHealth;
-        shield = scriptableEntity.shield;
-        armor = scriptableEntity.armor;
-        maxShield = 999;
-        maxArmor = 999;
-        attack = scriptableEntity.strength;
-        defence = scriptableEntity.defence;
-
-
-        ////add scaling
-        //if (allowScaling)
-        //{
-        //    health += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
-        //    maxHealth += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingHealth);
-        //    attack += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingAttack);
-        //    defence += CombatManager.Instance.GetScaleNumber(CustomDungeonGenerator.Instance.scriptableScaling.scalingDefence);
-        //}
-
-        //this.gameObject.transform.Find("gameobjectUI").Find("Bars").Find("SummonTurnsObject").gameObject.SetActive(false);
+        InititalizeStatsOnly();
 
         InitUIBar();
         //save current position , so it can go back if needed
         OriginXPos = this.gameObject.transform.position.x;
     }
 
+
+    public void ModifyStatsFromCustomClass(EntityClass entityClassModify)
+    {
+
+        if (entityClassModify.health != this.health)
+        {
+            this.health = entityClassModify.health;
+        }
+
+        if (entityClassModify.maxHealth != this.maxHealth)
+        {
+            this.maxHealth = entityClassModify.maxHealth;
+        }
+
+        if (entityClassModify.shield != this.shield)
+        {
+            this.shield = entityClassModify.shield;
+        }
+
+        if (entityClassModify.maxShield != this.maxShield)
+        {
+            this.maxShield = entityClassModify.maxShield;
+        }
+
+        if (entityClassModify.armor != this.armor)
+        {
+            this.armor = entityClassModify.armor;
+        }
+
+        if (entityClassModify.maxArmor != this.maxArmor)
+        {
+            this.maxArmor = entityClassModify.maxArmor;
+        }
+
+        InitUIBar();
+
+    }
 
 
     public void InitUIBar()
@@ -333,7 +356,7 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         CardScriptData cardScriptData = new CardScriptData();
-        cardScriptData.scriptableCard = this.gameObject.GetComponent<AIBrain>().scriptableCardToUse;
+        cardScriptData.scriptableCard = this.gameObject.GetComponent<AIBrain>().aICommandCardToUse.aiScriptableCard;
 
         GameObject aiCardParent = GameObject.Find("ROOT").transform.Find("UICOMBAT").Find("CANVAS").Find("AI CARD").gameObject;
 

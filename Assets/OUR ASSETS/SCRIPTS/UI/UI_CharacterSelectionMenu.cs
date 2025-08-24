@@ -211,6 +211,9 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
     public void ProceedToGame()
     {
 
+        //reset all values that need to be reset
+        SystemManager.Instance.ResetGame();
+
         //new game
         CustomDungeonGenerator.Instance.dungeonIsGenerating = false;
         StaticData.staticDungeonParentGenerated = false;

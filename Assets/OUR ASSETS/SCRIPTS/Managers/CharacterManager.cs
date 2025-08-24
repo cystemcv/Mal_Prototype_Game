@@ -10,6 +10,8 @@ public class CharacterManager : MonoBehaviour
 
     public List<ScriptableCompanion> companionList;
 
+    public int restHealing = 30;
+
     private void Awake()
     {
 

@@ -18,10 +18,13 @@ public class ScriptablePlanets : ScriptableObject
     public string planetName;
 
     [ShowIf("@(this.planetType == SystemManager.PlanetTypes.BATTLE)")]
+    public List<ScriptableEntity> scriptableBasicEntities;
+
+    [ShowIf("@(this.planetType == SystemManager.PlanetTypes.BATTLE)")]
     public List<ScriptableEntity> scriptableEntities;
 
     [ShowIf("@(this.planetType == SystemManager.PlanetTypes.BATTLE)")]
-    public List<ScriptableEntity> scriptableBasicEntities;
+    public List<ScriptableEntity> scriptableEliteEntities;
 
     [ShowIf("@(this.planetType == SystemManager.PlanetTypes.BATTLE)")]
     public ScriptableBattleGrounds planetBattleGround;

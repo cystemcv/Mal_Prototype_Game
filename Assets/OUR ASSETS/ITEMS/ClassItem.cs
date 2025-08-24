@@ -221,7 +221,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         ItemManager.Instance.ShowLoot();
 
 
-        int itemsToChoose = 3;
+        int itemsToChoose = ItemManager.Instance.artifactsToChooseLimit;
 
         // Filter the artifact pool to exclude items already in StaticData.artifactItemList
         List<ScriptableItem> filteredArtifactPool;
@@ -418,7 +418,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //where to add card
         SystemManager.Instance.addCardTo = SystemManager.AddCardTo.mainDeck;
 
-        int cardsToChoose = 3;
+        int cardsToChoose = CardListManager.Instance.cardsToChooseLimit;
 
         //get the cards to display
         for (int i = 0; i < cardsToChoose; i++)

@@ -35,10 +35,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public enum AddCardTo { Hand, discardPile, combatDeck, mainDeck }
     public AddCardTo addCardTo;
 
-    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon, None}
+    public enum CardType { Attack, Magic, Skill, Focus, Status, Curse, Summon, None }
     public CardType cardType;
 
-    public enum Rarity { Common, Rare, Epic, Legendary,Curse };
+    public enum Rarity { Common, Rare, Epic, Legendary, Curse };
     public Rarity rarity;
 
 
@@ -63,8 +63,8 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum CardThrow { DISCARD, BANISH, DECK }
 
-    public enum StatModifiedType { NORMAL,PERCENTAGE, TARGETNORMAL, TARGETPERCENTAGE, TARGETFIXEDAMOUNT }
-    public enum StatModifiedAttribute { ATTACK, DEFENCE, ARMOR, MAXHEALTH}
+    public enum StatModifiedType { NORMAL, PERCENTAGE, TARGETNORMAL, TARGETPERCENTAGE, TARGETFIXEDAMOUNT }
+    public enum StatModifiedAttribute { ATTACK, DEFENCE, ARMOR, MAXHEALTH }
 
     public enum EntityTag { Player, Enemy, PlayerSummon, EnemySummon, CompanionPos, PlayerPos, EnemyPos }
 
@@ -79,11 +79,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
 
     public enum ItemIn { INVENTORY, LOOT, ARTIFACTS, COMPANION }
 
-    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM,RANDOMRECIPEITEM }
+    public enum ItemCategory { RESOURCE, CONSUMABLE, CARD, ARTIFACT, COMPANIONITEM, RANDOMCOMPANIONITEM, RANDOMARTIFACTITEM, RANDOMRECIPEITEM }
 
     public enum BattleGroundType { WATER, MAGMA, DARK, ELECTRIC, LUSH, SAND, CITY, SPACE, FROZEN };
 
-    public enum NotificationOperation { WARNING,ERROR,SUCCESS }
+    public enum NotificationOperation { WARNING, ERROR, SUCCESS }
 
     public enum ActivationType
     {
@@ -177,7 +177,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Destroy(gameObject);
         }
 
-       StaticData.InitializeJsons();
+        StaticData.InitializeJsons();
     }
 
     // called first
@@ -340,7 +340,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             );
 
 
-         return spawnPrefabTrue; 
+        return spawnPrefabTrue;
     }
 
     public IEnumerator SpawnPrefabIE(GameObject spawnPrefab, GameObject target, float spawnTimer, string name, Vector3 spawnVector3)
@@ -588,6 +588,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     }
 
 
+    public List<GameObject> GetAllEntities()
+    {
+        List<GameObject> gameObjects = FindGameObjectsWithTags(GetAllTagsList());
+
+        return gameObjects;
+    }
 
 
     public List<GameObject> GetObjectsWithTagsFromGameobjectOppossite(GameObject gameObjectParam)
@@ -695,6 +701,29 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             Debug.LogWarning($"Item '{targetName}' not found in dropdown {dropdown.name}");
         }
     }
+
+    public void ResetGame()
+    {
+        ItemManager.Instance.artifactsToChooseLimit = 3;
+        CardListManager.Instance.cardsToChooseLimit = 3;
+        CharacterManager.Instance.restHealing = 30;
+        //reset the fights
+        CustomDungeonGenerator.Instance.basicFightsFought = 0;
+    }
+
+
+    public bool CheckNullMonobehavior<T>(T obj) where T : class
+    {
+        if (obj == null)
+        {
+            if (ReferenceEquals(obj, null))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
+
 
 }
 

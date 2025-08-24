@@ -56,7 +56,8 @@ public class Event_Button_Rest : ScriptableButtonEvent
 
         GameObject character = GameObject.FindGameObjectWithTag("Player");
 
-        int hpToHeal = (int)(character.GetComponent<EntityClass>().scriptableEntity.maxHealth * 0.3f);
+        float ratio = CharacterManager.Instance.restHealing / 100;
+        int hpToHeal = (int)(character.GetComponent<EntityClass>().scriptableEntity.maxHealth * ratio);
 
         yield return runner.StartCoroutine(Combat.Instance.AdjustTargetHealth(null, character, hpToHeal, false, SystemManager.AdjustNumberModes.HEAL));
 

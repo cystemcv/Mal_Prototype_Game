@@ -78,12 +78,11 @@ public class ScriptableEntity : ScriptableObject
         return clone;
     }
 
-
     [Serializable]
-    public class AICommand
+    public class AICommandCards
     {
-        public SystemManager.AICommandType aICommandType;
-        public List<ScriptableCard> aiScriptableCards;
+ 
+        public ScriptableCard aiScriptableCard;
 
         [HorizontalGroup("CardValue"), LabelText("Min"), OnValueChanged(nameof(OnMinChanged))]
         public int modifiedCardValueMin = 0;
@@ -101,5 +100,14 @@ public class ScriptableEntity : ScriptableObject
                 modifiedCardValueMax = modifiedCardValueMin;
             }
         }
+    }
+
+
+    [Serializable]
+    public class AICommand
+    {
+        public SystemManager.AICommandType aICommandType;
+        public List<AICommandCards> aiScriptableCards;
+
     }
 }

@@ -37,6 +37,7 @@ public class CustomDungeonGenerator : MonoBehaviour
 
     public int basicFightsFought = 0;
     public int basicFightsFoughtMax = 3;
+    public int basicFightsFoughtEliteMax = 12;
 
     public GameObject StartPlanetPrefab;
     public GameObject BattlePlanetPrefab;

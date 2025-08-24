@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e22bcbebc1f03c246bae9d86d3314375, type: 3}
+  m_Name: SP_G1_Underwater1
+  m_EditorClassIdentifier: 
+  planetArt: {fileID: 21300000, guid: b335deea3daf3fe4092166a272994a82, type: 3}
+  planetType: 0
+  planetName: 14EFa1d1ps22
+  scriptableBasicEntities:
+  - {fileID: 11400000, guid: f1217eeb0745d804eb5ab3eb8ad1cbf9, type: 2}
+  - {fileID: 11400000, guid: f3154542a1fa7e4478d9ceeca1cd5ff3, type: 2}
+  scriptableEntities:
+  - {fileID: 11400000, guid: 979cce85e4204a24fba4ac69c2c31869, type: 2}
+  - {fileID: 11400000, guid: 1215e65f80816b540afbf018041e8e02, type: 2}
+  scriptableEliteEntities: []
+  planetBattleGround: {fileID: 11400000, guid: d8d8a07d0db65c040ad3c002842c2baf, type: 2}
+  itemClassPlanet:
+  - scriptableItem: {fileID: 11400000, guid: b30f1a0ae10d67c4d897a3be63b6b62e, type: 2}
+    minQuantity: 1
+    maxQuantity: 4
+    percentage: 0
+  - scriptableItem: {fileID: 11400000, guid: 07613f5b85e38ff48a1d2df9e01c9fcc, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
+    percentage: 0
+  - scriptableItem: {fileID: 11400000, guid: c21ad052952b18149ba1d0badd7a17ec, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
+    percentage: 0
+  - scriptableItem: {fileID: 11400000, guid: 377ccf79b6fbef648aeee614be79d40f, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
+    percentage: 0
+  lootBoxGood: []
+  lootBoxBad: []

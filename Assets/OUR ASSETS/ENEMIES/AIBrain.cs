@@ -23,6 +23,7 @@ public class AIBrain : MonoBehaviour
     public GameObject intend;
 
     public ScriptableEntity scriptableEntity;
+    public ScriptableEntity.AICommandCards aICommandCardToUse;
     public ScriptableCard scriptableCardToUse;
 
     public int getCardLevel = 0;
@@ -45,6 +46,12 @@ public class AIBrain : MonoBehaviour
             return;
         }
 
+        //for any reason the target dies the assign a new target
+        if (aICommandCardToUse.aiScriptableCard.targetEntityTagList.Count != 0 && targetForCard == null)
+        {
+            GenerateIntend();
+        }
+
         //play card
         PlayCardOnlyAbilities(scriptableCardToUse);
 
@@ -52,22 +59,24 @@ public class AIBrain : MonoBehaviour
 
     }
 
-    public void ExecuteInitializeCommand()
-    {
+    //public void ExecuteInitializeCommand()
+    //{
 
-        //if there are not cards then dont do anything
-        if (scriptableEntity.aICommandsInitialize == null)
-        {
-            return;
-        }
+    //    //if there are not cards then dont do anything
+    //    if (scriptableEntity.aICommandsInitialize == null)
+    //    {
+    //        return;
+    //    }
 
-        ScriptableCard scriptableCard = GetAICardFromCommand(scriptableEntity.aICommandsInitialize);
-        //play card
-        PlayCardOnlyAbilities(scriptableCard);
+    //    aICommandCardToUse = GetAICardFromCommand(scriptableEntity.aICommandsInitialize);
+    //    ScriptableCard scriptableCard = aICommandCardToUse.aiScriptableCard;
 
-        IncreaseAiStep();
+    //    //play card
+    //    PlayCardOnlyAbilities(scriptableCard);
 
-    }
+    //    IncreaseAiStep();
+
+    //}
 
 
     public void IncreaseAiStep()
@@ -97,11 +106,12 @@ public class AIBrain : MonoBehaviour
 
         if (scriptableEntity.aICommands.Count != 0)
         {
-            scriptableCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
+            aICommandCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
+            scriptableCardToUse = aICommandCardToUse.aiScriptableCard;
 
      
             cardScriptData.scriptableCard = scriptableCardToUse;
-            getCardLevel = Random.Range(scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMin + entityLevel, scriptableEntity.aICommands[aiLogicStep].modifiedCardValueMax + entityLevel);
+            getCardLevel = Random.Range(aICommandCardToUse.modifiedCardValueMin + entityLevel, aICommandCardToUse.modifiedCardValueMax + entityLevel);
             cardScriptData.scalingLevelValue = getCardLevel;
 
             //assign a target for card
@@ -143,24 +153,24 @@ public class AIBrain : MonoBehaviour
 
     }
 
-    public ScriptableCard GetAICardFromCommand(ScriptableEntity.AICommand aICommand)
+    public ScriptableEntity.AICommandCards GetAICardFromCommand(ScriptableEntity.AICommand aICommand)
     {
 
-        ScriptableCard scriptableCard = null;
+        ScriptableEntity.AICommandCards aICommandCard = null;
 
         if (aICommand.aICommandType == SystemManager.AICommandType.MANUAL)
         {
             //then play the first card
-            scriptableCard = aICommand.aiScriptableCards[0];
+            aICommandCard = aICommand.aiScriptableCards[0];
         }
         else if (aICommand.aICommandType == SystemManager.AICommandType.RANDOM)
         {
             //then play a random card from that set
-            int randomNumber = Random.Range(0, scriptableEntity.aICommands.Count);
-            scriptableCard = aICommand.aiScriptableCards[randomNumber];
+            int randomNumber = Random.Range(0, aICommand.aiScriptableCards.Count);
+            aICommandCard = aICommand.aiScriptableCards[randomNumber];
         }
 
-        return scriptableCard;
+        return aICommandCard;
     }
 
 

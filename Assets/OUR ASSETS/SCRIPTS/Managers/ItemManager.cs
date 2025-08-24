@@ -30,6 +30,8 @@ public class ItemManager : MonoBehaviour
     public GameObject artifactPanel;
     public GameObject itemArtifactPrefabParent;
 
+    public int artifactsToChooseLimit = 3;
+
     private void Awake()
     {
 

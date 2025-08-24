@@ -27,6 +27,8 @@ public class CardListManager : MonoBehaviour
     [FoldoutGroup("CARD POOLS")]
     public List<CardPoolList> cardPoolLists;
 
+    public int cardsToChooseLimit = 3;
+
     [Serializable]
     public class CardPoolList
     {

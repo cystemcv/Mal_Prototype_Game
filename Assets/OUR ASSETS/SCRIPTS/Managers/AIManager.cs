@@ -81,58 +81,58 @@ public class AIManager : MonoBehaviour
     }
 
 
-    public IEnumerator AiActInitialize(List<string> tags)
-    {
+    //public IEnumerator AiActInitialize(List<string> tags)
+    //{
 
 
-        //get how many enemies will act
-        List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
+    //    //get how many enemies will act
+    //    List<GameObject> entities = SystemManager.Instance.FindGameObjectsWithTags(tags);
 
-        foreach (GameObject entity in entities)
-        {
+    //    foreach (GameObject entity in entities)
+    //    {
 
-            if (entity == null)
-            {
-                continue;
-            }
+    //        if (entity == null)
+    //        {
+    //            continue;
+    //        }
 
-            AIBrain aIBrain = entity.GetComponent<AIBrain>();
+    //        AIBrain aIBrain = entity.GetComponent<AIBrain>();
 
-            //if no ai brain the get continue to the next or deasd
-            if (aIBrain == null || entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
-            {
-                continue;
-            }
+    //        //if no ai brain the get continue to the next or deasd
+    //        if (aIBrain == null || entity.GetComponent<EntityClass>().entityMode == SystemManager.EntityMode.DEAD)
+    //        {
+    //            continue;
+    //        }
 
-            if (entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize == null)
-            {
-                continue;
-            }
+    //        if (entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize == null)
+    //        {
+    //            continue;
+    //        }
 
-            if (entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards.Count == 0)
-            {
-                continue;
-            }
+    //        if (entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards.Count == 0)
+    //        {
+    //            continue;
+    //        }
 
-            ScriptableCard scriptableCard = entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards[0];
-            float totalAbilitiesWaitTime = 0;
+    //        //ScriptableCard scriptableCard = entity.GetComponent<EntityClass>().scriptableEntity.aICommandsInitialize.aiScriptableCards[0];
+    //        float totalAbilitiesWaitTime = 0;
 
-            aIBrain.scriptableEntity = entity.GetComponent<EntityClass>().scriptableEntity;
+    //        aIBrain.scriptableEntity = entity.GetComponent<EntityClass>().scriptableEntity;
 
-            //execute ai
-            aIBrain.ExecuteInitializeCommand();
+    //        //execute ai
+    //        aIBrain.ExecuteInitializeCommand();
 
-            //loop between them and execute the command
-            yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
+    //        //loop between them and execute the command
+    //        //yield return new WaitForSeconds(scriptableCard.abilityEffectLifetime);
 
-            if (aIBrain.intend != null)
-            {
-                aIBrain.intend.SetActive(false);
-            }
-        }
+    //        if (aIBrain.intend != null)
+    //        {
+    //            aIBrain.intend.SetActive(false);
+    //        }
+    //    }
 
 
-    }
+    //}
 
 
 
@@ -185,6 +185,18 @@ public class AIManager : MonoBehaviour
 
         //then loop
         GameObject realTarget = targetsFound[randomTarget];
+        return realTarget;
+
+    }
+
+    public GameObject GetRandomTargetBasedOnTags(List<string> tags)
+    {
+        List<GameObject> gameObjects = SystemManager.Instance.FindGameObjectsWithTags(tags);
+
+        int randomTarget = UnityEngine.Random.Range(0, gameObjects.Count);
+
+        //then loop
+        GameObject realTarget = gameObjects[randomTarget];
         return realTarget;
 
     }
@@ -257,9 +269,9 @@ public class AIManager : MonoBehaviour
         if(entityUsedCard.GetComponent<AIBrain>() != null){
             AIBrain aIBrain = entityUsedCard.GetComponent<AIBrain>();
 
-            if (aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMin != 0)
+            if (aIBrain.aICommandCardToUse.modifiedCardValueMin != 0)
             {
-                finalDmg = Random.Range(aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMin, aIBrain.scriptableEntity.aICommands[aIBrain.aiLogicStep].modifiedCardValueMax);
+                finalDmg = Random.Range(aIBrain.aICommandCardToUse.modifiedCardValueMin, aIBrain.aICommandCardToUse.modifiedCardValueMax);
             }
            
         }

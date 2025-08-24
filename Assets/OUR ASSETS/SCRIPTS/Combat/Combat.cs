@@ -533,7 +533,7 @@ public class Combat : MonoBehaviour
         StaticData.staticScriptableCompanion.InitializeButton();
 
         //do the ai logic for each enemy
-        yield return StartCoroutine(AIManager.Instance.AiActInitialize(SystemManager.Instance.GetEnemyTagsList()));
+        //yield return StartCoroutine(AIManager.Instance.AiActInitialize(SystemManager.Instance.GetEnemyTagsList()));
 
         //start win conditions
         conditionsEnabled = true;
@@ -975,6 +975,8 @@ public class Combat : MonoBehaviour
             entity = Instantiate(scriptableCompanion.companionPrefab, combatPosition.position.transform.position, Quaternion.identity);
         }
 
+
+
         entity.tag = tag;
 
         combatPosition.entityOccupiedPos = entity;
@@ -1022,6 +1024,12 @@ public class Combat : MonoBehaviour
         if (entity.GetComponent<EntityClass>() != null)
         {
             yield return StartCoroutine(entity.GetComponent<EntityClass>().InititializeEntity());
+
+            if (!SystemManager.Instance.CheckNullMonobehavior(modifiedEntityClass) && modifiedEntityClass.scriptableEntity != null && modifiedEntityClass.modifiedSummon)
+            {
+                entity.GetComponent<EntityClass>().ModifyStatsFromCustomClass(modifiedEntityClass);
+            }
+
         }
 
         //add scaling buff/debuffs
@@ -1087,12 +1095,20 @@ public class Combat : MonoBehaviour
         //if its not fake planet
         if (!isFakeEventPlanet)
         {
+            //for testing
+            //CustomDungeonGenerator.Instance.basicFightsFought = 13;
             //check if starting battle
             if (CustomDungeonGenerator.Instance.basicFightsFought < CustomDungeonGenerator.Instance.basicFightsFoughtMax && codeMode != "EVENT")
             {
                 scriptableEntities = scriptablePlanet.scriptableBasicEntities;
-                CustomDungeonGenerator.Instance.basicFightsFought++;
             }
+            //check if elite fight (stronger than normal)
+            else if (CustomDungeonGenerator.Instance.basicFightsFought > CustomDungeonGenerator.Instance.basicFightsFoughtEliteMax && codeMode != "EVENT")
+            {
+                scriptableEntities = scriptablePlanet.scriptableEliteEntities;
+            }
+
+            CustomDungeonGenerator.Instance.basicFightsFought++;
 
         }
 
@@ -1851,12 +1867,12 @@ public class Combat : MonoBehaviour
                 animator.SetTrigger("Dead");
             }
 
-            if (entityClass.gameObject.tag == "Player")
+            if (entityClass.gameObject.tag == "Player" || entityClass.gameObject.tag == "PlayerSummon")
             {
                 yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnPlayerDeath, null, null));
-                charactersAlive -= 1;
+                //charactersAlive -= 1;
             }
-            else if (entityClass.gameObject.tag == "Enemy")
+            else if (entityClass.gameObject.tag == "Enemy" || entityClass.gameObject.tag == "EnemySummon")
             {
                 yield return StartCoroutine(ItemManager.Instance.ActivateItemList(SystemManager.ActivationType.OnEnemyDeath, null, null));
                 //enemiesAlive -= 1;
@@ -2365,9 +2381,9 @@ public class Combat : MonoBehaviour
 
         List<GameObject> summonedEntities = new List<GameObject>();
 
-        foreach (EntityClass entityClass in entityClasses)
+        foreach (EntityClass modifiedEntityClass in entityClasses)
         {
-            ScriptableEntity summonInCard = entityClass.scriptableEntity;
+            ScriptableEntity summonInCard = modifiedEntityClass.scriptableEntity;
 
             GameObject summon;
             //get all targets
@@ -2377,7 +2393,7 @@ public class Combat : MonoBehaviour
                 MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
                 // Start the coroutine for each hit
-                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "PlayerSummon", entityClass, cardScriptData, null));
+                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "PlayerSummon", modifiedEntityClass, cardScriptData, null));
             }
             else
             {
@@ -2386,7 +2402,7 @@ public class Combat : MonoBehaviour
                 MonoBehaviour runner = CombatCardHandler.Instance; // Ensure this is a valid MonoBehaviour in your scene
 
                 // Start the coroutine for each hit
-                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "EnemySummon", entityClass, cardScriptData, null));
+                yield return runner.StartCoroutine(InstantiateEntity(null, summonInCard, null, "EnemySummon", modifiedEntityClass, cardScriptData, null));
 
             }
 
