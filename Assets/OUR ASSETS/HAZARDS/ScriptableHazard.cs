@@ -24,26 +24,20 @@ public class ScriptableHazard : ScriptableObject // Not sure if cards will be ma
     [VerticalGroup("CardHeader/CardHeaderDetails"), GUIColor("orange")]
     public AudioClip hazardAudio;
 
+    public float yAxisEffect = 0f;
+
     public virtual IEnumerator OnTurnStart(CombatPosition combatPosition)
     {
-        // Play the sound
-        if (this.hazardAudio != null)
-        {
-            AudioManager.Instance.cardSource.PlayOneShot(this.hazardAudio);
-        }
-
-        if (this.hazardEffect != null)
-        {
-            GameObject effect = Instantiate(hazardEffect, combatPosition.position.transform.position, Quaternion.identity);
-            Destroy(effect, 1f);
-        }
-
         yield return null;
     }
 
     public virtual IEnumerator OnTurnEnd(CombatPosition combatPosition)
     {
+        yield return null;
+    }
 
+    public void PlayEffects(CombatPosition combatPosition)
+    {
         // Play the sound
         if (this.hazardAudio != null)
         {
@@ -52,11 +46,10 @@ public class ScriptableHazard : ScriptableObject // Not sure if cards will be ma
 
         if (this.hazardEffect != null)
         {
-            GameObject effect = Instantiate(hazardEffect, combatPosition.position.transform.position, Quaternion.identity);
+            Vector2 vector2 = new Vector2(combatPosition.position.transform.position.x, combatPosition.position.transform.position.y + yAxisEffect);
+            GameObject effect = Instantiate(hazardEffect, vector2, Quaternion.identity);
             Destroy(effect, 1f);
         }
-
-        yield return null;
     }
 
 

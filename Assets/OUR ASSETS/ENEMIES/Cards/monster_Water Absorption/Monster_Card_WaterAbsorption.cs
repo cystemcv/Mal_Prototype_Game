@@ -8,16 +8,17 @@ public class Monster_Card_WaterAbsorption : ScriptableCard
 
     public ScriptableBuffDebuff wet;
 
-    private float scalingAmount = 1;
+    private int scalingAmount = 1;
+    //private float scalingAmountFinal = 1;
 
     public override string OnCardDescription(CardScriptData cardScriptData, GameObject entityUsedCard)
     {
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         //scaling
-        scalingAmount = scalingAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
+       float scalingAmountFinal = scalingAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2f);
 
-        customDesc += "Absorb all " + wet.nameID + " in combat. Heal all allies by the absorbed amount x" + scalingAmount;
+        customDesc = "Absorb all " + wet.nameID + " in combat. Heal all allies by the absorbed amount x" + scalingAmountFinal;
 
         return customDesc;
     }
@@ -60,8 +61,9 @@ public class Monster_Card_WaterAbsorption : ScriptableCard
         List<GameObject> allyList = SystemManager.Instance.GetObjectsWithTagsFromGameobjectSameSide(entityUsedCard);
 
         //scaling
-        scalingAmount = scalingAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2);
-        countWet = (int)Mathf.Round(countWet * scalingAmount);
+        float scalingAmountFinal = scalingAmount + ((scalingLevelCardValue * cardScriptData.scalingLevelValue) / 2f);
+        float calcAmount = countWet * scalingAmountFinal;
+        countWet = (int)Mathf.Round(calcAmount);
 
         foreach (GameObject ally in allyList)
         {

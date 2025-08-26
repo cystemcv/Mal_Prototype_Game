@@ -34,14 +34,27 @@ MonoBehaviour:
     aICommandType: 0
     aiScriptableCards: []
   aICommands:
-  - aICommandType: 1
+  - aICommandType: 0
     aiScriptableCards:
     - aiScriptableCard: {fileID: 11400000, guid: 1eb24603be249a849bf5a0ad80942954, type: 2}
       modifiedCardValueMin: 0
       modifiedCardValueMax: 0
-    - aiScriptableCard: {fileID: 11400000, guid: 21fce9d7916a623489b99b6f3c3c6689, type: 2}
+  - aICommandType: 1
+    aiScriptableCards:
+    - aiScriptableCard: {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
       modifiedCardValueMin: 1
-      modifiedCardValueMax: 6
+      modifiedCardValueMax: 1
+  - aICommandType: 0
+    aiScriptableCards:
+    - aiScriptableCard: {fileID: 11400000, guid: c58e993e606c30d4d85cd27c96c68d6c, type: 2}
+      modifiedCardValueMin: 1
+      modifiedCardValueMax: 2
+    - aiScriptableCard: {fileID: 11400000, guid: 1eb24603be249a849bf5a0ad80942954, type: 2}
+      modifiedCardValueMin: 1
+      modifiedCardValueMax: 1
+    - aiScriptableCard: {fileID: 11400000, guid: 21fce9d7916a623489b99b6f3c3c6689, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 26

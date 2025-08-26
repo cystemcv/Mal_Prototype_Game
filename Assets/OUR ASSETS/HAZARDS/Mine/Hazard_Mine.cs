@@ -10,8 +10,11 @@ public class Hazard_Mine : ScriptableHazard
 
     public override IEnumerator OnTurnStart(CombatPosition combatPosition)
     {
+    
+
         if (combatPosition.entityOccupiedPos != null)
         {
+            PlayEffects(combatPosition);
 
             //explode
             MonoBehaviour runner = CombatCardHandler.Instance;

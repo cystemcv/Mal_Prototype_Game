@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Common_Card_Mine", menuName = "Card/Common/Common_Card_Mine")]
-public class Common_Card_Mine : ScriptableCard
+[CreateAssetMenu(fileName = "Monster_Card_Electrify", menuName = "Card/Monster/Monster_Card_Electrify")]
+public class Monster_Card_Electrify : ScriptableCard
 {
 
     public ScriptableHazard scriptableHazard;
@@ -26,7 +26,7 @@ public class Common_Card_Mine : ScriptableCard
         realTarget = CombatCardHandler.Instance.targetClicked;
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
@@ -35,37 +35,16 @@ public class Common_Card_Mine : ScriptableCard
         base.OnAiPlayCard(cardScriptData, entityUsedCard);
 
         realTarget = entityUsedCard.GetComponent<AIBrain>().targetForCard;
+        CombatCardHandler.Instance.posClickedTargeting = Combat.Instance.CheckCardTargets(realTarget, cardScriptData.scriptableCard);
         entityUsedCardGlobal = entityUsedCard;
 
-        ExecuteCard();
+        ExecuteCard(cardScriptData);
 
     }
 
-    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
-    {
-        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
 
-        string tag = "";
-        if (SystemManager.Instance.GetEnemyTagsList().Contains(entityUsedCard.tag))
-        {
-            tag = "PlayerPos";
-        }
-        else
-        {
-            tag = "EnemyPos";
-        }
 
-        if (Combat.Instance.CheckIfSpawnPosAreFull(tag))
-        {
-            return;
-        }
-
-        CombatPosition combatPosition = Combat.Instance.GetSpawnPosition(tag);
-        realTarget = combatPosition.position.gameObject.transform.Find("Visual").gameObject;
-        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
-    }
-
-    public void ExecuteCard()
+    public void ExecuteCard(CardScriptData cardScriptData)
     {
 
         if (realTarget == null)
@@ -74,10 +53,23 @@ public class Common_Card_Mine : ScriptableCard
         }
 
         MonoBehaviour runner = CombatCardHandler.Instance;
+        List<CombatPosition> targets = CombatCardHandler.Instance.posClickedTargeting;
 
-        CombatPosition combatPosition = Combat.Instance.GetCombatPosition(realTarget);
+        // Start the coroutine for each hit
+        foreach (CombatPosition target in targets)
+        {
+            Combat.Instance.AddHazard(scriptableHazard, target);
+        }
 
-        Combat.Instance.AddHazard(scriptableHazard, combatPosition);
+    }
+
+    public override void OnAiPlayTarget(CardScriptData cardScriptData, GameObject entityUsedCard)
+    {
+        base.OnAiPlayTarget(cardScriptData, entityUsedCard);
+
+        realTarget = AIManager.Instance.GetRandomTarget(entityUsedCard);
+
+        entityUsedCard.GetComponent<AIBrain>().targetForCard = realTarget;
 
     }
 
