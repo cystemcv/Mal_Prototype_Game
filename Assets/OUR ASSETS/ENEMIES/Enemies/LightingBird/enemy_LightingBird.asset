@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
+  m_Name: enemy_LightingBird
+  m_EditorClassIdentifier: 
+  startingCards: {fileID: 0}
+  startingDecks: []
+  mainClass: 0
+  distanceFromAnotherUnit: 2
+  unitsWorth: 1
+  startingArtifacts: []
+  entityName: Lighting Bird
+  entityPrefab: {fileID: 4560090350486776044, guid: 1e482cc8d9b75074ba555362e9ffd083, type: 3}
+  entityImage: {fileID: 30901188, guid: 030e8f7ae57032048992e908ba3f8143, type: 3}
+  entityIcon: {fileID: 30901188, guid: 030e8f7ae57032048992e908ba3f8143, type: 3}
+  entityDescription: 
+  entityChoose: {fileID: 0}
+  summonTurns: 3
+  entitySpaceShipPrefab: {fileID: 0}
+  entitySpaceShipImage: {fileID: 0}
+  entityAnimator: {fileID: 0}
+  spaceShipAnimator: {fileID: 0}
+  spawnIntend: {x: 0, y: 3, z: 0}
+  aICommandsInitialize:
+    aICommandType: 0
+    aiScriptableCards: []
+  aICommands:
+  - aICommandType: 0
+    aiScriptableCards:
+    - aiScriptableCard: {fileID: 11400000, guid: 36547c99a435227428729210c4d0063a, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
+  strength: 0
+  defence: 0
+  maxHealth: 400
+  currHealth: 400
+  shield: 0
+  armor: 0
+  maxMana: 0
+  currMana: 0
+  maxLevel: 0
+  currLevel: 0
+  counterDamage: 0
+  poisonDmg: 0
