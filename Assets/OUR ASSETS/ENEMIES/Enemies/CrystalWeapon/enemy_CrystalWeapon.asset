@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
   m_Name: enemy_CrystalWeapon
   m_EditorClassIdentifier: 
-  startingCards: []
+  startingCards: {fileID: 0}
+  startingDecks: []
   mainClass: 0
   distanceFromAnotherUnit: 2
   unitsWorth: 1
+  startingArtifacts: []
   entityName: Crystal Weapon
   entityPrefab: {fileID: 2051409363146328507, guid: c725b5e223be37044beabcedeb850fe5, type: 3}
   entityImage: {fileID: -1125596671, guid: f5b42fd21c98df049be061f7ad5326fe, type: 3}
@@ -34,15 +36,23 @@ MonoBehaviour:
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
-    - {fileID: 11400000, guid: 94b08c7a2cb7fa34889b9ba9669f9481, type: 2}
+    - aiScriptableCard: {fileID: 11400000, guid: 35d6d5b989d9b9540a174d2904732345, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
   - aICommandType: 1
     aiScriptableCards:
-    - {fileID: 11400000, guid: 8f80b8a3be1d0e040894ae35babcbae3, type: 2}
-    - {fileID: 11400000, guid: 94b08c7a2cb7fa34889b9ba9669f9481, type: 2}
+    - aiScriptableCard: {fileID: 11400000, guid: 35d6d5b989d9b9540a174d2904732345, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
+    - aiScriptableCard: {fileID: 11400000, guid: dbaae42cb8798124e80abb9677154050, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 15
   currHealth: 15
+  shield: 0
+  armor: 0
   maxMana: 0
   currMana: 0
   maxLevel: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
   m_Name: enemy_EmeraldSerpent
   m_EditorClassIdentifier: 
-  startingCards: []
+  startingCards: {fileID: 0}
+  startingDecks: []
   mainClass: 0
   distanceFromAnotherUnit: 4
   unitsWorth: 2
@@ -32,18 +33,18 @@ MonoBehaviour:
   aICommandsInitialize:
     aICommandType: 0
     aiScriptableCards: []
-    modifiedCardValueMin: 0
-    modifiedCardValueMax: 0
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
-    - {fileID: 11400000, guid: 5e68ddbd9f90eb24990b5bd29f233268, type: 2}
-    modifiedCardValueMin: 999
-    modifiedCardValueMax: 999999
+    - aiScriptableCard: {fileID: 11400000, guid: bb683aadd7227e247835bbd3d65f950e, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 220
   currHealth: 220
+  shield: 0
+  armor: 0
   maxMana: 0
   currMana: 0
   maxLevel: 0

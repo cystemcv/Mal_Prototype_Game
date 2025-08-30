@@ -18,6 +18,13 @@ public class CardListManager : MonoBehaviour
     public Sprite legendaryBg;
     public Sprite curseBg;
 
+    public Sprite iconAngelClass;
+    public Sprite iconSummonerClass;
+    public Sprite iconMonsterClass;
+    public Sprite iconCommonClass;
+    public Sprite iconCurseClass;
+    public Sprite iconStatusClass;
+
     public GameObject cardPrefab;
     public GameObject cardListTabButton;
     public GameObject cardListTabButtonParent;

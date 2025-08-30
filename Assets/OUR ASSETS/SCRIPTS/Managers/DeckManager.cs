@@ -923,6 +923,31 @@ public class DeckManager : MonoBehaviour
             cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.curseBg;
         }
 
+        if (scriptableCard.mainClass == SystemManager.MainClass.ANGEL)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconAngelClass;
+        }
+        else if (scriptableCard.mainClass == SystemManager.MainClass.SUMMONER)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconSummonerClass;
+        }
+        else if (scriptableCard.mainClass == SystemManager.MainClass.MONSTER)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconMonsterClass;
+        }
+        else if (scriptableCard.mainClass == SystemManager.MainClass.CURSE)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconCurseClass;
+        }
+        else if (scriptableCard.mainClass == SystemManager.MainClass.COMMON)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconCommonClass;
+        }
+        else if (scriptableCard.mainClass == SystemManager.MainClass.STATUS)
+        {
+            cardChild.transform.Find("Info").Find("ManaImage").GetComponent<Image>().sprite = CardListManager.Instance.iconStatusClass;
+        }
+
         //for example
         cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text = scriptableCard.cardName;
         cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text += ShowCardLevel(cardPrefab.GetComponent<CardScript>().cardScriptData);
@@ -936,7 +961,7 @@ public class DeckManager : MonoBehaviour
 
         if (scriptableCard.cardRarity == SystemManager.Rarity.Curse)
         {
-            cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
+            cardChild.transform.Find("Info").Find("ManaImage").Find("ManaText").gameObject.SetActive(false);
         }
 
         cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableCard.OnCardDescription(cardScriptData, character);

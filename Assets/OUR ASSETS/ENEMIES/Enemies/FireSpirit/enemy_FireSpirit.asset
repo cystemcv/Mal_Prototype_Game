@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64fa4160c1d53444b862e6486c847f98, type: 3}
   m_Name: enemy_FireSpirit
   m_EditorClassIdentifier: 
-  startingCards: []
+  startingCards: {fileID: 0}
+  startingDecks: []
   mainClass: 0
   distanceFromAnotherUnit: 2
   unitsWorth: 1
@@ -32,18 +33,18 @@ MonoBehaviour:
   aICommandsInitialize:
     aICommandType: 0
     aiScriptableCards: []
-    modifiedCardValueMin: 0
-    modifiedCardValueMax: 6
   aICommands:
   - aICommandType: 0
     aiScriptableCards:
-    - {fileID: 11400000, guid: 5e68ddbd9f90eb24990b5bd29f233268, type: 2}
-    modifiedCardValueMin: 0
-    modifiedCardValueMax: 0
+    - aiScriptableCard: {fileID: 11400000, guid: 6d95273e3eb8c4e4fa478d51e15f1186, type: 2}
+      modifiedCardValueMin: 0
+      modifiedCardValueMax: 0
   strength: 0
   defence: 0
   maxHealth: 400
   currHealth: 400
+  shield: 0
+  armor: 0
   maxMana: 0
   currMana: 0
   maxLevel: 0
