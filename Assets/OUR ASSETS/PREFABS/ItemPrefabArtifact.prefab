@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.4028015, y: 9.792358}
-  m_SizeDelta: {x: -48.8677, y: -47.4216}
+  m_AnchoredPosition: {x: 0.33000183, y: 0.4048996}
+  m_SizeDelta: {x: -28.4838, y: -35.084}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2482552577653857540
 CanvasRenderer:
@@ -111,7 +111,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.6125071, y: -39.7}
+  m_AnchoredPosition: {x: 1.6125071, y: -73.3}
   m_SizeDelta: {x: 89.13, y: 25.0478}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4968468756592457856
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 999
+  m_text: OFF
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 03c2c06c3dec20d4cb8c5cacee0630d0, type: 2}
   m_sharedMaterial: {fileID: -9135739105779105519, guid: 03c2c06c3dec20d4cb8c5cacee0630d0, type: 2}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stopEvents: 0
+  artifactPanelItem: 0
 --- !u!114 &4094466985209520356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877a892f688b9ff43b5c567fceab0aa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: 1.1
+  hoverScale: 1.2
   playFeedbacks: 1
   animator: {fileID: 0}
   hoverSoundName: UI_Hover
