@@ -9,7 +9,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 {
     private float hoverScale = 1.2f;
     private Vector3 originaChoiceScale = new Vector3(1,1,1);
-    private float hoverChoiceScale = 1.1f;
+    private float hoverChoiceScale = 1.3f;
     private float transitionTime = 0.1f;
     private float hoverHeight = 0.6f;
 
@@ -481,12 +481,15 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // Scale up the hovered card
         scaleTween = LeanTween.scale(childObjectVisual, originaChoiceScale * hoverChoiceScale, transitionTime);
         gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+
+        gameObject.transform.Find("Panel").Find("UtilityBack").Find("ChooseActivation").gameObject.SetActive(true);
     }
 
     public void OnPointerExit_ChoiceMode()
     {
         // Scale down the card
         scaleTween = LeanTween.scale(childObjectVisual, originaChoiceScale, transitionTime);
+        gameObject.transform.Find("Panel").Find("UtilityBack").Find("ChooseActivation").gameObject.SetActive(false);
     }
 
   

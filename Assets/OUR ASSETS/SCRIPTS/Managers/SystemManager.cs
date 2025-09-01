@@ -102,7 +102,7 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     public string colorGolden = "FFAD04";
     public string colorDarkGrey = "252525";
     public string colorLightGrey = "727272";
-
+    public string colorDarkLight = "1F1F1F";
     public string colorWhite = "FFFFFF";
     public string colorRed = "FF0000";
     public string colorBlue = "003FFF";

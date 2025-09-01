@@ -7,8 +7,8 @@ public class ItemChoiceClass : MonoBehaviour, IPointerEnterHandler, IPointerExit
 {
 
     public ClassItemData classItem;
-    private float hoverChoiceScale = 1.2f;
-    private float transitionTime = 0.1f;
+    public float hoverChoiceScale = 1.3f;
+    public float transitionTime = 0.1f;
 
     public LTDescr scaleTween;
     private Vector3 originalScale;
@@ -25,12 +25,15 @@ public class ItemChoiceClass : MonoBehaviour, IPointerEnterHandler, IPointerExit
         scaleTween = LeanTween.scale(this.gameObject, originalScale * hoverChoiceScale, transitionTime);
         gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
 
+        gameObject.transform.Find("Panel").Find("UtilityBack").Find("ChooseActivation").gameObject.SetActive(true);
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // Scale down the card
         scaleTween = LeanTween.scale(this.gameObject, originalScale, transitionTime);
+        gameObject.transform.Find("Panel").Find("UtilityBack").Find("ChooseActivation").gameObject.SetActive(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)

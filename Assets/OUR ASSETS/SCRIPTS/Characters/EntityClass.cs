@@ -373,6 +373,9 @@ public class EntityClass : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             aiCardParent.transform.position.y, 
             aiCardParent.transform.position.z);
 
+        aiCard.GetComponent<CardScript>().enabled = false;
+        aiCard.GetComponent<CardEvents>().enabled = false;
+
         // Get reference to the CanvasGroup
         aiCard.AddComponent<CanvasGroup>();
         CanvasGroup canvasGroup = aiCard.GetComponent<CanvasGroup>();

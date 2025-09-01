@@ -992,19 +992,19 @@ public class DeckManager : MonoBehaviour
 
         if (scriptableItem.itemRarity == SystemManager.Rarity.Common)
         {
-            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.commonBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.artifactCommonBg;
         }
         else if (scriptableItem.itemRarity == SystemManager.Rarity.Rare)
         {
-            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.rareBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.artifactRareBg;
         }
         else if (scriptableItem.itemRarity == SystemManager.Rarity.Epic)
         {
-            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.epicBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.artifactEpicBg;
         }
         else if (scriptableItem.itemRarity == SystemManager.Rarity.Legendary)
         {
-            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.legendaryBg;
+            cardChild.transform.Find("Info").Find("MainBgFront").GetComponent<Image>().sprite = CardListManager.Instance.artifactLegendaryBg;
         }
         else if (scriptableItem.itemRarity == SystemManager.Rarity.Curse)
         {
@@ -1013,14 +1013,17 @@ public class DeckManager : MonoBehaviour
 
         //for example
         cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().text = scriptableItem.itemName;
+        cardChild.transform.Find("Info").Find("TitleText").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkLight);
 
         cardChild.transform.Find("Info").Find("CardImageIcon").gameObject.SetActive(true);
         cardChild.transform.Find("Info").Find("CardImageIcon").GetComponent<Image>().sprite = scriptableItem.Icon;
         cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().text = scriptableItem.itemCategory.ToString();
+        cardChild.transform.Find("Info").Find("TypeText").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkLight);
 
         cardChild.transform.Find("Info").Find("ManaImage").gameObject.SetActive(false);
  
         cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().text = scriptableItem.itemDescription;
+        cardChild.transform.Find("Info").Find("DescriptionText").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorDarkLight);
 
 
 

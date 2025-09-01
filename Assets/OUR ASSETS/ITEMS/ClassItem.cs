@@ -255,7 +255,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         SystemManager.Instance.DestroyAllChildren(parent);
 
         UIManager.Instance.ChooseGroupUI.SetActive(true);
-        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
+        UIManager.Instance.ChooseGroupUI.transform.Find("TitleBg").Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
 
         // Select random items from the filtered list
         for (int i = 0; i < itemsToChoose; i++)
@@ -410,7 +410,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
         //display screen
         UIManager.Instance.ChooseGroupUI.SetActive(true);
-        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
+        UIManager.Instance.ChooseGroupUI.transform.Find("TitleBg").Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
 
         //change the mode
         SystemManager.Instance.abilityMode = SystemManager.AbilityModes.CHOICE;

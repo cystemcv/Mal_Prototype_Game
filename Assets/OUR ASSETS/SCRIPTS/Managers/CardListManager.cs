@@ -18,6 +18,12 @@ public class CardListManager : MonoBehaviour
     public Sprite legendaryBg;
     public Sprite curseBg;
 
+    public Sprite artifactCommonBg;
+    public Sprite artifactRareBg;
+    public Sprite artifactEpicBg;
+    public Sprite artifactLegendaryBg;
+    public Sprite artifactCurseBg;
+
     public Sprite iconAngelClass;
     public Sprite iconSummonerClass;
     public Sprite iconMonsterClass;
