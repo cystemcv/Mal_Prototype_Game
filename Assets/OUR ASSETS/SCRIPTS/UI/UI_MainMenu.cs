@@ -36,7 +36,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu",0f, true, true);
+        SystemManager.Instance.LoadScene("scene_GameModeMenu",0f,0f, false, false);
     }
 
     //LOAD
@@ -50,7 +50,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_LoadSaveMenu");
-        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f,0f, false, false);
     }
 
 
@@ -66,7 +66,7 @@ public class UI_MainMenu : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_LoadSaveMenu");
-        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_LoadSaveMenu", 0f,0f, false, false);
     }
 
     //OPTIONS
@@ -81,13 +81,15 @@ public class UI_MainMenu : MonoBehaviour
         //open the correct menu
         //SceneManager.LoadScene("scene_OptionsMenu");
         //SceneManager.LoadScene("scene_OptionsMenu");
-        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f,0f, false, false);
     }
 
     public void UIOpenLibrary()
     {
         AudioManager.Instance.PlaySfx("UI_goNext");
-        SystemManager.Instance.LoadScene("scene_Library", 0f, true, true);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scene_library.SetActive(true);
+        // SystemManager.Instance.LoadScene("scene_Library", 0f,0f, false, false);
     }
 
     //OPTIONS
@@ -107,7 +109,7 @@ public class UI_MainMenu : MonoBehaviour
         //open the correct menu
         //SceneManager.LoadSceneAsync("scene_Combat", LoadSceneMode.Additive);
         //SceneManager.LoadScene("scene_Combat");
-        SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+        SystemManager.Instance.LoadScene("scene_Combat", 0f,0.2f, true, false);
     }
 
     //EXIT

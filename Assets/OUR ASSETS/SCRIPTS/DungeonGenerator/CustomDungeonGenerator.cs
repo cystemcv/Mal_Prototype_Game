@@ -1673,7 +1673,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             CombatManager.Instance.scriptablePlanet = roomScript.scriptablePlanet;
             CombatManager.Instance.planetClicked = roomScript.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f,0.2f, true, false);
         }
         else if (roomScript.planetType == SystemManager.PlanetTypes.EVENT)
         {
@@ -1685,7 +1685,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             CombatManager.Instance.ScriptableEvent = scriptableEvent;
             CombatManager.Instance.planetClicked = roomScript.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
         }
         else if (roomScript.planetType == SystemManager.PlanetTypes.REWARD)
         {
@@ -1697,7 +1697,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             CombatManager.Instance.ScriptableEvent = scriptableEvent;
             CombatManager.Instance.planetClicked = roomScript.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
         }
         else if (roomScript.planetType == SystemManager.PlanetTypes.SHOP)
         {
@@ -1709,7 +1709,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             CombatManager.Instance.ScriptableEvent = scriptableEvent;
             CombatManager.Instance.planetClicked = roomScript.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
         }
         else if (roomScript.planetType == SystemManager.PlanetTypes.REST)
         {
@@ -1721,7 +1721,7 @@ public class CustomDungeonGenerator : MonoBehaviour
             CombatManager.Instance.ScriptableEvent = scriptableEvent;
             CombatManager.Instance.planetClicked = roomScript.gameObject;
 
-            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, true, false);
+            SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
         }
         else
         {

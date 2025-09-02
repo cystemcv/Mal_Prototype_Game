@@ -419,12 +419,12 @@ public class SystemManager : MonoBehaviour, IDataPersistence
     }
 
     //loading screen
-    public void LoadScene(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
+    public void LoadScene(string sceneName, float manualLoadingTime, float timerSmoothAnimation, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
-        StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime, triggerLoadingStartAnimation, triggerLoadingEndAnimation));
+        StartCoroutine(LoadSceneAsync(sceneName, manualLoadingTime, timerSmoothAnimation, triggerLoadingStartAnimation, triggerLoadingEndAnimation));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
+    private IEnumerator LoadSceneAsync(string sceneName, float manualLoadingTime, float timerSmoothAnimation, bool triggerLoadingStartAnimation, bool triggerLoadingEndAnimation)
     {
         Animator loadingAnimator = LoadingScreen.GetComponent<Animator>();
 
@@ -432,8 +432,11 @@ public class SystemManager : MonoBehaviour, IDataPersistence
         if (triggerLoadingStartAnimation)
             loadingAnimator.SetTrigger("LoadingStart");
 
-        // Wait for start animation to fully cover the screen
-        yield return new WaitForSeconds(manualLoadingTime);
+        if (manualLoadingTime != 0)
+        {
+            // Wait for start animation to fully cover the screen
+            yield return new WaitForSeconds(manualLoadingTime);
+        }
 
         // Start loading the scene, but don't activate yet
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
@@ -444,7 +447,10 @@ public class SystemManager : MonoBehaviour, IDataPersistence
             yield return null;
 
         // Small delay to make sure animation looks smooth
-        yield return new WaitForSeconds(0.2f);
+        if (timerSmoothAnimation != 0)
+        {
+            yield return new WaitForSeconds(timerSmoothAnimation);
+        }
 
         // Activate the scene (this will switch over in one frame)
         asyncOperation.allowSceneActivation = true;

@@ -25,7 +25,7 @@ public class OptionsSettings
 public class UIManager : MonoBehaviour
 {
 
-
+    public GameObject scene_library;
 
     public static UIManager Instance;
 
@@ -371,7 +371,7 @@ public class UIManager : MonoBehaviour
 
         //load scene
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,true,true);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0.2f,true,true);
     }
 
     //public void CloseUIWindow()
@@ -966,7 +966,7 @@ public class UIManager : MonoBehaviour
 
         eventGO.SetActive(false);
 
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f, true, false);
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f,0.2f, true, false);
     }
 
 
@@ -1254,6 +1254,11 @@ public class UIManager : MonoBehaviour
                 cardGoldPanel.transform.Find("Text").GetComponent<TMP_Text>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorRed);
             }
         }
+    }
+
+    public void DisableAllUIScenes()
+    {
+        scene_library.SetActive(false);
     }
 
 

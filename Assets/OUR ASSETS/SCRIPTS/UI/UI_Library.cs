@@ -22,7 +22,7 @@ public class UI_Library : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f, true, true);
+        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0f, false, false);
     }
 
     public void ViewCardList()
