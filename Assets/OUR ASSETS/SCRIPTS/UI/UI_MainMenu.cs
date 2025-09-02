@@ -9,10 +9,7 @@ public class UI_MainMenu : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
-    {
-        UIManager.Instance.topPanelCombat.SetActive(false);
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -31,12 +28,10 @@ public class UI_MainMenu : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goNext");
 
-        //disable the 3rd option for now
-        //DisableButton(UIMENU.transform.Find("HOLDER").Find("GAME MODE MENU").Find("ListOfGameModes").Find("Panel").Find("btn_UNKOWN").gameObject);
-
         //open the correct menu
-        //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu",0f,0f, false, false);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_gameModes.SetActive(true);
     }
 
     //LOAD
@@ -79,17 +74,17 @@ public class UI_MainMenu : MonoBehaviour
         SystemManager.Instance.saveLoadMode = SystemManager.SaveLoadModes.LOAD;
 
         //open the correct menu
-        //SceneManager.LoadScene("scene_OptionsMenu");
-        //SceneManager.LoadScene("scene_OptionsMenu");
-        SystemManager.Instance.LoadScene("scene_OptionsMenu", 0f,0f, false, false);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_options.SetActive(true);
     }
 
     public void UIOpenLibrary()
     {
         AudioManager.Instance.PlaySfx("UI_goNext");
         UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
         UIManager.Instance.scene_library.SetActive(true);
-        // SystemManager.Instance.LoadScene("scene_Library", 0f,0f, false, false);
     }
 
     //OPTIONS

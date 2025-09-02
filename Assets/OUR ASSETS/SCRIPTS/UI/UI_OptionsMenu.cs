@@ -27,7 +27,7 @@ public class UI_OptionsMenu : MonoBehaviour
 
     void Start()
     {
-        UIManager.Instance.topPanelCombat.SetActive(false);
+        //UIManager.Instance.topPanelCombat.SetActive(false);
         LoadSettings();
     }
 
@@ -183,9 +183,20 @@ public class UI_OptionsMenu : MonoBehaviour
         //play audio
         AudioManager.Instance.PlaySfx("UI_goBack");
 
-        //open the correct menu
-        //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0f, false, false);
+        if (UIManager.Instance.quickMenuOpen == true)
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.OpenQuickMenu();
+            UIManager.Instance.topPanelCombat.SetActive(true);
+        }
+        else
+        {
+            //open the correct menu
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.scenes_BG.SetActive(true);
+            UIManager.Instance.scene_mainMenu.SetActive(true);
+        }
+
     }
 
 

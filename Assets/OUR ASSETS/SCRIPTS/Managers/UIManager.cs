@@ -24,7 +24,11 @@ public class OptionsSettings
 
 public class UIManager : MonoBehaviour
 {
-
+    public GameObject scenes_BG;
+    public GameObject scene_mainMenu;
+    public GameObject scene_gameModes;
+    public GameObject scene_characterSelection;
+    public GameObject scene_options;
     public GameObject scene_library;
 
     public static UIManager Instance;
@@ -120,6 +124,7 @@ public class UIManager : MonoBehaviour
     public GameObject galaxyScaling;
 
     public GameObject QuickMenu;
+    public bool quickMenuOpen = false; 
 
     public void ToggleActivateOrderVisibility()
     {
@@ -279,6 +284,7 @@ public class UIManager : MonoBehaviour
 
     public void OpenQuickMenu() {
         QuickMenu.SetActive(true);
+        quickMenuOpen = true;
         FeedbackManager.Instance.PlayOnTarget(QuickMenu.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
         Time.timeScale = 0f; // Pause game
     }
@@ -286,7 +292,21 @@ public class UIManager : MonoBehaviour
     public void CloseQuickMenu()
     {
         QuickMenu.SetActive(false);
+        quickMenuOpen = false;
         Time.timeScale = 1f; // Resume game
+    }
+
+    public void OpenQuickMenu_NotRegister()
+    {
+        QuickMenu.SetActive(true);
+        FeedbackManager.Instance.PlayOnTarget(QuickMenu.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
+        Time.timeScale = 0f; // Pause game
+    }
+
+    public void CloseQuickMenu_NotRegister()
+    {
+        QuickMenu.SetActive(false);
+        //Time.timeScale = 1f; // Resume game
     }
 
     //open
@@ -371,7 +391,17 @@ public class UIManager : MonoBehaviour
 
         //load scene
         //SceneManager.LoadScene("scene_MainMenu");
+        UIManager.Instance.DisableAllUIScenes();
         SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0.2f,true,true);
+        //UIManager.Instance.scenes_BG.SetActive(true);
+        //UIManager.Instance.scene_mainMenu.SetActive(true);
+        //StartCoroutine(ActivateMainMenuAfterLoad());
+    }
+
+    public IEnumerator ActivateMainMenuAfterLoad()
+    {
+        yield return new WaitForSeconds(0.4f);
+
     }
 
     //public void CloseUIWindow()
@@ -1258,7 +1288,22 @@ public class UIManager : MonoBehaviour
 
     public void DisableAllUIScenes()
     {
+        scenes_BG.SetActive(false);
         scene_library.SetActive(false);
+        scene_mainMenu.SetActive(false);
+        scene_options.SetActive(false);
+        scene_gameModes.SetActive(false);
+        scene_characterSelection.SetActive(false);
+
+    }
+
+    public void QuickMenu_OpenOptions()
+    {
+        DisableAllUIScenes();
+        CloseQuickMenu_NotRegister();
+        UIManager.Instance.topPanelCombat.SetActive(false);
+        UIManager.Instance.scenes_BG.SetActive(true);
+        scene_options.SetActive(true);
     }
 
 

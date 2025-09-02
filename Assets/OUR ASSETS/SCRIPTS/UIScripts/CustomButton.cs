@@ -22,7 +22,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     Image icon;
 
     public string hoverSoundName = "UI_Hover";
-    public bool randomPitch = true;
+    public bool randomPitch = false;
 
     void Awake()
     {

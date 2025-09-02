@@ -12,7 +12,7 @@ public class UI_Library : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIManager.Instance.topPanelCombat.SetActive(false);
+      //  UIManager.Instance.topPanelCombat.SetActive(false);
     }
 
     public void BackToMainMenu()
@@ -22,11 +22,18 @@ public class UI_Library : MonoBehaviour
 
         //open the correct menu
         //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0f, false, false);
+        //SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0f, false, false);
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_mainMenu.SetActive(true);
+
     }
 
     public void ViewCardList()
     {
+       // UIManager.Instance.DisableAllUIScenes();
+
         List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
         cardScriptDataList = CardListManager.Instance.GetAllCardsFromLibrary();
 
@@ -45,13 +52,14 @@ public class UI_Library : MonoBehaviour
 
     public void ViewArtifacts()
     {
+        //UIManager.Instance.DisableAllUIScenes();
         ItemManager.Instance.OpenArtifactPanel(false);
     }
 
 
     public void ViewTutorials()
     {
-
+       // UIManager.Instance.DisableAllUIScenes();
     }
 
 

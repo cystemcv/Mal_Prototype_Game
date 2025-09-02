@@ -194,8 +194,9 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        //SceneManager.LoadScene("scene_GameModeMenu");
-        SystemManager.Instance.LoadScene("scene_GameModeMenu", 0f,0f, false, false);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_gameModes.SetActive(true);
     }
 
     public void BackToMainMenu()
@@ -204,8 +205,9 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         AudioManager.Instance.PlaySfx("UI_goBack");
 
         //open the correct menu
-        //SceneManager.LoadScene("scene_MainMenu");
-        SystemManager.Instance.LoadScene("scene_MainMenu", 0f,0f, false, false);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_mainMenu.SetActive(true);
     }
 
     public void ProceedToGame()
@@ -227,6 +229,7 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         ItemManager.Instance.GameStartItems();
 
         //SceneManager.LoadScene("scene_Adventure");
+        UIManager.Instance.DisableAllUIScenes();
         SystemManager.Instance.LoadScene("scene_Adventure", 0f,0.2f, true, false);
 
 
