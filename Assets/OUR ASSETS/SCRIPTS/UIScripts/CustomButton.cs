@@ -72,7 +72,8 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerDown(PointerEventData eventData)
     {
         //when selecting go back to initial 
-
+        this.gameObject.transform.localScale = originalScale;
+        //scaleTween = LeanTween.scale(this.gameObject, originalScale, transitionTime);
     }
 
     public void OnPointerUp(PointerEventData eventData)
