@@ -195,6 +195,10 @@ public class ItemManager : MonoBehaviour
 
     public void ShowInventory()
     {
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
         UIManager.Instance.inventoryMain.SetActive(true);
         FeedbackManager.Instance.PlayOnTarget(UIManager.Instance.inventoryMain.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
 
@@ -255,6 +259,10 @@ public class ItemManager : MonoBehaviour
 
     public void HideInventory()
     {
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(false);
+        UIManager.Instance.topPanelCombat.SetActive(true);
+
         //UIManager.Instance.inventoryMain.GetComponent<DoTweenAnimController>().PlayAnimationBackward();
         UIManager.Instance.inventoryMain.SetActive(false);
     }
