@@ -192,6 +192,10 @@ public class CraftingManager : MonoBehaviour
     public void OpenCraftingUI(string mode)
     {
 
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
         //open the UI for crafting
         UIManager.Instance.craftingPanelUI.SetActive(true);
         FeedbackManager.Instance.PlayOnTarget(UIManager.Instance.craftingPanelUI.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
@@ -266,6 +270,10 @@ public class CraftingManager : MonoBehaviour
     public void CloseCraftingUI()
     {
         UIManager.Instance.craftingPanelUI.SetActive(false);
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(false);
+        UIManager.Instance.topPanelCombat.SetActive(true);
     }
 
     public bool CanRecipeBeCrafted(CraftingRecipesData craftingRecipesData)

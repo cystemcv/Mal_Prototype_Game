@@ -32,6 +32,8 @@ public class UI_Library : MonoBehaviour
 
     public void ViewCardList()
     {
+
+
        // UIManager.Instance.DisableAllUIScenes();
 
         List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
@@ -47,6 +49,7 @@ public class UI_Library : MonoBehaviour
         //optionsSettings.onConfirmAction = CombatManager.Instance.CardList_AddCardsToDeck;
         optionsSettings.allowClassButtons = true;
         optionsSettings.allowDuplicates = false;
+        optionsSettings.closeButtonCode = "LIBRARY";
         UIManager.Instance.ShowCardList(optionsSettings);
     }
 

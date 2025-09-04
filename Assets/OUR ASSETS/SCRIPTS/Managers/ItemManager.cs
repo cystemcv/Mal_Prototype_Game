@@ -253,6 +253,12 @@ public class ItemManager : MonoBehaviour
         UIManager.Instance.lootText.text = "";
         UIManager.Instance.lootTextDescription.text = "";
 
+        //show ui
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
+
         ResetGOObject(UIManager.Instance.lootGO);
         PopulateGOObject(UIManager.Instance.lootGO, StaticData.lootItemList);
     }
@@ -781,6 +787,10 @@ public class ItemManager : MonoBehaviour
     public void OpenArtifactPanel(bool showItemText = false)
     {
 
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
         SystemManager.Instance.DestroyAllChildren(itemArtifactPrefabParent);
 
         artifactPanel.SetActive(true);
@@ -828,6 +838,10 @@ public class ItemManager : MonoBehaviour
     public void CloseArtifactPanel()
     {
         artifactPanel.SetActive(false);
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.scene_library.SetActive(true);
     }
 
     public void RemoveItemFromList(ClassItemData classItemData, List<ClassItemData> classItemDataList)

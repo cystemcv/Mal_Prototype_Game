@@ -20,6 +20,7 @@ public class OptionsSettings
     public Action onConfirmAction;
     public bool allowClassButtons;
     public bool allowDuplicates = false;
+    public string closeButtonCode = "";
 }
 
 public class UIManager : MonoBehaviour
@@ -98,6 +99,7 @@ public class UIManager : MonoBehaviour
     public enum CardListMode { VIEW, EDIT }
     public CardListMode cardListMode = CardListMode.VIEW;
     public GameObject cardListGO;
+    public string cardListCode = "";
     public GameObject cardListGOContent;
     public GameObject cardPrefabScaleWithScreenOverlay;
     List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
@@ -642,14 +644,50 @@ public class UIManager : MonoBehaviour
     public void HideCardList()
     {
         ResetCardList();
-
         this.cardListGO.SetActive(false);
+
+
+        if (cardListCode == "LIBRARY")
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.topPanelCombat.SetActive(false);
+            UIManager.Instance.scenes_BG.SetActive(true);
+            UIManager.Instance.scene_library.SetActive(true);
+        }
+        else if (cardListCode == "TRAINING")
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.topPanelCombat.SetActive(false);
+            UIManager.Instance.scenes_BG.SetActive(true);
+            UIManager.Instance.scene_library.SetActive(false);
+        }
+        else
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.scenes_BG.SetActive(false);
+            UIManager.Instance.topPanelCombat.SetActive(true);
+        }
+
     }
 
 
 
     public void ShowCardList(OptionsSettings optionsSettings)
     {
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+        //UIManager.Instance.scene_library.SetActive(true);
+
+        if (optionsSettings.closeButtonCode != "")
+        {
+            cardListCode = optionsSettings.closeButtonCode;
+        }
+        else
+        {
+            cardListCode = ""; //reset
+        }
+
         cardScriptAllowDuplicates = optionsSettings.allowDuplicates;
         ResetCardList();
 
@@ -993,8 +1031,11 @@ public class UIManager : MonoBehaviour
     public void BackToAdventure()
     {
         combatEndWindow.SetActive(false);
-
         eventGO.SetActive(false);
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(false);
+        UIManager.Instance.topPanelCombat.SetActive(true);
 
         SystemManager.Instance.LoadScene("scene_Adventure", 0f,0.2f, true, false);
     }
