@@ -275,7 +275,7 @@ public class ItemManager : MonoBehaviour
 
     public void HideLoot()
     {
-        UIManager.Instance.lootMain.SetActive(false);
+        UIManager.Instance.combatEndWindow.SetActive(false);
     }
 
 

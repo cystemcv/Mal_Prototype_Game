@@ -184,7 +184,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
                     ItemManager.Instance.RefreshInventory();
                 }
 
-                ItemManager.Instance.ShowLoot();
+                //ItemManager.Instance.ShowLoot();
                 ItemManager.Instance.ClearAllText();
             }
         }
@@ -218,8 +218,8 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
-        ItemManager.Instance.ShowLoot();
-
+        //ItemManager.Instance.ShowLoot();
+        ItemManager.Instance.HideLoot();
 
         int itemsToChoose = ItemManager.Instance.artifactsToChooseLimit;
 
@@ -255,6 +255,12 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         SystemManager.Instance.DestroyAllChildren(parent);
 
         UIManager.Instance.ChooseGroupUI.SetActive(true);
+
+        //UIManager.Instance.combatEndWindow.SetActive(false);
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
         UIManager.Instance.ChooseGroupUI.transform.Find("TitleBg").Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE AN ARTIFACT!";
 
         // Select random items from the filtered list
@@ -291,7 +297,11 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
-        ItemManager.Instance.ShowLoot();
+        ItemManager.Instance.HideLoot();
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
 
 
         CraftingRecipesData craftingRecipesData = CraftingManager.Instance.CreateRecipe();
@@ -403,13 +413,17 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         ItemManager.Instance.RemoveItemFromListGOFromLoot(this.classItemData, StaticData.lootItemList);
 
         //ItemManager.Instance.ShowInventory();
-        ItemManager.Instance.ShowLoot();
+        ItemManager.Instance.HideLoot();
 
         List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;
 
 
         //display screen
         UIManager.Instance.ChooseGroupUI.SetActive(true);
+
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
         UIManager.Instance.ChooseGroupUI.transform.Find("TitleBg").Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
 
         //change the mode

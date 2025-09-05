@@ -271,9 +271,7 @@ public class CraftingManager : MonoBehaviour
     {
         UIManager.Instance.craftingPanelUI.SetActive(false);
 
-        UIManager.Instance.DisableAllUIScenes();
-        UIManager.Instance.scenes_BG.SetActive(false);
-        UIManager.Instance.topPanelCombat.SetActive(true);
+        UIManager.Instance.DetermineCorrectUI();
     }
 
     public bool CanRecipeBeCrafted(CraftingRecipesData craftingRecipesData)

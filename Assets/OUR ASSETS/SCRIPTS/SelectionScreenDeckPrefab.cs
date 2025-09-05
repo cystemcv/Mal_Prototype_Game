@@ -88,6 +88,7 @@ public class SelectionScreenDeckPrefab : MonoBehaviour, IPointerEnterHandler, IP
         //optionsSettings.onConfirmAction = CombatManager.Instance.CardList_AddCardsToDeck;
         optionsSettings.allowClassButtons = false;
         optionsSettings.allowDuplicates = true;
+        optionsSettings.closeButtonCode = "SELECTIONSCREEN";
         UIManager.Instance.ShowCardList(optionsSettings);
     }
 

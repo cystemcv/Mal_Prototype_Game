@@ -499,6 +499,7 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             DeckManager.Instance.AddCardToList(this.gameObject.GetComponent<CardScript>().cardScriptData);
+            UIManager.Instance.DetermineCorrectUI();
         }
     }
 

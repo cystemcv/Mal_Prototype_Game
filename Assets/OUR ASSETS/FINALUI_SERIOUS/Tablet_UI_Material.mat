@@ -230,6 +230,7 @@ Material:
     - _ColorChangeTolerance: 0.25
     - _ColorChangeTolerance2: 0.25
     - _ColorChangeTolerance3: 0.25
+    - _ColorMask: 15
     - _ColorRampBlend: 1
     - _ColorRampLuminosity: 0
     - _ColorRampOutline: 0
@@ -412,7 +413,7 @@ Material:
     - _HologramDistortionScale: 10
     - _HologramDistortionSpeed: 2
     - _HologramFade: 1
-    - _HologramLineFrequency: 500
+    - _HologramLineFrequency: 300
     - _HologramLineGap: 3
     - _HologramLineSpeed: 0.01
     - _HologramMaxAlpha: 0.75
@@ -437,6 +438,8 @@ Material:
     - _InnerOutlineTextureToggle: 0
     - _InnerOutlineThickness: 1
     - _InnerOutlineWidth: 0.02
+    - _IsText: 0
+    - _IsTextMeshPro: 0
     - _MaxXUV: 1
     - _MaxYUV: 1
     - _MetalContrast: 2
@@ -595,10 +598,17 @@ Material:
     - _SquishSquish: 0.1
     - _SquishStretch: 0.1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _StrongTintContrast: 0
     - _StrongTintContrastToggle: 0
     - _StrongTintFade: 1
     - _StrongTintMaskToggle: 0
+    - _TMPSmoothness: 5
+    - _TMPThickness: -0.45
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TilingFix: 0
@@ -620,6 +630,7 @@ Material:
     - _UVDistortMaskToggle: 0
     - _UVRotateSpeed: 1
     - _UVSec: 0
+    - _UseUIAlphaClip: 0
     - _VertexTintFirst: 0
     - _VibrateFade: 1
     - _VibrateFrequency: 100

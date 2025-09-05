@@ -568,7 +568,37 @@ public class UIManager : MonoBehaviour
         SystemManager.Instance.DestroyAllChildren(UIManager.Instance.ChooseGroupUI.transform.Find("ChooseContainer").gameObject);
 
         UIManager.Instance.ChooseGroupUI.SetActive(false);
+        DetermineCorrectUI();
 
+
+
+
+    }
+
+    public void DetermineCorrectUI()
+    {
+        if (Combat.Instance != null)
+        {
+            if (Combat.Instance.combatEnded)
+            {
+                ItemManager.Instance.ShowLoot();
+                UIManager.Instance.DisableAllUIScenes();
+                UIManager.Instance.scenes_BG.SetActive(true);
+                UIManager.Instance.topPanelCombat.SetActive(false);
+            }
+            else
+            {
+                UIManager.Instance.DisableAllUIScenes();
+                UIManager.Instance.scenes_BG.SetActive(false);
+                UIManager.Instance.topPanelCombat.SetActive(true);
+            }
+        }
+        else
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.scenes_BG.SetActive(false);
+            UIManager.Instance.topPanelCombat.SetActive(true);
+        }
     }
 
     public void OpenCardList()
@@ -653,6 +683,13 @@ public class UIManager : MonoBehaviour
             UIManager.Instance.topPanelCombat.SetActive(false);
             UIManager.Instance.scenes_BG.SetActive(true);
             UIManager.Instance.scene_library.SetActive(true);
+        }
+        else if (cardListCode == "SELECTIONSCREEN")
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.topPanelCombat.SetActive(false);
+            UIManager.Instance.scenes_BG.SetActive(true);
+            UIManager.Instance.scene_characterSelection.SetActive(true);
         }
         else if (cardListCode == "TRAINING")
         {

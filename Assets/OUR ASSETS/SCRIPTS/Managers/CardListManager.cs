@@ -162,7 +162,11 @@ public class CardListManager : MonoBehaviour
     {
         //display screen
         UIManager.Instance.ChooseGroupUI.SetActive(true);
-        UIManager.Instance.ChooseGroupUI.transform.Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
+        UIManager.Instance.DisableAllUIScenes();
+        UIManager.Instance.scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
+
+        UIManager.Instance.ChooseGroupUI.transform.Find("TitleBg").Find("TITLE").GetComponent<TMP_Text>().text = "CHOOSE A CARD!";
 
         if (showCloseButton)
         {
