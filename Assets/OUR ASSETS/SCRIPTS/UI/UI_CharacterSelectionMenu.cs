@@ -141,8 +141,8 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         {
             GameObject scriptableDeckPanel = Instantiate(startingDeckPanelPrefab, startingDeckPanelPrefabParent.transform);
 
-            scriptableDeckPanel.transform.Find("TEXT").GetComponent<TMP_Text>().text = scriptableDeck.title;
-            scriptableDeckPanel.GetComponent<SelectionScreenDeckPrefab>().scriptableDeck = scriptableDeck;
+            scriptableDeckPanel.transform.Find("StartingDeckPanel_Button/TEXT").GetComponent<TMP_Text>().text = scriptableDeck.title;
+            scriptableDeckPanel.transform.Find("StartingDeckPanel_Button").GetComponent<SelectionScreenDeckPrefab>().scriptableDeck = scriptableDeck;
 
         }
     }

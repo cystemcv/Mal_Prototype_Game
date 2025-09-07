@@ -48,14 +48,14 @@ public class SelectionScreenDeckPrefab : MonoBehaviour, IPointerEnterHandler, IP
 
 
         AudioManager.Instance.PlaySfx("UI_Confirm");
-        this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
+        this.gameObject.transform.Find("StartingDeckPanel_Button/Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorYellow);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
 
         onHover = false;
-        this.gameObject.transform.Find("Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
+        this.gameObject.transform.Find("StartingDeckPanel_Button/Outline").GetComponent<Image>().color = SystemManager.Instance.GetColorFromHex(SystemManager.Instance.colorWhite);
     }
 
     public void OnPointerClick(PointerEventData eventData)
