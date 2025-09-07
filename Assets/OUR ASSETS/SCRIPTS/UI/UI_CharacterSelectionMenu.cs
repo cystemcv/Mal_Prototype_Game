@@ -212,7 +212,11 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
 
     public void ProceedToGame()
     {
+        StartCoroutine(ProceedToGameIE());
+    }
 
+    public IEnumerator ProceedToGameIE()
+    {
         //reset all values that need to be reset
         SystemManager.Instance.ResetGame();
 
@@ -229,9 +233,17 @@ public class UI_CharacterSelectionMenu : MonoBehaviour
         ItemManager.Instance.GameStartItems();
 
         //SceneManager.LoadScene("scene_Adventure");
-        UIManager.Instance.DisableAllUIScenes();
-        SystemManager.Instance.LoadScene("scene_Adventure", 0f,0.2f, true, false);
+        //UIManager.Instance.DisableAllUIScenes();
 
-
+        UIManager.Instance.scene_characterSelection.transform.Find("UI").Find("UI_MENUS").gameObject.SetActive(false);
+        //play the tablet zoom animation
+        UIManager.Instance.scenes_BG.GetComponent<Animator>().SetTrigger("ZoomIn");
+        yield return new WaitForSeconds(0.3f);
+        Debug.Log("About to load scene");
+        SystemManager.Instance.LoadScene("scene_Adventure", 0f, 0.2f, true, false);
+        yield return new WaitForSeconds(0.1f);
+        //reset them
+        UIManager.Instance.scene_characterSelection.transform.Find("UI").Find("UI_MENUS").gameObject.SetActive(true);
+        UIManager.Instance.scenes_BG.GetComponent<Animator>().SetTrigger("ZoomOut");
     }
 }
