@@ -9,6 +9,7 @@ public class UI_GameModeMenu : MonoBehaviour
     public static UI_GameModeMenu Instance;
 
     public List<TutorialData> tutorialDataList = new List<TutorialData>();
+    public ScriptablePlanets trainingPlanet;
 
     private void Awake()
     {
@@ -95,6 +96,7 @@ public class UI_GameModeMenu : MonoBehaviour
         //open the correct menu
         // SceneManager.LoadScene("scene_CharacterSelectionMenu");
         UIManager.Instance.DisableAllUIScenes();
+        CombatManager.Instance.scriptablePlanet = trainingPlanet;
         SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
     }
 }

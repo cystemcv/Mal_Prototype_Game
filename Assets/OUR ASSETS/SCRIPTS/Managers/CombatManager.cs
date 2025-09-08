@@ -354,7 +354,12 @@ public class CombatManager : MonoBehaviour
 
     public void Training_OpenArtifactPanel()
     {
-        ItemManager.Instance.OpenArtifactPanel(true);
+        CombatManager.Instance.trainingOptionsUI.SetActive(false);
+
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.closeButtonCode = "TRAINING";
+        optionsSettings.showItemText = true;
+        ItemManager.Instance.OpenArtifactPanel(optionsSettings);
     }
 
     public void Training_DestroyAllEnemies()
@@ -452,7 +457,10 @@ public class CombatManager : MonoBehaviour
         optionsSettings.title = "Remove Cards From Deck";
         optionsSettings.onConfirmAction = CombatManager.Instance.CardList_RemoveCardsFromDeck;
         optionsSettings.allowClassButtons = false;
+        optionsSettings.closeButtonCode = "TRAINING";
         UIManager.Instance.ShowCardList(optionsSettings);
+
+        CombatManager.Instance.trainingOptionsUI.SetActive(false);
     }
 
     public void CardList_RemoveCardsFromDeck()
@@ -491,7 +499,10 @@ public class CombatManager : MonoBehaviour
         optionsSettings.onConfirmAction = CombatManager.Instance.CardList_AddCardsToDeck;
         optionsSettings.allowClassButtons = true;
         optionsSettings.allowDuplicates = true;
+        optionsSettings.closeButtonCode = "TRAINING";
         UIManager.Instance.ShowCardList(optionsSettings);
+
+        CombatManager.Instance.trainingOptionsUI.SetActive(false);
     }
 
     public void CardList_AddCardsToDeck()

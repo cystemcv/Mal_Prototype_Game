@@ -56,7 +56,10 @@ public class UI_Library : MonoBehaviour
     public void ViewArtifacts()
     {
         //UIManager.Instance.DisableAllUIScenes();
-        ItemManager.Instance.OpenArtifactPanel(false);
+        OptionsSettings optionsSettings = new OptionsSettings();
+        optionsSettings.closeButtonCode = "LIBRARY";
+        optionsSettings.showItemText = false;
+        ItemManager.Instance.OpenArtifactPanel(optionsSettings);
     }
 
 

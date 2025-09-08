@@ -34,11 +34,19 @@ MonoBehaviour:
     aICommandType: 0
     aiScriptableCards: []
   aICommands:
-  - aICommandType: 0
+  - aICommandType: 1
     aiScriptableCards:
     - aiScriptableCard: {fileID: 11400000, guid: 6d95273e3eb8c4e4fa478d51e15f1186, type: 2}
       modifiedCardValueMin: 0
       modifiedCardValueMax: 0
+    - aiScriptableCard: {fileID: 11400000, guid: 5c241492e380c7e43b53dcd065451271, type: 2}
+      modifiedCardValueMin: 1
+      modifiedCardValueMax: 2
+  - aICommandType: 1
+    aiScriptableCards:
+    - aiScriptableCard: {fileID: 11400000, guid: 5c241492e380c7e43b53dcd065451271, type: 2}
+      modifiedCardValueMin: 2
+      modifiedCardValueMax: 3
   - aICommandType: 0
     aiScriptableCards:
     - aiScriptableCard: {fileID: 11400000, guid: 09966e26d7f6dac4ca4bd091a38cf223, type: 2}
@@ -49,7 +57,7 @@ MonoBehaviour:
   maxHealth: 42
   currHealth: 42
   shield: 0
-  armor: 6
+  armor: 0
   maxMana: 0
   currMana: 0
   maxLevel: 0

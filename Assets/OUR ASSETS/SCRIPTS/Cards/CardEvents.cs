@@ -318,7 +318,8 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             canActivate = HandManager.Instance.CheckActivation(rectTransform);
 
             if (canActivate && gameObject.GetComponent<CardScript>().cardScriptData.primaryManaCost <= Combat.Instance.manaAvailable /*&& SystemManager.Instance.thereIsActivatedCard == false*/
-                && gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType != SystemManager.CardType.Curse)
+                && gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType != SystemManager.CardType.Curse
+                && gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType != SystemManager.CardType.Status)
             {
                 ScriptableCard scriptableCard = gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard;
 
@@ -363,7 +364,9 @@ public class CardEvents : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
 
         //if it cancel drag
-        if (isDragging == false /*|| SystemManager.Instance.thereIsActivatedCard == true*/ || gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType == SystemManager.CardType.Curse)
+        if (isDragging == false /*|| SystemManager.Instance.thereIsActivatedCard == true*/ 
+            || gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType == SystemManager.CardType.Curse
+            || gameObject.GetComponent<CardScript>().cardScriptData.scriptableCard.cardType == SystemManager.CardType.Status)
         {
             //reset everything
             //remove line renderer

@@ -784,12 +784,21 @@ public class ItemManager : MonoBehaviour
         return result;
     }
 
-    public void OpenArtifactPanel(bool showItemText = false)
+    public void OpenArtifactPanel(OptionsSettings optionsSettings)
     {
 
         UIManager.Instance.DisableAllUIScenes();
         UIManager.Instance.scenes_BG.SetActive(true);
         UIManager.Instance.topPanelCombat.SetActive(false);
+
+        if (optionsSettings.closeButtonCode != "")
+        {
+           UIManager.Instance.windowListCode = optionsSettings.closeButtonCode;
+        }
+        else
+        {
+            UIManager.Instance.windowListCode = ""; //reset
+        }
 
         SystemManager.Instance.DestroyAllChildren(itemArtifactPrefabParent);
 
@@ -815,7 +824,7 @@ public class ItemManager : MonoBehaviour
 
             itemPrefab.GetComponent<CustomButton>().playFeedbacks = false;
 
-            if (showItemText)
+            if (optionsSettings.showItemText)
             {
                 itemPrefab.transform.Find("Text").gameObject.SetActive(true);
                 if (CheckIfItemExistOnList(StaticData.artifactItemList, scriptableItem) != null)
@@ -839,9 +848,27 @@ public class ItemManager : MonoBehaviour
     {
         artifactPanel.SetActive(false);
 
-        UIManager.Instance.DisableAllUIScenes();
-        UIManager.Instance.scenes_BG.SetActive(true);
-        UIManager.Instance.scene_library.SetActive(true);
+        if (UIManager.Instance.windowListCode == "LIBRARY")
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.scenes_BG.SetActive(true);
+            UIManager.Instance.scene_library.SetActive(true);
+        }
+        else if (UIManager.Instance.windowListCode == "TRAINING")
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.topPanelCombat.SetActive(true);
+            UIManager.Instance.scenes_BG.SetActive(false);
+            CombatManager.Instance.trainingOptionsUI.SetActive(true);
+        }
+        else
+        {
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.scenes_BG.SetActive(false);
+            UIManager.Instance.topPanelCombat.SetActive(true);
+        }
+
+
     }
 
     public void RemoveItemFromList(ClassItemData classItemData, List<ClassItemData> classItemDataList)

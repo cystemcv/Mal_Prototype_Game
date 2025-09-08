@@ -420,7 +420,8 @@ public class DeckManager : MonoBehaviour
             savedPlayedCard.GetComponent<TooltipContent>().StartExit();
 
             //destroy the prefab
-            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
+            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus
+                || savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Summon)
             {
                 DestroyPlayedCard(SystemManager.CardThrow.BANISH);
             }
@@ -484,6 +485,11 @@ public class DeckManager : MonoBehaviour
         {
             StaticData.IncrementStat(StaticData.combatStats, "Focus_Cards_Played", 1);
             StaticData.IncrementStat(StaticData.combatStats, "Total_Focus_Cards_Played", 1);
+        }
+        else if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Summon)
+        {
+            StaticData.IncrementStat(StaticData.combatStats, "Summon_Cards_Played", 1);
+            StaticData.IncrementStat(StaticData.combatStats, "Total_Summon_Cards_Played", 1);
         }
         else if (cardScriptData.scriptableCard.cardType == SystemManager.CardType.Magic)
         {
@@ -618,7 +624,8 @@ public class DeckManager : MonoBehaviour
         if (savedPlayedCard.cardScriptData.scriptableCard != null)
         {
             //destroy the prefab
-            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus)
+            if (savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Focus
+                || savedPlayedCard.cardScriptData.scriptableCard.cardType == SystemManager.CardType.Summon)
             {
                 combatDeck.RemoveAt(index);
                 banishedPile.Add(savedPlayedCard.cardScriptData);

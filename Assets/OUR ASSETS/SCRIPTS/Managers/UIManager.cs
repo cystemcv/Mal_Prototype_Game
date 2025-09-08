@@ -21,6 +21,7 @@ public class OptionsSettings
     public bool allowClassButtons;
     public bool allowDuplicates = false;
     public string closeButtonCode = "";
+    public bool showItemText = false;
 }
 
 public class UIManager : MonoBehaviour
@@ -99,7 +100,7 @@ public class UIManager : MonoBehaviour
     public enum CardListMode { VIEW, EDIT }
     public CardListMode cardListMode = CardListMode.VIEW;
     public GameObject cardListGO;
-    public string cardListCode = "";
+    public string windowListCode = "";
     public GameObject cardListGOContent;
     public GameObject cardPrefabScaleWithScreenOverlay;
     List<CardScriptData> cardScriptDataList = new List<CardScriptData>();
@@ -287,6 +288,9 @@ public class UIManager : MonoBehaviour
     public void OpenQuickMenu() {
         QuickMenu.SetActive(true);
         quickMenuOpen = true;
+
+        scenes_BG.SetActive(true);
+        UIManager.Instance.topPanelCombat.SetActive(false);
         FeedbackManager.Instance.PlayOnTarget(QuickMenu.transform, FeedbackManager.Instance.mm_OpenPanel_Prefab);
         Time.timeScale = 0f; // Pause game
     }
@@ -295,6 +299,8 @@ public class UIManager : MonoBehaviour
     {
         QuickMenu.SetActive(false);
         quickMenuOpen = false;
+        scenes_BG.SetActive(false);
+        UIManager.Instance.topPanelCombat.SetActive(true);
         Time.timeScale = 1f; // Resume game
     }
 
@@ -677,26 +683,26 @@ public class UIManager : MonoBehaviour
         this.cardListGO.SetActive(false);
 
 
-        if (cardListCode == "LIBRARY")
+        if (windowListCode == "LIBRARY")
         {
             UIManager.Instance.DisableAllUIScenes();
             UIManager.Instance.topPanelCombat.SetActive(false);
             UIManager.Instance.scenes_BG.SetActive(true);
             UIManager.Instance.scene_library.SetActive(true);
         }
-        else if (cardListCode == "SELECTIONSCREEN")
+        else if (windowListCode == "SELECTIONSCREEN")
         {
             UIManager.Instance.DisableAllUIScenes();
             UIManager.Instance.topPanelCombat.SetActive(false);
             UIManager.Instance.scenes_BG.SetActive(true);
             UIManager.Instance.scene_characterSelection.SetActive(true);
         }
-        else if (cardListCode == "TRAINING")
+        else if (windowListCode == "TRAINING")
         {
             UIManager.Instance.DisableAllUIScenes();
-            UIManager.Instance.topPanelCombat.SetActive(false);
-            UIManager.Instance.scenes_BG.SetActive(true);
-            UIManager.Instance.scene_library.SetActive(false);
+            UIManager.Instance.topPanelCombat.SetActive(true);
+            UIManager.Instance.scenes_BG.SetActive(false);
+            CombatManager.Instance.trainingOptionsUI.SetActive(true);
         }
         else
         {
@@ -718,11 +724,11 @@ public class UIManager : MonoBehaviour
 
         if (optionsSettings.closeButtonCode != "")
         {
-            cardListCode = optionsSettings.closeButtonCode;
+            windowListCode = optionsSettings.closeButtonCode;
         }
         else
         {
-            cardListCode = ""; //reset
+            windowListCode = ""; //reset
         }
 
         cardScriptAllowDuplicates = optionsSettings.allowDuplicates;
@@ -791,6 +797,8 @@ public class UIManager : MonoBehaviour
             {
                 optionsSettings.onConfirmAction.Invoke();
             }
+            UIManager.Instance.DisableAllUIScenes();
+            UIManager.Instance.topPanelCombat.SetActive(true);
             cardListGO.SetActive(false);
 
 
