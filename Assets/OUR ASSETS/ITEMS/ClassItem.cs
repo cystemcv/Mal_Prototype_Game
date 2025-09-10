@@ -8,6 +8,7 @@ using System.Linq;
 using Michsky.MUIP;
 using System.Linq;
 using DG.Tweening;
+using static SystemManager;
 
 public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -399,14 +400,22 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         SystemManager.Instance.DestroyAllChildren(parent);
 
         //get the pool
-        List<CardListManager.CardPoolList> filteredCardListPool = CardListManager.Instance.cardPoolLists.Where(pool =>
-        pool.mainClass == StaticData.staticCharacter.mainClass
-        ).ToList();
+        //List<CardListManager.CardPoolList> filteredCardListPool = CardListManager.Instance.cardPoolLists.Where(pool =>
+        //pool.mainClass == StaticData.staticCharacter.mainClass
+        //).ToList();
 
-        if (filteredCardListPool.Count <= 0)
-        {
-            return;
-        }
+        //if (filteredCardListPool.Count <= 0)
+        //{
+        //    return;
+        //}
+
+        var allowedClasses = new List<MainClass> { MainClass.COMMON };
+        var allowedTypes = new List<CardType> { CardType.Attack };
+        var allowedRarities = new List<Rarity> { Rarity.Common, Rarity.Rare, Rarity.Epic, Rarity.Legendary };
+
+        allowedClasses.Add(StaticData.staticCharacter.mainClass);
+
+        List<ScriptableCard> cardList = CardListManager.Instance.ChooseCards(allowedClasses, null, null, null, null, 6, true);
 
 
         //Remove from loot
@@ -415,7 +424,7 @@ public class ClassItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         //ItemManager.Instance.ShowInventory();
         ItemManager.Instance.HideLoot();
 
-        List<ScriptableCard> filteredCardList = filteredCardListPool[0].scriptableCards;
+        List<ScriptableCard> filteredCardList = cardList;
 
 
         //display screen

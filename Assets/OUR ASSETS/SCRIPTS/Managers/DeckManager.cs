@@ -142,7 +142,7 @@ public class DeckManager : MonoBehaviour
                 handCards.Add(cardScriptData);
 
                 //instantiate the card
-                InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false);
+                InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false, UI_Combat.Instance.deckInfo);
 
                 cardScriptData.scriptableCard.OnDrawCard(cardScriptData);
 
@@ -179,7 +179,7 @@ public class DeckManager : MonoBehaviour
             handCards.Add(cardScriptData);
 
             //instantiate the card
-            InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false);
+            InitializeCardPrefab(cardScriptData, UI_Combat.Instance.HAND, true, false, UI_Combat.Instance.deckInfo);
 
             //rearrange hand
             HandManager.Instance.SetHandCards();
@@ -774,12 +774,21 @@ public class DeckManager : MonoBehaviour
         cardScriptDataList.RemoveAll(c => c.cardID == cardScriptData.cardID);
     }
 
-    public GameObject InitializeCardPrefab(CardScriptData cardScriptData, GameObject parent, bool addToHand, bool normalUI)
+    public GameObject InitializeCardPrefab(CardScriptData cardScriptData, GameObject parent, bool addToHand, bool normalUI, GameObject spawnPosition = null)
     {
 
         //instantiate the prefab 
+        GameObject cardPrefab;
         // Instantiate at position (0, 0, 0) and zero rotation.
-        GameObject cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, parent.transform.position, Quaternion.identity);
+        if (spawnPosition != null)
+        {
+            cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, spawnPosition.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            cardPrefab = Instantiate(CardListManager.Instance.cardPrefab, parent.transform.position, Quaternion.identity);
+        }
+   
         //get the scriptable object
         ScriptableCard scriptableCard = cardScriptData.scriptableCard;
 

@@ -10,14 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3ca6dbcb7a8e304facf787b14b026a1, type: 3}
-  m_Name: Thief_Card_Copy
+  m_Name: Common_Card_Copy
   m_EditorClassIdentifier: 
-  cardArt: {fileID: 21300000, guid: 093ee2cf79b220647bc24bffe343ca46, type: 3}
+  cardArt: {fileID: 21300000, guid: 103a03aeff7b8c44d979a638dd7a489d, type: 3}
   cardName: Monster Copy
-  mainClass: 0
+  mainClass: 1
   cardType: 2
-  cardRarity: 3
+  cardTypeSecondary: 7
+  cardRarity: 0
+  toggle1: 0
+  toggle2: 0
+  toggle3: 0
+  toggle4: 0
+  toggle5: 0
   targetEntityTagList: 
+  waitOnQueueTimer: 0.5
+  cannotDiscard: 0
+  cannorRemoveFromDeck: 0
+  discardCardAtEndTurn: 1
+  scalingLevelCardValue: 0
+  allowScaling: 1
+  scriptableKeywords: []
+  scriptableBuffDebuffs: []
+  scriptableHazards: []
   primaryManaCost: 0
   cardDesc: 
   abilityEffect: {fileID: 0}
@@ -26,7 +41,6 @@ MonoBehaviour:
   entityAnimation: 2
   cardSoundEffect: {fileID: 0}
   cardFlavor: 
-  cardAbilityClass: []
   unlockable: 0
   cardConditionClass: []
   shieldAmount: 0

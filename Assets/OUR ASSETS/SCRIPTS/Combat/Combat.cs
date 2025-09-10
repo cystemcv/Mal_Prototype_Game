@@ -452,6 +452,7 @@ public class Combat : MonoBehaviour
     {
         codeMode = code;
         UI_Combat.Instance.DisableCombatUI();
+        CombatManager.Instance.trainingModeUIOpen = false;
 
         //hide the dungeon generator
         CustomDungeonGenerator.Instance.HideCustomDungeonGenerator();

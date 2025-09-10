@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Thief_Card_Copy", menuName = "Card/Thief/Thief_Card_Copy")]
-public class Thief_Card_Copy : ScriptableCard
+[CreateAssetMenu(fileName = "Common_Card_AdvanceCopy", menuName = "Card/Common/Common_Card_AdvanceCopy")]
+public class Common_Card_AdvanceCopy : ScriptableCard
 {
 
     public int shieldAmount = 0;
@@ -15,7 +15,7 @@ public class Thief_Card_Copy : ScriptableCard
         string customDesc = base.OnCardDescription(cardScriptData, entityUsedCard);
 
         int calculatedShield = (Combat.Instance == null) ? shieldAmount : Combat.Instance.CalculateEntityShield(shieldAmount, entityUsedCard, realTarget);
-        customDesc += "Copy a monster card and add it to your hand";
+        customDesc += "Copy a monster card and add it to your hand\nCan Target";
 
         return customDesc;
     }
