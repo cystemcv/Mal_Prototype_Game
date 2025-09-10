@@ -87,7 +87,8 @@ public class ScriptableEntity : ScriptableObject
         [HorizontalGroup("CardValue"), LabelText("Min"), OnValueChanged(nameof(OnMinChanged))]
         public int modifiedCardValueMin = 0;
 
-        [HorizontalGroup("CardValue"), LabelText("Max"), ShowIf(nameof(ShowMax)), MinValue(nameof(modifiedCardValueMin))]
+        //[HorizontalGroup("CardValue"), LabelText("Max"), ShowIf(nameof(ShowMax)), MinValue(nameof(modifiedCardValueMin))]
+        [HorizontalGroup("CardValue"), LabelText("Max"), MinValue(nameof(modifiedCardValueMin))]
         public int modifiedCardValueMax = 0;
 
         private bool ShowMax() => modifiedCardValueMin != 0;

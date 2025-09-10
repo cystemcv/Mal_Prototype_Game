@@ -224,7 +224,34 @@ public class AIManager : MonoBehaviour
 
     }
 
-    public List<GameObject> GetAllTargets(GameObject entityUsedCard)
+
+
+public GameObject GetLowestHealthAlly(GameObject entityUsedCard)
+{
+    List<GameObject> targetsFound;
+
+    // get all targets depending on the entity's tag
+    if (SystemManager.Instance.GetPlayerTagsList().Contains(entityUsedCard.tag))
+    {
+        targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetPlayerTagsList());
+    }
+    else
+    {
+        targetsFound = SystemManager.Instance.FindGameObjectsWithTags(SystemManager.Instance.GetEnemyTagsList());
+    }
+
+    // find the one with the lowest health using LINQ
+    var lowestTarget = targetsFound
+        .Select(t => new { Target = t, Entity = t.GetComponent<EntityClass>() })
+        .Where(x => x.Entity != null)
+        .OrderBy(x => x.Entity.health)
+        .FirstOrDefault()?.Target;
+
+    return lowestTarget;
+}
+
+
+public List<GameObject> GetAllTargets(GameObject entityUsedCard)
     {
 
         List<GameObject> targetsFound = new List<GameObject>();

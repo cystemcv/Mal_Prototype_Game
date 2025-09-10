@@ -97,6 +97,6 @@ public class UI_GameModeMenu : MonoBehaviour
         // SceneManager.LoadScene("scene_CharacterSelectionMenu");
         UIManager.Instance.DisableAllUIScenes();
         CombatManager.Instance.scriptablePlanet = trainingPlanet;
-        SystemManager.Instance.LoadScene("scene_Combat", 0.5f, 0.2f, true, false);
+        SystemManager.Instance.LoadScene("scene_Combat", 0f, 0.2f, true, false);
     }
 }
