@@ -33,6 +33,7 @@ MonoBehaviour:
   aICommandsInitialize:
     aICommandType: 0
     aiScriptableCards: []
+    repeatTimes: 0
   aICommands:
   - aICommandType: 1
     aiScriptableCards:
@@ -42,16 +43,23 @@ MonoBehaviour:
     - aiScriptableCard: {fileID: 11400000, guid: 5c241492e380c7e43b53dcd065451271, type: 2}
       modifiedCardValueMin: 1
       modifiedCardValueMax: 2
+    repeatTimes: 0
   - aICommandType: 1
     aiScriptableCards:
     - aiScriptableCard: {fileID: 11400000, guid: 5c241492e380c7e43b53dcd065451271, type: 2}
-      modifiedCardValueMin: 2
-      modifiedCardValueMax: 3
+      modifiedCardValueMin: 10
+      modifiedCardValueMax: 20
+    - aiScriptableCard: {fileID: 11400000, guid: 729173045b677e54db5f1e0a341ebe44, type: 2}
+      modifiedCardValueMin: 5
+      modifiedCardValueMax: 8
+    repeatTimes: 2
   - aICommandType: 0
     aiScriptableCards:
     - aiScriptableCard: {fileID: 11400000, guid: 09966e26d7f6dac4ca4bd091a38cf223, type: 2}
       modifiedCardValueMin: 0
       modifiedCardValueMax: 0
+    repeatTimes: 0
+  scalingLevelBuffDebuffList: []
   strength: 0
   defence: 0
   maxHealth: 42

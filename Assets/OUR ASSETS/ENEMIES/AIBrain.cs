@@ -30,6 +30,7 @@ public class AIBrain : MonoBehaviour
     public int entityLevel = 0;
 
     public bool justSpawned = false;
+    public int repeatedStepTimes = 0;
 
     public void ExecuteCommand()
     {
@@ -52,10 +53,24 @@ public class AIBrain : MonoBehaviour
             GenerateIntend();
         }
 
+
         //play card
         PlayCardOnlyAbilities(scriptableCardToUse);
 
-        IncreaseAiStep();
+        //get the current command
+        scriptableEntity = this.gameObject.GetComponent<EntityClass>().scriptableEntity;
+        ScriptableEntity.AICommand aICommandCurrent = scriptableEntity.aICommands[aiLogicStep];
+
+        if (repeatedStepTimes < aICommandCurrent.repeatTimes )
+        {
+            repeatedStepTimes++;
+        }
+        else
+        {
+            repeatedStepTimes = 0;
+            IncreaseAiStep();
+        }
+ 
 
     }
 
@@ -109,7 +124,7 @@ public class AIBrain : MonoBehaviour
             aICommandCardToUse = GetAICardFromCommand(scriptableEntity.aICommands[aiLogicStep]);
             scriptableCardToUse = aICommandCardToUse.aiScriptableCard;
 
-     
+
             cardScriptData.scriptableCard = scriptableCardToUse;
             getCardLevel = Random.Range(aICommandCardToUse.modifiedCardValueMin + entityLevel, aICommandCardToUse.modifiedCardValueMax + entityLevel);
             cardScriptData.scalingLevelValue = getCardLevel;

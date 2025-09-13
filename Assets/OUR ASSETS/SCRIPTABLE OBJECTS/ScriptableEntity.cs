@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static ScriptableScaling;
 
 [CreateAssetMenu(fileName = "ScriptableEntity", menuName = "Entity/ScriptableEntity")]
 public class ScriptableEntity : ScriptableObject
@@ -43,6 +44,8 @@ public class ScriptableEntity : ScriptableObject
     public Vector3 spawnIntend = new Vector3(0, 1, 0);
     public AICommand aICommandsInitialize;
     public List<AICommand> aICommands = new List<AICommand>();
+    [Header("AI BUFF DEBUFF LIST")]
+    public List<ScalingLevelBuffDebuff> scalingLevelBuffDebuffList = new List<ScalingLevelBuffDebuff>();
 
 
 
@@ -109,6 +112,7 @@ public class ScriptableEntity : ScriptableObject
     {
         public SystemManager.AICommandType aICommandType;
         public List<AICommandCards> aiScriptableCards;
+        public int repeatTimes = 0;
 
     }
 }

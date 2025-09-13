@@ -1033,6 +1033,12 @@ public class Combat : MonoBehaviour
 
         }
 
+        //add the individual buffs and debuffs from entity
+        foreach (ScalingLevelBuffDebuff scalingLevelBuffDebuff in entity.GetComponent<EntityClass>().scriptableEntity.scalingLevelBuffDebuffList)
+        {
+            BuffSystemManager.Instance.AddBuffDebuff(entity, scalingLevelBuffDebuff.scriptableBuffDebuff, scalingLevelBuffDebuff.scalingValue);
+        }
+
         //add scaling buff/debuffs
         for (int i = 0; i < CustomDungeonGenerator.Instance.scalingLevel; i++)
         {
